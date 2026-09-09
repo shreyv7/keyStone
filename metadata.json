@@ -1,0 +1,6 @@
+{
+  "name": "KEYSTONE - Software Supply Chain Intelligence",
+  "description": "Intelligent 3D software supply-chain risk analysis system detecting structural keystones, simulating compromise propagation, and computing minimum-cut mitigations.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
