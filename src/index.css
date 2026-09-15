@@ -253,6 +253,165 @@
 }
 
 /* ==========================================================================
+   Tactile 3D Connector Cards & Isometric Depth Elements
+   ========================================================================== */
+
+.connector-3d-card {
+  position: relative;
+  border-radius: 1.25rem;
+  transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+  background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+  border-top: 1.5px solid rgba(255, 255, 255, 1);
+  border-left: 1px solid rgba(226, 232, 240, 0.9);
+  border-right: 1px solid rgba(226, 232, 240, 0.9);
+  border-bottom: 3.5px solid #cbd5e1;
+  box-shadow: 
+    0 6px 0 0 #e2e8f0,
+    0 12px 24px -4px rgba(15, 23, 42, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+}
+
+.connector-3d-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 
+    0 10px 0 0 #cbd5e1,
+    0 20px 32px -4px rgba(15, 23, 42, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 1);
+}
+
+.connector-3d-card:active {
+  transform: translateY(2px);
+  border-bottom-width: 1.5px;
+  box-shadow: 
+    0 2px 0 0 #cbd5e1,
+    0 4px 8px rgba(15, 23, 42, 0.08);
+}
+
+.dark .connector-3d-card {
+  background: linear-gradient(180deg, #131d35 0%, #0d1527 100%);
+  border-top: 1.5px solid rgba(255, 255, 255, 0.14);
+  border-left: 1px solid rgba(30, 41, 67, 0.8);
+  border-right: 1px solid rgba(30, 41, 67, 0.8);
+  border-bottom: 4px solid #030712;
+  box-shadow: 
+    0 6px 0 0 #070c18,
+    0 14px 28px -4px rgba(0, 0, 0, 0.7),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+.dark .connector-3d-card:hover {
+  transform: translateY(-4px);
+  border-top-color: rgba(147, 197, 253, 0.35);
+  box-shadow: 
+    0 10px 0 0 #050a14,
+    0 24px 38px -4px rgba(0, 0, 0, 0.85),
+    inset 0 1px 0 rgba(255, 255, 255, 0.12);
+}
+
+.dark .connector-3d-card:active {
+  transform: translateY(2px);
+  border-bottom-width: 1.5px;
+  box-shadow: 
+    0 2px 0 0 #030712,
+    0 6px 12px rgba(0, 0, 0, 0.5);
+}
+
+/* 3D Extruded Logo Platform */
+.connector-3d-tile {
+  border-radius: 1rem;
+  background: linear-gradient(180deg, #ffffff 0%, #f1f5f9 100%);
+  border-top: 1.5px solid #ffffff;
+  border-left: 1px solid #e2e8f0;
+  border-right: 1px solid #e2e8f0;
+  border-bottom: 2.5px solid #cbd5e1;
+  box-shadow: 
+    0 2px 0 #e2e8f0,
+    0 4px 8px rgba(0, 0, 0, 0.06),
+    inset 0 1px 0 #ffffff;
+  transition: transform 0.15s ease;
+}
+
+.dark .connector-3d-tile {
+  background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
+  border-top: 1.5px solid rgba(255, 255, 255, 0.2);
+  border-left: 1px solid rgba(51, 65, 85, 0.8);
+  border-right: 1px solid rgba(51, 65, 85, 0.8);
+  border-bottom: 2.5px solid #020617;
+  box-shadow: 
+    0 2.5px 0 #020617,
+    0 6px 10px rgba(0, 0, 0, 0.5),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+/* 3D Push Button */
+.btn-3d-primary {
+  background: linear-gradient(180deg, #3b82f6 0%, #2563eb 60%, #1d4ed8 100%);
+  border-top: 1.5px solid rgba(191, 219, 254, 0.7);
+  border-left: 1px solid #2563eb;
+  border-right: 1px solid #2563eb;
+  border-bottom: 3px solid #1e3a8a;
+  box-shadow: 
+    0 3px 0 #1e40af,
+    0 6px 12px rgba(37, 99, 235, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.35);
+  transition: all 0.12s ease;
+}
+
+.btn-3d-primary:hover {
+  background: linear-gradient(180deg, #60a5fa 0%, #3b82f6 60%, #2563eb 100%);
+  transform: translateY(-1px);
+  box-shadow: 
+    0 4px 0 #1e40af,
+    0 8px 16px rgba(37, 99, 235, 0.45);
+}
+
+.btn-3d-primary:active {
+  transform: translateY(2px);
+  border-bottom-width: 1px;
+  box-shadow: 
+    0 1px 0 #1e40af,
+    0 2px 4px rgba(37, 99, 235, 0.2);
+}
+
+.btn-3d-secondary {
+  background: linear-gradient(180deg, #f8fafc 0%, #e2e8f0 100%);
+  border-top: 1px solid #ffffff;
+  border-left: 1px solid #cbd5e1;
+  border-right: 1px solid #cbd5e1;
+  border-bottom: 2.5px solid #94a3b8;
+  box-shadow: 
+    0 2px 0 #cbd5e1,
+    0 4px 6px rgba(0, 0, 0, 0.05);
+  transition: all 0.12s ease;
+}
+
+.dark .btn-3d-secondary {
+  background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+  border-left: 1px solid rgba(51, 65, 85, 0.8);
+  border-right: 1px solid rgba(51, 65, 85, 0.8);
+  border-bottom: 2.5px solid #020617;
+  box-shadow: 
+    0 2px 0 #020617,
+    0 4px 6px rgba(0, 0, 0, 0.4);
+}
+
+.btn-3d-secondary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 3px 0 #94a3b8, 0 6px 10px rgba(0, 0, 0, 0.08);
+}
+.dark .btn-3d-secondary:hover {
+  box-shadow: 0 3px 0 #020617, 0 6px 12px rgba(0, 0, 0, 0.5);
+}
+
+.btn-3d-secondary:active {
+  transform: translateY(1.5px);
+  border-bottom-width: 1px;
+  box-shadow: none;
+}
+
+
+/* ==========================================================================
    Modular Tailwind Design System Tokens & Utility Layer
    ========================================================================== */
 

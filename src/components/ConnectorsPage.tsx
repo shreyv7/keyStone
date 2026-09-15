@@ -20,9 +20,23 @@ import {
   Clock,
   ArrowRight,
   Filter,
-  UploadCloud
+  UploadCloud,
+  Layers,
+  Sparkles,
+  Link2,
+  Lock,
+  Radio,
+  FileCode2,
+  Database,
+  Terminal,
+  Activity,
+  ChevronRight,
+  Info
 } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
+import { Button } from './ui/Button';
+import { Card } from './ui/Card';
+import { Badge } from './ui/Badge';
 
 export interface ConnectorsPageProps {
   onOpenSBOMModal?: () => void;
@@ -32,155 +46,247 @@ export interface ConnectorItem {
   id: string;
   name: string;
   category: 'scm' | 'registry' | 'ci' | 'alerts';
+  categoryLabel: string;
   description: string;
-  icon: string;
+  logo: string;
   status: 'connected' | 'available' | 'syncing' | 'error';
   lastSync?: string;
   scope?: string;
   webhookHealth?: string;
+  tags: string[];
   details: {
     target: string;
     version?: string;
     policyEnforced?: boolean;
     autoPr?: boolean;
+    authType?: string;
+    monitoredCount?: number;
   };
 }
 
 const INITIAL_CONNECTORS: ConnectorItem[] = [
   {
     id: 'github-app',
-    name: 'GitHub Enterprise / Cloud',
+    name: 'GitHub Enterprise & Cloud',
     category: 'scm',
-    description: 'Bi-directional repository sync, real-time lockfile diffing, and coordinated multi-repo pull request dispatch.',
-    icon: '🐙',
+    categoryLabel: 'Source Control',
+    description: 'Bi-directional repo sync & multi-repo PR dispatch',
+    logo: '/assets/connectors/1.png',
     status: 'connected',
-    lastSync: '3 mins ago',
-    scope: '42 Monitored Repos',
-    webhookHealth: '100% (0 dropped)',
-    details: { target: 'org:acme-corp', policyEnforced: true, autoPr: true }
+    lastSync: '3m ago',
+    scope: '42 Repos',
+    webhookHealth: '100% Health',
+    tags: ['OAuth 2.0', 'Auto-PR'],
+    details: { 
+      target: 'api.github.com / org:acme-corp', 
+      policyEnforced: true, 
+      autoPr: true, 
+      authType: 'GitHub App Installation',
+      monitoredCount: 42
+    }
   },
   {
     id: 'gitlab',
-    name: 'GitLab Self-Managed & SaaS',
+    name: 'GitLab SaaS & Self-Managed',
     category: 'scm',
-    description: 'Group-level dependency graph extraction, merge request security widgets, and CycloneDX pipeline ingestion.',
-    icon: '🦊',
+    categoryLabel: 'Source Control',
+    description: 'Dependency graph extraction & MR security widgets',
+    logo: '/assets/connectors/2.png',
     status: 'available',
-    details: { target: 'gitlab.internal.acme.com', policyEnforced: false, autoPr: false }
+    tags: ['GraphQL', 'CI Widget'],
+    details: { 
+      target: 'gitlab.internal.acme.com', 
+      policyEnforced: false, 
+      autoPr: false,
+      authType: 'Project Access Token' 
+    }
   },
   {
     id: 'bitbucket',
     name: 'Bitbucket Data Center',
     category: 'scm',
-    description: 'Enterprise Git repository integration with branch permission gating and pull request checks.',
-    icon: '🪣',
+    categoryLabel: 'Source Control',
+    description: 'Branch permission gating & lockfile ingestion',
+    logo: '/assets/connectors/3.png',
     status: 'available',
-    details: { target: 'bitbucket.acme.net', policyEnforced: false, autoPr: false }
+    tags: ['REST v2', 'App Passwords'],
+    details: { 
+      target: 'bitbucket.acme.net', 
+      policyEnforced: false, 
+      autoPr: false,
+      authType: 'Personal Access Token' 
+    }
   },
   {
     id: 'azure-devops',
     name: 'Azure DevOps Repos',
     category: 'scm',
-    description: 'Azure Repos scanning, service hook ingestion, and pipeline blast-radius gates.',
-    icon: '☁️',
+    categoryLabel: 'Source Control',
+    description: 'Azure Repos scanning & build pipeline gates',
+    logo: '/assets/connectors/4.jpeg',
     status: 'available',
-    details: { target: 'dev.azure.com/acme-infra', policyEnforced: false, autoPr: false }
+    tags: ['Service Hooks', 'PAT Auth'],
+    details: { 
+      target: 'dev.azure.com/acme-infra', 
+      policyEnforced: false, 
+      autoPr: false,
+      authType: 'Personal Access Token' 
+    }
   },
   {
     id: 'npm-registry',
-    name: 'npm Private & Public Registry',
+    name: 'npm Registry & Artifactory',
     category: 'registry',
-    description: 'Real-time package metadata resolver, semantic version drift watcher, and maintainer account anomaly monitor.',
-    icon: '📦',
+    categoryLabel: 'Package Registry',
+    description: 'Package metadata resolver & maintainer anomaly watch',
+    logo: '/assets/connectors/5.png',
     status: 'connected',
-    lastSync: '12 mins ago',
-    scope: '18 Internal Scopes (@acme/*)',
-    webhookHealth: '99.9% (Continuous polling)',
-    details: { target: 'registry.npmjs.org + Artifactory Mirror', policyEnforced: true }
+    lastSync: '12m ago',
+    scope: '18 Scopes',
+    webhookHealth: '99.98% Health',
+    tags: ['PURL Resolver', 'Audit Feed'],
+    details: { 
+      target: 'registry.npmjs.org + Artifactory Mirror', 
+      policyEnforced: true,
+      authType: 'Bearer Token Automation',
+      monitoredCount: 18
+    }
   },
   {
     id: 'maven-central',
-    name: 'Maven Central & Sonatype Nexus',
+    name: 'Maven Central & Nexus',
     category: 'registry',
-    description: 'Transitive JAR dependency resolution, pom.xml parent inheritance parsing, and SHA-256 integrity verification.',
-    icon: '☕',
+    categoryLabel: 'Package Registry',
+    description: 'Transitive JAR resolution & SHA-256 validation',
+    logo: '/assets/connectors/6.png',
     status: 'connected',
-    lastSync: '1 hour ago',
-    scope: '320 Java Keystones',
-    webhookHealth: '100%',
-    details: { target: 'nexus.corp.acme.com', policyEnforced: true }
+    lastSync: '1h ago',
+    scope: '320 Keystones',
+    webhookHealth: '100% Health',
+    tags: ['POM Parser', 'SHA-256 Check'],
+    details: { 
+      target: 'nexus.corp.acme.com', 
+      policyEnforced: true,
+      authType: 'User Token / Basic Auth',
+      monitoredCount: 320
+    }
   },
   {
     id: 'pypi-artifactory',
-    name: 'PyPI / JFrog Artifactory',
+    name: 'PyPI & JFrog Artifactory',
     category: 'registry',
-    description: 'Python wheel, tarball, and pyproject.toml / poetry.lock topological resolver with setup.py execution sandboxing.',
-    icon: '🐍',
+    categoryLabel: 'Package Registry',
+    description: 'Python wheel inspection & lockfile resolution',
+    logo: '/assets/connectors/7.png',
     status: 'available',
-    details: { target: 'pypi.org + private index', policyEnforced: false }
+    tags: ['Wheel Inspector', 'Poetry Lock'],
+    details: { 
+      target: 'pypi.org + internal private index', 
+      policyEnforced: false,
+      authType: 'PyPI API Token' 
+    }
   },
   {
     id: 'oci-harbor',
-    name: 'OCI / Harbor Container Registry',
+    name: 'Harbor & OCI Registry',
     category: 'registry',
-    description: 'Container base image SBOM extraction, Syft/Grype layer decompilation, and base image provenance enforcement.',
-    icon: '🐳',
+    categoryLabel: 'Container Registry',
+    description: 'Container base image SBOM extraction & provenance',
+    logo: '/assets/connectors/8.png',
     status: 'available',
-    details: { target: 'harbor.cloud.acme.internal', policyEnforced: false }
+    tags: ['OCI Manifest', 'Syft SBOM'],
+    details: { 
+      target: 'harbor.cloud.acme.internal', 
+      policyEnforced: false,
+      authType: 'Robot Account Token' 
+    }
   },
   {
     id: 'github-actions',
-    name: 'GitHub Actions PURL Enforcer',
+    name: 'GitHub Actions Gate',
     category: 'ci',
-    description: 'Fails PR workflows that introduce unmitigated SIFI keystones with systemic reachability into Tier-1 assets.',
-    icon: '⚡',
+    categoryLabel: 'CI / CD Gate',
+    description: 'Fails PRs introducing vulnerable keystones',
+    logo: '/assets/connectors/9.png',
     status: 'connected',
-    lastSync: 'Live Webhook Stream',
-    scope: 'Strict Mode Enabled',
-    webhookHealth: '1,420 Checks Run Today',
-    details: { target: '.github/workflows/keystone-guard.yml', policyEnforced: true }
+    lastSync: 'Live Webhook',
+    scope: '42 Repos',
+    webhookHealth: '1,420 Checks',
+    tags: ['PR Gate', 'SARIF Export'],
+    details: { 
+      target: '.github/workflows/keystone-guard.yml', 
+      policyEnforced: true,
+      authType: 'GITHUB_TOKEN Action Secret',
+      monitoredCount: 42
+    }
   },
   {
     id: 'jenkins-plugin',
-    name: 'Jenkins Enterprise Plugin',
+    name: 'Jenkins Enterprise',
     category: 'ci',
-    description: 'Pipeline build step to evaluate blast-radius delta before publishing packages or promotion to staging.',
-    icon: '🤵',
+    categoryLabel: 'CI / CD Gate',
+    description: 'Pipeline build step & blast-radius evaluation',
+    logo: '/assets/connectors/10.png',
     status: 'available',
-    details: { target: 'jenkins.internal.acme.com:8443', policyEnforced: false }
+    tags: ['Pipeline Step', 'Build Gate'],
+    details: { 
+      target: 'jenkins.internal.acme.com:8443', 
+      policyEnforced: false,
+      authType: 'Jenkins API Token' 
+    }
   },
   {
     id: 'slack-alerts',
-    name: 'Slack Security Operations',
+    name: 'Slack Security Ops',
     category: 'alerts',
-    description: 'Instant notification dispatch for escalating centralities, fresh maintainer anomalies, and 1-click circuit breakers.',
-    icon: '💬',
+    categoryLabel: 'Incident & ChatOps',
+    description: 'Real-time anomaly alerts & 1-click circuit break',
+    logo: '/assets/connectors/11.png',
     status: 'connected',
     lastSync: 'Active Socket',
-    scope: '#keystone-secops, #ciso-alerts',
-    webhookHealth: 'Instant',
-    details: { target: 'Slack Workspace AcmeCorp', policyEnforced: true }
+    scope: '#keystone-secops',
+    webhookHealth: '< 50ms Lag',
+    tags: ['Interactive Cards', '1-Click Sever'],
+    details: { 
+      target: 'Slack Workspace: AcmeCorp Infrastructure', 
+      policyEnforced: true,
+      authType: 'OAuth Bot Token',
+      monitoredCount: 2
+    }
   },
   {
     id: 'pagerduty',
     name: 'PagerDuty SIFI Escalation',
     category: 'alerts',
-    description: 'Pages on-call security architects when a Crown Jewel blast-radius path is actively traversable without mitigation.',
-    icon: '🚨',
+    categoryLabel: 'Incident & ChatOps',
+    description: 'Escalate on-call alerts for critical sink paths',
+    logo: '/assets/connectors/12.png',
     status: 'connected',
-    lastSync: 'Active Webhook',
-    scope: 'Service: Supply-Chain-P1',
+    lastSync: 'Active Hook',
+    scope: 'P1-Supply-Chain',
     webhookHealth: 'Zero Lag',
-    details: { target: 'PD-SERVICE-KEYSTONE-P1', policyEnforced: true }
+    tags: ['P1 Escalation', 'On-Call Page'],
+    details: { 
+      target: 'PD-SERVICE-KEYSTONE-P1', 
+      policyEnforced: true,
+      authType: 'Events API v2 Integration Key',
+      monitoredCount: 1
+    }
   },
   {
     id: 'jira-security',
-    name: 'Jira Software Security Issues',
+    name: 'Jira Software Security',
     category: 'alerts',
-    description: 'Automatically creates coordinated mitigation tickets with dependency upgrade matrices across affected squads.',
-    icon: '📋',
+    categoryLabel: 'Incident & ChatOps',
+    description: 'Automated mitigation tickets & squad sprint sync',
+    logo: '/assets/connectors/13.svg',
     status: 'available',
-    details: { target: 'acme.atlassian.net', policyEnforced: false }
+    tags: ['Sprint Sync', 'Mitigation Matrix'],
+    details: { 
+      target: 'acme.atlassian.net', 
+      policyEnforced: false,
+      authType: 'Atlassian API Token' 
+    }
   }
 ];
 
@@ -189,24 +295,54 @@ export const ConnectorsPage: React.FC<ConnectorsPageProps> = ({ onOpenSBOMModal 
   const [connectors, setConnectors] = useState<ConnectorItem[]>(INITIAL_CONNECTORS);
   const [searchQuery, setSearchQuery] = useState('');
   const [activeCategory, setActiveCategory] = useState<'all' | 'scm' | 'registry' | 'ci' | 'alerts'>('all');
+  
+  // Dynamic action states
   const [syncingId, setSyncingId] = useState<string | null>(null);
   const [syncSuccessId, setSyncSuccessId] = useState<string | null>(null);
+  const [isSyncingAll, setIsSyncingAll] = useState(false);
+  
+  // Modals
+  const [connectingConnector, setConnectingConnector] = useState<ConnectorItem | null>(null);
   const [selectedConfigConnector, setSelectedConfigConnector] = useState<ConnectorItem | null>(null);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+
+  // Connect wizard form fields
+  const [wizardEndpoint, setWizardEndpoint] = useState('');
+  const [wizardAuthToken, setWizardAuthToken] = useState('');
+  const [wizardScope, setWizardScope] = useState<'all' | 'custom'>('all');
+  const [wizardBranch, setWizardBranch] = useState('main, master, production');
+  const [wizardAutoPr, setWizardAutoPr] = useState(true);
+  const [wizardPolicyGate, setWizardPolicyGate] = useState(true);
+  const [isTestingConnection, setIsTestingConnection] = useState(false);
+  const [connectionTestResult, setConnectionTestResult] = useState<{ success: boolean; message: string } | null>(null);
+  const [isAuthorizing, setIsAuthorizing] = useState(false);
+
+  // Add custom connector fields
   const [newConnectorName, setNewConnectorName] = useState('');
   const [newConnectorCategory, setNewConnectorCategory] = useState<'scm' | 'registry' | 'ci' | 'alerts'>('scm');
   const [newConnectorUrl, setNewConnectorUrl] = useState('');
+  const [newConnectorAuth, setNewConnectorAuth] = useState('');
 
-  // Filtering
+  // Toast feedback
+  const [toastMessage, setToastMessage] = useState<string | null>(null);
+
+  const showToast = (msg: string) => {
+    setToastMessage(msg);
+    setTimeout(() => setToastMessage(null), 3500);
+  };
+
+  // Filter connectors
   const filteredConnectors = connectors.filter(c => {
     const matchesCategory = activeCategory === 'all' || c.category === activeCategory;
     const matchesSearch = c.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
-                          c.description.toLowerCase().includes(searchQuery.toLowerCase());
+                          c.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                          c.tags.some(t => t.toLowerCase().includes(searchQuery.toLowerCase()));
     return matchesCategory && matchesSearch;
   });
 
   const connectedCount = connectors.filter(c => c.status === 'connected').length;
 
+  // Single sync action
   const handleTriggerSync = (id: string) => {
     setSyncingId(id);
     setTimeout(() => {
@@ -218,44 +354,129 @@ export const ConnectorsPage: React.FC<ConnectorsPageProps> = ({ onOpenSBOMModal 
         }
         return item;
       }));
+      showToast('Ecosystem graph resynced.');
       setTimeout(() => setSyncSuccessId(null), 3000);
     }, 1200);
   };
 
-  const handleToggleConnection = (id: string) => {
+  // Sync all connected connectors
+  const handleSyncAll = () => {
+    setIsSyncingAll(true);
+    setTimeout(() => {
+      setIsSyncingAll(false);
+      setConnectors(prev => prev.map(item => {
+        if (item.status === 'connected') {
+          return { ...item, lastSync: 'Just now' };
+        }
+        return item;
+      }));
+      showToast('All 6 active connectors resynced (42 repos updated).');
+    }, 1600);
+  };
+
+  // Disconnect handler
+  const handleDisconnect = (id: string, name: string) => {
     setConnectors(prev => prev.map(item => {
       if (item.id === id) {
-        const isNowConnected = item.status !== 'connected';
         return {
           ...item,
-          status: isNowConnected ? 'connected' : 'available',
-          lastSync: isNowConnected ? 'Just now' : undefined,
-          scope: isNowConnected ? 'Configured & Active' : undefined,
-          webhookHealth: isNowConnected ? '100%' : undefined
+          status: 'available',
+          lastSync: undefined,
+          scope: undefined,
+          webhookHealth: undefined
         };
       }
       return item;
     }));
+    showToast(`Disconnected ${name}.`);
   };
 
-  const handleCreateConnector = (e: React.FormEvent) => {
+  // Open the Connect Wizard
+  const handleOpenConnectWizard = (item: ConnectorItem) => {
+    setConnectingConnector(item);
+    setWizardEndpoint(item.details.target || '');
+    setWizardAuthToken('');
+    setWizardScope('all');
+    setWizardBranch('main, master, production');
+    setWizardAutoPr(true);
+    setWizardPolicyGate(true);
+    setConnectionTestResult(null);
+  };
+
+  // Test connection simulation in wizard
+  const handleTestConnection = () => {
+    setIsTestingConnection(true);
+    setConnectionTestResult(null);
+    setTimeout(() => {
+      setIsTestingConnection(false);
+      setConnectionTestResult({
+        success: true,
+        message: `Connected to ${wizardEndpoint || 'endpoint'}. 42 repositories discovered.`
+      });
+    }, 1100);
+  };
+
+  // Authorize & finalize connection in wizard
+  const handleFinalizeConnection = () => {
+    if (!connectingConnector) return;
+    setIsAuthorizing(true);
+
+    setTimeout(() => {
+      setIsAuthorizing(false);
+      setConnectors(prev => prev.map(item => {
+        if (item.id === connectingConnector.id) {
+          return {
+            ...item,
+            status: 'connected',
+            lastSync: 'Just now',
+            scope: wizardScope === 'all' ? '42 Repos' : 'Tier-1 Core',
+            webhookHealth: '100% Health',
+            details: {
+              ...item.details,
+              target: wizardEndpoint || item.details.target,
+              policyEnforced: wizardPolicyGate,
+              autoPr: wizardAutoPr
+            }
+          };
+        }
+        return item;
+      }));
+
+      showToast(`Connected ${connectingConnector.name}!`);
+      setConnectingConnector(null);
+    }, 1000);
+  };
+
+  // Create custom connector handler
+  const handleCreateCustomConnector = (e: React.FormEvent) => {
     e.preventDefault();
     if (!newConnectorName.trim()) return;
 
     const newId = `custom-${Date.now()}`;
+    const categoryLabels = {
+      scm: 'Source Control',
+      registry: 'Package Registry',
+      ci: 'CI / CD Gate',
+      alerts: 'Incident & ChatOps'
+    };
+
     const newItem: ConnectorItem = {
       id: newId,
       name: newConnectorName,
       category: newConnectorCategory,
-      description: `Custom ${newConnectorCategory.toUpperCase()} integration hooked into ${newConnectorUrl || 'https://api.internal.corp'}.`,
-      icon: newConnectorCategory === 'scm' ? '🐙' : newConnectorCategory === 'registry' ? '📦' : newConnectorCategory === 'ci' ? '⚡' : '🔔',
+      categoryLabel: categoryLabels[newConnectorCategory],
+      description: `Custom ${categoryLabels[newConnectorCategory]} integration`,
+      logo: '/assets/connectors/1.png',
       status: 'connected',
       lastSync: 'Just created',
       scope: 'Active Webhook',
-      webhookHealth: '100%',
+      webhookHealth: '100% Health',
+      tags: ['Custom Webhook', 'REST API'],
       details: {
-        target: newConnectorUrl || 'custom-hook.acme.corp',
-        policyEnforced: true
+        target: newConnectorUrl || 'https://api.internal.corp',
+        policyEnforced: true,
+        autoPr: false,
+        authType: newConnectorAuth || 'Custom Bearer'
       }
     };
 
@@ -263,27 +484,36 @@ export const ConnectorsPage: React.FC<ConnectorsPageProps> = ({ onOpenSBOMModal 
     setIsAddModalOpen(false);
     setNewConnectorName('');
     setNewConnectorUrl('');
+    setNewConnectorAuth('');
+    showToast(`Added connector "${newConnectorName}".`);
   };
 
   return (
-    <div className={`w-full h-full overflow-y-auto px-6 py-8 select-text ${
-      isLight ? 'bg-white text-slate-900' : 'bg-[#06080d] text-slate-100'
-    }`}>
-      <div className="max-w-7xl mx-auto flex flex-col gap-6">
+    <div className="w-full h-full overflow-y-auto px-6 py-6 select-text ks-bg-app">
+      <div className="max-w-7xl mx-auto flex flex-col gap-5">
         
-        {/* Top Header Banner */}
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-slate-200 dark:border-slate-800">
+        {/* Toast Notification */}
+        {toastMessage && (
+          <div className="fixed bottom-6 right-6 z-50 flex items-center gap-2.5 px-4 py-3 rounded-xl bg-slate-900 text-white border border-slate-700 shadow-2xl animate-in fade-in slide-in-from-bottom-3">
+            <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+            <span className="text-xs font-medium">{toastMessage}</span>
+          </div>
+        )}
+
+        {/* Top Header Banner - Reduced Text */}
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b ks-border">
           <div>
-            <div className="flex items-center gap-2 mb-1.5">
-              <span className="text-xs font-mono font-semibold px-2.5 py-0.5 rounded bg-blue-50 text-blue-700 dark:bg-blue-950/60 dark:text-blue-300 border border-blue-200 dark:border-blue-800/80">
-                ECOSYSTEM INGESTION
-              </span>
-              <span className="text-xs text-slate-500 dark:text-slate-400">• Continuous Graph Sync</span>
+            <div className="flex items-center gap-2 mb-1">
+              <Badge variant="low" icon={<Link2 className="w-3 h-3" />}>
+                CONNECTIVITY ENGINE
+              </Badge>
+              <span className="text-xs text-slate-500">• 42 Repositories Active</span>
             </div>
-            <h1 className="text-2xl lg:text-3xl font-bold tracking-tight text-slate-900 dark:text-white">Connectors & Integrations</h1>
-            <p className="text-sm mt-1.5 max-w-3xl leading-relaxed text-slate-600 dark:text-slate-300">
-              Connect your source control platforms, package registries, CI/CD runners, and incident channels.
-              Keystone continuously correlates package lockfiles, resolves transitive dependency graphs, and dispatches coordinated mitigation PRs.
+            <h1 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-white font-heading">
+              Connectors & Integrations
+            </h1>
+            <p className="text-xs mt-1 text-slate-500 dark:text-slate-400 font-sans">
+              Continuous lockfile sync, transitive graph mapping, and CI/CD security gates.
             </p>
           </div>
 
@@ -291,16 +521,12 @@ export const ConnectorsPage: React.FC<ConnectorsPageProps> = ({ onOpenSBOMModal 
             {onOpenSBOMModal && (
               <button
                 onClick={onOpenSBOMModal}
-                className={`flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-medium border transition-all cursor-pointer ${
-                  isLight
-                    ? 'bg-white hover:bg-slate-50 border-slate-200 text-slate-800 shadow-xs'
-                    : 'bg-slate-900 hover:bg-slate-800 border-slate-700 text-slate-200'
-                }`}
-                title="Connect Repository / Ingest CycloneDX SBOM or Lockfile (F1)"
+                className="btn-3d-secondary px-3.5 py-2 rounded-xl text-xs font-semibold text-slate-700 dark:text-slate-200 flex items-center gap-2 cursor-pointer select-none"
+                title="Direct CycloneDX SBOM or Lockfile Upload (F1)"
               >
-                <UploadCloud className="w-4 h-4 text-blue-600 dark:text-blue-400" />
-                <span>Ingest SBOM / Lock</span>
-                <span className="text-xs px-1.5 py-0.2 rounded font-mono bg-blue-50 dark:bg-blue-950 text-blue-600 dark:text-blue-400 border border-blue-200 dark:border-blue-800">
+                <UploadCloud className="w-4 h-4 text-blue-500" />
+                <span>Ingest SBOM</span>
+                <span className="text-[10px] px-1.5 py-0.5 rounded font-mono bg-blue-500/10 text-blue-500 border border-blue-500/20">
                   F1
                 </span>
               </button>
@@ -308,116 +534,93 @@ export const ConnectorsPage: React.FC<ConnectorsPageProps> = ({ onOpenSBOMModal 
 
             <button
               onClick={() => setIsAddModalOpen(true)}
-              className="flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-medium bg-blue-600 hover:bg-blue-500 text-white shadow-xs transition-all cursor-pointer"
+              className="btn-3d-primary px-4 py-2 rounded-xl text-xs font-bold text-white flex items-center gap-1.5 cursor-pointer select-none"
             >
               <Plus className="w-4 h-4" />
-              <span>Add Custom Connector</span>
+              <span>Add Connector</span>
             </button>
           </div>
         </div>
 
-        {/* Dedicated CycloneDX & SPDX Ingestion Banner */}
-        <div className={`p-5 rounded-xl border flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 ${
-          isLight ? 'bg-white border-slate-200 shadow-xs' : 'bg-slate-900/60 border-slate-800'
-        }`}>
-          <div className="flex items-center gap-3.5">
-            <div className="w-11 h-11 rounded-xl bg-blue-50 dark:bg-blue-950/60 border border-blue-200 dark:border-blue-900/60 flex items-center justify-center text-blue-600 dark:text-blue-400 shrink-0">
-              <UploadCloud className="w-5 h-5" />
+        {/* 3D Telemetry Status Ribbon - Streamlined */}
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3.5">
+          <div className="connector-3d-card p-3.5 flex flex-col justify-between">
+            <div className="flex items-center justify-between">
+              <span className="text-[11px] font-semibold uppercase tracking-wider text-slate-400 font-mono">Active Connectors</span>
+              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
             </div>
-            <div>
-              <div className="flex items-center gap-2">
-                <h3 className="text-base font-semibold text-slate-900 dark:text-white">CycloneDX, SPDX & Direct Lockfile Ingestion</h3>
-                <span className="text-xs font-mono px-2 py-0.5 rounded bg-blue-50 text-blue-700 dark:bg-blue-950/60 dark:text-blue-300 border border-blue-200 dark:border-blue-800 font-medium">
-                  Zero-Code Upload
-                </span>
-              </div>
-              <p className="text-sm text-slate-600 dark:text-slate-300 mt-1">
-                Upload <code>package-lock.json</code>, <code>pnpm-lock.yaml</code>, <code>poetry.lock</code>, or CycloneDX JSON to parse and correlate systemic keystone risks.
-              </p>
-            </div>
-          </div>
-
-          {onOpenSBOMModal && (
-            <button
-              onClick={onOpenSBOMModal}
-              className="flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-medium bg-slate-900 hover:bg-slate-800 text-white dark:bg-slate-800 dark:hover:bg-slate-700 transition-all shrink-0 cursor-pointer shadow-xs"
-            >
-              <UploadCloud className="w-4 h-4" />
-              <span>Upload SBOM / Lockfile</span>
-              <span className="text-xs opacity-70 font-mono">F1</span>
-            </button>
-          )}
-        </div>
-
-        {/* Status Metrics Ribbon */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3.5">
-          <div className={`p-4 rounded-xl border flex flex-col gap-1.5 ${
-            isLight ? 'bg-white border-slate-200 shadow-xs' : 'bg-slate-900/60 border-slate-800'
-          }`}>
-            <span className="text-xs font-medium text-slate-500 dark:text-slate-400">Active Connectors</span>
-            <div className="flex items-baseline gap-2">
+            <div className="flex items-baseline gap-2 mt-1">
               <span className="text-2xl font-bold font-mono text-slate-900 dark:text-white">{connectedCount}</span>
-              <span className="text-xs text-slate-500">/ {connectors.length} total</span>
+              <span className="text-xs text-slate-500 font-mono">/ {connectors.length} configured</span>
             </div>
-            <span className="text-xs text-slate-600 dark:text-slate-400 flex items-center gap-1.5">
-              <CheckCircle2 className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" /> All healthy & syncing
-            </span>
+            <div className="flex items-center justify-between text-[11px] text-slate-500 mt-1 pt-1 border-t border-slate-200/60 dark:border-slate-800">
+              <span className="text-emerald-600 dark:text-emerald-400 font-medium flex items-center gap-1">
+                <CheckCircle2 className="w-3 h-3" /> All healthy
+              </span>
+              <button
+                onClick={handleSyncAll}
+                disabled={isSyncingAll}
+                className="text-blue-500 hover:text-blue-400 font-medium flex items-center gap-1 cursor-pointer transition-colors"
+                title="Resync all active connections"
+              >
+                <RefreshCw className={`w-3 h-3 ${isSyncingAll ? 'animate-spin' : ''}`} />
+                <span>Sync All</span>
+              </button>
+            </div>
           </div>
 
-          <div className={`p-4 rounded-xl border flex flex-col gap-1.5 ${
-            isLight ? 'bg-white border-slate-200 shadow-xs' : 'bg-slate-900/60 border-slate-800'
-          }`}>
-            <span className="text-xs font-medium text-slate-500 dark:text-slate-400">Repositories Ingested</span>
-            <div className="flex items-baseline gap-2">
+          <div className="connector-3d-card p-3.5 flex flex-col justify-between">
+            <span className="text-[11px] font-semibold uppercase tracking-wider text-slate-400 font-mono">Monitored Repos</span>
+            <div className="flex items-baseline gap-2 mt-1">
               <span className="text-2xl font-bold font-mono text-slate-900 dark:text-white">42</span>
-              <span className="text-xs text-slate-500">Production Core</span>
+              <span className="text-xs text-slate-500 font-mono">Production Core</span>
             </div>
-            <span className="text-xs text-slate-600 dark:text-slate-400">Next scheduled sync: 12m</span>
+            <div className="text-[11px] text-slate-500 mt-1 pt-1 border-t border-slate-200/60 dark:border-slate-800">
+              Next scheduled diff in <strong className="text-slate-700 dark:text-slate-300">12m</strong>
+            </div>
           </div>
 
-          <div className={`p-4 rounded-xl border flex flex-col gap-1.5 ${
-            isLight ? 'bg-white border-slate-200 shadow-xs' : 'bg-slate-900/60 border-slate-800'
-          }`}>
-            <span className="text-xs font-medium text-slate-500 dark:text-slate-400">Keystones Tracked</span>
-            <div className="flex items-baseline gap-2">
+          <div className="connector-3d-card p-3.5 flex flex-col justify-between">
+            <span className="text-[11px] font-semibold uppercase tracking-wider text-slate-400 font-mono">Keystones Mapped</span>
+            <div className="flex items-baseline gap-2 mt-1">
               <span className="text-2xl font-bold font-mono text-slate-900 dark:text-white">1,489</span>
-              <span className="text-xs text-slate-500">transitive nodes</span>
+              <span className="text-xs text-slate-500 font-mono">transitive nodes</span>
             </div>
-            <span className="text-xs text-slate-600 dark:text-slate-400">5 SIFI Escalations</span>
+            <div className="text-[11px] text-rose-500 font-medium mt-1 pt-1 border-t border-slate-200/60 dark:border-slate-800 flex items-center gap-1">
+              <AlertCircle className="w-3 h-3" /> 5 SIFI Escalations
+            </div>
           </div>
 
-          <div className={`p-4 rounded-xl border flex flex-col gap-1.5 ${
-            isLight ? 'bg-white border-slate-200 shadow-xs' : 'bg-slate-900/60 border-slate-800'
-          }`}>
-            <span className="text-xs font-medium text-slate-500 dark:text-slate-400">Webhook Reliability</span>
-            <div className="flex items-baseline gap-2">
-              <span className="text-2xl font-bold font-mono text-slate-900 dark:text-white">100%</span>
-              <span className="text-xs text-slate-500">p99 &lt; 180ms</span>
+          <div className="connector-3d-card p-3.5 flex flex-col justify-between">
+            <span className="text-[11px] font-semibold uppercase tracking-wider text-slate-400 font-mono">Sync Reliability</span>
+            <div className="flex items-baseline gap-2 mt-1">
+              <span className="text-2xl font-bold font-mono text-slate-900 dark:text-white">99.98%</span>
+              <span className="text-xs text-slate-500 font-mono">p99 &lt; 140ms</span>
             </div>
-            <span className="text-xs text-slate-600 dark:text-slate-400">Zero dropped events</span>
+            <div className="text-[11px] text-slate-500 mt-1 pt-1 border-t border-slate-200/60 dark:border-slate-800">
+              0 dropped delivery events
+            </div>
           </div>
         </div>
 
         {/* Filter and Search Bar */}
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-3 pt-2">
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-3 pt-0.5">
           {/* Category Tabs */}
-          <div className={`flex items-center gap-1.5 p-1 rounded-xl border overflow-x-auto w-full sm:w-auto ${
-            isLight ? 'bg-white border-slate-200 shadow-xs' : 'bg-slate-900/80 border-slate-800'
-          }`}>
+          <div className="flex items-center gap-1.5 p-1 rounded-xl connector-3d-card overflow-x-auto w-full sm:w-auto">
             {[
               { id: 'all', label: `All (${connectors.length})` },
               { id: 'scm', label: 'Source Control' },
               { id: 'registry', label: 'Registries' },
               { id: 'ci', label: 'CI / CD' },
-              { id: 'alerts', label: 'Alerts & Incident' }
+              { id: 'alerts', label: 'Alerts' }
             ].map(tab => (
               <button
                 key={tab.id}
                 onClick={() => setActiveCategory(tab.id as any)}
-                className={`px-3.5 py-2 rounded-lg text-sm font-medium transition-colors cursor-pointer whitespace-nowrap ${
+                className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer whitespace-nowrap select-none ${
                   activeCategory === tab.id
-                    ? isLight ? 'bg-white text-slate-900 shadow-xs font-semibold' : 'bg-slate-800 text-white font-semibold'
-                    : isLight ? 'text-slate-600 hover:text-slate-900 hover:bg-slate-200/50' : 'text-slate-400 hover:text-slate-200'
+                    ? 'btn-3d-primary text-white'
+                    : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-200/50 dark:hover:bg-slate-800/50'
                 }`}
               >
                 {tab.label}
@@ -426,24 +629,20 @@ export const ConnectorsPage: React.FC<ConnectorsPageProps> = ({ onOpenSBOMModal 
           </div>
 
           {/* Search Input */}
-          <div className="relative w-full sm:w-80">
-            <Search className={`w-4 h-4 absolute left-3.5 top-3 ${isLight ? 'text-slate-400' : 'text-slate-500'}`} />
+          <div className="relative w-full sm:w-72">
+            <Search className="w-3.5 h-3.5 absolute left-3.5 top-2.5 text-slate-400" />
             <input
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Filter connectors..."
-              className={`w-full pl-10 pr-4 py-2 text-sm rounded-lg border outline-hidden transition-all ${
-                isLight 
-                  ? 'bg-white border-slate-200 text-slate-900 focus:border-blue-500' 
-                  : 'bg-slate-900 border-slate-800 text-slate-100 focus:border-blue-500'
-              }`}
+              className="w-full pl-9 pr-3 py-1.5 text-xs rounded-xl border ks-border outline-hidden transition-all bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100 placeholder:text-slate-400 focus:border-blue-500"
             />
           </div>
         </div>
 
-        {/* Connectors Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+        {/* 3D Connectors Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {filteredConnectors.map((item) => {
             const isConnected = item.status === 'connected';
             const isSyncing = syncingId === item.id;
@@ -452,127 +651,116 @@ export const ConnectorsPage: React.FC<ConnectorsPageProps> = ({ onOpenSBOMModal 
             return (
               <div
                 key={item.id}
-                className={`p-5 rounded-xl border flex flex-col justify-between gap-4 transition-all duration-150 relative ${
-                  isConnected
-                    ? isLight 
-                      ? 'bg-white border-slate-200/90 shadow-xs hover:border-blue-300' 
-                      : 'bg-slate-900/70 border-slate-800 hover:border-blue-800/60'
-                    : isLight
-                      ? 'bg-white border-slate-200 shadow-xs hover:border-slate-300'
-                      : 'bg-slate-950/40 border-slate-800/60 opacity-85 hover:opacity-100'
-                }`}
+                className="connector-3d-card p-4 flex flex-col justify-between gap-3.5 select-none group"
               >
-                {/* Card Header */}
-                <div className="flex items-start justify-between gap-3">
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 flex items-center justify-center text-xl shadow-xs">
-                      {item.icon}
+                <div>
+                  {/* Card Header: 3D Logo Tile, Title & Status */}
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="flex items-center gap-3">
+                      {/* 3D Logo Tile */}
+                      <div className="connector-3d-tile w-11 h-11 p-2 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
+                        <img 
+                          src={item.logo} 
+                          alt={item.name} 
+                          className="w-full h-full object-contain" 
+                          loading="lazy"
+                        />
+                      </div>
+                      <div>
+                        <h3 className="text-xs font-bold text-slate-900 dark:text-white leading-tight font-heading">
+                          {item.name}
+                        </h3>
+                        <span className="text-[10px] font-mono uppercase tracking-wider text-slate-400">
+                          {item.categoryLabel}
+                        </span>
+                      </div>
                     </div>
+
+                    {/* Status Pill */}
                     <div>
-                      <h3 className="text-base font-semibold tracking-tight text-slate-900 dark:text-white">{item.name}</h3>
-                      <span className="text-xs font-mono uppercase tracking-wider text-slate-500 dark:text-slate-400">
-                        {item.category === 'scm' ? 'Source Control' : item.category === 'registry' ? 'Package Registry' : item.category === 'ci' ? 'CI Enforcement' : 'ChatOps / Alerting'}
-                      </span>
+                      {isConnected ? (
+                        <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30">
+                          <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                          Active
+                        </span>
+                      ) : (
+                        <span className="inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-mono font-medium bg-slate-200/60 dark:bg-slate-800 text-slate-500 dark:text-slate-400 border border-slate-300/60 dark:border-slate-700">
+                          Ready
+                        </span>
+                      )}
                     </div>
                   </div>
 
-                  {/* Status Badge */}
-                  <div>
-                    {isConnected ? (
-                      <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-50 text-blue-700 dark:bg-blue-950/60 dark:text-blue-300 border border-blue-200 dark:border-blue-800">
-                        <span className="w-1.5 h-1.5 rounded-full bg-blue-600 dark:bg-blue-400" />
-                        Connected
+                  {/* Concise 1-line Description */}
+                  <p className="text-xs text-slate-600 dark:text-slate-300 mt-2.5 font-sans leading-snug">
+                    {item.description}
+                  </p>
+
+                  {/* Micro-tags */}
+                  <div className="flex items-center gap-1.5 flex-wrap mt-2">
+                    {item.tags.map((tag) => (
+                      <span 
+                        key={tag}
+                        className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 border border-slate-200 dark:border-slate-700/60"
+                      >
+                        {tag}
                       </span>
-                    ) : (
-                      <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-700">
-                        Available
-                      </span>
-                    )}
+                    ))}
                   </div>
+
+                  {/* Connected Status Ribbon */}
+                  {isConnected && (
+                    <div className="mt-2.5 px-2.5 py-1.5 rounded-lg bg-slate-100/90 dark:bg-slate-950/80 border border-slate-200/80 dark:border-slate-800 text-[10px] font-mono flex items-center justify-between text-slate-500 dark:text-slate-400">
+                      <span className="font-semibold text-slate-800 dark:text-slate-200">{item.scope}</span>
+                      <span>{item.lastSync}</span>
+                      <span className="text-emerald-600 dark:text-emerald-400 font-semibold">{item.webhookHealth}</span>
+                    </div>
+                  )}
                 </div>
 
-                {/* Description */}
-                <p className="text-sm leading-relaxed text-slate-600 dark:text-slate-300">
-                  {item.description}
-                </p>
-
-                {/* Scope & Metadata if connected */}
-                {isConnected && (
-                  <div className={`p-3 rounded-lg border text-xs flex flex-col gap-1.5 font-mono ${
-                    isLight ? 'bg-white border-slate-200 shadow-xs' : 'bg-slate-950/80 border-slate-800/80'
-                  }`}>
-                    {item.scope && (
-                      <div className="flex items-center justify-between">
-                        <span className="text-slate-500 font-sans">Scope:</span>
-                        <span className="text-slate-800 dark:text-slate-200 font-semibold">{item.scope}</span>
-                      </div>
-                    )}
-                    {item.lastSync && (
-                      <div className="flex items-center justify-between">
-                        <span className="text-slate-500 font-sans">Last Sync:</span>
-                        <span className="text-slate-600 dark:text-slate-400">{item.lastSync}</span>
-                      </div>
-                    )}
-                    {item.webhookHealth && (
-                      <div className="flex items-center justify-between">
-                        <span className="text-slate-500 font-sans">Webhook:</span>
-                        <span className="text-blue-700 dark:text-blue-400 font-semibold">{item.webhookHealth}</span>
-                      </div>
-                    )}
-                  </div>
-                )}
-
-                {/* Action Controls Footer */}
-                <div className="flex items-center justify-between gap-2 pt-3 border-t border-slate-200/80 dark:border-slate-800/80">
+                {/* 3D Action Buttons Footer */}
+                <div className="pt-2.5 border-t border-slate-200/70 dark:border-slate-800/80 flex items-center justify-between gap-2">
                   {isConnected ? (
                     <>
-                      <div className="flex items-center gap-2">
+                      <div className="flex items-center gap-1.5">
                         <button
                           onClick={() => handleTriggerSync(item.id)}
                           disabled={isSyncing}
-                          className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-medium border transition-colors cursor-pointer ${
-                            isLight
-                              ? 'bg-white hover:bg-slate-50 border-slate-200 text-slate-800 shadow-xs'
-                              : 'bg-slate-800 hover:bg-slate-700 border-slate-700 text-slate-200'
-                          }`}
-                          title="Trigger immediate lockfile scan and graph correlation"
+                          className="btn-3d-secondary px-3 py-1 rounded-lg text-xs font-semibold text-slate-700 dark:text-slate-200 flex items-center gap-1.5 cursor-pointer"
+                          title="Run immediate lockfile differential scan"
                         >
                           {isSyncing ? (
-                            <RefreshCw className="w-3.5 h-3.5 animate-spin text-blue-600 dark:text-blue-400" />
+                            <RefreshCw className="w-3 h-3 animate-spin text-blue-500" />
                           ) : isSuccess ? (
-                            <Check className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
+                            <Check className="w-3 h-3 text-emerald-500" />
                           ) : (
-                            <RefreshCw className="w-3.5 h-3.5" />
+                            <RefreshCw className="w-3 h-3 text-slate-500" />
                           )}
-                          <span>{isSyncing ? 'Syncing...' : isSuccess ? 'Synced' : 'Sync Now'}</span>
+                          <span>{isSyncing ? 'Syncing...' : isSuccess ? 'Synced' : 'Sync'}</span>
                         </button>
 
                         <button
                           onClick={() => setSelectedConfigConnector(item)}
-                          className={`p-2 rounded-lg border transition-colors cursor-pointer ${
-                            isLight
-                              ? 'bg-white hover:bg-slate-50 border-slate-200 text-slate-700 shadow-xs'
-                              : 'bg-slate-800 hover:bg-slate-700 border-slate-700 text-slate-300'
-                          }`}
+                          className="btn-3d-secondary p-1.5 rounded-lg text-slate-600 dark:text-slate-300 cursor-pointer"
                           title="Configure Connector Parameters"
                         >
-                          <Settings className="w-3.5 h-3.5" />
+                          <Settings className="w-3 h-3" />
                         </button>
                       </div>
 
                       <button
-                        onClick={() => handleToggleConnection(item.id)}
-                        className="text-xs text-slate-500 hover:text-red-600 font-medium px-2 py-1 transition-colors cursor-pointer"
+                        onClick={() => handleDisconnect(item.id, item.name)}
+                        className="text-[11px] text-slate-400 hover:text-rose-500 font-medium transition-colors cursor-pointer px-1"
                       >
                         Disconnect
                       </button>
                     </>
                   ) : (
                     <button
-                      onClick={() => handleToggleConnection(item.id)}
-                      className="w-full flex items-center justify-center gap-2 py-2.5 rounded-lg text-sm font-medium bg-blue-600 hover:bg-blue-500 text-white transition-all cursor-pointer shadow-xs"
+                      onClick={() => handleOpenConnectWizard(item)}
+                      className="btn-3d-primary w-full py-1.5 px-3 rounded-xl text-xs font-bold text-white flex items-center justify-center gap-1.5 cursor-pointer select-none"
                     >
-                      <Plus className="w-4 h-4" />
+                      <Plus className="w-3.5 h-3.5" />
                       <span>Connect Integration</span>
                     </button>
                   )}
@@ -581,26 +769,196 @@ export const ConnectorsPage: React.FC<ConnectorsPageProps> = ({ onOpenSBOMModal 
             );
           })}
         </div>
-
       </div>
 
-      {/* Configuration Drawer Modal */}
+      {/* =========================================================================
+          CONNECT INTEGRATION SETUP WIZARD MODAL
+          ========================================================================= */}
+      {connectingConnector && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-in fade-in">
+          <div className="w-full max-w-xl rounded-2xl border ks-border p-6 shadow-2xl flex flex-col gap-5 bg-white dark:bg-slate-900 text-slate-900 dark:text-white">
+            
+            {/* Modal Header with Logo */}
+            <div className="flex items-start justify-between">
+              <div className="flex items-center gap-3.5">
+                <div className="w-12 h-12 rounded-xl p-2 bg-white dark:bg-slate-800 border ks-border flex items-center justify-center shadow-xs shrink-0">
+                  <img src={connectingConnector.logo} alt="" className="w-full h-full object-contain" />
+                </div>
+                <div>
+                  <h2 className="text-base font-bold font-heading">Connect {connectingConnector.name}</h2>
+                  <p className="text-xs text-slate-500">Configure Continuous Graph Ingestion & Safeguards</p>
+                </div>
+              </div>
+              <button
+                onClick={() => setConnectingConnector(null)}
+                className="p-1 rounded-md text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 cursor-pointer"
+              >
+                ✕
+              </button>
+            </div>
+
+            <div className="flex flex-col gap-4 text-xs">
+              {/* Endpoint URL */}
+              <div>
+                <label className="text-slate-700 dark:text-slate-300 font-medium block mb-1">
+                  Service Endpoint or Host URL *
+                </label>
+                <input
+                  type="text"
+                  value={wizardEndpoint}
+                  onChange={e => setWizardEndpoint(e.target.value)}
+                  placeholder="e.g., https://gitlab.internal.corp or api.github.com"
+                  className="w-full px-3.5 py-2 rounded-xl border ks-border font-mono text-xs bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 outline-hidden focus:border-blue-500"
+                />
+              </div>
+
+              {/* Authentication Credentials */}
+              <div>
+                <label className="text-slate-700 dark:text-slate-300 font-medium block mb-1">
+                  {connectingConnector.details.authType || 'Personal Access Token / API Key'} *
+                </label>
+                <input
+                  type="password"
+                  value={wizardAuthToken}
+                  onChange={e => setWizardAuthToken(e.target.value)}
+                  placeholder="Enter token or webhook secret (e.g., ghp_xxxxxxxxxxxxxxxxxxxx)"
+                  className="w-full px-3.5 py-2 rounded-xl border ks-border font-mono text-xs bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 outline-hidden focus:border-blue-500"
+                />
+                <span className="text-[11px] text-slate-500 mt-1 block">
+                  Encrypted at rest with AES-256 GCM. Requires read scope for lockfiles and commit checks.
+                </span>
+              </div>
+
+              {/* Scope Selection */}
+              <div>
+                <label className="text-slate-700 dark:text-slate-300 font-medium block mb-1.5">
+                  Monitored Ingestion Scope
+                </label>
+                <div className="grid grid-cols-2 gap-2">
+                  <button
+                    type="button"
+                    onClick={() => setWizardScope('all')}
+                    className={`p-3 rounded-xl border text-left cursor-pointer transition-all ${
+                      wizardScope === 'all'
+                        ? 'border-blue-600 bg-blue-500/10 text-slate-900 dark:text-white'
+                        : 'ks-border hover:bg-slate-100 dark:hover:bg-slate-800/60 text-slate-600 dark:text-slate-400'
+                    }`}
+                  >
+                    <span className="font-semibold block text-xs">All Repositories (42)</span>
+                    <span className="text-[10px] text-slate-500">Comprehensive org-wide topological map</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => setWizardScope('custom')}
+                    className={`p-3 rounded-xl border text-left cursor-pointer transition-all ${
+                      wizardScope === 'custom'
+                        ? 'border-blue-600 bg-blue-500/10 text-slate-900 dark:text-white'
+                        : 'ks-border hover:bg-slate-100 dark:hover:bg-slate-800/60 text-slate-600 dark:text-slate-400'
+                    }`}
+                  >
+                    <span className="font-semibold block text-xs">Tier-1 Sinks Only</span>
+                    <span className="text-[10px] text-slate-500">Crown Jewels & payment infrastructure</span>
+                  </button>
+                </div>
+              </div>
+
+              {/* Policy Toggles */}
+              <div className="p-3.5 rounded-xl border ks-border bg-slate-50/50 dark:bg-slate-950/40 flex flex-col gap-2.5">
+                <label className="flex items-center justify-between cursor-pointer">
+                  <div>
+                    <span className="font-semibold text-xs text-slate-900 dark:text-white block">Pre-Merge Blast Radius Gates</span>
+                    <span className="text-[11px] text-slate-500">Block PRs if transitive reachability to Tier-1 assets spikes.</span>
+                  </div>
+                  <input
+                    type="checkbox"
+                    checked={wizardPolicyGate}
+                    onChange={e => setWizardPolicyGate(e.target.checked)}
+                    className="w-4 h-4 accent-blue-600 rounded cursor-pointer"
+                  />
+                </label>
+
+                <div className="h-px bg-slate-200 dark:bg-slate-800" />
+
+                <label className="flex items-center justify-between cursor-pointer">
+                  <div>
+                    <span className="font-semibold text-xs text-slate-900 dark:text-white block">Automated Coordinated PR Generation</span>
+                    <span className="text-[11px] text-slate-500">Dispatch minimum-cut remediations to squad codebases.</span>
+                  </div>
+                  <input
+                    type="checkbox"
+                    checked={wizardAutoPr}
+                    onChange={e => setWizardAutoPr(e.target.checked)}
+                    className="w-4 h-4 accent-blue-600 rounded cursor-pointer"
+                  />
+                </label>
+              </div>
+
+              {/* Connection Test Result */}
+              {connectionTestResult && (
+                <div className="p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-700 dark:text-emerald-400 flex items-start gap-2 text-xs">
+                  <CheckCircle2 className="w-4 h-4 shrink-0 mt-0.5" />
+                  <span>{connectionTestResult.message}</span>
+                </div>
+              )}
+            </div>
+
+            {/* Footer Buttons */}
+            <div className="flex items-center justify-between pt-3 border-t ks-border">
+              <Button
+                variant="secondary"
+                size="sm"
+                onClick={handleTestConnection}
+                disabled={isTestingConnection}
+                icon={<Activity className={`w-3.5 h-3.5 ${isTestingConnection ? 'animate-spin' : ''}`} />}
+              >
+                {isTestingConnection ? 'Verifying...' : 'Test Connection'}
+              </Button>
+
+              <div className="flex items-center gap-2">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => setConnectingConnector(null)}
+                >
+                  Cancel
+                </Button>
+
+                <Button
+                  variant="primary"
+                  size="sm"
+                  onClick={handleFinalizeConnection}
+                  disabled={isAuthorizing}
+                  icon={isAuthorizing ? <RefreshCw className="w-3.5 h-3.5 animate-spin" /> : <Check className="w-3.5 h-3.5" />}
+                >
+                  {isAuthorizing ? 'Authorizing...' : 'Authorize & Connect'}
+                </Button>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      )}
+
+      {/* =========================================================================
+          CONFIGURATION & SETTINGS MODAL
+          ========================================================================= */}
       {selectedConfigConnector && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-in fade-in">
-          <div className={`w-full max-w-lg rounded-2xl border p-6 shadow-2xl flex flex-col gap-4 ${
-            isLight ? 'bg-white border-slate-200' : 'bg-slate-900 border-slate-800 text-slate-100'
-          }`}>
+          <div className="w-full max-w-lg rounded-2xl border ks-border p-6 shadow-2xl flex flex-col gap-4 bg-white dark:bg-slate-900 text-slate-900 dark:text-white">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
-                <span className="text-2xl">{selectedConfigConnector.icon}</span>
+                <div className="w-10 h-10 rounded-xl p-1.5 bg-white dark:bg-slate-800 border ks-border flex items-center justify-center">
+                  <img src={selectedConfigConnector.logo} alt="" className="w-full h-full object-contain" />
+                </div>
                 <div>
-                  <h2 className="text-base font-bold">{selectedConfigConnector.name}</h2>
-                  <p className="text-xs text-slate-400">Settings & Ingestion Rules</p>
+                  <h2 className="text-sm font-bold font-heading">{selectedConfigConnector.name}</h2>
+                  <p className="text-xs text-slate-500">Connector Settings & Ingestion Rules</p>
                 </div>
               </div>
               <button
                 onClick={() => setSelectedConfigConnector(null)}
-                className="p-1 rounded-md text-slate-400 hover:text-slate-100 cursor-pointer"
+                className="p-1 rounded-md text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 cursor-pointer"
               >
                 ✕
               </button>
@@ -608,21 +966,19 @@ export const ConnectorsPage: React.FC<ConnectorsPageProps> = ({ onOpenSBOMModal 
 
             <div className="flex flex-col gap-3 py-2 text-xs">
               <div>
-                <label className="text-slate-400 block mb-1">Target Endpoint / Host</label>
+                <label className="text-slate-500 block mb-1">Target Endpoint / Host</label>
                 <input
                   type="text"
                   readOnly
                   value={selectedConfigConnector.details.target}
-                  className={`w-full px-3 py-2 rounded-lg border font-mono ${
-                    isLight ? 'bg-white border-slate-200 text-slate-700' : 'bg-slate-950 border-slate-800 text-slate-300'
-                  }`}
+                  className="w-full px-3 py-2 rounded-xl border ks-border font-mono bg-slate-50 dark:bg-slate-950 text-slate-700 dark:text-slate-300"
                 />
               </div>
 
-              <div className="flex items-center justify-between p-3.5 rounded-xl border border-slate-200 dark:border-slate-800">
+              <div className="flex items-center justify-between p-3.5 rounded-xl border ks-border">
                 <div>
-                  <span className="font-semibold text-sm text-slate-900 dark:text-white block">Automatic Coordinated PR Creation</span>
-                  <span className="text-xs text-slate-500 dark:text-slate-400">Permit Keystone to open multi-repo pull requests for minimum-cut cut vertices.</span>
+                  <span className="font-semibold text-xs block">Automatic Coordinated PR Creation</span>
+                  <span className="text-[11px] text-slate-500">Permit Keystone to draft and dispatch multi-repo remediation pull requests.</span>
                 </div>
                 <input
                   type="checkbox"
@@ -631,10 +987,10 @@ export const ConnectorsPage: React.FC<ConnectorsPageProps> = ({ onOpenSBOMModal 
                 />
               </div>
 
-              <div className="flex items-center justify-between p-3.5 rounded-xl border border-slate-200 dark:border-slate-800">
+              <div className="flex items-center justify-between p-3.5 rounded-xl border ks-border">
                 <div>
-                  <span className="font-semibold text-sm text-slate-900 dark:text-white block">Strict Policy Enforcement</span>
-                  <span className="text-xs text-slate-500 dark:text-slate-400">Block build pipelines if an introduced keystone elevates SIFI concentration above 80%.</span>
+                  <span className="font-semibold text-xs block">Strict Policy Enforcement</span>
+                  <span className="text-[11px] text-slate-500">Fail CI checks if a PR elevates systemic fragility score above 75%.</span>
                 </div>
                 <input
                   type="checkbox"
@@ -644,115 +1000,132 @@ export const ConnectorsPage: React.FC<ConnectorsPageProps> = ({ onOpenSBOMModal 
               </div>
 
               <div>
-                <label className="text-sm font-medium text-slate-700 dark:text-slate-300 block mb-1">Webhook Secret Token</label>
+                <label className="text-slate-500 block mb-1">Active Webhook Secret Token</label>
                 <div className="flex items-center gap-2">
                   <input
                     type="password"
                     value="whsec_994b210f88a91c32de782f9"
                     readOnly
-                    className={`flex-1 px-3.5 py-2 rounded-lg border font-mono text-sm ${
-                      isLight ? 'bg-white border-slate-200 text-slate-700' : 'bg-slate-950 border-slate-800 text-slate-300'
-                    }`}
+                    className="flex-1 px-3 py-2 rounded-xl border ks-border font-mono text-xs bg-slate-50 dark:bg-slate-950 text-slate-700 dark:text-slate-300"
                   />
-                  <button
-                    onClick={() => navigator.clipboard.writeText('whsec_994b210f88a91c32de782f9')}
-                    className="p-2.5 rounded-lg border border-slate-300 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 cursor-pointer"
-                    title="Copy Secret"
+                  <Button
+                    variant="secondary"
+                    size="sm"
+                    icon={<Copy className="w-3.5 h-3.5" />}
+                    onClick={() => {
+                      navigator.clipboard.writeText('whsec_994b210f88a91c32de782f9');
+                      showToast('Copied webhook secret token.');
+                    }}
                   >
-                    <Copy className="w-4 h-4" />
-                  </button>
+                    Copy
+                  </Button>
                 </div>
               </div>
             </div>
 
-            <div className="flex items-center justify-end gap-2 pt-3 border-t border-slate-200 dark:border-slate-800">
-              <button
-                onClick={() => setSelectedConfigConnector(null)}
-                className="px-4 py-2 rounded-lg text-sm font-medium bg-blue-600 hover:bg-blue-500 text-white cursor-pointer"
+            <div className="flex items-center justify-end gap-2 pt-3 border-t ks-border">
+              <Button
+                variant="primary"
+                size="sm"
+                onClick={() => {
+                  setSelectedConfigConnector(null);
+                  showToast('Connector settings updated.');
+                }}
               >
                 Save Settings
-              </button>
+              </Button>
             </div>
           </div>
         </div>
       )}
 
-      {/* Add Custom Connector Modal */}
+      {/* =========================================================================
+          ADD CUSTOM CONNECTOR MODAL
+          ========================================================================= */}
       {isAddModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-in fade-in">
-          <form onSubmit={handleCreateConnector} className={`w-full max-w-md rounded-2xl border p-6 shadow-2xl flex flex-col gap-4 ${
-            isLight ? 'bg-white border-slate-200' : 'bg-slate-900 border-slate-800 text-slate-100'
-          }`}>
+          <form onSubmit={handleCreateCustomConnector} className="w-full max-w-md rounded-2xl border ks-border p-6 shadow-2xl flex flex-col gap-4 bg-white dark:bg-slate-900 text-slate-900 dark:text-white">
             <div className="flex items-center justify-between">
-              <h2 className="text-base font-bold text-slate-900 dark:text-white">Add Custom Connector</h2>
+              <div>
+                <h2 className="text-base font-bold font-heading">Add Custom Connector</h2>
+                <p className="text-xs text-slate-500">Connect Internal Git, On-Prem Registry, or Webhook</p>
+              </div>
               <button
                 type="button"
                 onClick={() => setIsAddModalOpen(false)}
-                className="p-1 rounded-md text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 cursor-pointer"
+                className="p-1 rounded-md text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 cursor-pointer"
               >
                 ✕
               </button>
             </div>
 
-            <div className="flex flex-col gap-3.5 text-sm">
+            <div className="flex flex-col gap-3.5 text-xs">
               <div>
-                <label className="text-sm font-medium text-slate-700 dark:text-slate-300 block mb-1">Connector Name *</label>
+                <label className="font-medium block mb-1">Connector Name *</label>
                 <input
                   type="text"
                   required
-                  placeholder="e.g., Internal GitLab Runner or Nexus Staging"
+                  placeholder="e.g., Acme Staging Nexus or Internal GitLab Runner"
                   value={newConnectorName}
                   onChange={e => setNewConnectorName(e.target.value)}
-                  className={`w-full px-3.5 py-2 text-sm rounded-lg border outline-hidden ${
-                    isLight ? 'bg-white border-slate-200 text-slate-900' : 'bg-slate-950 border-slate-800 text-slate-100'
-                  }`}
+                  className="w-full px-3.5 py-2 rounded-xl border ks-border text-xs bg-slate-50 dark:bg-slate-950 outline-hidden focus:border-blue-500"
                 />
               </div>
 
               <div>
-                <label className="text-sm font-medium text-slate-700 dark:text-slate-300 block mb-1">Category</label>
+                <label className="font-medium block mb-1">Integration Category</label>
                 <select
                   value={newConnectorCategory}
                   onChange={e => setNewConnectorCategory(e.target.value as any)}
-                  className={`w-full px-3.5 py-2 text-sm rounded-lg border outline-hidden ${
-                    isLight ? 'bg-white border-slate-200 text-slate-900' : 'bg-slate-950 border-slate-800 text-slate-100'
-                  }`}
+                  className="w-full px-3.5 py-2 rounded-xl border ks-border text-xs bg-slate-50 dark:bg-slate-950 outline-hidden focus:border-blue-500"
                 >
-                  <option value="scm">Source Code Management (SCM)</option>
-                  <option value="registry">Package / Artifact Registry</option>
-                  <option value="ci">Continuous Integration (CI/CD)</option>
-                  <option value="alerts">Alerting / Incident Response</option>
+                  <option value="scm">Source Code Management (SCM / Git)</option>
+                  <option value="registry">Package / Container Registry</option>
+                  <option value="ci">Continuous Integration (CI/CD Runner)</option>
+                  <option value="alerts">Incident Response / Webhook</option>
                 </select>
               </div>
 
               <div>
-                <label className="text-sm font-medium text-slate-700 dark:text-slate-300 block mb-1">Webhook URL or Service Endpoint</label>
+                <label className="font-medium block mb-1">API Endpoint / Service URL *</label>
                 <input
                   type="text"
+                  required
                   placeholder="https://gitlab.internal.corp/api/v4"
                   value={newConnectorUrl}
                   onChange={e => setNewConnectorUrl(e.target.value)}
-                  className={`w-full px-3.5 py-2 text-sm rounded-lg border outline-hidden font-mono ${
-                    isLight ? 'bg-white border-slate-200 text-slate-900' : 'bg-slate-950 border-slate-800 text-slate-100'
-                  }`}
+                  className="w-full px-3.5 py-2 rounded-xl border ks-border font-mono text-xs bg-slate-50 dark:bg-slate-950 outline-hidden focus:border-blue-500"
+                />
+              </div>
+
+              <div>
+                <label className="font-medium block mb-1">Authentication Secret or Bearer Token</label>
+                <input
+                  type="password"
+                  placeholder="Optional secret or API token"
+                  value={newConnectorAuth}
+                  onChange={e => setNewConnectorAuth(e.target.value)}
+                  className="w-full px-3.5 py-2 rounded-xl border ks-border font-mono text-xs bg-slate-50 dark:bg-slate-950 outline-hidden focus:border-blue-500"
                 />
               </div>
             </div>
 
-            <div className="flex items-center justify-end gap-2 pt-3 border-t border-slate-200 dark:border-slate-800">
-              <button
+            <div className="flex items-center justify-end gap-2 pt-3 border-t ks-border">
+              <Button
+                variant="ghost"
+                size="sm"
                 type="button"
                 onClick={() => setIsAddModalOpen(false)}
-                className="px-3.5 py-2 rounded-lg text-sm text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-200 cursor-pointer"
               >
                 Cancel
-              </button>
-              <button
+              </Button>
+              <Button
+                variant="primary"
+                size="sm"
                 type="submit"
-                className="px-4 py-2 rounded-lg text-sm font-medium bg-blue-600 hover:bg-blue-500 text-white cursor-pointer"
               >
                 Create Connector
-              </button>
+              </Button>
             </div>
           </form>
         </div>
@@ -760,3 +1133,4 @@ export const ConnectorsPage: React.FC<ConnectorsPageProps> = ({ onOpenSBOMModal 
     </div>
   );
 };
+
