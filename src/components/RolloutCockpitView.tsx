@@ -138,53 +138,29 @@ export const RolloutCockpitView: React.FC<RolloutCockpitViewProps> = ({
       isLight ? 'bg-white text-slate-900' : 'bg-[#06080d]/95 text-slate-100'
     }`}>
       {/* Top Navigation & Breadcrumbs */}
-      <div className={`flex items-center justify-between border-b pb-4 ${
-        isLight ? 'border-slate-200' : 'border-slate-800'
-      }`}>
-        <div className="flex items-center gap-2.5">
-          <div className={`p-2 rounded-lg ${
-            isLight ? 'bg-blue-50 text-blue-600' : 'bg-blue-950/60 text-blue-400'
-          }`}>
-            <Rocket className="w-5 h-5" />
-          </div>
-          <div>
-            <div className="flex items-center gap-2">
-              <h1 className="text-base lg:text-lg font-bold tracking-tight">
-                Rollout Cockpit & Evidence Gate
-              </h1>
-              <span className={`text-[10px] font-mono px-2 py-0.5 rounded font-bold uppercase border ${
-                isLight ? 'bg-blue-50 text-blue-700 border-blue-200' : 'bg-blue-950 text-blue-300 border-blue-800'
-              }`}>
-                F10 Stage-Gate
-              </span>
-            </div>
-            <p className={`text-xs ${isLight ? 'text-slate-500' : 'text-slate-400'}`}>
-              Campaign <span className="font-mono font-semibold text-blue-500">CAMP-2026-09-SNAKEYAML</span> (snakeyaml@1.33 ➔ 2.0)
-            </p>
-          </div>
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 pb-6 border-b border-slate-200/80 dark:border-slate-800">
+        <div>
+          <h1 className="text-2xl md:text-3xl font-bold tracking-tight text-slate-900 dark:text-white font-heading">
+            Rollout Cockpit & Evidence Gate
+          </h1>
+          <p className="text-sm mt-3 max-w-2xl text-slate-500 dark:text-slate-400 font-sans leading-relaxed">
+            Cryptographically-verified phased cohort deployments, TOCTOU lockfile hash binding, and automated rollback triggers.
+          </p>
         </div>
 
-        <div className="flex items-center gap-2.5">
+        <div className="flex items-center gap-3 shrink-0">
           <button
             onClick={handleDownloadAuditTrail}
-            className={`px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition-all border ${
-              isLight 
-                ? 'bg-white hover:bg-slate-100 text-slate-700 border-slate-300 shadow-xs' 
-                : 'bg-slate-800 hover:bg-slate-700 text-slate-200 border-slate-700'
-            }`}
+            className="btn-3d-secondary px-4 py-2 rounded-xl text-xs font-semibold text-slate-700 dark:text-slate-200 flex items-center gap-2 cursor-pointer select-none"
           >
-            {downloadedReceipt ? <Check className="w-3.5 h-3.5 text-emerald-500" /> : <Download className="w-3.5 h-3.5" />}
+            {downloadedReceipt ? <Check className="w-3.5 h-3.5 text-emerald-500" /> : <Download className="w-3.5 h-3.5 text-blue-500" />}
             <span>{downloadedReceipt ? 'Exported JSON' : 'Export Audit Trail'}</span>
           </button>
 
           {onReturnToGraph && (
             <button
               onClick={onReturnToGraph}
-              className={`px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition-all border ${
-                isLight 
-                  ? 'bg-slate-900 hover:bg-slate-800 text-white border-slate-900' 
-                  : 'bg-blue-600 hover:bg-blue-500 text-white border-blue-500 shadow-xs'
-              }`}
+              className="btn-3d-primary px-4 py-2 rounded-xl text-xs font-bold text-white flex items-center gap-2 cursor-pointer select-none"
             >
               <span>Back to Topology</span>
               <ArrowRight className="w-3.5 h-3.5" />

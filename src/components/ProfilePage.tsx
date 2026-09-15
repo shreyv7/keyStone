@@ -82,26 +82,25 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
     }`}>
       <div className="max-w-4xl mx-auto flex flex-col gap-6">
         
-        {/* Header Banner */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-slate-200 dark:border-slate-800">
-          <div className="flex items-center gap-4">
-            <div className="w-16 h-16 rounded-2xl bg-gradient-to-tr from-blue-700 via-blue-800 to-slate-900 flex items-center justify-center text-white font-bold text-2xl shadow-md">
+        {/* Header */}
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 pb-6 border-b border-slate-200/80 dark:border-slate-800">
+          <div className="flex items-center gap-5">
+            <div className="w-16 h-16 rounded-2xl bg-gradient-to-tr from-blue-600 to-indigo-700 flex items-center justify-center text-white font-bold text-2xl shadow-lg border border-white/20 shrink-0">
               {userProfile?.avatarInitials || 'AC'}
             </div>
             <div>
-              <div className="flex items-center gap-2.5">
-                <h1 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-white">{name}</h1>
-                <span className="text-xs font-mono px-2.5 py-0.5 rounded-md bg-blue-50 dark:bg-blue-950/60 text-blue-700 dark:text-blue-400 border border-blue-200 dark:border-blue-900 font-semibold">
-                  {userProfile?.licenseTier || 'Enterprise Active'}
-                </span>
-              </div>
-              <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">{title} • {userProfile?.organization || 'Acme Global Infrastructure'}</p>
+              <h1 className="text-2xl md:text-3xl font-bold tracking-tight text-slate-900 dark:text-white font-heading">
+                {name}
+              </h1>
+              <p className="text-sm mt-2 text-slate-500 dark:text-slate-400 font-sans leading-relaxed">
+                {title} • {userProfile?.organization || 'Acme Global Infrastructure'}
+              </p>
             </div>
           </div>
 
           <button
             onClick={handleSave}
-            className="flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-semibold bg-blue-600 hover:bg-blue-500 text-white shadow-xs transition-all cursor-pointer shrink-0"
+            className="btn-3d-primary flex items-center gap-2 px-5 py-2.5 text-sm shrink-0 cursor-pointer"
           >
             {savedSuccess ? <Check className="w-4 h-4" /> : <Save className="w-4 h-4" />}
             <span>{savedSuccess ? 'Saved' : 'Save Profile'}</span>
@@ -112,9 +111,7 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
         <form onSubmit={handleSave} className="grid grid-cols-1 md:grid-cols-2 gap-6">
           
           {/* Identity Information */}
-          <div className={`p-6 rounded-xl border flex flex-col gap-5 ${
-            isLight ? 'bg-white border-slate-200 shadow-xs' : 'bg-slate-900/60 border-slate-800'
-          }`}>
+          <div className="connector-3d-card p-6 flex flex-col gap-5">
             <h3 className="text-base font-semibold text-slate-900 dark:text-white flex items-center gap-2">
               <User className="w-4 h-4 text-blue-600 dark:text-blue-400" />
               <span>Identity & Account</span>
@@ -172,9 +169,7 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
           </div>
 
           {/* Preferences & Role Lens */}
-          <div className={`p-6 rounded-xl border flex flex-col gap-5 ${
-            isLight ? 'bg-white border-slate-200 shadow-xs' : 'bg-slate-900/60 border-slate-800'
-          }`}>
+          <div className="connector-3d-card p-6 flex flex-col gap-5">
             <h3 className="text-base font-semibold text-slate-900 dark:text-white flex items-center gap-2">
               <Sliders className="w-4 h-4 text-blue-600 dark:text-blue-400" />
               <span>Perspective Preferences</span>
@@ -220,9 +215,7 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
         </form>
 
         {/* Security & Authentication Hardware Tokens */}
-        <div className={`p-6 rounded-xl border flex flex-col gap-4 ${
-          isLight ? 'bg-white border-slate-200 shadow-xs' : 'bg-slate-900/60 border-slate-800'
-        }`}>
+        <div className="connector-3d-card p-6 flex flex-col gap-4">
           <div className="flex items-center justify-between">
             <div>
               <h3 className="text-base font-semibold text-slate-900 dark:text-white flex items-center gap-2">
@@ -266,9 +259,7 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
         </div>
 
         {/* Active Authorized Sessions */}
-        <div className={`p-6 rounded-xl border flex flex-col gap-4 ${
-          isLight ? 'bg-white border-slate-200 shadow-xs' : 'bg-slate-900/60 border-slate-800'
-        }`}>
+        <div className="connector-3d-card p-6 flex flex-col gap-4">
           <div>
             <h3 className="text-base font-semibold text-slate-900 dark:text-white flex items-center gap-2">
               <Laptop className="w-4 h-4 text-blue-600 dark:text-blue-400" />
@@ -311,9 +302,7 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
         </div>
 
         {/* Personal Access Tokens (PATs) */}
-        <div className={`p-6 rounded-xl border flex flex-col gap-4 ${
-          isLight ? 'bg-white border-slate-200 shadow-xs' : 'bg-slate-900/60 border-slate-800'
-        }`}>
+        <div className="connector-3d-card p-6 flex flex-col gap-4">
           <div className="flex items-center justify-between">
             <div>
               <h3 className="text-base font-semibold text-slate-900 dark:text-white flex items-center gap-2">

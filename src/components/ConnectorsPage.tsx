@@ -1000,20 +1000,14 @@ export const ConnectorsPage: React.FC<ConnectorsPageProps> = ({ onOpenSBOMModal 
           </div>
         )}
 
-        {/* Top Header Banner - Reduced Text */}
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b ks-border">
+        {/* Top Header Banner - Clean & Airy */}
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 pb-6 border-b border-slate-200/80 dark:border-slate-800">
           <div>
-            <div className="flex items-center gap-2 mb-1">
-              <Badge variant="low" icon={<Link2 className="w-3 h-3" />}>
-                CONNECTIVITY ENGINE
-              </Badge>
-              <span className="text-xs text-slate-500">• 42 Repositories Active</span>
-            </div>
-            <h1 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-white font-heading">
+            <h1 className="text-2xl md:text-3xl font-bold tracking-tight text-slate-900 dark:text-white font-heading">
               Connectors & Integrations
             </h1>
-            <p className="text-xs mt-1 text-slate-500 dark:text-slate-400 font-sans">
-              Continuous lockfile sync, transitive graph mapping, and CI/CD security gates.
+            <p className="text-sm mt-3 max-w-2xl text-slate-500 dark:text-slate-400 font-sans leading-relaxed">
+              Continuous lockfile synchronization, transitive graph mapping, and automated CI/CD security gates.
             </p>
           </div>
 

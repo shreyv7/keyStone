@@ -91,69 +91,29 @@ export const OverviewDashboard: React.FC<OverviewDashboardProps> = ({
       isLight ? 'bg-white text-slate-900' : 'bg-[#06080d]/95 text-slate-100'
     }`}>
       {/* Header */}
-      <div className={`flex items-start justify-between border-b pb-5 ${
-        isLight ? 'border-slate-200' : 'border-slate-800'
-      }`}>
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 pb-6 border-b border-slate-200/80 dark:border-slate-800">
         <div>
-          <div className="flex items-center gap-2 mb-1.5 flex-wrap">
-            <span className={`text-[11px] font-semibold uppercase px-2 py-0.5 rounded border ${
-              isLight 
-                ? 'bg-slate-100 text-slate-700 border-slate-200' 
-                : 'bg-slate-800 text-slate-300 border-slate-700'
-            }`}>
-              Portfolio Posture
-            </span>
-
-            {/* Active Lens Badge */}
-            <span className={`text-[11px] font-semibold px-2 py-0.5 rounded uppercase flex items-center gap-1 border ${
-              activeLens === 'ciso'
-                ? isLight ? 'bg-purple-50 text-purple-700 border-purple-200' : 'bg-purple-950/40 text-purple-300 border-purple-800/50'
-                : activeLens === 'maintainer'
-                ? isLight ? 'bg-blue-50 text-blue-700 border-blue-200' : 'bg-blue-950/40 text-blue-300 border-blue-800/50'
-                : isLight ? 'bg-emerald-50 text-emerald-700 border-emerald-200' : 'bg-emerald-950/40 text-emerald-300 border-emerald-800/50'
-            }`}>
-              {activeLens === 'ciso' && <Briefcase className="w-3 h-3" />}
-              {activeLens === 'developer' && <Terminal className="w-3 h-3" />}
-              {activeLens === 'maintainer' && <Layers className="w-3 h-3" />}
-              {activeLens === 'ciso' ? 'Executive (CISO) Lens' : activeLens === 'maintainer' ? 'Engineering (Maintainer) Lens' : 'AppSec (Developer) Lens'}
-            </span>
-
-            <span className={`text-xs ${isLight ? 'text-slate-500' : 'text-slate-400'}`}>
-              {activeLens === 'ciso' 
-                ? 'Financial Exposure & Regulatory Compliance Posture' 
-                : activeLens === 'maintainer'
-                ? 'Downstream Consumer Cascade & Bus Factor Vulnerabilities'
-                : 'Deterministic Topological Risk Analysis'}
-            </span>
-          </div>
-
-          <h1 className={`text-2xl font-bold tracking-tight ${isLight ? 'text-slate-900' : 'text-slate-100'}`}>
+          <h1 className="text-2xl md:text-3xl font-bold tracking-tight text-slate-900 dark:text-white font-heading">
             {activeLens === 'ciso' 
               ? 'Executive Supply Chain Risk Governance' 
               : activeLens === 'maintainer'
-              ? 'Ecosystem Dependency & Consumer Health'
+              ? 'Ecosystem Dependency & Consumer Health' 
               : 'Supply Chain Structural Risk Overview'}
           </h1>
-          <p className={`text-xs mt-1 max-w-2xl leading-relaxed ${isLight ? 'text-slate-600' : 'text-slate-400'}`}>
+          <p className="text-sm mt-3 max-w-2xl text-slate-500 dark:text-slate-400 font-sans leading-relaxed">
             {activeLens === 'ciso'
-              ? 'Quantifies enterprise exposure in $-denominated potential daily loss, regulatory non-compliance mandates (DORA, PCI-DSS), and systemic contagion ratios across critical assets.'
+              ? 'Enterprise financial exposure, regulatory compliance mandates, and systemic contagion ratios.'
               : activeLens === 'maintainer'
-              ? 'Analyzes downstream breaking change cascades, library maintenance health, and single-point-of-failure packages before API contract updates are released.'
-              : 'Prioritizes open source and internal dependencies by structural network position, reachability to production sinks, and articulation chokepoints.'}
+              ? 'Downstream consumer dependency health, single-maintainer fragility, and blast radius.'
+              : 'Deterministic topological reachability, vulnerability propagation, and minimum-cut remediations.'}
           </p>
         </div>
 
         {/* Global Action CTA */}
-        <div className="flex items-center gap-2.5">
+        <div className="flex items-center gap-2.5 shrink-0">
           <button
             onClick={handleHeroAction}
-            className={`px-4 py-2 rounded-md font-medium text-xs transition-colors flex items-center gap-2 ${
-              activeLens === 'ciso'
-                ? isLight ? 'bg-purple-900 hover:bg-purple-800 text-white' : 'bg-purple-600 hover:bg-purple-500 text-white'
-                : activeLens === 'maintainer'
-                ? isLight ? 'bg-blue-900 hover:bg-blue-800 text-white' : 'bg-blue-600 hover:bg-blue-500 text-white'
-                : isLight ? 'bg-slate-900 hover:bg-slate-800 text-white' : 'bg-slate-100 hover:bg-white text-slate-900'
-            }`}
+            className="btn-3d-primary px-4 py-2.5 rounded-xl text-xs font-bold text-white flex items-center gap-2 cursor-pointer select-none"
           >
             {activeLens === 'ciso' ? (
               <>

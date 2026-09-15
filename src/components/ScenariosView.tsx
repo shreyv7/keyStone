@@ -73,39 +73,21 @@ export const ScenariosView: React.FC<ScenariosViewProps> = ({
       isLight ? 'bg-white text-slate-900' : 'bg-[#06080d]/95 text-slate-100'
     }`}>
       {/* Header */}
-      <div className={`flex items-start justify-between border-b pb-5 ${
-        isLight ? 'border-slate-200' : 'border-slate-800'
-      }`}>
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 pb-6 border-b border-slate-200/80 dark:border-slate-800">
         <div>
-          <div className="flex items-center gap-2 mb-1.5">
-            <span className={`text-[11px] font-semibold uppercase px-2 py-0.5 rounded border ${
-              isLight 
-                ? 'bg-slate-100 text-slate-700 border-slate-200' 
-                : 'bg-slate-800 text-slate-300 border-slate-700'
-            }`}>
-              Simulation Catalog
-            </span>
-            <span className={`text-xs ${isLight ? 'text-slate-500' : 'text-slate-400'}`}>
-              Topological Blast Radius Scenarios
-            </span>
-          </div>
-          <h1 className={`text-2xl font-bold tracking-tight ${isLight ? 'text-slate-900' : 'text-slate-100'}`}>
+          <h1 className="text-2xl md:text-3xl font-bold tracking-tight text-slate-900 dark:text-white font-heading">
             Attack Path Scenarios
           </h1>
-          <p className={`text-xs mt-1 max-w-2xl leading-relaxed ${isLight ? 'text-slate-600' : 'text-slate-400'}`}>
+          <p className="text-sm mt-3 max-w-2xl text-slate-500 dark:text-slate-400 font-sans leading-relaxed">
             Simulate realistic supply chain compromises to observe contagion flow across microservices and evaluate minimal remediation cuts.
           </p>
         </div>
 
         <button
           onClick={onReturnToGraph}
-          className={`px-3.5 py-2 rounded-md text-xs font-medium transition-colors flex items-center gap-2 border ${
-            isLight 
-              ? 'bg-white hover:bg-slate-50 text-slate-800 border-slate-200 shadow-xs' 
-              : 'bg-slate-900 hover:bg-slate-800 text-slate-200 border-slate-800'
-          }`}
+          className="btn-3d-secondary px-4 py-2 rounded-xl text-xs font-semibold text-slate-700 dark:text-slate-200 flex items-center gap-2 cursor-pointer select-none shrink-0"
         >
-          <Layers className="w-4 h-4 text-slate-500" />
+          <Layers className="w-4 h-4 text-blue-500" />
           <span>Return to Topology Map</span>
         </button>
       </div>
@@ -115,11 +97,7 @@ export const ScenariosView: React.FC<ScenariosViewProps> = ({
         {scenarios.map((scen) => (
           <div
             key={scen.id}
-            className={`p-5 rounded-lg border flex flex-col justify-between gap-4 transition-all ${
-              isLight 
-                ? 'bg-white border-slate-200 shadow-xs hover:border-slate-300' 
-                : 'bg-slate-900/60 border-slate-800 hover:border-slate-700'
-            }`}
+            className="connector-3d-card p-5 flex flex-col justify-between gap-4 select-none"
           >
             <div className="flex flex-col gap-2">
               <div className="flex items-center justify-between">
@@ -133,16 +111,16 @@ export const ScenariosView: React.FC<ScenariosViewProps> = ({
                 </span>
               </div>
 
-              <h2 className={`text-base font-semibold ${isLight ? 'text-slate-900' : 'text-slate-100'}`}>
+              <h2 className="text-base font-bold font-heading text-slate-900 dark:text-white">
                 {scen.title}
               </h2>
 
-              <p className={`text-xs leading-relaxed ${isLight ? 'text-slate-600' : 'text-slate-400'}`}>
+              <p className="text-xs leading-relaxed text-slate-600 dark:text-slate-400">
                 {scen.description}
               </p>
 
-              <div className={`p-3 rounded-md border text-xs flex flex-col gap-1.5 mt-2 ${
-                isLight ? 'bg-white border-slate-200 text-slate-700 shadow-xs' : 'bg-slate-950/80 border-slate-800 text-slate-300'
+              <div className={`p-3 rounded-xl border text-xs flex flex-col gap-1.5 mt-2 ${
+                isLight ? 'bg-slate-50/80 border-slate-200 text-slate-700 shadow-xs' : 'bg-slate-950/80 border-slate-800 text-slate-300'
               }`}>
                 <div className="flex justify-between">
                   <span className={`text-[11px] ${isLight ? 'text-slate-500' : 'text-slate-400'}`}>Vector:</span>
@@ -167,11 +145,7 @@ export const ScenariosView: React.FC<ScenariosViewProps> = ({
 
             <button
               onClick={() => onLaunchScenario(scen.id)}
-              className={`w-full py-2 px-3 rounded-md text-xs font-semibold flex items-center justify-center gap-2 transition-colors ${
-                isLight 
-                  ? 'bg-slate-900 hover:bg-slate-800 text-white' 
-                  : 'bg-slate-100 hover:bg-white text-slate-900'
-              }`}
+              className="btn-3d-primary w-full py-2 px-3 rounded-xl text-xs font-bold text-white flex items-center justify-center gap-2 cursor-pointer select-none"
             >
               <Play className="w-3.5 h-3.5 fill-current" />
               <span>Simulate Attack Path</span>

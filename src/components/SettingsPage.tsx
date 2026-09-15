@@ -79,23 +79,19 @@ export const SettingsPage: React.FC = () => {
       <div className="max-w-6xl mx-auto flex flex-col gap-6">
         
         {/* Header */}
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-slate-200 dark:border-slate-800">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 pb-6 border-b border-slate-200/80 dark:border-slate-800">
           <div>
-            <div className="flex items-center gap-2 mb-1.5">
-              <span className="text-xs font-mono font-semibold px-2.5 py-1 rounded-md bg-blue-50 dark:bg-blue-950/60 text-blue-700 dark:text-blue-400 border border-blue-200 dark:border-blue-900">
-                PLATFORM CONFIGURATION
-              </span>
-              <span className="text-xs text-slate-500 dark:text-slate-400">• Organization-wide Policies</span>
-            </div>
-            <h1 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-white">System & Security Settings</h1>
-            <p className="text-sm mt-1.5 max-w-3xl text-slate-600 dark:text-slate-400 leading-relaxed">
-              Configure default supply-chain lenses, systemic concentration thresholds, enterprise SSO & 2FA enforcement, and sovereign data residency jurisdictions.
+            <h1 className="text-2xl md:text-3xl font-bold tracking-tight text-slate-900 dark:text-white font-heading">
+              System & Security Settings
+            </h1>
+            <p className="text-sm mt-3 max-w-2xl text-slate-500 dark:text-slate-400 font-sans leading-relaxed">
+              Configure systemic risk thresholds, authentication enforcement, and sovereign data residency.
             </p>
           </div>
 
           <button
             onClick={handleSave}
-            className="flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-semibold bg-blue-600 hover:bg-blue-500 text-white shadow-xs transition-all shrink-0 cursor-pointer"
+            className="btn-3d-primary flex items-center gap-2 px-5 py-2.5 text-sm shrink-0 cursor-pointer"
           >
             {saveSuccess ? <Check className="w-4 h-4" /> : <Save className="w-4 h-4" />}
             <span>{saveSuccess ? 'Saved' : 'Save All Settings'}</span>
@@ -175,9 +171,7 @@ export const SettingsPage: React.FC = () => {
             
             {/* GENERAL SECTION */}
             {activeSection === 'general' && (
-              <div className={`p-6 rounded-xl border flex flex-col gap-6 ${
-                isLight ? 'bg-white border-slate-200 shadow-xs' : 'bg-slate-900/60 border-slate-800'
-              }`}>
+              <div className="connector-3d-card p-6 flex flex-col gap-6">
                 <div>
                   <h3 className="text-lg font-semibold text-slate-900 dark:text-white">General Workspace Configuration</h3>
                   <p className="text-sm text-slate-500 dark:text-slate-400 mt-0.5">Control default perspectives and algorithmic thresholds.</p>
@@ -277,9 +271,7 @@ export const SettingsPage: React.FC = () => {
 
             {/* SECURITY & SSO SECTION */}
             {activeSection === 'security' && (
-              <div className={`p-6 rounded-xl border flex flex-col gap-6 ${
-                isLight ? 'bg-white border-slate-200 shadow-xs' : 'bg-slate-900/60 border-slate-800'
-              }`}>
+              <div className="connector-3d-card p-6 flex flex-col gap-6">
                 <div>
                   <h3 className="text-lg font-semibold text-slate-900 dark:text-white">Authentication & Zero Trust Security</h3>
                   <p className="text-sm text-slate-500 dark:text-slate-400 mt-0.5">SAML 2.0 Identity Provider federation, hardware WebAuthn, and session controls.</p>
@@ -369,9 +361,7 @@ export const SettingsPage: React.FC = () => {
 
             {/* NOTIFICATIONS SECTION */}
             {activeSection === 'notifications' && (
-              <div className={`p-6 rounded-xl border flex flex-col gap-6 ${
-                isLight ? 'bg-white border-slate-200 shadow-xs' : 'bg-slate-900/60 border-slate-800'
-              }`}>
+              <div className="connector-3d-card p-6 flex flex-col gap-6">
                 <div>
                   <h3 className="text-lg font-semibold text-slate-900 dark:text-white">Alert Dispatches & Webhooks</h3>
                   <p className="text-sm text-slate-500 dark:text-slate-400 mt-0.5">Subscribe communication channels to topological supply-chain anomalies.</p>
@@ -464,9 +454,7 @@ export const SettingsPage: React.FC = () => {
 
             {/* DATA RESIDENCY & KMS */}
             {activeSection === 'residency' && (
-              <div className={`p-6 rounded-xl border flex flex-col gap-6 ${
-                isLight ? 'bg-white border-slate-200 shadow-xs' : 'bg-slate-900/60 border-slate-800'
-              }`}>
+              <div className="connector-3d-card p-6 flex flex-col gap-6">
                 <div>
                   <h3 className="text-lg font-semibold text-slate-900 dark:text-white">Data Residency, Sovereignty & KMS</h3>
                   <p className="text-sm text-slate-500 dark:text-slate-400 mt-0.5">Enforce legal jurisdiction compliance and hardware cryptographic key custody.</p>

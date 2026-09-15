@@ -74,85 +74,80 @@ export const RiskWatchlist: React.FC<RiskWatchlistProps> = ({
   return (
     <div className="flex-1 flex flex-col h-full overflow-y-auto p-6 space-y-6 select-none ks-bg-app">
       {/* Header bar */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b ks-border pb-4">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 border-b border-slate-200/80 dark:border-slate-800 pb-6">
         <div>
-          <div className="flex items-center gap-2 text-xs font-mono font-medium text-slate-500">
-            <span>F1-RADAR</span>
-            <span>•</span>
-            <span className="text-blue-500 uppercase font-semibold">Realized Threat Ranking</span>
-          </div>
-          <h1 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-white mt-1">
+          <h1 className="text-2xl md:text-3xl font-bold tracking-tight text-slate-900 dark:text-white font-heading">
             Systemic Risk Watchlist
           </h1>
-          <p className="text-sm mt-1 max-w-2xl text-slate-600 dark:text-slate-400 leading-relaxed">
-            Prioritizes dependencies by network position, downstream blast radius, and leading F5 Centrality Velocity alarms before CVE disclosure.
+          <p className="text-sm mt-3 max-w-2xl text-slate-500 dark:text-slate-400 font-sans leading-relaxed">
+            Prioritize dependencies by network position, downstream reachability to critical assets, and velocity alarms.
           </p>
         </div>
 
-        <div className="flex items-center gap-3">
-          <Button
-            variant="secondary"
-            icon={<Download className="w-4 h-4 text-blue-500" />}
+        <div className="flex items-center gap-3 shrink-0">
+          <button
             onClick={() => setIsExportModalOpen(true)}
+            className="btn-3d-secondary px-4 py-2 rounded-xl text-xs font-semibold text-slate-700 dark:text-slate-200 flex items-center gap-2 cursor-pointer select-none"
             title="Export Systemic Risk Register (CSV, JSON, Markdown)"
           >
-            Export Risk Register
-          </Button>
+            <Download className="w-4 h-4 text-blue-500" />
+            <span>Export Risk Register</span>
+          </button>
 
-          <Button
-            variant="primary"
-            icon={<Layers className="w-4 h-4" />}
+          <button
             onClick={onReturnToGraph}
+            className="btn-3d-primary px-4 py-2 rounded-xl text-xs font-bold text-white flex items-center gap-2 cursor-pointer select-none"
           >
-            Return to Topology Map
-          </Button>
+            <Layers className="w-4 h-4" />
+            <span>Return to Topology Map</span>
+          </button>
         </div>
       </div>
 
       {/* Highlights summary banner (4 columns) */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <Card className="p-4 flex flex-col gap-1.5">
-          <div className="text-xs font-semibold uppercase tracking-wider text-slate-400">Top Articulation Keystone</div>
-          <div className="text-xl font-bold font-mono text-slate-900 dark:text-white">snakeyaml@1.33</div>
-          <div className="text-xs text-slate-400">
-            Tarjan cut-vertex reaching 4 Tier-1 services despite moderate CVSS (48/100).
+        <div className="connector-3d-card p-4 flex flex-col justify-between gap-1.5">
+          <div className="text-[11px] font-semibold uppercase tracking-wider text-slate-400 font-mono">Top Articulation Keystone</div>
+          <div className="text-xl font-bold font-mono text-slate-900 dark:text-white mt-1">snakeyaml@1.33</div>
+          <div className="text-xs text-slate-500 dark:text-slate-400 mt-1 pt-1 border-t border-slate-200/60 dark:border-slate-800">
+            Tarjan cut-vertex reaching 4 Tier-1 services (CVSS 48/100).
           </div>
-        </Card>
+        </div>
 
         {/* F5 Velocity Summary Card */}
-        <Card className="p-4 flex flex-col gap-1.5">
+        <div className="connector-3d-card p-4 flex flex-col justify-between gap-1.5">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-semibold uppercase tracking-wider text-slate-400">
+            <span className="text-[11px] font-semibold uppercase tracking-wider text-slate-400 font-mono">
               Leading Velocity Alarm
             </span>
-            <Badge variant="low">
+            <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-blue-500/10 text-blue-500 border border-blue-500/20 font-semibold">
               {escalatingCount} Escalating
-            </Badge>
+            </span>
           </div>
-          <div className="text-xl font-bold font-mono text-slate-900 dark:text-white flex items-center gap-1.5">
+          <div className="text-xl font-bold font-mono text-slate-900 dark:text-white flex items-center gap-1.5 mt-1">
             <TrendingUp className="w-4 h-4 text-blue-500" />
             <span>+142% 90d Surge</span>
           </div>
-          <div className="text-xs text-slate-400">
-            <code>snakeyaml</code> Reverse PageRank surged across lockfiles before CVE release.
+          <div className="text-xs text-slate-500 dark:text-slate-400 mt-1 pt-1 border-t border-slate-200/60 dark:border-slate-800">
+            <code>snakeyaml</code> Reverse PageRank surged across lockfiles.
           </div>
-        </Card>
+        </div>
 
-        <Card className="p-4 flex flex-col gap-1.5">
-          <div className="text-xs font-semibold uppercase tracking-wider text-slate-400">Dependency Concentration</div>
-          <div className="text-xl font-bold font-mono text-slate-900 dark:text-white">81% in Top 5 Nodes</div>
-          <div className="text-xs text-slate-400">
-            Ecosystem reachability is heavily concentrated in a small cluster of shared libraries.
+        <div className="connector-3d-card p-4 flex flex-col justify-between gap-1.5">
+          <div className="text-[11px] font-semibold uppercase tracking-wider text-slate-400 font-mono">Dependency Concentration</div>
+          <div className="text-xl font-bold font-mono text-slate-900 dark:text-white mt-1">81% in Top 5 Nodes</div>
+          <div className="text-xs text-slate-500 dark:text-slate-400 mt-1 pt-1 border-t border-slate-200/60 dark:border-slate-800">
+            Ecosystem reachability is concentrated in shared libraries.
           </div>
-        </Card>
+        </div>
 
-        <Card className="p-4 flex flex-col gap-1.5">
-          <div className="text-xs font-semibold uppercase tracking-wider text-slate-400">Tier-1 Sinks Exposed</div>
-          <div className="text-xl font-bold font-mono text-slate-900 dark:text-white">4 Core Services</div>
-          <div className="text-xs text-slate-400">
+        <div className="connector-3d-card p-4 flex flex-col justify-between gap-1.5">
+          <div className="text-[11px] font-semibold uppercase tracking-wider text-slate-400 font-mono">Tier-1 Sinks Exposed</div>
+          <div className="text-xl font-bold font-mono text-slate-900 dark:text-white mt-1">4 Core Services</div>
+          <div className="text-xs text-slate-500 dark:text-slate-400 mt-1 pt-1 border-t border-slate-200/60 dark:border-slate-800">
             Payment Gateway, Auth/IAM, Order Core, Realtime Risk.
           </div>
-        </Card>
+        </div>
       </div>
 
       {/* Filter Tabs */}

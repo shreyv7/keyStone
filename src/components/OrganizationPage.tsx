@@ -132,22 +132,18 @@ export const OrganizationPage: React.FC<OrganizationPageProps> = ({ userProfile 
       <div className="max-w-6xl mx-auto flex flex-col gap-6">
         
         {/* Header Title */}
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-slate-200 dark:border-slate-800">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 pb-6 border-b border-slate-200/80 dark:border-slate-800">
           <div>
-            <div className="flex items-center gap-2 mb-1.5">
-              <span className="text-xs font-mono font-semibold px-2.5 py-1 rounded-md bg-blue-50 dark:bg-blue-950/60 text-blue-700 dark:text-blue-400 border border-blue-200 dark:border-blue-900">
-                ORGANIZATION WORKSPACE
-              </span>
-              <span className="text-xs text-slate-500 dark:text-slate-400">• Enterprise Governance</span>
-            </div>
-            <h1 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-white">Organization & Governance</h1>
-            <p className="text-sm mt-1.5 max-w-3xl text-slate-600 dark:text-slate-400 leading-relaxed">
-              Manage organization identity, team roles & permissions, and enterprise audit logs.
+            <h1 className="text-2xl md:text-3xl font-bold tracking-tight text-slate-900 dark:text-white font-heading">
+              Organization & Governance
+            </h1>
+            <p className="text-sm mt-3 max-w-2xl text-slate-500 dark:text-slate-400 font-sans leading-relaxed">
+              Manage organization identity, team roles, access permissions, and enterprise audit logs.
             </p>
           </div>
 
-          <div className="flex items-center gap-2">
-            <span className="text-xs font-mono px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-400">
+          <div className="flex items-center gap-2 shrink-0">
+            <span className="text-xs font-mono px-3.5 py-2 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-400 shadow-xs">
               Tier: <strong className="text-blue-600 dark:text-blue-400 font-semibold">Enterprise Active</strong>
             </span>
           </div>

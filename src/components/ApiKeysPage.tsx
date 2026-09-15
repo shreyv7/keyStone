@@ -132,17 +132,13 @@ export const ApiKeysPage: React.FC = () => {
       <div className="max-w-6xl mx-auto flex flex-col gap-6">
         
         {/* Header */}
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-slate-200 dark:border-slate-800">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 pb-6 border-b border-slate-200/80 dark:border-slate-800">
           <div>
-            <div className="flex items-center gap-2 mb-1.5">
-              <span className="text-xs font-mono font-semibold px-2.5 py-1 rounded-md bg-blue-50 dark:bg-blue-950/60 text-blue-700 dark:text-blue-400 border border-blue-200 dark:border-blue-900">
-                PROGRAMMATIC ACCESS
-              </span>
-              <span className="text-xs text-slate-500 dark:text-slate-400">• REST API & CI/CD Tokens</span>
-            </div>
-            <h1 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-white">API Keys & Machine Access</h1>
-            <p className="text-sm mt-1.5 max-w-3xl text-slate-600 dark:text-slate-400 leading-relaxed">
-              Issue scoped API tokens for GitHub Actions, GitLab CI, and automated deployment pipelines to upload SBOMs, query reachability graphs, and verify circuit breakers.
+            <h1 className="text-2xl md:text-3xl font-bold tracking-tight text-slate-900 dark:text-white font-heading">
+              API Keys & Machine Access
+            </h1>
+            <p className="text-sm mt-3 max-w-2xl text-slate-500 dark:text-slate-400 font-sans leading-relaxed">
+              Issue scoped API tokens for automated pipelines to upload SBOMs, query reachability graphs, and verify circuit breakers.
             </p>
           </div>
 
@@ -151,7 +147,7 @@ export const ApiKeysPage: React.FC = () => {
               setNewlyCreatedSecret(null);
               setIsCreateModalOpen(true);
             }}
-            className="flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-semibold bg-blue-600 hover:bg-blue-500 text-white shadow-xs transition-all shrink-0 cursor-pointer"
+            className="btn-3d-primary px-4 py-2.5 rounded-xl text-xs font-bold text-white flex items-center gap-2 cursor-pointer select-none shrink-0"
           >
             <Plus className="w-4 h-4" />
             <span>Generate New API Key</span>
@@ -160,59 +156,55 @@ export const ApiKeysPage: React.FC = () => {
 
         {/* Quick Stats Banner */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-          <div className={`p-4 rounded-xl border flex flex-col gap-1.5 ${
-            isLight ? 'bg-white border-slate-200 shadow-xs' : 'bg-slate-900/60 border-slate-800'
-          }`}>
-            <span className="text-xs font-medium text-slate-500 dark:text-slate-400">Active API Keys</span>
-            <div className="flex items-baseline gap-2">
+          <div className="connector-3d-card p-4 flex flex-col justify-between gap-1.5">
+            <span className="text-[11px] font-semibold uppercase tracking-wider text-slate-400 font-mono">Active API Keys</span>
+            <div className="flex items-baseline gap-2 mt-1">
               <span className="text-2xl font-bold font-mono text-slate-900 dark:text-white">
                 {keys.filter(k => k.status === 'active').length}
               </span>
-              <span className="text-xs text-slate-500 dark:text-slate-400">Tokens</span>
+              <span className="text-xs text-slate-500 dark:text-slate-400 font-mono">Tokens</span>
             </div>
-            <span className="text-xs text-blue-600 dark:text-blue-400 flex items-center gap-1.5 font-medium">
-              <CheckCircle2 className="w-3.5 h-3.5" /> FIPS 140-2 Keyring
+            <span className="text-[11px] text-emerald-600 dark:text-emerald-400 flex items-center gap-1.5 font-medium mt-1 pt-1 border-t border-slate-200/60 dark:border-slate-800">
+              <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" /> FIPS 140-2 Keyring
             </span>
           </div>
 
-          <div className={`p-4 rounded-xl border flex flex-col gap-1.5 ${
-            isLight ? 'bg-white border-slate-200 shadow-xs' : 'bg-slate-900/60 border-slate-800'
-          }`}>
-            <span className="text-xs font-medium text-slate-500 dark:text-slate-400">Monthly API Invocations</span>
-            <div className="flex items-baseline gap-2">
+          <div className="connector-3d-card p-4 flex flex-col justify-between gap-1.5">
+            <span className="text-[11px] font-semibold uppercase tracking-wider text-slate-400 font-mono">Monthly API Invocations</span>
+            <div className="flex items-baseline gap-2 mt-1">
               <span className="text-2xl font-bold font-mono text-slate-900 dark:text-white">142,800</span>
-              <span className="text-xs text-slate-500 dark:text-slate-400">calls</span>
+              <span className="text-xs text-slate-500 dark:text-slate-400 font-mono">calls</span>
             </div>
-            <span className="text-xs text-slate-500 dark:text-slate-400">p99 latency 14ms</span>
+            <span className="text-[11px] text-slate-500 dark:text-slate-400 mt-1 pt-1 border-t border-slate-200/60 dark:border-slate-800">
+              p99 latency 14ms
+            </span>
           </div>
 
-          <div className={`p-4 rounded-xl border flex flex-col gap-1.5 ${
-            isLight ? 'bg-white border-slate-200 shadow-xs' : 'bg-slate-900/60 border-slate-800'
-          }`}>
-            <span className="text-xs font-medium text-slate-500 dark:text-slate-400">Authentication Success</span>
-            <div className="flex items-baseline gap-2">
+          <div className="connector-3d-card p-4 flex flex-col justify-between gap-1.5">
+            <span className="text-[11px] font-semibold uppercase tracking-wider text-slate-400 font-mono">Authentication Success</span>
+            <div className="flex items-baseline gap-2 mt-1">
               <span className="text-2xl font-bold font-mono text-slate-900 dark:text-white">100%</span>
-              <span className="text-xs text-slate-500 dark:text-slate-400">0 auth failures</span>
+              <span className="text-xs text-slate-500 dark:text-slate-400 font-mono">0 auth failures</span>
             </div>
-            <span className="text-xs text-slate-500 dark:text-slate-400">Zero rogue calls</span>
+            <span className="text-[11px] text-slate-500 dark:text-slate-400 mt-1 pt-1 border-t border-slate-200/60 dark:border-slate-800">
+              Zero rogue calls
+            </span>
           </div>
 
-          <div className={`p-4 rounded-xl border flex flex-col gap-1.5 ${
-            isLight ? 'bg-white border-slate-200 shadow-xs' : 'bg-slate-900/60 border-slate-800'
-          }`}>
-            <span className="text-xs font-medium text-slate-500 dark:text-slate-400">Rate Limit Quota</span>
-            <div className="flex items-baseline gap-2">
+          <div className="connector-3d-card p-4 flex flex-col justify-between gap-1.5">
+            <span className="text-[11px] font-semibold uppercase tracking-wider text-slate-400 font-mono">Rate Limit Quota</span>
+            <div className="flex items-baseline gap-2 mt-1">
               <span className="text-2xl font-bold font-mono text-slate-900 dark:text-white">10,000</span>
-              <span className="text-xs text-slate-500 dark:text-slate-400">req / min</span>
+              <span className="text-xs text-slate-500 dark:text-slate-400 font-mono">req / min</span>
             </div>
-            <span className="text-xs text-slate-500 dark:text-slate-400">Enterprise Dedicated</span>
+            <span className="text-[11px] text-slate-500 dark:text-slate-400 mt-1 pt-1 border-t border-slate-200/60 dark:border-slate-800">
+              Enterprise Dedicated
+            </span>
           </div>
         </div>
 
         {/* API Keys Table */}
-        <div className={`rounded-xl border overflow-hidden ${
-          isLight ? 'bg-white border-slate-200 shadow-xs' : 'bg-slate-900/60 border-slate-800'
-        }`}>
+        <div className="connector-3d-card overflow-hidden">
           <div className="p-4 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between">
             <div>
               <h3 className="text-sm font-semibold text-slate-900 dark:text-white">Active Machine Credentials</h3>
