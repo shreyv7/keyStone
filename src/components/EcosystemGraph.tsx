@@ -75,8 +75,14 @@ export const EcosystemGraph: React.FC<EcosystemGraphProps> = ({
   const targetCamPosRef = useRef<THREE.Vector3 | null>(null);
   const targetLookAtRef = useRef<THREE.Vector3 | null>(null);
 
-  // Default initial camera
-  const DEFAULT_CAM_POS = new THREE.Vector3(0, 5, 85);
+  // Default initial camera locked vertically at an optimal elevation (~81 degrees)
+  const FIXED_POLAR_ANGLE = Math.PI * 0.45;
+  const DEFAULT_CAM_DISTANCE = 92;
+  const DEFAULT_CAM_POS = new THREE.Vector3(
+    0,
+    DEFAULT_CAM_DISTANCE * Math.cos(FIXED_POLAR_ANGLE),
+    DEFAULT_CAM_DISTANCE * Math.sin(FIXED_POLAR_ANGLE)
+  );
   const DEFAULT_LOOK_AT = new THREE.Vector3(0, 0, 0);
 
   // Dependency Cone Calculation for strict chokepoint / blast radius isolation
@@ -121,6 +127,12 @@ export const EcosystemGraph: React.FC<EcosystemGraphProps> = ({
 
     return { focusId, allConeNodes, coneEdges, ancestors, descendants };
   }, [selectedNodeId, isKeystoneFocused, edges]);
+
+  // Keep dependencyConeRef synced for 60fps animation loop
+  const dependencyConeRef = useRef(dependencyCone);
+  useEffect(() => {
+    dependencyConeRef.current = dependencyCone;
+  }, [dependencyCone]);
 
   // Node sizes: strict SC (Systemic Centrality) vs Conventional Vulnerability mapping
   const getNodeRadius = useCallback(
@@ -319,12 +331,15 @@ export const EcosystemGraph: React.FC<EcosystemGraphProps> = ({
     container.appendChild(renderer.domElement);
     rendererRef.current = renderer;
 
-    // 4. Controls
+    // 4. Controls - Turntable Orbit (strictly fixed on X-axis elevation, rotates around Y-axis)
     const controls = new OrbitControls(camera, renderer.domElement);
     controls.enableDamping = true;
     controls.dampingFactor = 0.05;
-    controls.maxDistance = 220;
-    controls.minDistance = 15;
+    controls.minPolarAngle = FIXED_POLAR_ANGLE;
+    controls.maxPolarAngle = FIXED_POLAR_ANGLE;
+    controls.enablePan = false;
+    controls.minDistance = 40;
+    controls.maxDistance = 145;
     controls.autoRotate = autoRotate;
     controls.autoRotateSpeed = 0.6;
     controlsRef.current = controls;
@@ -432,20 +447,7 @@ export const EcosystemGraph: React.FC<EcosystemGraphProps> = ({
       }
     });
 
-    // Batched LineSegments GPU mesh for 500+ node / 2,000+ edge portfolios
-    if (batchedPositions.length > 0) {
-      const batchedGeo = new THREE.BufferGeometry();
-      batchedGeo.setAttribute('position', new THREE.Float32BufferAttribute(batchedPositions, 3));
-      batchedGeo.setAttribute('color', new THREE.Float32BufferAttribute(batchedColors, 3));
-      const batchedMat = new THREE.LineBasicMaterial({
-        vertexColors: true,
-        transparent: true,
-        opacity: isLight ? 0.25 : 0.18
-      });
-      const batchedSegments = new THREE.LineSegments(batchedGeo, batchedMat);
-      batchedSegments.name = 'batchedEdgeSegments';
-      scene.add(batchedSegments);
-    }
+    // Individual edge lines pipeline
     edgeLinesRef.current = edgeLines;
     pulseEdgeMappingRef.current = propEdgesForPulse;
 
@@ -479,11 +481,12 @@ export const EcosystemGraph: React.FC<EcosystemGraphProps> = ({
     const sharedUnitPsfiRingGeo = new THREE.RingGeometry(1.46, 1.60, 32);
     const sharedUnitPdiRingGeo = new THREE.RingGeometry(1.68, 1.82, 32);
     const sharedUnitAnomalyGeo = new THREE.IcosahedronGeometry(1.35, 1);
+    const sharedUnitRippleGeo = new THREE.RingGeometry(1.0, 1.15, 36);
 
     nodes.forEach(node => {
       const group = new THREE.Group();
       group.position.set(node.position[0], node.position[1], node.position[2]);
-      group.userData = { nodeId: node.id, nodeData: node };
+      group.userData = { nodeId: node.id, nodeData: node, currentRadius: getNodeRadius(node) };
 
       const radius = getNodeRadius(node);
       const colors = getNodeColors(node);
@@ -501,6 +504,31 @@ export const EcosystemGraph: React.FC<EcosystemGraphProps> = ({
       sphereMesh.userData = { baseRadius: 1.0 };
       sphereMesh.scale.setScalar(radius);
       group.add(sphereMesh);
+
+      // Dedicated Concentric Ripple Pulse Rings (for concerned node visual wave feedback)
+      const rippleMat1 = new THREE.MeshBasicMaterial({
+        color: 0x38bdf8,
+        side: THREE.DoubleSide,
+        transparent: true,
+        opacity: 0,
+        depthWrite: false
+      });
+      const rippleMesh1 = new THREE.Mesh(sharedUnitRippleGeo, rippleMat1);
+      rippleMesh1.name = 'rippleRing1';
+      rippleMesh1.visible = false;
+      group.add(rippleMesh1);
+
+      const rippleMat2 = new THREE.MeshBasicMaterial({
+        color: 0x38bdf8,
+        side: THREE.DoubleSide,
+        transparent: true,
+        opacity: 0,
+        depthWrite: false
+      });
+      const rippleMesh2 = new THREE.Mesh(sharedUnitRippleGeo, rippleMat2);
+      rippleMesh2.name = 'rippleRing2';
+      rippleMesh2.visible = false;
+      group.add(rippleMesh2);
 
       // Dedicated Gold Dominator Ring (Lengauer-Tarjan articulation chokepoint)
       const isDominator = node.articulationPoint || !!node.dominatorMetrics?.isDominatorChokepoint;
@@ -605,17 +633,31 @@ export const EcosystemGraph: React.FC<EcosystemGraphProps> = ({
       }
     };
 
+    let pointerDownPos = { x: 0, y: 0 };
     const handlePointerDown = (event: MouseEvent) => {
-      // Only handle left clicks
       if (event.button !== 0) return;
+      pointerDownPos = { x: event.clientX, y: event.clientY };
+    };
+
+    const handleClick = (event: MouseEvent) => {
+      if (event.button !== 0) return;
+      const dx = Math.abs(event.clientX - pointerDownPos.x);
+      const dy = Math.abs(event.clientY - pointerDownPos.y);
+      // If user dragged more than 6px, treat as turntable rotation, not a click
+      if (dx > 6 || dy > 6) return;
+
       const hitNode = getIntersectedNode(event);
       if (hitNode) {
         onSelectNode(hitNode.id);
+      } else {
+        // Deselect node on empty space click
+        onSelectNode(null);
       }
     };
 
     container.addEventListener('mousemove', handlePointerMove);
-    container.addEventListener('click', handlePointerDown);
+    container.addEventListener('pointerdown', handlePointerDown);
+    container.addEventListener('click', handleClick);
 
     // 12. Resize Observer
     const handleResize = () => {
@@ -640,7 +682,7 @@ export const EcosystemGraph: React.FC<EcosystemGraphProps> = ({
       // Orbit controls update
       controls.update();
 
-      // Camera smooth transition if target is specified
+      // Camera smooth transition if target is explicitly requested
       if (targetCamPosRef.current && targetLookAtRef.current) {
         camera.position.lerp(targetCamPosRef.current, 0.05);
         controls.target.lerp(targetLookAtRef.current, 0.05);
@@ -648,6 +690,68 @@ export const EcosystemGraph: React.FC<EcosystemGraphProps> = ({
           targetCamPosRef.current = null;
           targetLookAtRef.current = null;
         }
+      }
+
+      // Dedicated Expanding Ripple Wave Feedback on Concerned Nodes
+      const activeCone = dependencyConeRef.current;
+      if (activeCone) {
+        const focusId = activeCone.focusId;
+        nodeMeshes.forEach((group, nodeId) => {
+          const ripple1 = group.getObjectByName('rippleRing1') as THREE.Mesh;
+          const ripple2 = group.getObjectByName('rippleRing2') as THREE.Mesh;
+          if (!ripple1 || !ripple2) return;
+
+          const isConcerned = activeCone.allConeNodes.has(nodeId);
+          if (!isConcerned) {
+            ripple1.visible = false;
+            ripple2.visible = false;
+            return;
+          }
+
+          ripple1.visible = true;
+          ripple2.visible = true;
+
+          // Billboard ripple rings directly to face the camera screen at all turntable angles
+          ripple1.quaternion.copy(camera.quaternion);
+          ripple2.quaternion.copy(camera.quaternion);
+
+          const isFocus = nodeId === focusId;
+          const isAncestor = activeCone.ancestors.has(nodeId);
+          const currentRad = (group.userData.currentRadius as number) || 2.0;
+
+          // Cascading ripple waves: focus node initiates, connected dependencies cascade
+          const phaseOffset = isFocus ? 0.0 : (isAncestor ? 0.28 : 0.54);
+          const cycleSpeed = isFocus ? 1.6 : 1.25;
+          const p1 = (elapsedTime * cycleSpeed + phaseOffset) % 1.0;
+          const p2 = (elapsedTime * cycleSpeed + phaseOffset + 0.5) % 1.0;
+
+          const waveColor = isFocus 
+            ? 0x38bdf8 // Bright electric cyan for selected node
+            : isAncestor 
+              ? 0x818cf8 // Royal indigo for upstream sinks
+              : 0x34d399; // Emerald green for foundational dependencies
+
+          // Wave 1
+          const scale1 = currentRad * (1.1 + p1 * (isFocus ? 2.8 : 2.0));
+          ripple1.scale.setScalar(scale1);
+          const mat1 = ripple1.material as THREE.MeshBasicMaterial;
+          mat1.color.setHex(waveColor);
+          mat1.opacity = Math.pow(1 - p1, 1.4) * (isFocus ? 0.95 : 0.65);
+
+          // Wave 2
+          const scale2 = currentRad * (1.1 + p2 * (isFocus ? 2.8 : 2.0));
+          ripple2.scale.setScalar(scale2);
+          const mat2 = ripple2.material as THREE.MeshBasicMaterial;
+          mat2.color.setHex(waveColor);
+          mat2.opacity = Math.pow(1 - p2, 1.4) * (isFocus ? 0.95 : 0.65);
+        });
+      } else {
+        nodeMeshes.forEach(group => {
+          const r1 = group.getObjectByName('rippleRing1');
+          const r2 = group.getObjectByName('rippleRing2');
+          if (r1) r1.visible = false;
+          if (r2) r2.visible = false;
+        });
       }
 
       // Rotate semantic rings around key nodes
@@ -698,7 +802,8 @@ export const EcosystemGraph: React.FC<EcosystemGraphProps> = ({
       cancelAnimationFrame(animationFrameId);
       window.removeEventListener('resize', handleResize);
       container.removeEventListener('mousemove', handlePointerMove);
-      container.removeEventListener('click', handlePointerDown);
+      container.removeEventListener('pointerdown', handlePointerDown);
+      container.removeEventListener('click', handleClick);
       controls.dispose();
       renderer.dispose();
       scene.clear();
@@ -742,18 +847,19 @@ export const EcosystemGraph: React.FC<EcosystemGraphProps> = ({
       if (isConeFocus) {
         targetRadius *= 1.35;
       } else if (isDimmed) {
-        targetRadius *= 0.52;
+        targetRadius *= 0.4;
       }
+      group.userData.currentRadius = targetRadius;
 
       const core = group.getObjectByName('coreSphere') as THREE.Mesh;
       if (core) {
         const mat = core.material as THREE.MeshStandardMaterial;
         mat.color.setHex(colors.main);
         mat.emissive.setHex(colors.emissive);
-        mat.emissiveIntensity = isConeFocus ? 2.2 : (isDimmed ? 0.15 : colors.emissiveIntensity);
+        mat.emissiveIntensity = isConeFocus ? 2.4 : (isDimmed ? 0.02 : colors.emissiveIntensity);
 
         if (isDimmed) {
-          mat.opacity = 0.12;
+          mat.opacity = 0.08;
           mat.transparent = true;
         } else {
           mat.opacity = 1.0;
@@ -803,6 +909,17 @@ export const EcosystemGraph: React.FC<EcosystemGraphProps> = ({
         }
       }
     });
+
+    // Dim stratum layer rings and stars when isolating a subsystem
+    if (layerRingsRef.current.length > 0) {
+      layerRingsRef.current.forEach(r => {
+        const mat = r.material as THREE.MeshBasicMaterial;
+        mat.opacity = dependencyCone ? 0.03 : (isLight ? 0.22 : 0.12);
+      });
+    }
+    if (starMatRef.current) {
+      starMatRef.current.opacity = dependencyCone ? 0.05 : (isLight ? 0.3 : 0.45);
+    }
   }, [
     nodes,
     showStructuralSize,
@@ -847,8 +964,8 @@ export const EcosystemGraph: React.FC<EcosystemGraphProps> = ({
       if (dependencyCone) {
         const isInConeEdge = dependencyCone.coneEdges.has(edgeId);
         if (!isInConeEdge) {
-          lineMat.color.setHex(isLight ? 0xcbd5e1 : 0x1e293b);
-          lineMat.opacity = 0.03; // Near invisible outside cone!
+          lineMat.color.setHex(isLight ? 0xe2e8f0 : 0x0f172a);
+          lineMat.opacity = 0.015; // Deep ghosted dimming outside cone
           return;
         }
       }
@@ -994,22 +1111,7 @@ export const EcosystemGraph: React.FC<EcosystemGraphProps> = ({
     });
   }, [isLight, edges, severedEdgeIds, nodes, getNodeColors]);
 
-  // Handle Camera Smooth Focus on Selection
-  useEffect(() => {
-    if (!selectedNodeId) return;
-    const selectedNode = nodes.find(n => n.id === selectedNodeId);
-    if (!selectedNode || !cameraRef.current || !controlsRef.current) return;
-
-    const [nx, ny, nz] = selectedNode.position;
-    const targetLookAt = new THREE.Vector3(nx, ny, nz);
-    
-    // Position camera offset from the node with high visibility
-    const offset = selectedNode.id === 'snakeyaml' ? 32 : 24;
-    const targetCamPos = new THREE.Vector3(nx + offset * 0.4, ny + offset * 0.3, nz + offset);
-
-    targetCamPosRef.current = targetCamPos;
-    targetLookAtRef.current = targetLookAt;
-  }, [selectedNodeId, nodes]);
+  // Camera stays fixed in X-axis (no fly-in/zoom on node click)
 
   return (
     <div className={`relative w-full h-full overflow-hidden select-none transition-colors duration-300 ${
