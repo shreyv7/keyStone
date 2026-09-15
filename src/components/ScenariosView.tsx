@@ -56,21 +56,21 @@ export const ScenariosView: React.FC<ScenariosViewProps> = ({
     {
       id: 'dep_confusion',
       title: 'Namespace Squatting: Dependency Confusion',
-      badge: 'Registry Collision',
-      badgeColor: 'bg-slate-100 text-slate-700 border-slate-200',
-      badgeColorDark: 'bg-slate-800 text-slate-300 border-slate-700',
-      description: 'An external adversary publishes a public package using an internal corporate namespace. KEYSTONE verifies namespace ownership and isolates internal pipelines.',
+      badge: 'F6 Defense Active',
+      badgeColor: 'bg-purple-100 text-purple-800 border-purple-300',
+      badgeColorDark: 'bg-purple-950/60 text-purple-300 border-purple-800',
+      description: 'An external adversary publishes a public package using an internal corporate namespace (pkg:npm/@internal/internal-data-pipeline). KEYSTONE F6 Shield normalizes purl identity, blocks registry override, and validates private repo boundaries.',
       targetPackage: 'internal-data-pipeline',
-      attackVector: 'Public Package Registry Namespace Squatting',
-      conventionalScore: 'N/A',
-      systemicScore: '82 / 100 (High Risk)',
-      blastRadius: 'Boundary Confined'
+      attackVector: 'Public Registry PURL Namespace Squatting & Pipeline Injection',
+      conventionalScore: '0 / 100 (No CVE Created)',
+      systemicScore: '76 / 100 (High Risk)',
+      blastRadius: '4 Tier-1 Sinks Insulated'
     }
   ];
 
   return (
     <div className={`absolute inset-0 z-20 backdrop-blur-md p-8 flex flex-col gap-6 overflow-y-auto select-none ${
-      isLight ? 'bg-slate-50/95 text-slate-900' : 'bg-[#06080d]/95 text-slate-100'
+      isLight ? 'bg-white text-slate-900' : 'bg-[#06080d]/95 text-slate-100'
     }`}>
       {/* Header */}
       <div className={`flex items-start justify-between border-b pb-5 ${
@@ -142,7 +142,7 @@ export const ScenariosView: React.FC<ScenariosViewProps> = ({
               </p>
 
               <div className={`p-3 rounded-md border text-xs flex flex-col gap-1.5 mt-2 ${
-                isLight ? 'bg-slate-50 border-slate-200 text-slate-700' : 'bg-slate-950/80 border-slate-800 text-slate-300'
+                isLight ? 'bg-white border-slate-200 text-slate-700 shadow-xs' : 'bg-slate-950/80 border-slate-800 text-slate-300'
               }`}>
                 <div className="flex justify-between">
                   <span className={`text-[11px] ${isLight ? 'text-slate-500' : 'text-slate-400'}`}>Vector:</span>

@@ -17,7 +17,7 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       const saved = localStorage.getItem('keystone_theme');
       if (saved === 'light' || saved === 'dark') return saved;
     }
-    return 'dark';
+    return 'light';
   });
 
   const setTheme = (t: Theme) => {

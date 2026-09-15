@@ -47,7 +47,7 @@ export const TopologyLegendModal: React.FC<TopologyLegendModalProps> = ({ isOpen
             </span>
             <div className="grid grid-cols-2 gap-2">
               <div className={`p-2.5 rounded-md border flex items-center gap-2.5 ${
-                isLight ? 'bg-slate-50 border-slate-200' : 'bg-slate-900/60 border-slate-800'
+                isLight ? 'bg-white border-slate-200 shadow-xs' : 'bg-slate-900/60 border-slate-800'
               }`}>
                 <span className="w-3 h-3 rounded-full bg-red-600 shrink-0"></span>
                 <div>
@@ -57,7 +57,7 @@ export const TopologyLegendModal: React.FC<TopologyLegendModalProps> = ({ isOpen
               </div>
 
               <div className={`p-2.5 rounded-md border flex items-center gap-2.5 ${
-                isLight ? 'bg-slate-50 border-slate-200' : 'bg-slate-900/60 border-slate-800'
+                isLight ? 'bg-white border-slate-200 shadow-xs' : 'bg-slate-900/60 border-slate-800'
               }`}>
                 <span className="w-3 h-3 rounded-full bg-indigo-600 shrink-0"></span>
                 <div>
@@ -67,7 +67,7 @@ export const TopologyLegendModal: React.FC<TopologyLegendModalProps> = ({ isOpen
               </div>
 
               <div className={`p-2.5 rounded-md border flex items-center gap-2.5 ${
-                isLight ? 'bg-slate-50 border-slate-200' : 'bg-slate-900/60 border-slate-800'
+                isLight ? 'bg-white border-slate-200 shadow-xs' : 'bg-slate-900/60 border-slate-800'
               }`}>
                 <span className="w-2.5 h-2.5 rounded-full bg-blue-600 shrink-0"></span>
                 <div>
@@ -77,7 +77,7 @@ export const TopologyLegendModal: React.FC<TopologyLegendModalProps> = ({ isOpen
               </div>
 
               <div className={`p-2.5 rounded-md border flex items-center gap-2.5 ${
-                isLight ? 'bg-slate-50 border-slate-200' : 'bg-slate-900/60 border-slate-800'
+                isLight ? 'bg-white border-slate-200 shadow-xs' : 'bg-slate-900/60 border-slate-800'
               }`}>
                 <span className="w-2.5 h-2.5 rounded-full bg-slate-500 shrink-0"></span>
                 <div>

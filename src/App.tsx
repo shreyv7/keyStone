@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useCallback } from 'react';
+import React, { useState, useMemo, useCallback, useEffect } from 'react';
 import { 
   MOCK_NODES, 
   MOCK_EDGES, 
@@ -10,7 +10,8 @@ import {
   EcosystemNode, 
   PropagationPath, 
   NavView, 
-  RoleLens 
+  RoleLens,
+  UserProfile 
 } from './types';
 import { TopBar } from './components/TopBar';
 import { Sidebar } from './components/Sidebar';
@@ -19,6 +20,7 @@ import { GraphControls } from './components/GraphControls';
 import { NodeTooltip } from './components/NodeTooltip';
 import { NodeIntelligencePanel } from './components/NodeIntelligencePanel';
 import { BlastRadiusHUD } from './components/BlastRadiusHUD';
+import { DominatorLeaderboard } from './components/DominatorLeaderboard';
 import { PropagationPanel } from './components/PropagationPanel';
 import { MitigationPanel } from './components/MitigationPanel';
 import { AskKeystone } from './components/AskKeystone';
@@ -27,12 +29,37 @@ import { OverviewDashboard } from './components/OverviewDashboard';
 import { ScenariosView } from './components/ScenariosView';
 import { CoordinatedPRModal } from './components/CoordinatedPRModal';
 import { TopologyLegendModal } from './components/TopologyLegendModal';
+import { SBOMUploadModal } from './components/SBOMUploadModal';
+import { LandingPage } from './components/LandingPage';
+import { AuthOnboardingModal } from './components/AuthOnboardingModal';
+import { TimelinePlayer } from './components/TimelinePlayer';
+import { ConnectorsPage } from './components/ConnectorsPage';
+import { OrganizationPage } from './components/OrganizationPage';
+import { SettingsPage } from './components/SettingsPage';
+import { ApiKeysPage } from './components/ApiKeysPage';
+import { ProfilePage } from './components/ProfilePage';
+import { HardwarePage } from './components/HardwarePage';
+import { RolloutCockpitView } from './components/RolloutCockpitView';
+import { Globe } from 'lucide-react';
 import { useTheme } from './context/ThemeContext';
 
 export function App() {
   const { isLight } = useTheme();
   // Navigation View
-  const [activeView, setActiveView] = useState<NavView>('ecosystem');
+  const [activeView, setActiveView] = useState<NavView>('landing');
+
+  // User Profile & Authentication State
+  const [userProfile, setUserProfile] = useState<UserProfile>({
+    name: 'Alex Chen',
+    email: 'alex.chen@acme-corp.com',
+    organization: 'Acme Global Infrastructure',
+    roleLens: 'developer',
+    region: 'us-east-1',
+    scopeCount: 42,
+    avatarInitials: 'AC',
+    licenseTier: 'Enterprise Active'
+  });
+  const [authInitialMode, setAuthInitialMode] = useState<'signin' | 'onboard'>('signin');
 
   // Role Lens & Time Travel
   const [activeLens, setActiveLens] = useState<RoleLens>('developer');
@@ -50,6 +77,10 @@ export function App() {
   const [showStructuralSize, setShowStructuralSize] = useState<boolean>(true);
   const [showBlastRadius, setShowBlastRadius] = useState<boolean>(false);
   const [showPropagation, setShowPropagation] = useState<boolean>(false);
+  const [showDominatorMode, setShowDominatorMode] = useState<boolean>(false);
+  const [scopeFilter, setScopeFilter] = useState<'all' | 'production' | 'dev'>('all');
+  const [channelFilter, setChannelFilter] = useState<'all' | 'runtime' | 'build'>('all');
+  const [showParadoxBanner, setShowParadoxBanner] = useState<boolean>(true);
   const [autoRotate, setAutoRotate] = useState<boolean>(false);
 
   // Simulation State
@@ -70,7 +101,9 @@ export function App() {
   const [isAskKeystoneOpen, setIsAskKeystoneOpen] = useState<boolean>(false);
   const [isLegendOpen, setIsLegendOpen] = useState<boolean>(false);
   const [isPRModalOpen, setIsPRModalOpen] = useState<boolean>(false);
+  const [isSBOMModalOpen, setIsSBOMModalOpen] = useState<boolean>(false);
   const [isCircuitBreakerFrozen, setIsCircuitBreakerFrozen] = useState<boolean>(false);
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState<boolean>(false);
 
   // Resolve selected node object
   const selectedNode = useMemo(
@@ -92,6 +125,12 @@ export function App() {
       n => n.name.toLowerCase().includes(q) || n.operationalDomain?.toLowerCase().includes(q)
     ).slice(0, 5);
   }, [searchQuery]);
+
+  // Pre-calculate top structural risks for Overview dashboard
+  const topRisks = useMemo(
+    () => [...MOCK_NODES].sort((a, b) => b.systemicScore - a.systemicScore).slice(0, 5),
+    []
+  );
 
   // Handle Node Selection
   const handleSelectNode = useCallback((nodeId: string | null) => {
@@ -185,9 +224,122 @@ export function App() {
     setSelectedNodeId('snakeyaml');
   }, []);
 
+  // Global Keyboard Shortcuts (Escape to dismiss, ? for legend, 1/2/3 for role lenses)
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // Ignore when user is actively focused in an input, textarea, or contenteditable
+      const target = e.target as HTMLElement | null;
+      if (
+        target &&
+        (target.tagName === 'INPUT' ||
+          target.tagName === 'TEXTAREA' ||
+          target.isContentEditable)
+      ) {
+        if (e.key === 'Escape') {
+          target.blur();
+        }
+        return;
+      }
+
+      if (e.key === 'Escape') {
+        if (isSBOMModalOpen) {
+          setIsSBOMModalOpen(false);
+          return;
+        }
+        if (isPRModalOpen) {
+          setIsPRModalOpen(false);
+          return;
+        }
+        if (isAskKeystoneOpen) {
+          setIsAskKeystoneOpen(false);
+          return;
+        }
+        if (isLegendOpen) {
+          setIsLegendOpen(false);
+          return;
+        }
+        if (isMitigationPanelOpen) {
+          setIsMitigationPanelOpen(false);
+          return;
+        }
+        if (isPropagationPanelOpen) {
+          setIsPropagationPanelOpen(false);
+          return;
+        }
+        if (selectedNodeId) {
+          setSelectedNodeId(null);
+          setHighlightedNodeIds(new Set());
+          return;
+        }
+      }
+
+      if (e.key === '?' || (e.shiftKey && e.key === '/')) {
+        e.preventDefault();
+        setIsLegendOpen(prev => !prev);
+      } else if (e.key === '1') {
+        setActiveLens('ciso');
+      } else if (e.key === '2') {
+        setActiveLens('developer');
+      } else if (e.key === '3') {
+        setActiveLens('maintainer');
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [
+    isSBOMModalOpen,
+    isPRModalOpen,
+    isAskKeystoneOpen,
+    isLegendOpen,
+    isMitigationPanelOpen,
+    isPropagationPanelOpen,
+    selectedNodeId
+  ]);
+
+  if (activeView === 'auth') {
+    return (
+      <AuthOnboardingModal
+        initialMode={authInitialMode}
+        onComplete={(newProfile) => {
+          setUserProfile(newProfile);
+          setActiveLens(newProfile.roleLens);
+          setActiveView('ecosystem');
+        }}
+        onCancel={() => setActiveView('landing')}
+      />
+    );
+  }
+
+  if (activeView === 'landing') {
+    return (
+      <LandingPage
+        stats={KEYSTONE_STATS}
+        onEnterConsole={() => setActiveView('ecosystem')}
+        onLaunchScenario={(id) => {
+          setActiveView('ecosystem');
+          if (id === 'snakeyaml_hero') {
+            handleStartSimulation('snakeyaml');
+          } else if (id === 'minimist_pollution') {
+            setSelectedNodeId('minimist');
+            handleStartSimulation('minimist');
+          } else if (id === 'fresh_maintainer_anomaly') {
+            setTimeTravelDay(-30);
+            setSelectedNodeId('snakeyaml');
+          }
+        }}
+        onOpenAskKeystone={() => setIsAskKeystoneOpen(true)}
+        onOpenAuth={(mode) => {
+          setAuthInitialMode(mode);
+          setActiveView('auth');
+        }}
+      />
+    );
+  }
+
   return (
     <div className={`relative w-screen h-screen overflow-hidden flex flex-col transition-colors duration-200 select-none ${
-      isLight ? 'bg-slate-100 text-slate-900' : 'bg-[#06080d] text-slate-100'
+      isLight ? 'bg-white text-slate-900' : 'bg-[#06080d] text-slate-100'
     }`}>
       {/* Top Application Bar */}
       <TopBar
@@ -199,10 +351,21 @@ export function App() {
         onSearchChange={setSearchQuery}
         onSelectSearchResult={(id) => {
           setSelectedNodeId(id);
+          setHighlightedNodeIds(new Set([id]));
           setSearchQuery('');
           setActiveView('ecosystem');
         }}
         searchResults={searchResults}
+        onGoToLanding={() => setActiveView('landing')}
+        isCircuitBreakerFrozen={isCircuitBreakerFrozen}
+        onToggleCircuitBreaker={() => setIsCircuitBreakerFrozen(prev => !prev)}
+        isSidebarCollapsed={isSidebarCollapsed}
+        onToggleSidebar={() => setIsSidebarCollapsed(prev => !prev)}
+        userProfile={userProfile}
+        onSignOut={() => {
+          setActiveView('landing');
+        }}
+        onNavigateProfile={() => setActiveView('profile')}
       />
 
       {/* Main Workspace Layout (Sidebar + 3D Viewport / Overlays) */}
@@ -213,6 +376,9 @@ export function App() {
           onChangeView={setActiveView}
           stats={KEYSTONE_STATS}
           onOpenAskKeystone={() => setIsAskKeystoneOpen(true)}
+          onOpenSBOMModal={() => setIsSBOMModalOpen(true)}
+          isCollapsed={isSidebarCollapsed}
+          onToggleCollapse={() => setIsSidebarCollapsed(prev => !prev)}
         />
 
         {/* Center Main Stage */}
@@ -233,6 +399,9 @@ export function App() {
             highlightedNodeIds={highlightedNodeIds}
             timeTravelDay={timeTravelDay}
             autoRotate={autoRotate}
+            showDominatorMode={showDominatorMode}
+            scopeFilter={scopeFilter}
+            channelFilter={channelFilter}
           />
 
           {/* Graph Controls Overlay */}
@@ -245,10 +414,60 @@ export function App() {
             onToggleBlastRadius={() => setShowBlastRadius(prev => !prev)}
             showPropagation={showPropagation}
             onTogglePropagation={() => setShowPropagation(prev => !prev)}
+            showDominatorMode={showDominatorMode}
+            onToggleDominatorMode={() => setShowDominatorMode(prev => !prev)}
+            scopeFilter={scopeFilter}
+            onScopeChange={setScopeFilter}
+            channelFilter={channelFilter}
+            onChannelChange={setChannelFilter}
             autoRotate={autoRotate}
             onToggleAutoRotate={() => setAutoRotate(prev => !prev)}
             onOpenLegend={() => setIsLegendOpen(true)}
           />
+
+          {/* F11 Popularity Paradox Callout Banner */}
+          {showParadoxBanner && showStructuralSize && selectedNode && selectedNode.conventionalScore < 55 && selectedNode.systemicScore >= 80 && (
+            <div className={`absolute top-28 left-5 z-20 max-w-md p-3 rounded-xl border shadow-xl backdrop-blur-md flex items-start justify-between gap-3 animate-in fade-in slide-in-from-top-2 ${
+              isLight ? 'bg-amber-50/95 border-amber-300 text-amber-950' : 'bg-amber-950/90 border-amber-800 text-amber-100'
+            }`}>
+              <div className="flex items-start gap-2">
+                <span className="text-base leading-none mt-0.5">⚡</span>
+                <div>
+                  <div className="flex items-center gap-1.5 font-bold text-xs">
+                    <span>POPULARITY PARADOX DETECTED</span>
+                    <span className={`text-[9px] font-mono px-1 py-0.2 rounded border uppercase ${
+                      isLight ? 'bg-white text-amber-800 border-amber-300' : 'bg-black text-amber-300 border-amber-700'
+                    }`}>
+                      F11 Metric Divergence
+                    </span>
+                  </div>
+                  <div className="text-[11px] mt-1 leading-snug">
+                    <strong>OpenSSF Score:</strong> {(selectedNode.conventionalScore / 100).toFixed(2)} (Appears Safe) ↔ <strong>Structural Position:</strong> Top 1% Articulation Chokepoint ({selectedNode.systemicScore}/100).
+                  </div>
+                  <div className={`text-[10px] mt-0.5 opacity-80 ${isLight ? 'text-amber-800' : 'text-amber-200'}`}>
+                    Single-point chokepoint masked by isolated vanity scores.
+                  </div>
+                </div>
+              </div>
+              <button
+                onClick={() => setShowParadoxBanner(false)}
+                className="text-xs px-1 rounded text-slate-400 hover:text-slate-600 dark:hover:text-slate-200"
+              >
+                ✕
+              </button>
+            </div>
+          )}
+
+          {/* F2 Dominator Chokepoints Leaderboard Overlay */}
+          {showDominatorMode && activeView === 'ecosystem' && (
+            <DominatorLeaderboard
+              nodes={MOCK_NODES}
+              selectedNodeId={selectedNodeId}
+              onSelectNode={handleSelectNode}
+              onClose={() => setShowDominatorMode(false)}
+              isOverlay={true}
+            />
+          )}
 
           {/* Hover Tooltip */}
           <NodeTooltip node={hoveredNode} position={hoveredPosition} />
@@ -257,6 +476,8 @@ export function App() {
           {selectedNode && activeView === 'ecosystem' && !isMitigationPanelOpen && (
             <NodeIntelligencePanel
               node={selectedNode}
+              activeLens={activeLens}
+              timeTravelDay={timeTravelDay}
               onClose={() => setSelectedNodeId(null)}
               onStartSimulation={handleStartSimulation}
               onFreezeCircuitBreaker={() => setIsCircuitBreakerFrozen(prev => !prev)}
@@ -295,6 +516,7 @@ export function App() {
             <MitigationPanel
               candidates={MOCK_MITIGATION_CANDIDATES}
               selectedStrategy={selectedStrategy}
+              activeLens={activeLens}
               onSelectStrategy={setSelectedStrategy}
               onApplyFix={handleApplyFix}
               isApplied={simulationPhase === 'mitigation_applied'}
@@ -304,20 +526,37 @@ export function App() {
             />
           )}
 
+          {/* Floating Timeline Forensics Player Dock */}
+          {activeView === 'ecosystem' && !isMitigationPanelOpen && (
+            <TimelinePlayer
+              timeTravelDay={timeTravelDay}
+              onChangeTimeTravel={setTimeTravelDay}
+            />
+          )}
+
           {/* Overview Dashboard View Tab */}
           {activeView === 'overview' && (
             <OverviewDashboard
               stats={KEYSTONE_STATS}
               nodes={MOCK_NODES}
+              topRisks={topRisks}
+              activeLens={activeLens}
               onSelectNode={(id) => {
                 setSelectedNodeId(id);
                 setActiveView('ecosystem');
               }}
               onGoToEcosystem={() => setActiveView('ecosystem')}
+              onLaunchHeroDemo={() => {
+                setActiveView('ecosystem');
+                handleStartSimulation('snakeyaml');
+              }}
               onStartDemoScenario={() => {
                 setActiveView('ecosystem');
                 handleStartSimulation('snakeyaml');
               }}
+              onOpenPRModal={() => setIsPRModalOpen(true)}
+              onOpenRiskWatchlist={() => setActiveView('watchlist')}
+              onOpenSBOMModal={() => setIsSBOMModalOpen(true)}
             />
           )}
 
@@ -346,6 +585,10 @@ export function App() {
                 } else if (id === 'fresh_maintainer_anomaly') {
                   setTimeTravelDay(-30);
                   setSelectedNodeId('snakeyaml');
+                  setHighlightedNodeIds(new Set(['snakeyaml']));
+                } else if (id === 'dep_confusion') {
+                  setSelectedNodeId('internal-data-pipeline');
+                  setHighlightedNodeIds(new Set(['internal-data-pipeline', 'snakeyaml']));
                 }
               }}
               onReturnToGraph={() => setActiveView('ecosystem')}
@@ -367,6 +610,62 @@ export function App() {
                   onResetSimulation={handleResetSimulation}
                 />
               </div>
+            </div>
+          )}
+
+          {/* Evidence-Gated Rollout Cockpit View Tab (F10) */}
+          {activeView === 'rollout' && (
+            <div className="absolute inset-0 z-20">
+              <RolloutCockpitView
+                onReturnToGraph={() => setActiveView('ecosystem')}
+                onOpenPRModal={() => setIsPRModalOpen(true)}
+              />
+            </div>
+          )}
+
+          {/* Connectors & Ecosystem Ingestion */}
+          {activeView === 'connectors' && (
+            <div className="absolute inset-0 z-20">
+              <ConnectorsPage onOpenSBOMModal={() => setIsSBOMModalOpen(true)} />
+            </div>
+          )}
+
+          {/* Organization & Governance */}
+          {activeView === 'organization' && (
+            <div className="absolute inset-0 z-20">
+              <OrganizationPage userProfile={userProfile} />
+            </div>
+          )}
+
+          {/* Settings & System Policies */}
+          {activeView === 'settings' && (
+            <div className="absolute inset-0 z-20">
+              <SettingsPage />
+            </div>
+          )}
+
+          {/* API Keys & Machine Access */}
+          {activeView === 'api-keys' && (
+            <div className="absolute inset-0 z-20">
+              <ApiKeysPage />
+            </div>
+          )}
+
+          {/* User Profile & Security */}
+          {activeView === 'profile' && (
+            <div className="absolute inset-0 z-20">
+              <ProfilePage
+                userProfile={userProfile}
+                onUpdateProfile={setUserProfile}
+                onSignOut={() => setActiveView('landing')}
+              />
+            </div>
+          )}
+
+          {/* Hardware & Scanner Agents */}
+          {activeView === 'hardware' && (
+            <div className="absolute inset-0 z-20">
+              <HardwarePage />
             </div>
           )}
         </main>
@@ -400,6 +699,17 @@ export function App() {
       <TopologyLegendModal
         isOpen={isLegendOpen}
         onClose={() => setIsLegendOpen(false)}
+      />
+
+      {/* SBOM / Lockfile Ingestion Modal */}
+      <SBOMUploadModal
+        isOpen={isSBOMModalOpen}
+        onClose={() => setIsSBOMModalOpen(false)}
+        onIngestSuccess={() => {
+          setActiveView('ecosystem');
+          setSelectedNodeId('snakeyaml');
+          setHighlightedNodeIds(new Set(['snakeyaml']));
+        }}
       />
     </div>
   );

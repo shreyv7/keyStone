@@ -6,7 +6,9 @@ import {
   Copy, 
   ShieldAlert, 
   Lock, 
-  FileJson
+  FileJson,
+  ExternalLink,
+  ArrowUpRight
 } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
 
@@ -79,7 +81,7 @@ export const CoordinatedPRModal: React.FC<CoordinatedPRModalProps> = ({
       }`}>
         {/* Header */}
         <div className={`p-4 border-b flex items-center justify-between ${
-          isLight ? 'bg-slate-50/70 border-slate-200' : 'bg-slate-950/70 border-slate-800'
+          isLight ? 'bg-white border-slate-200' : 'bg-slate-950/70 border-slate-800'
         }`}>
           <div className="flex items-center gap-2.5">
             <div className={`w-8 h-8 rounded-md border flex items-center justify-center ${
@@ -90,13 +92,20 @@ export const CoordinatedPRModal: React.FC<CoordinatedPRModalProps> = ({
               <GitPullRequest className="w-4 h-4" />
             </div>
             <div>
-              <div className="text-sm font-bold flex items-center gap-2">
+              <div className="text-sm font-bold flex items-center gap-2 flex-wrap">
                 <span>Coordinated Multi-Repository Manifest</span>
-                <span className={`text-[10px] font-medium px-1.5 py-0.2 rounded border ${
-                  isLight ? 'bg-slate-100 text-slate-700 border-slate-200' : 'bg-slate-800 text-slate-300 border-slate-700'
-                }`}>
-                  Remediation Orchestrator
-                </span>
+                {circuitBreakerFrozen ? (
+                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-600 dark:text-amber-400 border border-amber-500/30 flex items-center gap-1 animate-pulse">
+                    <Lock className="w-3 h-3" />
+                    CIRCUIT BREAKER: FROZEN
+                  </span>
+                ) : (
+                  <span className={`text-[10px] font-medium px-1.5 py-0.2 rounded border ${
+                    isLight ? 'bg-slate-100 text-slate-700 border-slate-200' : 'bg-slate-800 text-slate-300 border-slate-700'
+                  }`}>
+                    Remediation Orchestrator
+                  </span>
+                )}
               </div>
               <div className={`text-xs ${isLight ? 'text-slate-500' : 'text-slate-400'}`}>
                 1 targeted architectural cut replaces fragmented dependency PRs across {affectedRepos} repositories
@@ -104,14 +113,28 @@ export const CoordinatedPRModal: React.FC<CoordinatedPRModalProps> = ({
             </div>
           </div>
 
-          <button
-            onClick={onClose}
-            className={`p-1 rounded-md transition-colors ${
-              isLight ? 'text-slate-400 hover:text-slate-900 hover:bg-slate-100' : 'text-slate-400 hover:text-white hover:bg-slate-800'
-            }`}
-          >
-            <X className="w-4 h-4" />
-          </button>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={onToggleCircuitBreaker}
+              className={`text-xs px-2.5 py-1 rounded-md border flex items-center gap-1.5 font-medium transition-colors ${
+                circuitBreakerFrozen
+                  ? isLight ? 'bg-amber-100 text-amber-900 border-amber-300 hover:bg-amber-200' : 'bg-amber-900/40 text-amber-300 border-amber-700 hover:bg-amber-900/60'
+                  : isLight ? 'bg-slate-100 text-slate-700 border-slate-200 hover:bg-slate-200' : 'bg-slate-800 text-slate-300 border-slate-700 hover:bg-slate-700'
+              }`}
+              title={circuitBreakerFrozen ? "Click to Unlock CI/CD Intake" : "Click to Quarantine CI/CD Intake"}
+            >
+              <Lock className="w-3.5 h-3.5" />
+              <span>{circuitBreakerFrozen ? 'Frozen' : 'Quarantine'}</span>
+            </button>
+            <button
+              onClick={onClose}
+              className={`p-1 rounded-md transition-colors ${
+                isLight ? 'text-slate-400 hover:text-slate-900 hover:bg-slate-100' : 'text-slate-400 hover:text-white hover:bg-slate-800'
+              }`}
+            >
+              <X className="w-4 h-4" />
+            </button>
+          </div>
         </div>
 
         {/* Content Body */}
@@ -120,7 +143,7 @@ export const CoordinatedPRModal: React.FC<CoordinatedPRModalProps> = ({
           <div className="grid grid-cols-2 gap-3">
             <div className={`p-3 rounded-lg border ${
               isLight 
-                ? 'bg-slate-50 border-slate-200' 
+                ? 'bg-white border-slate-200 shadow-xs' 
                 : 'bg-slate-900/60 border-slate-800'
             }`}>
               <div className={`text-[10px] font-semibold uppercase mb-1 ${
@@ -155,7 +178,7 @@ export const CoordinatedPRModal: React.FC<CoordinatedPRModalProps> = ({
           <div className={`p-3.5 rounded-lg border flex items-center justify-between ${
             circuitBreakerFrozen 
               ? isLight ? 'bg-amber-50/70 border-amber-200' : 'bg-amber-950/30 border-amber-800/40'
-              : isLight ? 'bg-slate-50 border-slate-200' : 'bg-slate-900/40 border-slate-800'
+              : isLight ? 'bg-white border-slate-200 shadow-xs' : 'bg-slate-900/40 border-slate-800'
           }`}>
             <div className="flex items-center gap-3">
               <div className={`p-2 rounded-md ${
@@ -182,7 +205,7 @@ export const CoordinatedPRModal: React.FC<CoordinatedPRModalProps> = ({
 
             <button
               onClick={onToggleCircuitBreaker}
-              className={`px-3 py-1.5 rounded-md text-xs font-semibold border transition-colors ${
+              className={`px-3 py-1.5 rounded-md text-xs font-semibold border transition-colors cursor-pointer ${
                 circuitBreakerFrozen
                   ? isLight ? 'bg-white hover:bg-slate-50 text-slate-800 border-slate-200' : 'bg-slate-800 hover:bg-slate-700 text-slate-200 border-slate-700'
                   : isLight ? 'bg-slate-900 hover:bg-slate-800 text-white border-slate-900' : 'bg-slate-100 hover:bg-white text-slate-900 border-white'
@@ -190,6 +213,154 @@ export const CoordinatedPRModal: React.FC<CoordinatedPRModalProps> = ({
             >
               {circuitBreakerFrozen ? 'Unlock Intake' : 'Engage Quarantine'}
             </button>
+          </div>
+
+          {/* F10 Phased Cohort Rollout Cockpit */}
+          <div className={`rounded-lg border p-3.5 flex flex-col gap-2.5 ${
+            isLight ? 'bg-slate-50 border-slate-200' : 'bg-slate-950/80 border-slate-800'
+          }`}>
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-1.5">
+                <ShieldAlert className="w-3.5 h-3.5 text-indigo-500" />
+                <span className={`text-xs font-bold uppercase tracking-wider ${isLight ? 'text-slate-800' : 'text-slate-200'}`}>
+                  Phased Cohort Rollout Cockpit (F10)
+                </span>
+              </div>
+              <span className={`text-[9px] font-mono px-1.5 py-0.2 rounded border uppercase font-semibold ${
+                isLight ? 'bg-indigo-50 text-indigo-700 border-indigo-200' : 'bg-indigo-950 text-indigo-300 border-indigo-800'
+              }`}>
+                Stage-Gate Pipeline
+              </span>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+              {/* Cohort 0 */}
+              <div className={`p-2.5 rounded-lg border flex flex-col justify-between ${
+                isLight ? 'bg-emerald-50/70 border-emerald-300' : 'bg-emerald-950/30 border-emerald-800'
+              }`}>
+                <div>
+                  <div className="flex items-center justify-between mb-1">
+                    <span className="font-bold text-[11px] text-emerald-700 dark:text-emerald-400">Cohort 0: Canary</span>
+                    <span className="text-[9px] font-mono font-bold px-1.5 py-0.2 rounded bg-emerald-600 text-white">
+                      PROMOTED ✓
+                    </span>
+                  </div>
+                  <div className="text-[10px] text-slate-600 dark:text-slate-300 font-mono">
+                    sandbox-runner, dev-portal
+                  </div>
+                </div>
+                <div className="text-[9px] text-emerald-700 dark:text-emerald-400 mt-2">
+                  0 regressions detected in 24h
+                </div>
+              </div>
+
+              {/* Cohort 1 */}
+              <div className={`p-2.5 rounded-lg border flex flex-col justify-between ${
+                isLight ? 'bg-blue-50/70 border-blue-300 ring-1 ring-blue-300' : 'bg-blue-950/30 border-blue-800 ring-1 ring-blue-700'
+              }`}>
+                <div>
+                  <div className="flex items-center justify-between mb-1">
+                    <span className="font-bold text-[11px] text-blue-700 dark:text-blue-400">Cohort 1: Core Svc</span>
+                    <span className="text-[9px] font-mono font-bold px-1.5 py-0.2 rounded bg-blue-600 text-white animate-pulse">
+                      VALIDATING
+                    </span>
+                  </div>
+                  <div className="text-[10px] text-slate-600 dark:text-slate-300 font-mono">
+                    billing-service, fraud-detection
+                  </div>
+                </div>
+                <div className="text-[9px] text-blue-700 dark:text-blue-400 mt-2">
+                  Canary bake: 1h 14m remaining
+                </div>
+              </div>
+
+              {/* Cohort 2 */}
+              <div className={`p-2.5 rounded-lg border flex flex-col justify-between ${
+                isLight ? 'bg-purple-50/70 border-purple-300' : 'bg-purple-950/30 border-purple-800'
+              }`}>
+                <div>
+                  <div className="flex items-center justify-between mb-1">
+                    <span className="font-bold text-[11px] text-purple-700 dark:text-purple-400">Cohort 2: Crown Jewels</span>
+                    <span className="text-[9px] font-mono font-bold px-1.5 py-0.2 rounded bg-purple-700 text-white">
+                      HELD (SOX Freeze)
+                    </span>
+                  </div>
+                  <div className="text-[10px] text-slate-600 dark:text-slate-300 font-mono">
+                    payment-service, auth-iam
+                  </div>
+                </div>
+                <div className="text-[9px] text-purple-700 dark:text-purple-400 mt-2">
+                  Requires 2 approvals + signoff
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Affected Repositories List with Direct GitHub Deep Links (P3-7) */}
+          <div className={`rounded-lg border p-3 flex flex-col gap-2 ${
+            isLight ? 'bg-white border-slate-200 shadow-xs' : 'bg-slate-900/40 border-slate-800'
+          }`}>
+            <div className="flex items-center justify-between">
+              <span className="font-semibold text-xs flex items-center gap-1.5">
+                <GitPullRequest className="w-3.5 h-3.5 text-emerald-500" />
+                <span>Targeted Repositories for Coordinated PR ({affectedRepos})</span>
+              </span>
+              <a
+                href="https://github.com/orgs/acme-inc/repositories"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-[11px] text-cyan-600 dark:text-cyan-400 hover:underline flex items-center gap-1 font-medium"
+              >
+                <span>View Org on GitHub</span>
+                <ExternalLink className="w-3 h-3" />
+              </a>
+            </div>
+
+            <div className="flex flex-col gap-1.5 max-h-36 overflow-y-auto pr-1">
+              {[
+                { repo: 'acme-inc/payment-service', tier: 'Tier-1 Revenue Sink' },
+                { repo: 'acme-inc/auth-session-manager', tier: 'Tier-1 IAM Sink' },
+                { repo: 'acme-inc/checkout-service', tier: 'Tier-1 Revenue Sink' },
+                { repo: 'acme-inc/fraud-detection', tier: 'Risk Engine' },
+                { repo: 'acme-inc/partner-api-gateway', tier: 'External Gateway' },
+                { repo: 'acme-inc/storefront-web', tier: 'Consumer Web App' },
+                { repo: 'acme-inc/billing-service', tier: 'Tier-1 Settlement' }
+              ].map(({ repo, tier }) => (
+                <div key={repo} className={`p-2 rounded border text-[11px] font-mono flex items-center justify-between ${
+                  isLight ? 'bg-white border-slate-200 text-slate-800' : 'bg-slate-950/60 border-slate-800/80 text-slate-200'
+                }`}>
+                  <div className="flex items-center gap-2">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+                    <span className="font-semibold">{repo}</span>
+                    <span className={`text-[10px] px-1.5 py-0.2 rounded font-sans ${
+                      isLight ? 'bg-slate-100 text-slate-500' : 'bg-slate-800 text-slate-400'
+                    }`}>
+                      {tier}
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-2.5">
+                    <a
+                      href={`https://github.com/${repo}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-[11px] text-cyan-600 dark:text-cyan-400 hover:underline flex items-center gap-0.5 font-sans font-medium"
+                    >
+                      <span>Open Repo</span>
+                      <ExternalLink className="w-2.5 h-2.5" />
+                    </a>
+                    <a
+                      href="https://security.snyk.io/vuln/SNYK-JAVA-ORGYAML-3054694"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-[11px] text-purple-600 dark:text-purple-400 hover:underline flex items-center gap-0.5 font-sans font-medium"
+                    >
+                      <span>Snyk Vuln</span>
+                      <ExternalLink className="w-2.5 h-2.5" />
+                    </a>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
 
           {/* JSON Manifest Preview */}
@@ -203,7 +374,7 @@ export const CoordinatedPRModal: React.FC<CoordinatedPRModalProps> = ({
               </span>
               <button
                 onClick={handleCopy}
-                className={`text-xs px-2.5 py-1 rounded border transition-colors flex items-center gap-1 font-medium ${
+                className={`text-xs px-2.5 py-1 rounded border transition-colors flex items-center gap-1 font-medium cursor-pointer ${
                   isLight 
                     ? 'bg-white hover:bg-slate-50 text-slate-700 border-slate-200 shadow-xs' 
                     : 'bg-slate-800 hover:bg-slate-700 text-slate-200 border-slate-700'
@@ -214,9 +385,9 @@ export const CoordinatedPRModal: React.FC<CoordinatedPRModalProps> = ({
               </button>
             </div>
 
-            <pre className={`p-3 rounded-lg border font-mono text-[11px] leading-snug overflow-x-auto max-h-48 ${
+            <pre className={`p-3 rounded-lg border font-mono text-[11px] leading-snug overflow-x-auto max-h-40 ${
               isLight 
-                ? 'bg-slate-50 border-slate-200 text-slate-800' 
+                ? 'bg-white border-slate-200 text-slate-800 shadow-xs' 
                 : 'bg-slate-950/80 border-slate-800 text-slate-300'
             }`}>
               {mockManifestJson}
@@ -224,33 +395,80 @@ export const CoordinatedPRModal: React.FC<CoordinatedPRModalProps> = ({
           </div>
         </div>
 
-        {/* Footer */}
-        <div className={`p-4 border-t flex items-center justify-end gap-2 ${
-          isLight ? 'bg-slate-50/70 border-slate-200' : 'bg-slate-950/70 border-slate-800'
+        {/* Footer with Deep Link CTAs (P3-7) */}
+        <div className={`p-4 border-t flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 ${
+          isLight ? 'bg-white border-slate-200' : 'bg-slate-950/70 border-slate-800'
         }`}>
-          <button
-            onClick={onClose}
-            className={`px-4 py-2 rounded-md text-xs font-medium border transition-colors ${
-              isLight 
-                ? 'bg-white hover:bg-slate-50 text-slate-700 border-slate-200' 
-                : 'bg-slate-800 hover:bg-slate-700 text-slate-300 border-slate-700'
-            }`}
-          >
-            Close
-          </button>
-          <button
-            onClick={() => {
-              handleCopy();
-              onClose();
-            }}
-            className={`px-4 py-2 rounded-md text-xs font-semibold transition-colors ${
-              isLight 
-                ? 'bg-slate-900 hover:bg-slate-800 text-white' 
-                : 'bg-slate-100 hover:bg-white text-slate-900'
-            }`}
-          >
-            Copy & Dismiss
-          </button>
+          {/* External Integration Deep Links */}
+          <div className="flex items-center gap-2 flex-wrap">
+            <a
+              href="https://docs.renovatebot.com/configuration-options/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className={`px-2.5 py-1.5 rounded-md text-xs font-medium border transition-colors flex items-center gap-1.5 cursor-pointer ${
+                isLight 
+                  ? 'bg-white hover:bg-slate-50 text-slate-700 border-slate-200 shadow-xs' 
+                  : 'bg-slate-900 hover:bg-slate-800 text-slate-300 border-slate-700'
+              }`}
+            >
+              <span>Configure in Renovate</span>
+              <ExternalLink className="w-3 h-3 text-slate-400" />
+            </a>
+
+            <a
+              href="https://security.snyk.io/vuln/SNYK-JAVA-ORGYAML-3054694"
+              target="_blank"
+              rel="noopener noreferrer"
+              className={`px-2.5 py-1.5 rounded-md text-xs font-medium border transition-colors flex items-center gap-1.5 cursor-pointer ${
+                isLight 
+                  ? 'bg-white hover:bg-slate-50 text-slate-700 border-slate-200 shadow-xs' 
+                  : 'bg-slate-900 hover:bg-slate-800 text-slate-300 border-slate-700'
+              }`}
+            >
+              <span>Inspect in Snyk</span>
+              <ExternalLink className="w-3 h-3 text-slate-400" />
+            </a>
+
+            <a
+              href="https://osv.dev/vulnerability/GHSA-mjrt-cq8q-wjp4"
+              target="_blank"
+              rel="noopener noreferrer"
+              className={`px-2.5 py-1.5 rounded-md text-xs font-medium border transition-colors flex items-center gap-1.5 cursor-pointer ${
+                isLight 
+                  ? 'bg-white hover:bg-slate-50 text-slate-700 border-slate-200 shadow-xs' 
+                  : 'bg-slate-900 hover:bg-slate-800 text-slate-300 border-slate-700'
+              }`}
+            >
+              <span>OSV Advisory</span>
+              <ExternalLink className="w-3 h-3 text-slate-400" />
+            </a>
+          </div>
+
+          <div className="flex items-center gap-2 justify-end">
+            <button
+              onClick={onClose}
+              className={`px-3.5 py-2 rounded-md text-xs font-medium border transition-colors cursor-pointer ${
+                isLight 
+                  ? 'bg-white hover:bg-slate-50 text-slate-700 border-slate-200' 
+                  : 'bg-slate-800 hover:bg-slate-700 text-slate-300 border-slate-700'
+              }`}
+            >
+              Close
+            </button>
+            <button
+              onClick={() => {
+                handleCopy();
+                onClose();
+              }}
+              className={`px-4 py-2 rounded-md text-xs font-semibold transition-colors cursor-pointer ${
+                isLight 
+                  ? 'bg-slate-900 hover:bg-slate-800 text-white shadow-xs' 
+                  : 'bg-slate-100 hover:bg-white text-slate-900'
+              }`}
+            >
+              Copy & Dismiss
+            </button>
+          </div>
         </div>
       </div>
     </div>
