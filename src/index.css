@@ -259,28 +259,28 @@
 @layer utilities {
   /* Surfaces & Containers */
   .ks-bg-app {
-    @apply bg-slate-950 text-slate-100;
+    @apply bg-[#080616] text-slate-100;
   }
   .light .ks-bg-app {
     @apply bg-slate-50 text-slate-900;
   }
 
   .ks-card {
-    @apply bg-slate-900/80 border border-slate-800/80 rounded-xl backdrop-blur-md transition-all duration-200;
+    @apply bg-[#1a1953]/70 border border-[#162e93]/80 rounded-xl backdrop-blur-md transition-all duration-200;
   }
   .light .ks-card {
     @apply bg-white/90 border-slate-200 shadow-sm;
   }
 
   .ks-card-hover {
-    @apply hover:border-slate-700 hover:bg-slate-900/95 hover:shadow-lg hover:shadow-black/20;
+    @apply hover:border-[#2f2fe4] hover:bg-[#1a1953] hover:shadow-lg hover:shadow-black/40;
   }
   .light .ks-card-hover {
     @apply hover:border-slate-300 hover:bg-white hover:shadow-md;
   }
 
   .ks-card-elevated {
-    @apply bg-slate-900 border border-slate-700/80 shadow-2xl shadow-black/60 rounded-xl;
+    @apply bg-[#1a1953] border border-[#162e93] shadow-2xl shadow-black/80 rounded-xl;
   }
   .light .ks-card-elevated {
     @apply bg-white border-slate-200 shadow-xl shadow-slate-200/50;
@@ -288,7 +288,7 @@
 
   /* Borders & Dividers */
   .ks-border {
-    @apply border-slate-800;
+    @apply border-[#162e93]/80;
   }
   .light .ks-border {
     @apply border-slate-200;
@@ -296,21 +296,21 @@
 
   /* Typography Colors */
   .ks-text-primary {
-    @apply text-slate-100;
+    @apply text-white;
   }
   .light .ks-text-primary {
     @apply text-slate-900;
   }
 
   .ks-text-secondary {
-    @apply text-slate-400;
+    @apply text-slate-300;
   }
   .light .ks-text-secondary {
     @apply text-slate-600;
   }
 
   .ks-text-muted {
-    @apply text-slate-500;
+    @apply text-slate-400;
   }
   .light .ks-text-muted {
     @apply text-slate-400;
@@ -332,11 +332,11 @@
   }
 
   .ks-btn-primary {
-    @apply bg-blue-600 text-white hover:bg-blue-500 active:bg-blue-700 shadow-md shadow-blue-600/20 border-t border-white/20;
+    @apply bg-[#2f2fe4] text-white hover:bg-[#4343f8] active:bg-[#2020ca] shadow-md shadow-[#2f2fe4]/25 border-t border-white/20;
   }
 
   .ks-btn-secondary {
-    @apply bg-slate-800 text-slate-200 hover:bg-slate-700 active:bg-slate-800 border border-slate-700/70;
+    @apply bg-[#162e93] text-white hover:bg-[#1a1953] active:bg-[#0e2170] border border-[#2f2fe4]/50;
   }
   .light .ks-btn-secondary {
     @apply bg-slate-100 text-slate-800 hover:bg-slate-200 border-slate-200;
@@ -347,7 +347,7 @@
   }
 
   .ks-btn-ghost {
-    @apply text-slate-400 hover:text-slate-100 hover:bg-slate-800/60;
+    @apply text-slate-300 hover:text-white hover:bg-[#1a1953]/80;
   }
   .light .ks-btn-ghost {
     @apply text-slate-600 hover:text-slate-900 hover:bg-slate-100;
@@ -367,10 +367,10 @@
     @apply bg-yellow-950/60 text-yellow-300 border-yellow-800/50;
   }
   .ks-badge-low {
-    @apply bg-blue-950/60 text-blue-300 border-blue-800/50;
+    @apply bg-[#1a1953] text-[#d4d3ff] border-[#162e93];
   }
   .ks-badge-neutral {
-    @apply bg-slate-800/70 text-slate-300 border-slate-700/60;
+    @apply bg-[#1a1953]/80 text-slate-300 border-[#162e93]/80;
   }
   .ks-badge-success {
     @apply bg-emerald-950/70 text-emerald-300 border-emerald-800/60;
@@ -378,10 +378,10 @@
 
   /* Nav Links in Sidebar */
   .ks-nav-item {
-    @apply flex items-center justify-between px-3 py-2 rounded-lg text-xs font-semibold text-slate-300 hover:text-white hover:bg-slate-800/70 transition-colors duration-150 cursor-pointer select-none mb-1 border border-transparent;
+    @apply flex items-center justify-between px-3 py-2 rounded-lg text-xs font-semibold text-slate-300 hover:text-white hover:bg-[#1a1953] transition-colors duration-150 cursor-pointer select-none mb-1 border border-transparent;
   }
   .ks-nav-item-active {
-    @apply flex items-center justify-between px-3 py-2 rounded-lg text-xs font-semibold text-white bg-blue-600/90 shadow-md shadow-blue-600/25 border-t border-blue-400/40 cursor-pointer select-none mb-1;
+    @apply flex items-center justify-between px-3 py-2 rounded-lg text-xs font-semibold text-white bg-[#2f2fe4] shadow-md shadow-[#2f2fe4]/30 border-t border-white/20 cursor-pointer select-none mb-1;
   }
 }
 

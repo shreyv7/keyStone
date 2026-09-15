@@ -84,7 +84,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
   ];
 
   return (
-    <aside className={`${isCollapsed ? 'w-14 p-2' : 'w-52 lg:w-56 p-2.5'} h-full border-r ks-border bg-slate-950/95 text-slate-100 transition-all duration-200 flex flex-col justify-between select-none z-20 shrink-0 overflow-y-auto`}>
+    <aside className={`${isCollapsed ? 'w-14 p-2' : 'w-52 lg:w-56 p-2.5'} h-full border-r border-[#1a1953] bg-[#080616]/95 text-slate-100 transition-all duration-200 flex flex-col justify-between select-none z-20 shrink-0 overflow-y-auto`}>
       <div className="flex flex-col gap-2.5">
         {/* Grouped & Collapsible Navigation Links */}
         <nav className="flex flex-col gap-2">

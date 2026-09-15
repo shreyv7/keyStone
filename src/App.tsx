@@ -339,7 +339,7 @@ export function App() {
 
   return (
     <div className={`relative w-screen h-screen overflow-hidden flex flex-col transition-colors duration-200 select-none ${
-      isLight ? 'bg-white text-slate-900' : 'bg-[#06080d] text-slate-100'
+      isLight ? 'bg-white text-slate-900' : 'bg-[#080616] text-slate-100'
     }`}>
       {/* Top Application Bar */}
       <TopBar

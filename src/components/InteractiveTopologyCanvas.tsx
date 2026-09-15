@@ -10,6 +10,7 @@ export interface BlastEvent {
 
 interface InteractiveTopologyCanvasProps {
   onBlast?: (blast: BlastEvent) => void;
+  theme?: 'dark' | 'light';
 }
 
 interface GraphNode {
@@ -24,6 +25,7 @@ interface GraphNode {
   type: 'foundational' | 'bridge' | 'sink' | 'keystone';
   color: string;
   glowColor: string;
+  coreColor: string;
   isExploded: boolean;
   reconstituteTimer: number;
 }
@@ -72,7 +74,8 @@ const DEPENDENCY_NAMES = [
 ];
 
 export const InteractiveTopologyCanvas: React.FC<InteractiveTopologyCanvasProps> = ({
-  onBlast
+  onBlast,
+  theme = 'dark'
 }) => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const [hudReceipt, setHudReceipt] = useState<{
@@ -118,8 +121,8 @@ export const InteractiveTopologyCanvas: React.FC<InteractiveTopologyCanvasProps>
       y: blastY,
       radius: 4,
       maxRadius: 180,
-      alpha: 0.85,
-      color: '#3b82f6'
+      alpha: 0.9,
+      color: theme === 'dark' ? '#2f2fe4' : '#3b82f6'
     });
 
     if (nodeToDetonate) {
@@ -138,7 +141,7 @@ export const InteractiveTopologyCanvas: React.FC<InteractiveTopologyCanvasProps>
         vx: Math.cos(angle) * speed,
         vy: Math.sin(angle) * speed,
         size: Math.random() * 3 + 1.5,
-        color: i % 2 === 0 ? '#3b82f6' : '#ef4444',
+        color: i % 2 === 0 ? (theme === 'dark' ? '#2f2fe4' : '#3b82f6') : (theme === 'dark' ? '#162e93' : '#f43f5e'),
         alpha: 1,
         decay: Math.random() * 0.02 + 0.015
       });
@@ -160,7 +163,7 @@ export const InteractiveTopologyCanvas: React.FC<InteractiveTopologyCanvasProps>
         timestamp: Date.now()
       });
     }
-  }, []);
+  }, [theme]);
 
   const handleClick = (e: React.MouseEvent<HTMLCanvasElement>) => {
     const rect = e.currentTarget.getBoundingClientRect();
@@ -187,21 +190,26 @@ export const InteractiveTopologyCanvas: React.FC<InteractiveTopologyCanvasProps>
       'keystone'
     ];
 
-    const typeColors = {
-      foundational: { color: '#c5a880', glow: 'rgba(197, 168, 128, 0.45)' },
-      bridge: { color: '#d4b285', glow: 'rgba(212, 178, 133, 0.40)' },
-      sink: { color: '#a38f78', glow: 'rgba(163, 143, 120, 0.35)' },
-      keystone: { color: '#b45309', glow: 'rgba(180, 83, 9, 0.55)' }
+    const typeColors = theme === 'dark' ? {
+      foundational: { color: '#2f2fe4', glow: 'rgba(47, 47, 228, 0.85)', core: '#ffffff' },
+      bridge: { color: '#162e93', glow: 'rgba(22, 46, 147, 0.80)', core: '#2f2fe4' },
+      sink: { color: '#1a1953', glow: 'rgba(26, 25, 83, 0.90)', core: '#2f2fe4' },
+      keystone: { color: '#2f2fe4', glow: 'rgba(47, 47, 228, 0.95)', core: '#ffffff' }
+    } : {
+      foundational: { color: '#c5a880', glow: 'rgba(197, 168, 128, 0.45)', core: '#ffffff' },
+      bridge: { color: '#d4b285', glow: 'rgba(212, 178, 133, 0.40)', core: '#ffffff' },
+      sink: { color: '#a38f78', glow: 'rgba(163, 143, 120, 0.35)', core: '#ffffff' },
+      keystone: { color: '#b45309', glow: 'rgba(180, 83, 9, 0.55)', core: '#ffffff' }
     };
 
     for (let i = 0; i < count; i++) {
       const type = i % 7 === 0 ? 'keystone' : types[i % 3];
       const name = DEPENDENCY_NAMES[i % DEPENDENCY_NAMES.length];
-      const baseRadius = type === 'keystone' ? 8 : type === 'bridge' ? 6 : 4.5;
+      const baseRadius = type === 'keystone' ? 8.5 : type === 'bridge' ? 6.5 : 5.0;
 
       // Constant, peaceful, slow automatic drift velocity
       const angle = Math.random() * Math.PI * 2;
-      const speed = 0.12 + Math.random() * 0.08; // 0.12 - 0.20 px/frame
+      const speed = 0.12 + Math.random() * 0.08;
 
       nodes.push({
         id: i,
@@ -215,6 +223,7 @@ export const InteractiveTopologyCanvas: React.FC<InteractiveTopologyCanvasProps>
         type,
         color: typeColors[type].color,
         glowColor: typeColors[type].glow,
+        coreColor: typeColors[type].core,
         isExploded: false,
         reconstituteTimer: 0
       });
@@ -293,18 +302,31 @@ export const InteractiveTopologyCanvas: React.FC<InteractiveTopologyCanvasProps>
           const dist = Math.hypot(dx, dy);
 
           if (dist < maxDistance) {
-            const alpha = (1 - dist / maxDistance) * 0.38;
+            const alpha = (1 - dist / maxDistance) * (theme === 'dark' ? 0.55 : 0.38);
 
             ctx.beginPath();
             ctx.moveTo(a.x, a.y);
             ctx.lineTo(b.x, b.y);
 
-            if (a.type === 'keystone' || b.type === 'keystone') {
-              ctx.strokeStyle = `rgba(180, 83, 9, ${alpha * 0.85})`;
-              ctx.lineWidth = 1.3;
+            if (theme === 'dark') {
+              if (a.type === 'keystone' || b.type === 'keystone') {
+                ctx.strokeStyle = `rgba(47, 47, 228, ${alpha * 0.95})`;
+                ctx.lineWidth = 1.4;
+              } else if (a.type === 'foundational' || b.type === 'foundational') {
+                ctx.strokeStyle = `rgba(22, 46, 147, ${alpha * 0.80})`;
+                ctx.lineWidth = 1.1;
+              } else {
+                ctx.strokeStyle = `rgba(26, 25, 83, ${alpha * 0.70})`;
+                ctx.lineWidth = 0.9;
+              }
             } else {
-              ctx.strokeStyle = `rgba(197, 168, 128, ${alpha * 0.70})`;
-              ctx.lineWidth = 1.0;
+              if (a.type === 'keystone' || b.type === 'keystone') {
+                ctx.strokeStyle = `rgba(180, 83, 9, ${alpha * 0.85})`;
+                ctx.lineWidth = 1.3;
+              } else {
+                ctx.strokeStyle = `rgba(197, 168, 128, ${alpha * 0.70})`;
+                ctx.lineWidth = 1.0;
+              }
             }
 
             ctx.stroke();
@@ -312,7 +334,7 @@ export const InteractiveTopologyCanvas: React.FC<InteractiveTopologyCanvasProps>
         }
       }
 
-      // Draw Thicker Nodes
+      // Draw Thicker Glowing Neon Nodes
       for (let i = 0; i < allNodes.length; i++) {
         const node = allNodes[i];
         if (node.isExploded) continue;
@@ -320,25 +342,43 @@ export const InteractiveTopologyCanvas: React.FC<InteractiveTopologyCanvasProps>
         const isHovered =
           mouse.x > 0 && Math.hypot(node.x - mouse.x, node.y - mouse.y) < 30;
 
-        // Outer ambient glow
+        // Outer ambient neon glow
         ctx.beginPath();
-        ctx.arc(node.x, node.y, node.radius * (isHovered ? 2.6 : 2.2), 0, Math.PI * 2);
+        ctx.arc(node.x, node.y, node.radius * (isHovered ? 2.8 : 2.2), 0, Math.PI * 2);
         ctx.fillStyle = node.glowColor;
         ctx.fill();
 
-        // Core Node
+        // Secondary luminous neon aura
+        if (theme === 'dark') {
+          ctx.beginPath();
+          ctx.arc(node.x, node.y, node.radius * 1.5, 0, Math.PI * 2);
+          ctx.fillStyle = node.glowColor;
+          ctx.fill();
+        }
+
+        // Core Node Border / Rim
         ctx.beginPath();
         ctx.arc(node.x, node.y, node.radius, 0, Math.PI * 2);
-        ctx.fillStyle = isHovered ? '#f3e8d9' : node.color;
+        ctx.fillStyle = isHovered ? (theme === 'dark' ? '#ffffff' : '#f3e8d9') : node.color;
         ctx.fill();
-        ctx.strokeStyle = '#ffffff';
-        ctx.lineWidth = 1.8;
+        ctx.strokeStyle = theme === 'dark' ? node.coreColor : '#ffffff';
+        ctx.lineWidth = theme === 'dark' ? 1.5 : 1.8;
         ctx.stroke();
+
+        // Incandescent inner white-hot center for neon effect
+        if (theme === 'dark') {
+          ctx.beginPath();
+          ctx.arc(node.x, node.y, node.radius * 0.45, 0, Math.PI * 2);
+          ctx.fillStyle = '#ffffff';
+          ctx.fill();
+        }
 
         // Label on direct hover or keystone
         if (isHovered || node.type === 'keystone') {
-          ctx.font = '10px monospace';
-          ctx.fillStyle = node.type === 'keystone' ? '#b45309' : '#574838';
+          ctx.font = theme === 'dark' ? 'bold 10px monospace' : '10px monospace';
+          ctx.fillStyle = theme === 'dark' 
+            ? (node.type === 'keystone' ? '#ffffff' : '#2f2fe4') 
+            : (node.type === 'keystone' ? '#b45309' : '#574838');
           ctx.fillText(node.name, node.x + node.radius + 7, node.y + 3);
         }
       }
@@ -406,11 +446,11 @@ export const InteractiveTopologyCanvas: React.FC<InteractiveTopologyCanvasProps>
   }, [hudReceipt]);
 
   return (
-    <div className="fixed inset-0 pointer-events-auto z-0 overflow-hidden select-none">
+    <div className="fixed inset-0 pointer-events-auto z-0 overflow-hidden select-none bg-[#080616]">
       <canvas
         ref={canvasRef}
         onClick={handleClick}
-        className="w-full h-full cursor-pointer"
+        className="w-full h-full cursor-pointer bg-[#080616]"
       />
 
       {hudReceipt && (

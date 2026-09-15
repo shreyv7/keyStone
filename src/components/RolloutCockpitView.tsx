@@ -135,7 +135,7 @@ export const RolloutCockpitView: React.FC<RolloutCockpitViewProps> = ({
 
   return (
     <div className={`absolute inset-0 z-20 backdrop-blur-md p-6 lg:p-8 flex flex-col gap-5 overflow-y-auto select-none ${
-      isLight ? 'bg-white text-slate-900' : 'bg-[#06080d]/95 text-slate-100'
+      isLight ? 'bg-white text-slate-900' : 'bg-[#080616]/95 text-slate-100'
     }`}>
       {/* Top Navigation & Breadcrumbs */}
       <div className={`flex items-center justify-between border-b pb-4 ${

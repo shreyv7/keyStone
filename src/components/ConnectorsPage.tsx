@@ -267,7 +267,7 @@ export const ConnectorsPage: React.FC<ConnectorsPageProps> = ({ onOpenSBOMModal 
 
   return (
     <div className={`w-full h-full overflow-y-auto px-6 py-8 select-text ${
-      isLight ? 'bg-white text-slate-900' : 'bg-[#06080d] text-slate-100'
+      isLight ? 'bg-white text-slate-900' : 'bg-[#080616] text-slate-100'
     }`}>
       <div className="max-w-7xl mx-auto flex flex-col gap-6">
         
