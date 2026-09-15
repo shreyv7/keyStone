@@ -259,7 +259,13 @@
 .connector-3d-card {
   position: relative;
   border-radius: 1.25rem;
-  transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transform: translateZ(0);
+  will-change: transform, box-shadow;
+  backface-visibility: hidden;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.2s ease,
+              background 0.2s ease;
   background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
   border-top: 1.5px solid rgba(255, 255, 255, 1);
   border-left: 1px solid rgba(226, 232, 240, 0.9);
@@ -272,7 +278,7 @@
 }
 
 .connector-3d-card:hover {
-  transform: translateY(-4px);
+  transform: translateY(-4px) translateZ(0);
   box-shadow: 
     0 10px 0 0 #cbd5e1,
     0 20px 32px -4px rgba(15, 23, 42, 0.12),
@@ -280,7 +286,7 @@
 }
 
 .connector-3d-card:active {
-  transform: translateY(2px);
+  transform: translateY(2px) translateZ(0);
   border-bottom-width: 1.5px;
   box-shadow: 
     0 2px 0 0 #cbd5e1,
@@ -300,7 +306,7 @@
 }
 
 .dark .connector-3d-card:hover {
-  transform: translateY(-4px);
+  transform: translateY(-4px) translateZ(0);
   border-top-color: rgba(147, 197, 253, 0.35);
   box-shadow: 
     0 10px 0 0 #050a14,
@@ -309,11 +315,28 @@
 }
 
 .dark .connector-3d-card:active {
-  transform: translateY(2px);
+  transform: translateY(2px) translateZ(0);
   border-bottom-width: 1.5px;
   box-shadow: 
     0 2px 0 0 #030712,
     0 6px 12px rgba(0, 0, 0, 0.5);
+}
+
+/* Fluid hardware-accelerated drawer for card hover details */
+.connector-expand-drawer {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: grid-template-rows;
+}
+
+.connector-3d-card:hover .connector-expand-drawer {
+  grid-template-rows: 1fr;
+}
+
+.connector-expand-inner {
+  overflow: hidden;
+  min-height: 0;
 }
 
 /* 3D Extruded Logo Platform */

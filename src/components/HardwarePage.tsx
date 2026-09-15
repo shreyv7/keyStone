@@ -117,24 +117,20 @@ export const HardwarePage: React.FC = () => {
       <div className="max-w-6xl mx-auto flex flex-col gap-6">
         
         {/* Header */}
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-slate-200 dark:border-slate-800">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 pb-6 border-b border-slate-200/80 dark:border-slate-800">
           <div>
-            <div className="flex items-center gap-2 mb-1.5">
-              <span className="text-xs font-mono font-semibold px-2.5 py-1 rounded-md bg-blue-50 dark:bg-blue-950/60 text-blue-700 dark:text-blue-400 border border-blue-200 dark:border-blue-900">
-                EDGE INFRASTRUCTURE
-              </span>
-              <span className="text-xs text-slate-500 dark:text-slate-400">• On-Premise & Airgapped Scanner Nodes</span>
-            </div>
-            <h1 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-white">Hardware & Scanner Agents</h1>
-            <p className="text-sm mt-1.5 max-w-3xl text-slate-600 dark:text-slate-400 leading-relaxed">
-              Deploy dedicated Keystone edge nodes into your private VPC, Kubernetes clusters, or isolated air-gapped data centers.
-              Private nodes decompile lockfiles and evaluate blast-radius reachability locally without shipping code to the cloud.
+            <h1 className="text-2xl md:text-3xl font-bold tracking-tight text-slate-900 dark:text-white font-heading">
+              Hardware & Scanner Agents
+            </h1>
+            <p className="text-sm mt-3 max-w-2xl text-slate-500 dark:text-slate-400 font-sans leading-relaxed">
+              Deploy dedicated Keystone edge nodes into your private VPC, Kubernetes clusters, or air-gapped data centers.
+              All lockfile decompilation and graph reachability computations execute locally within your secure perimeter.
             </p>
           </div>
 
           <button
             onClick={() => setIsRegisterModalOpen(true)}
-            className="flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-semibold bg-blue-600 hover:bg-blue-500 text-white shadow-sm transition-all shrink-0 cursor-pointer"
+            className="btn-3d-primary px-4 py-2.5 rounded-xl text-xs font-bold text-white flex items-center gap-2 cursor-pointer select-none shrink-0"
           >
             <Plus className="w-4 h-4" />
             <span>Register New Edge Node</span>
@@ -143,58 +139,52 @@ export const HardwarePage: React.FC = () => {
 
         {/* Status Metrics Ribbon */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-          <div className={`p-4 rounded-xl border flex flex-col gap-1.5 ${
-            isLight ? 'bg-white border-slate-200 shadow-xs' : 'bg-slate-900/60 border-slate-800'
-          }`}>
-            <span className="text-xs font-medium text-slate-500 dark:text-slate-400">Node Status</span>
-            <div className="flex items-baseline gap-2">
+          <div className="connector-3d-card p-4 flex flex-col justify-between gap-1.5">
+            <span className="text-[11px] font-semibold uppercase tracking-wider text-slate-400 font-mono">Node Status</span>
+            <div className="flex items-baseline gap-2 mt-1">
               <span className="text-2xl font-bold font-mono text-slate-900 dark:text-white">{onlineCount}</span>
-              <span className="text-xs text-slate-500 dark:text-slate-400">/ {nodes.length} Online</span>
+              <span className="text-xs text-slate-500 dark:text-slate-400 font-mono">/ {nodes.length} Online</span>
             </div>
-            <span className="text-xs text-slate-500 dark:text-slate-400 flex items-center gap-1">
+            <span className="text-[11px] text-slate-500 dark:text-slate-400 flex items-center gap-1 mt-1 pt-1 border-t border-slate-200/60 dark:border-slate-800">
               {degradedCount > 0 ? `${degradedCount} Node Degraded (Queue backlog)` : 'All nodes operational'}
             </span>
           </div>
 
-          <div className={`p-4 rounded-xl border flex flex-col gap-1.5 ${
-            isLight ? 'bg-white border-slate-200 shadow-xs' : 'bg-slate-900/60 border-slate-800'
-          }`}>
-            <span className="text-xs font-medium text-slate-500 dark:text-slate-400">Aggregate Ingestion Rate</span>
-            <div className="flex items-baseline gap-2">
+          <div className="connector-3d-card p-4 flex flex-col justify-between gap-1.5">
+            <span className="text-[11px] font-semibold uppercase tracking-wider text-slate-400 font-mono">Aggregate Ingestion Rate</span>
+            <div className="flex items-baseline gap-2 mt-1">
               <span className="text-2xl font-bold font-mono text-slate-900 dark:text-white">420</span>
-              <span className="text-xs text-slate-500 dark:text-slate-400">SBOMs / hr</span>
+              <span className="text-xs text-slate-500 dark:text-slate-400 font-mono">SBOMs / hr</span>
             </div>
-            <span className="text-xs text-slate-500 dark:text-slate-400">52,130 lifetime scans</span>
-          </div>
-
-          <div className={`p-4 rounded-xl border flex flex-col gap-1.5 ${
-            isLight ? 'bg-white border-slate-200 shadow-xs' : 'bg-slate-900/60 border-slate-800'
-          }`}>
-            <span className="text-xs font-medium text-slate-500 dark:text-slate-400">Private Mesh</span>
-            <div className="flex items-baseline gap-2">
-              <span className="text-2xl font-bold font-mono text-slate-900 dark:text-white">mTLS 1.3</span>
-            </div>
-            <span className="text-xs text-blue-600 dark:text-blue-400 flex items-center gap-1.5">
-              <CheckCircle2 className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" /> End-to-end encrypted
+            <span className="text-[11px] text-slate-500 dark:text-slate-400 mt-1 pt-1 border-t border-slate-200/60 dark:border-slate-800">
+              52,130 lifetime scans
             </span>
           </div>
 
-          <div className={`p-4 rounded-xl border flex flex-col gap-1.5 ${
-            isLight ? 'bg-white border-slate-200 shadow-xs' : 'bg-slate-900/60 border-slate-800'
-          }`}>
-            <span className="text-xs font-medium text-slate-500 dark:text-slate-400">Average Processing Latency</span>
-            <div className="flex items-baseline gap-2">
-              <span className="text-2xl font-bold font-mono text-slate-900 dark:text-white">18ms</span>
-              <span className="text-xs text-slate-500 dark:text-slate-400">p99</span>
+          <div className="connector-3d-card p-4 flex flex-col justify-between gap-1.5">
+            <span className="text-[11px] font-semibold uppercase tracking-wider text-slate-400 font-mono">Private Mesh</span>
+            <div className="flex items-baseline gap-2 mt-1">
+              <span className="text-2xl font-bold font-mono text-slate-900 dark:text-white">mTLS 1.3</span>
             </div>
-            <span className="text-xs text-slate-500 dark:text-slate-400">Sub-second graph sync</span>
+            <span className="text-[11px] text-emerald-600 dark:text-emerald-400 font-medium flex items-center gap-1 mt-1 pt-1 border-t border-slate-200/60 dark:border-slate-800">
+              <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" /> End-to-end encrypted
+            </span>
+          </div>
+
+          <div className="connector-3d-card p-4 flex flex-col justify-between gap-1.5">
+            <span className="text-[11px] font-semibold uppercase tracking-wider text-slate-400 font-mono">Average Processing Latency</span>
+            <div className="flex items-baseline gap-2 mt-1">
+              <span className="text-2xl font-bold font-mono text-slate-900 dark:text-white">18ms</span>
+              <span className="text-xs text-slate-500 dark:text-slate-400 font-mono">p99</span>
+            </div>
+            <span className="text-[11px] text-slate-500 dark:text-slate-400 mt-1 pt-1 border-t border-slate-200/60 dark:border-slate-800">
+              Sub-second graph sync
+            </span>
           </div>
         </div>
 
         {/* Nodes Table */}
-        <div className={`rounded-xl border overflow-hidden ${
-          isLight ? 'bg-white border-slate-200 shadow-xs' : 'bg-slate-900/60 border-slate-800'
-        }`}>
+        <div className="connector-3d-card overflow-hidden">
           <div className="p-4 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between">
             <h3 className="text-sm font-semibold text-slate-900 dark:text-white">Registered Scanner Appliances</h3>
             <span className="text-xs text-slate-500 dark:text-slate-400 font-mono">3 Assigned Nodes</span>
@@ -273,7 +263,7 @@ export const HardwarePage: React.FC = () => {
                           e.stopPropagation();
                           setSelectedNode(node);
                         }}
-                        className="px-3 py-1.5 rounded-lg text-xs font-medium bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-slate-700 cursor-pointer transition-colors"
+                        className="btn-3d-secondary px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-700 dark:text-slate-200 cursor-pointer"
                       >
                         Diagnostics
                       </button>
