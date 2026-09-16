@@ -130,7 +130,7 @@ export const TimelinePlayer: React.FC<TimelinePlayerProps> = ({
               <Calendar className="w-3.5 h-3.5" />
             </div>
             <div>
-              <span className="text-xs font-bold tracking-tight">Timeline Forensics</span>
+              <span className="text-xs font-semibold tracking-tight">Risk History</span>
               <span className={`hidden sm:inline text-[11px] ml-2 font-normal ${
                 isLight ? 'text-slate-500' : 'text-slate-400'
               }`}>
@@ -168,12 +168,10 @@ export const TimelinePlayer: React.FC<TimelinePlayerProps> = ({
           <button
             onClick={handleTogglePlay}
             title={isPlaying ? 'Pause timeline replay' : 'Play timeline replay (-90d to Day 0)'}
-            className={`w-9 h-9 rounded-xl flex items-center justify-center shrink-0 transition-all shadow-sm cursor-pointer ${
+            className={`w-9 h-9 rounded-lg flex items-center justify-center shrink-0 transition-colors shadow-xs cursor-pointer ${
               isPlaying
-                ? 'bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold shadow-amber-500/30'
-                : isLight
-                ? 'bg-slate-900 hover:bg-slate-800 text-white'
-                : 'bg-blue-600 hover:bg-blue-500 text-white'
+                ? 'bg-amber-600 hover:bg-amber-500 text-white'
+                : 'bg-blue-600 hover:bg-blue-700 text-white'
             }`}
           >
             {isPlaying ? (

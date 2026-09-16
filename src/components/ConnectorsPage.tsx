@@ -1015,20 +1015,17 @@ export const ConnectorsPage: React.FC<ConnectorsPageProps> = ({ onOpenSBOMModal 
             {onOpenSBOMModal && (
               <button
                 onClick={onOpenSBOMModal}
-                className="btn-3d-secondary px-3.5 py-2 rounded-xl text-xs font-semibold text-slate-700 dark:text-slate-200 flex items-center gap-2 cursor-pointer select-none"
-                title="Direct CycloneDX SBOM or Lockfile Upload (F1)"
+                className="px-3.5 py-2 rounded-lg text-xs font-medium text-slate-700 dark:text-slate-200 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-750 flex items-center gap-2 cursor-pointer select-none shadow-xs transition-colors"
+                title="Direct CycloneDX SBOM or Lockfile Upload"
               >
-                <UploadCloud className="w-4 h-4 text-blue-500" />
+                <UploadCloud className="w-4 h-4 text-blue-600 dark:text-blue-400" />
                 <span>Ingest SBOM</span>
-                <span className="text-[10px] px-1.5 py-0.5 rounded font-mono bg-blue-500/10 text-blue-500 border border-blue-500/20">
-                  F1
-                </span>
               </button>
             )}
 
             <button
               onClick={() => setIsAddModalOpen(true)}
-              className="btn-3d-primary px-4 py-2 rounded-xl text-xs font-bold text-white flex items-center gap-1.5 cursor-pointer select-none"
+              className="px-4 py-2 rounded-lg text-xs font-medium text-white bg-blue-600 hover:bg-blue-700 flex items-center gap-1.5 cursor-pointer select-none shadow-xs transition-colors"
             >
               <Plus className="w-4 h-4" />
               <span>Add Connector</span>

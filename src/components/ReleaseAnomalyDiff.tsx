@@ -50,8 +50,8 @@ export const ReleaseAnomalyDiff: React.FC<ReleaseAnomalyDiffProps> = ({ node, cl
           </div>
           <div>
             <div className="flex items-center gap-1.5">
-              <span className={`text-xs font-bold uppercase tracking-wider ${isLight ? 'text-slate-900' : 'text-slate-100'}`}>
-                Release Anomaly Inspector (F4)
+              <span className={`text-xs font-semibold uppercase tracking-wider ${isLight ? 'text-slate-900' : 'text-slate-100'}`}>
+                Release Anomaly Inspector
               </span>
               <span className={`text-[9px] font-mono px-1.5 py-0.5 rounded border uppercase ${
                 isLight ? 'bg-red-50 text-red-700 border-red-200' : 'bg-red-950/50 text-red-300 border-red-800'

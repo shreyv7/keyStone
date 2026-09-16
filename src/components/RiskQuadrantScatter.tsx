@@ -533,17 +533,17 @@ export const RiskQuadrantScatter: React.FC<RiskQuadrantScatterProps> = ({
                 <div>
                   <div className="flex items-center gap-2 flex-wrap">
                     <span className="text-sm font-bold font-mono text-slate-900 dark:text-white">
-                      Weakest-Dimension Diagnostic: <span className="text-blue-600 dark:text-blue-400">{diagNode.name}@{diagNode.version}</span>
+                      Diagnostic: <span className="text-blue-600 dark:text-blue-400">{diagNode.name}@{diagNode.version}</span>
                     </span>
-                    <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/20 font-bold uppercase">
-                      F3 PSFI Drilldown
+                    <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/20 font-medium uppercase">
+                      Structural Risk Breakdown
                     </span>
                     <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-700">
-                      Coverage: 4/4 Available
+                      Coverage: 4/4 Axes
                     </span>
                   </div>
                   <span className="text-xs text-slate-500 dark:text-slate-400 mt-0.5 block">
-                    Decomposing Package Structural Fragility Index into 4 Orthogonal Risk Axes
+                    Structural risk decomposed across 4 orthogonal dimensions
                   </span>
                 </div>
               </div>
@@ -555,9 +555,9 @@ export const RiskQuadrantScatter: React.FC<RiskQuadrantScatterProps> = ({
                       onSelectNode(diagNode.id);
                       onGoToEcosystem();
                     }}
-                    className="btn-3d-primary px-3 py-1.5 rounded-xl text-xs font-bold text-white flex items-center gap-1.5 cursor-pointer select-none"
+                    className="btn-3d-primary px-3 py-1.5 rounded-lg text-xs font-semibold text-white flex items-center gap-1.5 cursor-pointer select-none"
                   >
-                    <span>Fly to 3D Topology</span>
+                    <span>View in Topology</span>
                     <ArrowRight className="w-3.5 h-3.5" />
                   </button>
                 )}

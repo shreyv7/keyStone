@@ -440,12 +440,12 @@ export function App() {
                 <div className="flex items-start gap-2">
                   <span className="text-base leading-none mt-0.5">⚡</span>
                   <div>
-                    <div className="flex items-center gap-1.5 font-bold text-xs">
-                      <span>POPULARITY PARADOX DETECTED</span>
-                      <span className={`text-[9px] font-mono px-1 py-0.2 rounded border uppercase ${
+                    <div className="flex items-center gap-1.5 font-semibold text-xs">
+                      <span>Popularity Paradox Detected</span>
+                      <span className={`text-[9px] font-mono px-1.5 py-0.5 rounded border uppercase ${
                         isLight ? 'bg-white text-amber-800 border-amber-300' : 'bg-black text-amber-300 border-amber-700'
                       }`}>
-                        F11 Metric Divergence
+                        Metric Divergence
                       </span>
                     </div>
                     <div className="text-[11px] mt-1 leading-snug">

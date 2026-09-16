@@ -84,13 +84,14 @@ export const BlastRadiusHUD: React.FC<BlastRadiusHUDProps> = ({
       </div>
 
       {/* F11 Impact Concentration Index Card */}
+      {/* Impact Concentration Card */}
       <div className={`p-3 rounded-lg border mb-3 text-xs flex flex-col gap-2 ${
         isLight ? 'bg-white border-slate-200 shadow-xs' : 'bg-slate-900/60 border-slate-800'
       }`}>
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-1.5 font-semibold text-[11px]">
             <span className="w-2 h-2 rounded-full bg-amber-500 animate-pulse" />
-            <span className={isLight ? 'text-slate-900' : 'text-slate-100'}>F11 Impact Concentration</span>
+            <span className={isLight ? 'text-slate-900' : 'text-slate-100'}>Impact Concentration</span>
           </div>
           <span className="font-mono font-bold text-xs text-red-600 dark:text-red-400">
             0.88 / 1.00
@@ -113,29 +114,25 @@ export const BlastRadiusHUD: React.FC<BlastRadiusHUDProps> = ({
           </div>
           <div className="flex justify-between text-[10px] text-slate-500 font-mono">
             <span className="text-red-600 dark:text-red-400 font-semibold">
-              ↔ Horizontal Spread: 84%
+              ↔ Horizontal: 84%
             </span>
             <span>
-              ↕ Vertical Depth: 16%
+              ↕ Vertical: 16%
             </span>
           </div>
         </div>
 
-        {/* Herfindahl Classification Badge */}
-        <div className="flex items-center justify-between pt-1 border-t border-slate-200/60 dark:border-slate-800/60">
-          <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded border uppercase ${
-            isLight ? 'bg-red-100 text-red-800 border-red-200' : 'bg-red-950/60 text-red-300 border-red-800'
-          }`}>
-            🚨 Systemic Contagion
+        {/* Herfindahl Index Sub-card */}
+        <div className={`p-2 rounded border flex items-center justify-between ${
+          isLight ? 'bg-slate-50/70 border-slate-200' : 'bg-slate-900 border-slate-800'
+        }`}>
+          <span className="text-[10px] font-mono font-semibold text-red-600 uppercase">
+            Systemic Contagion
           </span>
           <span className={`text-[10px] font-mono ${isLight ? 'text-slate-500' : 'text-slate-400'}`}>
             Herfindahl Metric
           </span>
         </div>
-
-        <p className={`text-[10px] leading-tight ${isLight ? 'text-slate-600' : 'text-slate-400'}`}>
-          Distinguishes 50 vulnerabilities in 1 monolith (contained incident) from 4 paths crossing 21 microservices (portfolio emergency).
-        </p>
       </div>
 
       {/* Contagion Summary */}
@@ -166,11 +163,7 @@ export const BlastRadiusHUD: React.FC<BlastRadiusHUDProps> = ({
         {canMitigate && (
           <button
             onClick={onComputeMitigation}
-            className={`w-full py-2 px-3 rounded-md text-xs font-semibold flex items-center justify-center gap-2 transition-colors ${
-              isLight 
-                ? 'bg-slate-900 hover:bg-slate-800 text-white' 
-                : 'bg-slate-100 hover:bg-white text-slate-900'
-            }`}
+            className="w-full py-2 px-3 rounded-md text-xs font-medium flex items-center justify-center gap-2 transition-colors bg-blue-600 hover:bg-blue-700 text-white shadow-xs"
           >
             <span>Calculate Minimum-Cut Remediation</span>
             <ArrowRight className="w-3.5 h-3.5" />

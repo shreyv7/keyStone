@@ -25,7 +25,9 @@ import {
   Sparkles,
   ChevronDown,
   ChevronUp,
-  FileText
+  FileText,
+  Compass,
+  AlertCircle
 } from 'lucide-react';
 import { KeystoneStats, EcosystemNode, RoleLens } from '../types';
 import { useTheme } from '../context/ThemeContext';
@@ -68,6 +70,7 @@ export const OverviewDashboard: React.FC<OverviewDashboardProps> = ({
   const [isExportModalOpen, setIsExportModalOpen] = useState(false);
   const [isPreviewEmptyState, setIsPreviewEmptyState] = useState(false);
   const [expandedBriefingId, setExpandedBriefingId] = useState<string | null>('snakeyaml');
+  const [expandedEvidenceId, setExpandedEvidenceId] = useState<string | null>(null);
 
   // Filter severe support divergence chokepoints (PDI >= 70%)
   const severeDivergenceNodes = useMemo(() => {
@@ -111,7 +114,7 @@ export const OverviewDashboard: React.FC<OverviewDashboardProps> = ({
         <div className="flex items-center gap-2.5 shrink-0 flex-wrap">
           <button
             onClick={handleHeroAction}
-            className="btn-3d-primary px-4 py-2.5 rounded-xl text-xs font-bold text-white flex items-center gap-2 cursor-pointer select-none"
+            className="px-4 py-2 rounded-lg text-xs font-medium text-white bg-blue-600 hover:bg-blue-700 flex items-center gap-2 cursor-pointer select-none shadow-xs transition-colors"
           >
             {activeLens === 'ciso' ? (
               <>
@@ -133,9 +136,9 @@ export const OverviewDashboard: React.FC<OverviewDashboardProps> = ({
 
           <button
             onClick={onOpenPRModal}
-            className="btn-3d-secondary px-3.5 py-2 rounded-xl text-xs font-semibold text-slate-700 dark:text-slate-200 flex items-center gap-2 cursor-pointer select-none"
+            className="px-3.5 py-2 rounded-lg text-xs font-medium text-slate-700 dark:text-slate-200 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-750 flex items-center gap-2 cursor-pointer select-none shadow-xs transition-colors"
           >
-            <FileSpreadsheet className="w-3.5 h-3.5 text-blue-500" />
+            <FileSpreadsheet className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
             <span>
               {activeLens === 'ciso' ? 'CISO Audit Manifest' : activeLens === 'maintainer' ? 'Renovate / Dependabot PRs' : 'Remediation Manifest'}
             </span>
@@ -144,29 +147,29 @@ export const OverviewDashboard: React.FC<OverviewDashboardProps> = ({
           {onOpenSBOMModal && (
             <button
               onClick={onOpenSBOMModal}
-              className="btn-3d-secondary px-3.5 py-2 rounded-xl text-xs font-semibold text-slate-700 dark:text-slate-200 flex items-center gap-2 cursor-pointer select-none"
+              className="px-3.5 py-2 rounded-lg text-xs font-medium text-slate-700 dark:text-slate-200 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-750 flex items-center gap-2 cursor-pointer select-none shadow-xs transition-colors"
               title="Connect Repository / Upload CycloneDX SBOM or Lockfile"
             >
-              <UploadCloud className="w-3.5 h-3.5 text-blue-500" />
+              <UploadCloud className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
               <span>Ingest SBOM / Lock</span>
             </button>
           )}
 
           <button
             onClick={() => setIsExportModalOpen(true)}
-            className="btn-3d-secondary px-3.5 py-2 rounded-xl text-xs font-semibold text-slate-700 dark:text-slate-200 flex items-center gap-2 cursor-pointer select-none"
+            className="px-3.5 py-2 rounded-lg text-xs font-medium text-slate-700 dark:text-slate-200 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-750 flex items-center gap-2 cursor-pointer select-none shadow-xs transition-colors"
             title="Export Systemic Risk & Compliance Report (Markdown, JSON, CSV)"
           >
-            <Download className="w-3.5 h-3.5 text-blue-500" />
+            <Download className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
             <span>Export Report</span>
           </button>
 
           <button
             onClick={() => setIsPreviewEmptyState(prev => !prev)}
-            className="btn-3d-secondary px-3 py-2 rounded-xl text-xs font-semibold text-slate-700 dark:text-slate-200 flex items-center gap-1.5 cursor-pointer select-none"
+            className="px-3 py-2 rounded-lg text-xs font-medium text-slate-700 dark:text-slate-200 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-750 flex items-center gap-1.5 cursor-pointer select-none shadow-xs transition-colors"
             title="Toggle Enterprise Onboarding / Empty State Preview"
           >
-            <LayoutTemplate className="w-3.5 h-3.5 text-blue-500" />
+            <LayoutTemplate className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
             <span>{isPreviewEmptyState ? 'Exit Empty Preview' : 'Preview Empty'}</span>
           </button>
         </div>
@@ -181,7 +184,7 @@ export const OverviewDashboard: React.FC<OverviewDashboardProps> = ({
         <>
 
       {/* Critical Alert Callout */}
-      <div className="connector-3d-card p-4 border-l-4 border-l-blue-600 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+      <div className="p-4 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/80 border-l-4 border-l-blue-600 shadow-xs flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
         <div className="flex items-start gap-3">
           <div className="p-2 rounded-xl bg-blue-50 dark:bg-blue-950/40 text-blue-600 dark:text-blue-400 shrink-0">
             {activeLens === 'ciso' ? <DollarSign className="w-5 h-5" /> : <AlertTriangle className="w-5 h-5" />}
@@ -203,7 +206,7 @@ export const OverviewDashboard: React.FC<OverviewDashboardProps> = ({
 
         <button
           onClick={() => onSelectNode('snakeyaml')}
-          className="btn-3d-secondary shrink-0 px-3.5 py-1.5 rounded-xl text-xs font-semibold text-slate-800 dark:text-slate-200 flex items-center gap-1.5 cursor-pointer select-none"
+          className="shrink-0 px-3.5 py-1.5 rounded-lg text-xs font-medium text-slate-700 dark:text-slate-200 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-750 flex items-center gap-1.5 cursor-pointer select-none shadow-xs transition-colors"
         >
           <span>{activeLens === 'ciso' ? 'Review Exposure' : 'Inspect Node'}</span>
           <ArrowRight className="w-3.5 h-3.5" />
@@ -270,66 +273,39 @@ export const OverviewDashboard: React.FC<OverviewDashboardProps> = ({
             <span className={`text-2xl font-bold font-mono mt-1 ${isLight ? 'text-slate-900' : 'text-slate-100'}`}>125M+</span>
             <span className={`text-[11px] mt-1 ${isLight ? 'text-slate-500' : 'text-slate-500'}`}>Across shared packages</span>
           </div>
-
-          <div className={`p-4 rounded-lg border flex flex-col ${
-            isLight ? 'bg-white border-slate-200 shadow-xs' : 'bg-slate-900/60 border-slate-800'
-          }`}>
-            <span className={`text-xs font-medium ${isLight ? 'text-slate-500' : 'text-slate-400'}`}>Max Transitive Depth</span>
-            <span className={`text-2xl font-bold font-mono mt-1 ${isLight ? 'text-slate-900' : 'text-slate-100'}`}>5 Layers</span>
-            <span className={`text-[11px] mt-1 ${isLight ? 'text-slate-500' : 'text-slate-500'}`}>Indirect inheritance depth</span>
-          </div>
         </div>
       ) : (
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3.5">
-          <div className="connector-3d-card p-4 flex flex-col justify-between">
-            <span className="text-[11px] font-semibold uppercase tracking-wider text-slate-400 font-mono">Dependencies Analyzed</span>
-            <div className="flex items-baseline gap-2 mt-1">
-              <span className="text-2xl font-bold font-mono text-slate-900 dark:text-white">
-                {nodes.length > 0 ? nodes.length : stats.repositories * 3}
-              </span>
-              <span className="text-xs text-slate-500 font-mono">packages</span>
+        <div className="grid grid-cols-2 md:grid-cols-4 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/60 divide-y md:divide-y-0 md:divide-x divide-slate-200 dark:divide-slate-800">
+          <div className="p-3.5 flex flex-col justify-between">
+            <div className="text-2xl lg:text-3xl font-bold font-mono text-slate-900 dark:text-white">
+              {nodes.length > 0 ? nodes.length : stats.repositories * 3}
             </div>
-            <div className="text-[11px] text-slate-500 mt-1 pt-1 border-t border-slate-200/60 dark:border-slate-800">
-              {stats.repositories || 42} service repositories
-            </div>
+            <span className="text-xs font-medium text-slate-600 dark:text-slate-400 mt-0.5">Dependencies analyzed</span>
+            <span className="text-[11px] text-slate-400 mt-1">{stats.repositories || 42} service repositories</span>
           </div>
 
-          <div className="connector-3d-card p-4 flex flex-col justify-between">
-            <span className="text-[11px] font-semibold uppercase tracking-wider text-slate-400 font-mono">Critical Chokepoints</span>
-            <div className="flex items-baseline gap-2 mt-1">
-              <span className="text-2xl font-bold font-mono text-slate-900 dark:text-white">{stats.criticalDependencies}</span>
-              <span className="text-xs text-slate-500 font-mono">keystones</span>
+          <div className="p-3.5 flex flex-col justify-between">
+            <div className="text-2xl lg:text-3xl font-bold font-mono text-slate-900 dark:text-white">
+              {stats.criticalDependencies}
             </div>
-            <div className="text-[11px] text-slate-500 mt-1 pt-1 border-t border-slate-200/60 dark:border-slate-800">
-              High reachability & centrality
-            </div>
+            <span className="text-xs font-medium text-slate-600 dark:text-slate-400 mt-0.5">Critical chokepoints</span>
+            <span className="text-[11px] text-slate-400 mt-1">High reachability & centrality</span>
           </div>
 
-          <div className="connector-3d-card p-4 flex flex-col justify-between">
-            <div className="flex items-center justify-between">
-              <span className="text-[11px] font-semibold uppercase tracking-wider text-slate-400 font-mono">Tier-1 Assets Exposed</span>
-              <span className="text-[10px] font-mono font-bold px-1.5 py-0.5 rounded bg-rose-500/10 text-rose-600 border border-rose-500/20">
-                CRITICAL
-              </span>
+          <div className="p-3.5 flex flex-col justify-between">
+            <div className="text-2xl lg:text-3xl font-bold font-mono text-red-600 dark:text-red-400">
+              {stats.tier1Assets}
             </div>
-            <div className="flex items-baseline gap-2 mt-1">
-              <span className="text-2xl font-bold font-mono text-rose-600 dark:text-rose-400">{stats.tier1Assets}</span>
-              <span className="text-xs text-slate-500 font-mono">sinks</span>
-            </div>
-            <div className="text-[11px] text-slate-500 mt-1 pt-1 border-t border-slate-200/60 dark:border-slate-800">
-              Mission-critical production sinks
-            </div>
+            <span className="text-xs font-medium text-slate-600 dark:text-slate-400 mt-0.5">Tier-1 assets exposed</span>
+            <span className="text-[11px] text-slate-400 mt-1">Mission-critical production sinks</span>
           </div>
 
-          <div className="connector-3d-card p-4 flex flex-col justify-between">
-            <span className="text-[11px] font-semibold uppercase tracking-wider text-slate-400 font-mono">Active Cut-Vertices</span>
-            <div className="flex items-baseline gap-2 mt-1">
-              <span className="text-2xl font-bold font-mono text-slate-900 dark:text-white">{stats.activeStructuralRisks}</span>
-              <span className="text-xs text-slate-500 font-mono">articulation</span>
+          <div className="p-3.5 flex flex-col justify-between">
+            <div className="text-2xl lg:text-3xl font-bold font-mono text-slate-900 dark:text-white">
+              {stats.activeStructuralRisks}
             </div>
-            <div className="text-[11px] text-slate-500 mt-1 pt-1 border-t border-slate-200/60 dark:border-slate-800">
-              Single points of failure
-            </div>
+            <span className="text-xs font-medium text-slate-600 dark:text-slate-400 mt-0.5">Active cut-vertices</span>
+            <span className="text-[11px] text-slate-400 mt-1">Single points of failure</span>
           </div>
         </div>
       )}
@@ -343,7 +319,7 @@ export const OverviewDashboard: React.FC<OverviewDashboardProps> = ({
         {/* ========================================================= */}
         {/* LEFT COLUMN: Main Ranking Table                           */}
         {/* ========================================================= */}
-        <div className="connector-3d-card p-5 flex flex-col gap-4">
+        <div className="p-5 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/70 shadow-xs flex flex-col gap-4">
           <div className={`flex items-center justify-between border-b pb-3 ${
             isLight ? 'border-slate-200' : 'border-slate-800'
           }`}>
@@ -376,7 +352,7 @@ export const OverviewDashboard: React.FC<OverviewDashboardProps> = ({
             )}
           </div>
 
-          <div className="flex flex-col gap-2">
+          <div className="border border-slate-200 dark:border-slate-800 rounded-lg overflow-hidden divide-y divide-slate-200 dark:divide-slate-800 bg-white dark:bg-slate-900/40">
             {riskList.map((item, idx) => {
               const dailyExposure = (item.tier1Reach * 18.5 + item.dependents * 1.25).toFixed(1);
 
@@ -384,11 +360,7 @@ export const OverviewDashboard: React.FC<OverviewDashboardProps> = ({
                 <div
                   key={item.id}
                   onClick={() => onSelectNode(item.id)}
-                  className={`p-3 rounded-md border cursor-pointer transition-all flex items-center justify-between group ${
-                    isLight 
-                      ? 'bg-slate-50/50 hover:bg-slate-100 border-slate-200 hover:border-slate-300' 
-                      : 'bg-slate-950/60 hover:bg-slate-800/60 border-slate-800 hover:border-slate-700'
-                  }`}
+                  className="p-3 cursor-pointer transition-colors flex items-center justify-between group hover:bg-slate-50 dark:hover:bg-slate-850"
                 >
                   <div className="flex items-center gap-3">
                     <span className={`font-mono font-medium text-xs w-4 ${isLight ? 'text-slate-400' : 'text-slate-500'}`}>
@@ -457,18 +429,20 @@ export const OverviewDashboard: React.FC<OverviewDashboardProps> = ({
               );
             })}
           </div>
-              {/* ========================================================= */}
+        </div>
+
+        {/* ========================================================= */}
         {/* RIGHT COLUMN: 2×2 Risk Quadrant & Framework Matrix        */}
         {/* ========================================================= */}
-        <div className="connector-3d-card p-5 flex flex-col gap-4">
+        <div className="p-5 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/70 shadow-xs flex flex-col gap-4">
           <div className={`flex items-center justify-between border-b pb-3 flex-wrap gap-2 ${
             isLight ? 'border-slate-200' : 'border-slate-800'
           }`}>
             <div className="flex items-center gap-2">
-              <Activity className={`w-4 h-4 ${isLight ? 'text-slate-700' : 'text-slate-300'}`} />
+              <Compass className="w-4 h-4 text-blue-500" />
               <span className={`font-semibold text-sm ${isLight ? 'text-slate-900' : 'text-slate-100'}`}>
                 {rightPanelTab === 'quadrant'
-                  ? '2×2 Systemic Risk Quadrant (F21)'
+                  ? 'Systemic Risk Quadrant'
                   : activeLens === 'ciso' 
                   ? 'Regulatory Compliance Scope Matrix' 
                   : activeLens === 'maintainer'
@@ -660,32 +634,29 @@ export const OverviewDashboard: React.FC<OverviewDashboardProps> = ({
               </div>
             </div>
           ) : null}
-        </div>    </div>
+        </div>
       </div>
 
       {/* ========================================================= */}
-      {/* F4 XZ RADAR: SEVERE SUPPORT DIVERGENCE ALERTS (PDI >= 70%) */}
+      {/* SUPPORT DIVERGENCE ANALYSIS                                */}
       {/* ========================================================= */}
-      <div className="connector-3d-card p-5 flex flex-col gap-4">
+      <div className="p-5 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/70 shadow-xs flex flex-col gap-4">
         <div className="flex items-center justify-between border-b border-slate-200/80 dark:border-slate-800 pb-3 flex-wrap gap-2">
           <div className="flex items-center gap-2.5">
-            <div className="p-1.5 rounded-xl bg-blue-50 dark:bg-blue-950/40 text-blue-600 dark:text-blue-400">
+            <div className="p-1.5 rounded-lg bg-blue-50 dark:bg-blue-950/40 text-blue-600 dark:text-blue-400">
               <Scale className="w-4 h-4" />
             </div>
             <div>
               <div className="flex items-center gap-2 flex-wrap">
-                <h3 className="text-sm font-bold text-slate-900 dark:text-white font-heading">
-                  Severe Support Divergence Inspector (The "XZ Radar")
+                <h3 className="text-sm font-semibold text-slate-900 dark:text-white font-heading">
+                  Support Divergence Analysis
                 </h3>
-                <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-rose-500/10 text-rose-600 dark:text-rose-400 border border-rose-500/20 font-bold uppercase">
-                  PDI ≥ 70% DEFICIT ALERT
-                </span>
-                <span className="text-[9px] font-mono px-1.5 py-0.5 rounded border uppercase bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border-slate-200 dark:border-slate-700">
-                  F4 Pre-CVE Disjointness
+                <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-red-500/10 text-red-600 dark:text-red-400 border border-red-500/20 font-medium uppercase">
+                  Support Deficit Alert
                 </span>
               </div>
               <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
-                Detects catastrophic divergence where internal structural load (P_S) dominates, but observed open-source backing (Q_supp) is near zero.
+                Identifies critical dependencies where internal structural demand far exceeds active open-source maintainer support.
               </p>
             </div>
           </div>
@@ -698,25 +669,30 @@ export const OverviewDashboard: React.FC<OverviewDashboardProps> = ({
             const qSupport = item.openSsfScore ? ((item.openSsfScore / 10) * 0.38).toFixed(1) : "12.4";
             const pdi = item.pdiScore || 79.6;
             const isBriefingOpen = expandedBriefingId === item.id;
+            const isEvidenceOpen = expandedEvidenceId === item.id;
 
             return (
               <div 
                 key={item.id}
-                className="connector-3d-card p-4 flex flex-col gap-3.5 transition-all"
+                className="p-4 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/70 shadow-xs flex flex-col gap-3.5 transition-all"
               >
-                {/* Item Top Bar */}
-                <div className="flex items-center justify-between flex-wrap gap-2">
+                {/* Header */}
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-200/60 dark:border-slate-800/80">
                   <div className="flex items-center gap-2.5">
-                    <span className="w-2.5 h-2.5 rounded-full bg-rose-500 animate-pulse"></span>
+                    <span className="w-2 h-2 rounded-full bg-red-600 animate-pulse" />
                     <div>
                       <div className="flex items-center gap-2">
-                        <span className="font-mono font-bold text-sm text-slate-900 dark:text-white">{item.name}</span>
-                        <span className="text-xs font-mono text-slate-500">v{item.version}</span>
-                        <span className="text-[10px] font-mono px-1.5 py-0.2 rounded bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/20 font-semibold">
-                          pkg:maven/org.yaml/{item.name}@{item.version}
+                        <span className="font-mono font-bold text-sm text-slate-900 dark:text-white">
+                          {item.name}
+                        </span>
+                        <span className="text-xs font-mono text-slate-500">
+                          v{item.version}
+                        </span>
+                        <span className="text-[10px] font-mono px-1.5 py-0.5 rounded border border-blue-500/20 bg-blue-500/10 text-blue-600 dark:text-blue-400">
+                          {item.purl || `pkg:maven/${item.name}@${item.version}`}
                         </span>
                       </div>
-                      <span className="text-xs text-slate-500 dark:text-slate-400">
+                      <span className="text-xs text-slate-500 dark:text-slate-400 mt-0.5 block">
                         {item.summary}
                       </span>
                     </div>
@@ -725,12 +701,14 @@ export const OverviewDashboard: React.FC<OverviewDashboardProps> = ({
                   <div className="flex items-center gap-2">
                     <button
                       onClick={() => setExpandedBriefingId(isBriefingOpen ? null : item.id)}
-                      className={`btn-3d-secondary px-3 py-1.5 rounded-xl text-xs font-semibold flex items-center gap-1.5 cursor-pointer select-none ${
-                        isBriefingOpen ? 'ring-2 ring-blue-500 text-blue-600' : 'text-slate-700 dark:text-slate-200'
+                      className={`px-3 py-1.5 rounded-lg text-xs font-medium flex items-center gap-1.5 cursor-pointer select-none border transition-colors shadow-xs ${
+                        isBriefingOpen
+                          ? 'bg-blue-50 dark:bg-blue-950/40 border-blue-300 dark:border-blue-800 text-blue-600 dark:text-blue-400'
+                          : 'bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-750'
                       }`}
                     >
-                      <Sparkles className="w-3.5 h-3.5 text-blue-500" />
-                      <span>{isBriefingOpen ? 'Hide CISO Briefing' : 'CISO Action Briefing'}</span>
+                      <Sparkles className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
+                      <span>{isBriefingOpen ? 'Hide Action Directive' : 'Action Directive'}</span>
                       {isBriefingOpen ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
                     </button>
 
@@ -739,7 +717,7 @@ export const OverviewDashboard: React.FC<OverviewDashboardProps> = ({
                         onSelectNode(item.id);
                         if (onGoToEcosystem) onGoToEcosystem();
                       }}
-                      className="btn-3d-primary px-3 py-1.5 rounded-xl text-xs font-bold text-white flex items-center gap-1 cursor-pointer select-none"
+                      className="px-3 py-1.5 rounded-lg text-xs font-medium text-white bg-blue-600 hover:bg-blue-700 flex items-center gap-1 cursor-pointer select-none shadow-xs transition-colors"
                     >
                       <span>Inspect Topology</span>
                       <ArrowRight className="w-3.5 h-3.5" />
@@ -747,93 +725,113 @@ export const OverviewDashboard: React.FC<OverviewDashboardProps> = ({
                   </div>
                 </div>
 
-                {/* Tug-of-War Divergence Barometer */}
-                <div className="p-3.5 rounded-xl border border-slate-200/80 dark:border-slate-800 bg-white dark:bg-slate-900 font-mono text-xs flex flex-col gap-2.5">
-                  <div className="flex items-center justify-between text-[11px] text-slate-500 font-bold uppercase tracking-wider pb-1.5 border-b border-slate-200/60 dark:border-slate-800">
-                    <span>Tug-of-War Support Divergence Barometer (Disjointness: P_S ⊥ Q_supp)</span>
-                    <span className="text-rose-600 dark:text-rose-400 font-mono font-bold">PDI Deficit: {pdi}% (CRITICAL)</span>
+                {/* Human-Readable Metrics Overview */}
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 text-xs">
+                  <div className="p-3 rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 flex flex-col justify-between">
+                    <span className="text-[11px] text-slate-500 font-medium">Maintainer support</span>
+                    <div className="text-sm font-bold text-red-600 dark:text-red-400 mt-1 flex items-center gap-1">
+                      <AlertCircle className="w-3.5 h-3.5" />
+                      <span>Very low</span>
+                    </div>
+                    <span className="text-[10px] text-slate-400 mt-0.5">{item.maintainers || 1} active maintainer</span>
                   </div>
 
-                  {/* Internal Demand Bar */}
-                  <div>
-                    <div className="flex items-center justify-between text-[11px] mb-1">
-                      <span className="font-semibold text-slate-700 dark:text-slate-300">
-                        Internal Structural Demand (P_S):
-                      </span>
-                      <span className="font-bold text-blue-600 dark:text-blue-400">{pStructural}% (Percentile)</span>
+                  <div className="p-3 rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 flex flex-col justify-between">
+                    <span className="text-[11px] text-slate-500 font-medium">Open-source support</span>
+                    <div className="font-mono font-bold text-sm mt-1 text-slate-900 dark:text-white">
+                      {item.openSsfScore || 3.2} <span className="text-xs font-normal text-slate-500">/ 10</span>
                     </div>
-                    <div className="w-full bg-slate-200 dark:bg-slate-800 h-2 rounded-full overflow-hidden">
-                      <div className="bg-gradient-to-r from-blue-600 to-indigo-600 h-full rounded-full" style={{ width: `${pStructural}%` }}></div>
-                    </div>
+                    <span className="text-[10px] text-slate-400 mt-0.5">OpenSSF Scorecard</span>
                   </div>
 
-                  {/* External Support Bar */}
-                  <div>
-                    <div className="flex items-center justify-between text-[11px] mb-1">
-                      <span className="font-semibold text-slate-700 dark:text-slate-300">
-                        External Ecosystem Support (Q_supp):
-                      </span>
-                      <span className="font-bold text-slate-600 dark:text-slate-400">{qSupport}% (Geometric Mean)</span>
+                  <div className="p-3 rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 flex flex-col justify-between">
+                    <span className="text-[11px] text-slate-500 font-medium">Release recency</span>
+                    <div className="font-mono font-bold text-sm mt-1 text-slate-900 dark:text-white">
+                      {item.daysSinceRelease || 412} days
                     </div>
-                    <div className="w-full bg-slate-200 dark:bg-slate-800 h-2 rounded-full overflow-hidden">
-                      <div className="bg-slate-400 dark:bg-slate-600 h-full rounded-full" style={{ width: `${qSupport}%` }}></div>
+                    <span className="text-[10px] text-slate-400 mt-0.5">Release cadence</span>
+                  </div>
+
+                  <div className="p-3 rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 flex flex-col justify-between">
+                    <span className="text-[11px] text-slate-500 font-medium">Human activity</span>
+                    <div className="font-mono font-bold text-sm mt-1 text-slate-900 dark:text-white">
+                      {item.humanCommits12m || 4} commits
                     </div>
+                    <span className="text-[10px] text-slate-400 mt-0.5">{item.botCommitsFiltered || 98} bot commits filtered</span>
                   </div>
                 </div>
 
-                {/* 3-Signal Telemetry Breakdown */}
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 text-xs">
-                  <div className="p-3 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 flex flex-col justify-between">
-                    <span className="text-[10px] text-slate-500 uppercase font-mono">Q1: OpenSSF Scorecard</span>
-                    <div className="font-mono font-bold text-base mt-1 text-slate-900 dark:text-white">
-                      {item.openSsfScore || 3.2} / 10.0
-                    </div>
-                    <div className="text-[10px] text-slate-400 mt-1">Missing branch protection & code review</div>
-                  </div>
+                {/* Expandable Supporting Evidence & Calculation */}
+                <div>
+                  <button
+                    onClick={() => setExpandedEvidenceId(isEvidenceOpen ? null : item.id)}
+                    className="text-xs text-blue-600 dark:text-blue-400 hover:underline flex items-center gap-1 font-medium cursor-pointer"
+                  >
+                    <span>{isEvidenceOpen ? 'Hide calculation details' : 'View calculation & evidence breakdown'}</span>
+                    {isEvidenceOpen ? <ChevronUp className="w-3 h-3" /> : <ChevronDown className="w-3 h-3" />}
+                  </button>
 
-                  <div className="p-3 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 flex flex-col justify-between">
-                    <span className="text-[10px] text-slate-500 uppercase font-mono">Q2: Human Commits (12m)</span>
-                    <div className="font-mono font-bold text-base mt-1 text-slate-900 dark:text-white">
-                      {item.humanCommits12m || 4} commits
-                    </div>
-                    <div className="text-[10px] text-slate-400 mt-1">{item.botCommitsFiltered || 98} bot commits filtered out</div>
-                  </div>
+                  {isEvidenceOpen && (
+                    <div className="mt-2.5 p-3.5 rounded-lg border border-slate-200/80 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/60 font-mono text-xs flex flex-col gap-2.5 animate-in fade-in">
+                      <div className="flex items-center justify-between text-[11px] text-slate-500 font-medium pb-1.5 border-b border-slate-200/60 dark:border-slate-800">
+                        <span>Mathematical Deficit: PDI(v) = max(0, P_S - Q_supp)</span>
+                        <span className="text-red-600 dark:text-red-400 font-bold">Deficit: {pdi}%</span>
+                      </div>
 
-                  <div className="p-3 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 flex flex-col justify-between">
-                    <span className="text-[10px] text-slate-500 uppercase font-mono">Q3: Release Recency</span>
-                    <div className="font-mono font-bold text-base mt-1 text-slate-900 dark:text-white">
-                      {item.daysSinceRelease || 412} days
+                      {/* Internal Demand Bar */}
+                      <div>
+                        <div className="flex items-center justify-between text-[11px] mb-1">
+                          <span className="text-slate-700 dark:text-slate-300">Internal Structural Demand (P_S):</span>
+                          <span className="font-bold text-blue-600 dark:text-blue-400">{pStructural}%</span>
+                        </div>
+                        <div className="w-full bg-slate-200 dark:bg-slate-800 h-1.5 rounded-full overflow-hidden">
+                          <div className="bg-blue-600 h-full rounded-full" style={{ width: `${pStructural}%` }}></div>
+                        </div>
+                      </div>
+
+                      {/* External Support Bar */}
+                      <div>
+                        <div className="flex items-center justify-between text-[11px] mb-1">
+                          <span className="text-slate-700 dark:text-slate-300">External Ecosystem Support (Q_supp):</span>
+                          <span className="font-bold text-slate-600 dark:text-slate-400">{qSupport}%</span>
+                        </div>
+                        <div className="w-full bg-slate-200 dark:bg-slate-800 h-1.5 rounded-full overflow-hidden">
+                          <div className="bg-slate-400 dark:bg-slate-600 h-full rounded-full" style={{ width: `${qSupport}%` }}></div>
+                        </div>
+                      </div>
                     </div>
-                    <div className="text-[10px] text-slate-400 mt-1">Stagnant release cadence (Bus Factor 1)</div>
-                  </div>
+                  )}
                 </div>
 
                 {/* CISO Action Briefing Directive (Expandable) */}
                 {isBriefingOpen && (
-                  <div className="p-4 rounded-xl border border-blue-500/20 bg-blue-50/30 dark:bg-blue-950/20 text-xs flex flex-col gap-2.5 animate-in fade-in slide-in-from-top-2">
-                    <div className="flex items-center justify-between pb-2 border-b border-blue-200/70 dark:border-blue-900/40">
-                      <span className="font-bold flex items-center gap-2 text-slate-900 dark:text-white">
+                  <div className="p-4 rounded-lg border border-slate-200 dark:border-slate-800 bg-slate-50/80 dark:bg-slate-900/50 text-xs flex flex-col gap-2.5 animate-in fade-in">
+                    <div className="flex items-center justify-between pb-2 border-b border-slate-200 dark:border-slate-800">
+                      <span className="font-semibold flex items-center gap-2 text-slate-900 dark:text-white">
                         <Sparkles className="w-3.5 h-3.5 text-blue-500" />
-                        <span>Pre-Configured CISO Executive Action Directive (Policy PDI-70)</span>
+                        <span>Recommended Action Directive</span>
                       </span>
-                      <span className="text-[10px] font-mono font-bold uppercase px-2 py-0.5 rounded bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/20">
-                        Mandatory Dual-Vendoring
+                      <span className="text-[10px] font-mono uppercase px-2 py-0.5 rounded bg-blue-50 dark:bg-blue-950/40 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-800">
+                        Dual-Vendoring Recommended
                       </span>
                     </div>
 
                     <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
-                      <strong>Risk Synopsis:</strong> <code>{item.name}</code> handles critical payload parsing across Tier-1 assets, yet relies on an unfunded single maintainer with 4 human commits in 12 months. Matches precursor signature of systemic chokepoints.
+                      <strong>Risk Synopsis:</strong> <code>{item.name}</code> handles critical payload parsing across Tier-1 assets, yet relies on a single maintainer with 4 human commits in 12 months.
                     </p>
 
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-2.5 font-mono text-[11px] pt-1">
-                      <div className="p-3 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300">
-                        <strong className="text-blue-600 dark:text-blue-400">1. DUAL-VENDORING:</strong> Evaluate drop-in secondary parsers (e.g. Jackson YAML / SnakeYAML 2.0).
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-2.5 text-xs pt-1">
+                      <div className="p-3 rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300">
+                        <strong className="text-slate-900 dark:text-white block mb-1">1. Dual-Vendoring</strong>
+                        Evaluate drop-in secondary parsers (e.g. Jackson YAML / SnakeYAML 2.0).
                       </div>
-                      <div className="p-3 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300">
-                        <strong className="text-blue-600 dark:text-blue-400">2. ESCROW REPO FORK:</strong> Maintain mirror fork on internal Gitlab with automated static analysis CI gates.
+                      <div className="p-3 rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300">
+                        <strong className="text-slate-900 dark:text-white block mb-1">2. Escrow Repo Fork</strong>
+                        Maintain mirror fork with automated static analysis CI gates.
                       </div>
-                      <div className="p-3 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300">
-                        <strong className="text-blue-600 dark:text-blue-400">3. SPONSORSHIP:</strong> Allocate corporate OSS stewardship funds through Linux Foundation.
+                      <div className="p-3 rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300">
+                        <strong className="text-slate-900 dark:text-white block mb-1">3. Sponsorship</strong>
+                        Allocate corporate OSS stewardship funds through Linux Foundation.
                       </div>
                     </div>
                   </div>

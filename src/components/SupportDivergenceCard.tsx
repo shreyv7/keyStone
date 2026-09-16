@@ -52,31 +52,31 @@ export const SupportDivergenceCard: React.FC<SupportDivergenceCardProps> = ({ no
           </div>
           <div>
             <div className="flex items-center gap-1.5">
-              <span className={`text-xs font-bold uppercase tracking-wider ${isLight ? 'text-slate-900' : 'text-slate-100'}`}>
-                Support Divergence Barometer (PDI)
+              <span className={`text-xs font-semibold uppercase tracking-wider ${isLight ? 'text-slate-900' : 'text-slate-100'}`}>
+                Support Risk & Divergence
               </span>
               <span className={`text-[9px] font-mono px-1.5 py-0.5 rounded border uppercase ${
                 isCritical
                   ? isLight ? 'bg-red-50 text-red-700 border-red-200' : 'bg-red-950/50 text-red-300 border-red-800'
                   : isLight ? 'bg-amber-50 text-amber-700 border-amber-200' : 'bg-amber-950/50 text-amber-300 border-amber-800'
               }`}>
-                XZ-Style Fragility
+                Upstream Fragility
               </span>
             </div>
             <p className={`text-[10px] ${isLight ? 'text-slate-500' : 'text-slate-400'}`}>
-              Tug-of-War: Enterprise Demand (P_S) vs Upstream Maintenance (Q_supp)
+              Enterprise Demand (P_S) vs Upstream Maintenance (Q_supp)
             </p>
           </div>
         </div>
 
-        <span className={`text-xs font-mono font-bold px-2 py-0.5 rounded border uppercase ${
+        <span className={`text-xs font-mono font-semibold px-2 py-0.5 rounded border uppercase ${
           isCritical
-            ? isLight ? 'bg-red-100 text-red-800 border-red-300' : 'bg-red-950 text-red-300 border-red-800'
+            ? isLight ? 'bg-red-50 text-red-700 border-red-200' : 'bg-red-950/60 text-red-300 border-red-800'
             : isModerate
-            ? isLight ? 'bg-amber-100 text-amber-800 border-amber-300' : 'bg-amber-950 text-amber-300 border-amber-800'
-            : isLight ? 'bg-emerald-100 text-emerald-800 border-emerald-300' : 'bg-emerald-950 text-emerald-300 border-emerald-800'
+            ? isLight ? 'bg-amber-50 text-amber-700 border-amber-200' : 'bg-amber-950/60 text-amber-300 border-amber-800'
+            : isLight ? 'bg-emerald-50 text-emerald-700 border-emerald-200' : 'bg-emerald-950/60 text-emerald-300 border-emerald-800'
         }`}>
-          {isCritical ? 'CRITICAL DEFICIT' : isModerate ? 'MODERATE DIVERGENCE' : 'EQUILIBRIUM'}
+          {isCritical ? 'Critical Deficit' : isModerate ? 'Moderate Divergence' : 'Equilibrium'}
         </span>
       </div>
 
@@ -85,17 +85,17 @@ export const SupportDivergenceCard: React.FC<SupportDivergenceCardProps> = ({ no
         {/* Internal Demand P_S */}
         <div>
           <div className="flex items-center justify-between text-xs mb-1">
-            <span className={`font-semibold flex items-center gap-1 ${isLight ? 'text-slate-700' : 'text-slate-300'}`}>
-              <Activity className="w-3 h-3 text-cyan-500" />
+            <span className={`font-medium flex items-center gap-1 ${isLight ? 'text-slate-700' : 'text-slate-300'}`}>
+              <Activity className="w-3 h-3 text-blue-600 dark:text-blue-400" />
               <span>Internal Structural Demand (P_S)</span>
             </span>
-            <span className="font-mono font-bold text-cyan-600 dark:text-cyan-400">
+            <span className="font-mono font-bold text-blue-600 dark:text-blue-400">
               {psPercent.toFixed(1)}%
             </span>
           </div>
-          <div className="w-full bg-slate-200 dark:bg-slate-800 h-2.5 rounded-full overflow-hidden">
+          <div className="w-full bg-slate-200 dark:bg-slate-800 h-2 rounded-full overflow-hidden">
             <div
-              className="h-full rounded-full bg-gradient-to-r from-cyan-500 to-blue-600 transition-all duration-500"
+              className="h-full rounded-full bg-blue-600 transition-all duration-500"
               style={{ width: `${psPercent}%` }}
             />
           </div>
@@ -144,13 +144,13 @@ export const SupportDivergenceCard: React.FC<SupportDivergenceCardProps> = ({ no
         }`}>
           <div>
             <div className="flex items-center gap-1.5">
-              <span className={`text-xs font-bold ${isCritical ? 'text-red-700 dark:text-red-400' : isLight ? 'text-slate-800' : 'text-slate-200'}`}>
-                Support Deficit: PDI(v) = max(0, P_S - Q_supp)
+              <span className={`text-xs font-semibold ${isCritical ? 'text-red-700 dark:text-red-400' : isLight ? 'text-slate-800' : 'text-slate-200'}`}>
+                Support Deficit: Very low upstream maintenance
               </span>
             </div>
-            <div className={`text-[10px] mt-0.5 ${isLight ? 'text-slate-600' : 'text-slate-400'}`}>
+            <div className={`text-[10px] mt-0.5 ${isLight ? 'text-slate-500' : 'text-slate-400'}`}>
               {isCritical
-                ? 'Severe under-resourced dependency at central chokepoint (Classic XZ exploit target)'
+                ? 'Severe under-resourced dependency at central chokepoint (PDI = max(0, P_S - Q_supp))'
                 : 'Balanced community backing relative to architectural usage'}
             </div>
           </div>
@@ -171,7 +171,7 @@ export const SupportDivergenceCard: React.FC<SupportDivergenceCardProps> = ({ no
         }`}>
           <div className="flex items-center gap-1 text-[10px] text-slate-500">
             <Award className="w-3 h-3 text-amber-500" />
-            <span>OpenSSF Q₁</span>
+            <span>OpenSSF Score</span>
           </div>
           <div className="font-mono font-bold text-xs mt-1">
             {openSsf.toFixed(1)} <span className="text-[9px] font-normal text-slate-500">/10</span>
@@ -182,8 +182,8 @@ export const SupportDivergenceCard: React.FC<SupportDivergenceCardProps> = ({ no
           isLight ? 'bg-white border-slate-200' : 'bg-slate-950 border-slate-800'
         }`}>
           <div className="flex items-center gap-1 text-[10px] text-slate-500">
-            <GitCommit className="w-3 h-3 text-blue-500" />
-            <span>Human Commits Q₂</span>
+            <GitCommit className="w-3 h-3 text-blue-600 dark:text-blue-400" />
+            <span>Human Commits</span>
           </div>
           <div className="font-mono font-bold text-xs mt-1">
             {humanCommits} <span className="text-[9px] font-normal text-slate-500">({botFiltered} bot)</span>
@@ -194,8 +194,8 @@ export const SupportDivergenceCard: React.FC<SupportDivergenceCardProps> = ({ no
           isLight ? 'bg-white border-slate-200' : 'bg-slate-950 border-slate-800'
         }`}>
           <div className="flex items-center gap-1 text-[10px] text-slate-500">
-            <Clock className="w-3 h-3 text-purple-500" />
-            <span>Recency Q₃</span>
+            <Clock className="w-3 h-3 text-slate-500" />
+            <span>Release Recency</span>
           </div>
           <div className="font-mono font-bold text-xs mt-1">
             {daysSince}d <span className="text-[9px] font-normal text-slate-500">ago</span>

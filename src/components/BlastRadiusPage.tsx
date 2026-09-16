@@ -67,7 +67,7 @@ export const BlastRadiusPage: React.FC<BlastRadiusPageProps> = ({
             <button
               onClick={handleSimulateRipple}
               disabled={isSimulating}
-              className="btn-3d-secondary px-4 py-2 rounded-xl text-xs font-semibold text-slate-700 dark:text-slate-200 flex items-center gap-2 cursor-pointer select-none"
+              className="px-4 py-2 rounded-lg text-xs font-medium text-slate-700 dark:text-slate-200 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-750 flex items-center gap-2 cursor-pointer select-none shadow-xs transition-colors"
             >
               <Activity className={`w-4 h-4 text-blue-500 ${isSimulating ? 'animate-spin' : ''}`} />
               <span>{isSimulating ? 'Propagating Wave...' : 'Re-Simulate Cascade'}</span>
@@ -75,7 +75,7 @@ export const BlastRadiusPage: React.FC<BlastRadiusPageProps> = ({
 
             <button
               onClick={onReturnToGraph}
-              className="btn-3d-secondary px-4 py-2 rounded-xl text-xs font-semibold text-slate-700 dark:text-slate-200 flex items-center gap-2 cursor-pointer select-none"
+              className="px-4 py-2 rounded-lg text-xs font-medium text-slate-700 dark:text-slate-200 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-750 flex items-center gap-2 cursor-pointer select-none shadow-xs transition-colors"
             >
               <Layers className="w-4 h-4 text-blue-500" />
               <span>Inspect on 3D Graph</span>
@@ -83,7 +83,7 @@ export const BlastRadiusPage: React.FC<BlastRadiusPageProps> = ({
 
             <button
               onClick={onNavigateRemediation}
-              className="btn-3d-primary px-4 py-2 rounded-xl text-xs font-bold text-white flex items-center gap-2 cursor-pointer select-none"
+              className="px-4 py-2 rounded-lg text-xs font-medium text-white bg-blue-600 hover:bg-blue-700 flex items-center gap-2 cursor-pointer select-none shadow-xs transition-colors"
             >
               <span>Calculate Remediation</span>
               <ArrowRight className="w-4 h-4" />
@@ -163,8 +163,8 @@ export const BlastRadiusPage: React.FC<BlastRadiusPageProps> = ({
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <span className="w-2 h-2 rounded-full bg-blue-500" />
-                  <h3 className="font-bold text-sm font-heading text-slate-900 dark:text-white">
-                    F11 Impact Concentration
+                  <h3 className="font-semibold text-sm font-heading text-slate-900 dark:text-white">
+                    Impact Concentration
                   </h3>
                 </div>
                 <span className="font-mono font-bold text-base text-rose-600 dark:text-rose-400">
@@ -229,7 +229,7 @@ export const BlastRadiusPage: React.FC<BlastRadiusPageProps> = ({
               {/* Action Button */}
               <button
                 onClick={onNavigateRemediation}
-                className="btn-3d-primary w-full py-2.5 px-4 rounded-xl text-xs font-bold text-white flex items-center justify-center gap-2 cursor-pointer select-none"
+                className="w-full py-2 px-4 rounded-lg text-xs font-medium text-white bg-blue-600 hover:bg-blue-700 flex items-center justify-center gap-2 cursor-pointer select-none shadow-xs transition-colors"
               >
                 <span>Calculate Minimum-Cut Remediation</span>
                 <ArrowRight className="w-4 h-4" />
@@ -356,7 +356,7 @@ export const BlastRadiusPage: React.FC<BlastRadiusPageProps> = ({
 
                   <button
                     onClick={onNavigateRemediation}
-                    className="btn-3d-secondary px-3.5 py-1.5 rounded-lg text-xs font-semibold text-slate-800 dark:text-slate-200 flex items-center gap-1.5 cursor-pointer"
+                    className="px-3 py-1.5 rounded-md text-xs font-medium text-slate-700 dark:text-slate-200 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-750 flex items-center gap-1.5 cursor-pointer shadow-xs transition-colors"
                   >
                     <span>View Prescribed Fix</span>
                     <ArrowRight className="w-3.5 h-3.5" />

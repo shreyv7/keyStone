@@ -161,11 +161,11 @@ export const PortfolioRiskTrendChart: React.FC = () => {
         <div>
           <div className="flex items-center gap-2">
             <TrendingUp className="w-4 h-4 text-blue-600 dark:text-blue-400" />
-            <h3 className="text-sm font-bold tracking-tight text-slate-900 dark:text-white font-heading">
+            <h3 className="text-sm font-semibold tracking-tight text-slate-900 dark:text-white font-heading">
               Portfolio Risk Trajectory (90-Day Forensics)
             </h3>
-            <span className="text-[10px] font-mono px-2 py-0.5 rounded uppercase font-bold bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/20">
-              F22 Timeline
+            <span className="text-[10px] font-medium px-2 py-0.5 rounded uppercase bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-700">
+              Risk History
             </span>
           </div>
           <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
@@ -175,12 +175,12 @@ export const PortfolioRiskTrendChart: React.FC = () => {
 
         <div className="flex items-center gap-2 flex-wrap">
           {/* Metric Selector Tabs */}
-          <div className="flex items-center gap-1 p-1 rounded-xl connector-3d-card">
+          <div className="flex items-center gap-0.5 p-1 rounded-lg bg-slate-100 dark:bg-slate-800/90 border border-slate-200 dark:border-slate-700">
             <button
               onClick={() => setMetric('score')}
-              className={`px-3 py-1 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
+              className={`px-3 py-1 rounded-md text-xs font-medium transition-all cursor-pointer ${
                 metric === 'score'
-                  ? 'btn-3d-primary text-white'
+                  ? 'bg-blue-600 text-white shadow-xs'
                   : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
               }`}
             >
@@ -188,19 +188,19 @@ export const PortfolioRiskTrendChart: React.FC = () => {
             </button>
             <button
               onClick={() => setMetric('exposure')}
-              className={`px-3 py-1 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
+              className={`px-3 py-1 rounded-md text-xs font-medium transition-all cursor-pointer ${
                 metric === 'exposure'
-                  ? 'btn-3d-primary text-white'
+                  ? 'bg-blue-600 text-white shadow-xs'
                   : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
               }`}
             >
-              $ Financial
+              Financial
             </button>
             <button
               onClick={() => setMetric('keystones')}
-              className={`px-3 py-1 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
+              className={`px-3 py-1 rounded-md text-xs font-medium transition-all cursor-pointer ${
                 metric === 'keystones'
-                  ? 'btn-3d-primary text-white'
+                  ? 'bg-blue-600 text-white shadow-xs'
                   : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
               }`}
             >
@@ -209,12 +209,12 @@ export const PortfolioRiskTrendChart: React.FC = () => {
           </div>
 
           {/* Time Range Tabs */}
-          <div className="flex items-center gap-1 p-1 rounded-xl connector-3d-card">
+          <div className="flex items-center gap-0.5 p-1 rounded-lg bg-slate-100 dark:bg-slate-800/90 border border-slate-200 dark:border-slate-700">
             <button
               onClick={() => { setTimeRange('90d'); setHoveredIndex(6); }}
-              className={`px-2.5 py-1 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
+              className={`px-2.5 py-1 rounded-md text-xs font-medium transition-all cursor-pointer ${
                 timeRange === '90d'
-                  ? 'btn-3d-primary text-white'
+                  ? 'bg-blue-600 text-white shadow-xs'
                   : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
               }`}
             >
@@ -222,9 +222,9 @@ export const PortfolioRiskTrendChart: React.FC = () => {
             </button>
             <button
               onClick={() => { setTimeRange('30d'); setHoveredIndex(4); }}
-              className={`px-2.5 py-1 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
+              className={`px-2.5 py-1 rounded-md text-xs font-medium transition-all cursor-pointer ${
                 timeRange === '30d'
-                  ? 'btn-3d-primary text-white'
+                  ? 'bg-blue-600 text-white shadow-xs'
                   : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
               }`}
             >
@@ -232,9 +232,9 @@ export const PortfolioRiskTrendChart: React.FC = () => {
             </button>
             <button
               onClick={() => { setTimeRange('14d'); setHoveredIndex(2); }}
-              className={`px-2.5 py-1 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
+              className={`px-2.5 py-1 rounded-md text-xs font-medium transition-all cursor-pointer ${
                 timeRange === '14d'
-                  ? 'btn-3d-primary text-white'
+                  ? 'bg-blue-600 text-white shadow-xs'
                   : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
               }`}
             >

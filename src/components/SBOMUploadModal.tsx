@@ -129,15 +129,15 @@ export const SBOMUploadModal: React.FC<SBOMUploadModalProps> = ({
         }`}>
           <div className="flex items-center gap-2.5">
             <div className={`w-8 h-8 rounded-md border flex items-center justify-center ${
-              isLight ? 'bg-cyan-50 border-cyan-200 text-cyan-700' : 'bg-cyan-950/40 border-cyan-800 text-cyan-400'
+              isLight ? 'bg-blue-50 border-blue-200 text-blue-600' : 'bg-blue-950/40 border-blue-800 text-blue-400'
             }`}>
               <UploadCloud className="w-4 h-4" />
             </div>
             <div>
-              <div className="text-sm font-bold flex items-center gap-2">
+              <div className="text-sm font-semibold flex items-center gap-2">
                 <span>Ingest Repository Lockfile or CycloneDX SBOM</span>
-                <span className="text-[10px] font-mono px-1.5 py-0.2 rounded bg-cyan-500/10 text-cyan-500 border border-cyan-500/30">
-                  F1 Ingest
+                <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/20 font-medium">
+                  Ingest
                 </span>
               </div>
               <div className={`text-xs ${isLight ? 'text-slate-500' : 'text-slate-400'}`}>

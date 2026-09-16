@@ -173,11 +173,11 @@ export const MitigationPanel: React.FC<MitigationPanelProps> = ({
           isLight ? 'bg-white border-slate-200' : 'bg-slate-900/80 border-slate-800'
         }`}>
           <div className="flex items-center justify-between">
-            <span className={`text-[10px] font-bold uppercase tracking-wider flex items-center gap-1.5 ${
+            <span className={`text-[10px] font-semibold uppercase tracking-wider flex items-center gap-1.5 ${
               isLight ? 'text-slate-800' : 'text-slate-200'
             }`}>
-              <Scale className="w-3.5 h-3.5 text-indigo-500" />
-              <span>F13 Trade-Off Matrix</span>
+              <Scale className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
+              <span>Trade-Off Matrix</span>
             </span>
             <span className={`text-[9px] font-mono ${isLight ? 'text-slate-500' : 'text-slate-400'}`}>
               3 Competing Strategies
@@ -386,10 +386,10 @@ export const MitigationPanel: React.FC<MitigationPanelProps> = ({
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-1.5">
               <Cpu className="w-3.5 h-3.5 text-emerald-600" />
-              <span className={`text-xs font-bold uppercase tracking-wider ${
+              <span className={`text-xs font-semibold uppercase tracking-wider ${
                 isLight ? 'text-slate-800' : 'text-slate-200'
               }`}>
-                Call-Site & ABI Linkage Proof (F2 / F7)
+                Call-Site & ABI Linkage Proof
               </span>
             </div>
             <span className={`text-[9px] font-mono font-bold px-1.5 py-0.2 rounded border uppercase ${
@@ -403,14 +403,14 @@ export const MitigationPanel: React.FC<MitigationPanelProps> = ({
             <div className={`p-2 rounded-md border flex items-center justify-between font-mono text-[11px] ${
               isLight ? 'bg-slate-50 border-slate-200 text-slate-700' : 'bg-slate-950/80 border-slate-800 text-slate-300'
             }`}>
-              <span>• Invoked AST Symbols (F2):</span>
+              <span>• Invoked AST Symbols:</span>
               <span className="text-emerald-600 font-bold">42/42 matched (0 missing)</span>
             </div>
 
             <div className={`p-2 rounded-md border flex items-center justify-between font-mono text-[11px] ${
               isLight ? 'bg-slate-50 border-slate-200 text-slate-700' : 'bg-slate-950/80 border-slate-800 text-slate-300'
             }`}>
-              <span>• JVM Bytecode Opcodes (F7):</span>
+              <span>• JVM Bytecode Opcodes:</span>
               <span className="text-emerald-600 font-bold">42 INVOKEVIRTUAL verified</span>
             </div>
 

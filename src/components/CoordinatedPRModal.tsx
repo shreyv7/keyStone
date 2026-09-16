@@ -222,8 +222,8 @@ export const CoordinatedPRModal: React.FC<CoordinatedPRModalProps> = ({
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-1.5">
                 <ShieldAlert className="w-3.5 h-3.5 text-indigo-500" />
-                <span className={`text-xs font-bold uppercase tracking-wider ${isLight ? 'text-slate-800' : 'text-slate-200'}`}>
-                  Phased Cohort Rollout Cockpit (F10)
+                <span className={`text-xs font-semibold uppercase tracking-wider ${isLight ? 'text-slate-800' : 'text-slate-200'}`}>
+                  Phased Cohort Rollout Cockpit
                 </span>
               </div>
               <span className={`text-[9px] font-mono px-1.5 py-0.2 rounded border uppercase font-semibold ${

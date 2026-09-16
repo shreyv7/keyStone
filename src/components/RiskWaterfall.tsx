@@ -240,17 +240,17 @@ export const RiskWaterfall: React.FC<RiskWaterfallProps> = ({
             <Calculator className="w-4 h-4" />
           </div>
           <div>
-            <div className="flex items-center gap-1.5">
-              <span className={`font-bold text-xs ${isLight ? 'text-slate-900' : 'text-slate-100'}`}>
-                Auditable Risk Attribution Waterfall
+            <div className="flex items-center gap-2">
+              <span className={`font-semibold text-xs ${isLight ? 'text-slate-900' : 'text-slate-100'}`}>
+                Risk Evidence Breakdown
               </span>
-              <span className={`text-[9px] font-mono px-1.5 py-0.2 rounded border uppercase font-semibold ${
-                isLight ? 'bg-blue-50 text-blue-700 border-blue-200' : 'bg-blue-950 text-blue-300 border-blue-800'
+              <span className={`text-[9px] font-mono px-1.5 py-0.2 rounded border uppercase font-medium ${
+                isLight ? 'bg-slate-100 text-slate-600 border-slate-200' : 'bg-slate-800 text-slate-300 border-slate-700'
               }`}>
-                F11 Additive Receipt
+                Audit Receipt
               </span>
             </div>
-            <p className={`text-[10px] ${isLight ? 'text-slate-500' : 'text-slate-400'}`}>
+            <p className={`text-[10px] mt-0.5 ${isLight ? 'text-slate-500' : 'text-slate-400'}`}>
               Deterministic Dimensional Scoring ({receipt.totalScore} / 100 pts)
             </p>
           </div>

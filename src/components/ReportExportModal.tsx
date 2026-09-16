@@ -118,18 +118,18 @@ export const ReportExportModal: React.FC<ReportExportModalProps> = ({
           isLight ? 'border-slate-200 bg-white' : 'border-slate-800/80 bg-slate-900/40'
         }`}>
           <div className="flex items-center gap-3">
-            <div className={`p-2.5 rounded-lg ${
-              isLight ? 'bg-cyan-50 text-cyan-700' : 'bg-cyan-950/40 text-cyan-400'
+            <div className={`p-2 rounded-lg ${
+              isLight ? 'bg-blue-50 text-blue-600' : 'bg-blue-950/40 text-blue-400'
             }`}>
               <Download className="w-5 h-5" />
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <h2 className="text-base font-bold">Export Systemic Risk & Audit Report</h2>
-                <span className={`text-[10px] font-mono px-2 py-0.5 rounded uppercase font-semibold border ${
+                <h2 className="text-base font-semibold">Export Systemic Risk & Audit Report</h2>
+                <span className={`text-[10px] font-mono px-2 py-0.5 rounded uppercase font-medium border ${
                   isLight ? 'bg-slate-100 text-slate-600 border-slate-300' : 'bg-slate-800 text-slate-300 border-slate-700'
                 }`}>
-                  F10 / F17 Export
+                  Audit Export
                 </span>
               </div>
               <p className={`text-xs mt-0.5 ${isLight ? 'text-slate-500' : 'text-slate-400'}`}>
@@ -249,7 +249,7 @@ export const ReportExportModal: React.FC<ReportExportModalProps> = ({
 
             <button
               onClick={handleDownload}
-              className="px-4 py-2 rounded-md text-xs font-semibold bg-cyan-600 hover:bg-cyan-500 text-white flex items-center gap-2 shadow-sm transition-colors cursor-pointer"
+              className="px-4 py-2 rounded-md text-xs font-medium bg-blue-600 hover:bg-blue-700 text-white flex items-center gap-2 shadow-xs transition-colors cursor-pointer"
             >
               <Download className="w-3.5 h-3.5" />
               <span>Download {currentFileConfig.label}</span>

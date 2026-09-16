@@ -107,8 +107,8 @@ export const ResolverPermeabilityPanel: React.FC<ResolverPermeabilityPanelProps>
           </div>
           <div>
             <div className="flex items-center gap-1.5">
-              <span className={`text-xs font-bold uppercase tracking-wider ${isLight ? 'text-slate-900' : 'text-slate-100'}`}>
-                Resolver Exposure Lab (F6)
+              <span className={`text-xs font-semibold uppercase tracking-wider ${isLight ? 'text-slate-900' : 'text-slate-100'}`}>
+                Resolver Exposure Lab
               </span>
               <span className={`text-[9px] font-mono px-1.5 py-0.5 rounded border uppercase ${
                 isLight ? 'bg-amber-50 text-amber-700 border-amber-200' : 'bg-amber-950/50 text-amber-300 border-amber-800'
@@ -122,10 +122,10 @@ export const ResolverPermeabilityPanel: React.FC<ResolverPermeabilityPanelProps>
           </div>
         </div>
 
-        <span className={`text-[10px] font-mono font-bold px-2 py-0.5 rounded border uppercase ${
-          isLight ? 'bg-red-100 text-red-800 border-red-300' : 'bg-red-950 text-red-300 border-red-800'
+        <span className={`text-[10px] font-mono font-semibold px-2 py-0.5 rounded border uppercase ${
+          isLight ? 'bg-red-50 text-red-700 border-red-200' : 'bg-red-950/60 text-red-300 border-red-800'
         }`}>
-          EXPOSURE CONFIRMED
+          Exposure Confirmed
         </span>
       </div>
 

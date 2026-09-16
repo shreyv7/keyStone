@@ -279,60 +279,35 @@
               box-shadow 0.25s cubic-bezier(0.16, 1, 0.3, 1),
               border-color 0.2s ease,
               background 0.2s ease;
-  background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
-  border-top: 1.5px solid rgba(255, 255, 255, 1);
-  border-left: 1px solid rgba(226, 232, 240, 0.9);
-  border-right: 1px solid rgba(226, 232, 240, 0.9);
-  border-bottom: 3.5px solid #cbd5e1;
-  box-shadow: 
-    0 6px 0 0 #e2e8f0,
-    0 12px 24px -4px rgba(15, 23, 42, 0.08),
-    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.75rem;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
 
 .connector-3d-card:hover {
-  transform: translateY(-4px) translateZ(0);
-  box-shadow: 
-    0 10px 0 0 #cbd5e1,
-    0 20px 32px -4px rgba(15, 23, 42, 0.12),
-    inset 0 1px 0 rgba(255, 255, 255, 1);
+  border-color: #cbd5e1;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
 }
 
 .connector-3d-card:active {
-  transform: translateY(2px) translateZ(0);
-  border-bottom-width: 1.5px;
-  box-shadow: 
-    0 2px 0 0 #cbd5e1,
-    0 4px 8px rgba(15, 23, 42, 0.08);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
 }
 
 .dark .connector-3d-card {
-  background: linear-gradient(180deg, #131d35 0%, #0d1527 100%);
-  border-top: 1.5px solid rgba(255, 255, 255, 0.14);
-  border-left: 1px solid rgba(30, 41, 67, 0.8);
-  border-right: 1px solid rgba(30, 41, 67, 0.8);
-  border-bottom: 4px solid #030712;
-  box-shadow: 
-    0 6px 0 0 #070c18,
-    0 14px 28px -4px rgba(0, 0, 0, 0.7),
-    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  background: #111628;
+  border: 1px solid #1e293b;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
 }
 
 .dark .connector-3d-card:hover {
-  transform: translateY(-4px) translateZ(0);
-  border-top-color: rgba(147, 197, 253, 0.35);
-  box-shadow: 
-    0 10px 0 0 #050a14,
-    0 24px 38px -4px rgba(0, 0, 0, 0.85),
-    inset 0 1px 0 rgba(255, 255, 255, 0.12);
+  border-color: #334155;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.45);
 }
 
 .dark .connector-3d-card:active {
-  transform: translateY(2px) translateZ(0);
-  border-bottom-width: 1.5px;
-  box-shadow: 
-    0 2px 0 0 #030712,
-    0 6px 12px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
 }
 
 /* Fluid hardware-accelerated drawer for card hover details */
@@ -352,98 +327,74 @@
   min-height: 0;
 }
 
-/* 3D Extruded Logo Platform */
+/* Extruded Logo Platform - refined to clean enterprise tile */
 .connector-3d-tile {
-  border-radius: 1rem;
-  background: linear-gradient(180deg, #ffffff 0%, #f1f5f9 100%);
-  border-top: 1.5px solid #ffffff;
-  border-left: 1px solid #e2e8f0;
-  border-right: 1px solid #e2e8f0;
-  border-bottom: 2.5px solid #cbd5e1;
-  box-shadow: 
-    0 2px 0 #e2e8f0,
-    0 4px 8px rgba(0, 0, 0, 0.06),
-    inset 0 1px 0 #ffffff;
-  transition: transform 0.15s ease;
+  border-radius: 0.75rem;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+  transition: border-color 0.15s ease;
 }
 
 .dark .connector-3d-tile {
-  background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
-  border-top: 1.5px solid rgba(255, 255, 255, 0.2);
-  border-left: 1px solid rgba(51, 65, 85, 0.8);
-  border-right: 1px solid rgba(51, 65, 85, 0.8);
-  border-bottom: 2.5px solid #020617;
-  box-shadow: 
-    0 2.5px 0 #020617,
-    0 6px 10px rgba(0, 0, 0, 0.5),
-    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  background: #1e293b;
+  border: 1px solid #334155;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
 }
 
-/* 3D Push Button */
+/* Primary Enterprise Button */
 .btn-3d-primary {
-  background: linear-gradient(180deg, #2e70ee 0%, #1755e6 60%, #1142bc 100%);
-  border-top: 1.5px solid rgba(191, 219, 254, 0.7);
-  border-left: 1px solid #1755e6;
-  border-right: 1px solid #1755e6;
-  border-bottom: 3px solid #0d369b;
-  box-shadow: 
-    0 3px 0 #0d369b,
-    0 6px 14px rgba(23, 85, 230, 0.35),
-    inset 0 1px 0 rgba(255, 255, 255, 0.4);
-  transition: all 0.12s ease;
+  background: #2563eb;
+  color: #ffffff;
+  border: 1px solid #1d4ed8;
+  border-radius: 0.5rem;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  transition: background-color 0.15s ease, border-color 0.15s ease;
 }
 
 .btn-3d-primary:hover {
-  background: linear-gradient(180deg, #4483f3 0%, #2e70ee 60%, #1755e6 100%);
-  transform: translateY(-1px);
-  box-shadow: 
-    0 4px 0 #0d369b,
-    0 8px 18px rgba(23, 85, 230, 0.45);
+  background: #1d4ed8;
+  border-color: #1e40af;
 }
 
 .btn-3d-primary:active {
-  transform: translateY(2px);
-  border-bottom-width: 1px;
-  box-shadow: 
-    0 1px 0 #0d369b,
-    0 2px 4px rgba(23, 85, 230, 0.2);
+  background: #1e40af;
 }
 
+/* Secondary Enterprise Button */
 .btn-3d-secondary {
-  background: linear-gradient(180deg, #ffffff 0%, #f1f5f9 100%);
-  border-top: 1px solid #ffffff;
-  border-left: 1px solid #cbd5e1;
-  border-right: 1px solid #cbd5e1;
-  border-bottom: 2.5px solid #94a3b8;
-  box-shadow: 
-    0 2px 0 #cbd5e1,
-    0 4px 6px rgba(0, 0, 0, 0.05);
-  transition: all 0.12s ease;
-}
-
-.dark .btn-3d-secondary {
-  background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
-  border-top: 1px solid rgba(255, 255, 255, 0.15);
-  border-left: 1px solid rgba(51, 65, 85, 0.8);
-  border-right: 1px solid rgba(51, 65, 85, 0.8);
-  border-bottom: 2.5px solid #020617;
-  box-shadow: 
-    0 2px 0 #020617,
-    0 4px 6px rgba(0, 0, 0, 0.4);
+  background: #ffffff;
+  color: #334155;
+  border: 1px solid #cbd5e1;
+  border-radius: 0.5rem;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+  transition: background-color 0.15s ease, border-color 0.15s ease;
 }
 
 .btn-3d-secondary:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 3px 0 #94a3b8, 0 6px 10px rgba(0, 0, 0, 0.08);
-}
-.dark .btn-3d-secondary:hover {
-  box-shadow: 0 3px 0 #020617, 0 6px 12px rgba(0, 0, 0, 0.5);
+  background: #f8fafc;
+  border-color: #94a3b8;
+  color: #0f172a;
 }
 
 .btn-3d-secondary:active {
-  transform: translateY(1.5px);
-  border-bottom-width: 1px;
-  box-shadow: none;
+  background: #f1f5f9;
+}
+
+.dark .btn-3d-secondary {
+  background: #1e293b;
+  color: #cbd5e1;
+  border: 1px solid #334155;
+}
+
+.dark .btn-3d-secondary:hover {
+  background: #334155;
+  border-color: #475569;
+  color: #f8fafc;
+}
+
+.dark .btn-3d-secondary:active {
+  background: #0f172a;
 }
 
 

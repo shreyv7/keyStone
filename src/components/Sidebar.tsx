@@ -62,17 +62,17 @@ export const Sidebar: React.FC<SidebarProps> = ({
       items: [
         { id: 'ecosystem', label: 'Topology Map', icon: <Network className="w-3.5 h-3.5" /> },
         { id: 'overview', label: 'Security Posture', icon: <BarChart3 className="w-3.5 h-3.5" /> },
-        { id: 'watchlist', label: 'Risk Watchlist', icon: <ShieldAlert className="w-3.5 h-3.5" />, count: '5' },
-        { id: 'blast-radius', label: 'Blast Radius', icon: <Flame className="w-3.5 h-3.5" />, count: 'Live' },
-        { id: 'mitigation', label: 'Remediation', icon: <Wrench className="w-3.5 h-3.5" />, count: 'Active' }
+        { id: 'watchlist', label: 'Risk Watchlist', icon: <ShieldAlert className="w-3.5 h-3.5" />, count: 5 },
+        { id: 'blast-radius', label: 'Blast Radius', icon: <Flame className="w-3.5 h-3.5" /> },
+        { id: 'mitigation', label: 'Remediation', icon: <Wrench className="w-3.5 h-3.5" /> }
       ]
     },
     {
       label: 'OPERATIONS',
       items: [
-        { id: 'rollout', label: 'Rollout Cockpit', icon: <Rocket className="w-3.5 h-3.5" />, count: 'Gate' },
-        { id: 'connectors', label: 'Connectors', icon: <GitBranch className="w-3.5 h-3.5" />, count: '6' },
-        { id: 'hardware', label: 'Scanner Agents', icon: <Server className="w-3.5 h-3.5" />, count: '3' }
+        { id: 'rollout', label: 'Rollout Cockpit', icon: <Rocket className="w-3.5 h-3.5" /> },
+        { id: 'connectors', label: 'Connectors', icon: <GitBranch className="w-3.5 h-3.5" />, count: 6 },
+        { id: 'hardware', label: 'Scanner Agents', icon: <Server className="w-3.5 h-3.5" /> }
       ]
     },
     {
@@ -114,27 +114,27 @@ export const Sidebar: React.FC<SidebarProps> = ({
                       key={item.id}
                       onClick={() => onChangeView(item.id)}
                       title={item.label}
-                      className={`flex items-center ${isCollapsed ? 'justify-center p-2' : 'justify-between px-3 py-1.5'} rounded-lg text-xs font-semibold transition-all cursor-pointer select-none mb-0.5 ${
+                      className={`flex items-center ${isCollapsed ? 'justify-center p-2' : 'justify-between px-3 py-1.5'} rounded-lg text-xs font-medium transition-colors cursor-pointer select-none mb-0.5 ${
                         isActive
-                          ? 'ks-nav-item-active'
-                          : 'ks-nav-item'
+                          ? 'bg-blue-600 text-white shadow-xs'
+                          : 'text-slate-400 hover:text-slate-100 hover:bg-slate-850'
                       }`}
                     >
-                      <div className="flex items-center gap-2">
-                        <span className={`transition-transform duration-150 ${isActive ? 'text-white scale-105' : 'text-slate-400'}`}>
+                      <div className="flex items-center gap-2.5">
+                        <span className={isActive ? 'text-white' : 'text-slate-400'}>
                           {item.icon}
                         </span>
                         {!isCollapsed && (
-                          <span className="tracking-tight text-xs">
+                          <span className="text-xs">
                             {item.label}
                           </span>
                         )}
                       </div>
                       {!isCollapsed && item.count && (
-                        <span className={`text-[10px] font-mono font-bold px-1.5 py-0.5 rounded ${
+                        <span className={`text-[10px] font-mono font-medium px-1.5 py-0.2 rounded ${
                           isActive 
-                            ? 'bg-blue-900 text-blue-100 border border-blue-400/30'
-                            : 'bg-slate-800/90 text-slate-300 border border-slate-700/60'
+                            ? 'bg-blue-700 text-blue-100'
+                            : 'bg-slate-800 text-slate-400'
                         }`}>
                           {item.count}
                         </span>
@@ -152,7 +152,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
           <button
             onClick={onOpenAskKeystone}
             title="Ask Assistant (Natural Language Supply Chain Queries)"
-            className={`w-full ${isCollapsed ? 'p-2 justify-center' : 'py-1.5 px-3 justify-start'} rounded-lg ks-nav-item border border-blue-500/20 bg-blue-950/30 hover:bg-blue-900/40 text-blue-200 flex items-center gap-2 text-xs font-semibold transition-all cursor-pointer mb-0.5`}
+            className={`w-full ${isCollapsed ? 'p-2 justify-center' : 'py-1.5 px-3 justify-start'} rounded-lg border border-slate-700/60 bg-slate-900/60 hover:bg-slate-800 text-slate-300 hover:text-white flex items-center gap-2 text-xs font-medium transition-colors cursor-pointer mb-0.5`}
           >
             <Sparkles className="w-3.5 h-3.5 text-blue-400" />
             {!isCollapsed && <span className="text-xs">Ask Assistant</span>}

@@ -66,7 +66,7 @@ export const DominatorLeaderboard: React.FC<DominatorLeaderboardProps> = ({
               <span className={`text-[9px] font-mono px-1.5 py-0.5 rounded border uppercase ${
                 isLight ? 'bg-blue-50 text-blue-700 border-blue-200' : 'bg-blue-950 text-blue-300 border-blue-800'
               }`}>
-                Dominator Tree (F2)
+                Dominator Tree
               </span>
             </div>
             <div className={`text-[10px] font-mono ${isLight ? 'text-slate-500' : 'text-slate-400'}`}>

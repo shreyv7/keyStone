@@ -112,7 +112,7 @@ export const GraphControls: React.FC<GraphControlsProps> = ({
               onClick={() => { if (!showStructuralRisk) onToggleStructuralRisk(); }}
               className={`flex items-center gap-1 px-2 py-1 rounded transition-all cursor-pointer text-[11px] ${
                 showStructuralRisk
-                  ? isLight ? 'bg-slate-900 text-white font-bold shadow-xs' : 'bg-purple-600 text-white font-bold shadow-xs'
+                  ? 'bg-blue-600 text-white font-medium shadow-xs'
                   : isLight ? 'text-slate-600 hover:text-slate-900 hover:bg-slate-100' : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800'
               }`}
               title="Structural Position Mode (Lengauer-Tarjan SC): Dynamically balloons chokepoint vertices and renders golden articulation halos"
@@ -126,7 +126,7 @@ export const GraphControls: React.FC<GraphControlsProps> = ({
             onClick={onToggleBlastRadius}
             className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded transition-all ${
               showBlastRadius
-                ? isLight ? 'bg-slate-900 text-white font-medium' : 'bg-slate-700 text-white font-medium'
+                ? 'bg-blue-600 text-white font-medium'
                 : isLight ? 'text-slate-600 hover:text-slate-900 hover:bg-slate-100' : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800'
             }`}
             title="Emphasize downstream blast radius to critical services"
@@ -139,7 +139,7 @@ export const GraphControls: React.FC<GraphControlsProps> = ({
             onClick={onTogglePropagation}
             className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded transition-all ${
               showPropagation
-                ? isLight ? 'bg-slate-900 text-white font-medium' : 'bg-slate-700 text-white font-medium'
+                ? 'bg-blue-600 text-white font-medium'
                 : isLight ? 'text-slate-600 hover:text-slate-900 hover:bg-slate-100' : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800'
             }`}
             title="Toggle visibility of transitive dependency flow lines"
@@ -153,10 +153,10 @@ export const GraphControls: React.FC<GraphControlsProps> = ({
               onClick={onToggleDominatorMode}
               className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded transition-all ${
                 showDominatorMode
-                  ? isLight ? 'bg-purple-700 text-white font-medium shadow-xs' : 'bg-purple-600 text-white font-medium shadow-xs'
-                  : isLight ? 'text-purple-700 hover:bg-purple-50' : 'text-purple-400 hover:bg-purple-950/50'
+                  ? 'bg-blue-600 text-white font-medium shadow-xs'
+                  : isLight ? 'text-slate-600 hover:text-slate-900 hover:bg-slate-100' : 'text-slate-400 hover:text-white hover:bg-slate-800'
               }`}
-              title="F2 Dominator Tree: Show structural chokepoint leaderboard & idom strata"
+              title="Dominator Tree: Show structural chokepoint leaderboard"
             >
               <TreePine className="w-3.5 h-3.5" />
               <span>Dominators</span>

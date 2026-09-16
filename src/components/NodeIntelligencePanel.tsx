@@ -77,22 +77,22 @@ export const NodeIntelligencePanel: React.FC<NodeIntelligencePanelProps> = ({
         return {
           title: 'Executive CISO Briefing: Systemic Financial & Regulatory Exposure',
           summary: 'Critical ICT sub-dependency single-point-of-failure posing $85.0M/day transaction exposure.',
-          paragraph: `Transitive dependency snakeyaml@1.33 represents a catastrophic systemic chokepoint threatening $85.0M/day in payment transaction flow across 4 Tier-1 production sinks [Source: Financial Blast Formula F10]. The dependency connects directly to regulated payment and authorization rails, violating EU DORA Article 28 [Source: EU DORA Art. 28] and placing Cardholder Data Environments at risk under PCI-DSS v4.0 Requirement 6.3 [Source: PCI-DSS v4.0]. Keystone's Portfolio Concentration analysis reveals an 81.4% SIFI Concentration Ratio [Source: SIFI Ratio F12], confirming that risk is acutely centralized. Executive policy mandate: Authorize coordinated minimum-cut intervention to reduce portfolio exposure by 94.2% within the 48-hour compliance window.`,
+          paragraph: `Transitive dependency snakeyaml@1.33 represents a catastrophic systemic chokepoint threatening $85.0M/day in payment transaction flow across 4 Tier-1 production sinks [Source: Financial Blast Formula]. The dependency connects directly to regulated payment and authorization rails, violating EU DORA Article 28 [Source: EU DORA Art. 28] and placing Cardholder Data Environments at risk under PCI-DSS v4.0 Requirement 6.3 [Source: PCI-DSS v4.0]. Keystone's Portfolio Concentration analysis reveals an 81.4% SIFI Concentration Ratio [Source: SIFI Ratio], confirming that risk is acutely centralized. Executive policy mandate: Authorize coordinated minimum-cut intervention to reduce portfolio exposure by 94.2% within the 48-hour compliance window.`,
           citations: [
-            { id: 'Source: Financial Blast Formula F10', label: 'Financial Blast Formula F10', source: 'Asset-Weighted Math', detail: 'Sum of Tier-1 weights (10.0) x Daily Asset Throughput = $85.0M/day exposure.' },
+            { id: 'Source: Financial Blast Formula', label: 'Financial Blast Formula', source: 'Asset-Weighted Math', detail: 'Sum of Tier-1 weights (10.0) x Daily Asset Throughput = $85.0M/day exposure.' },
             { id: 'Source: EU DORA Art. 28', label: 'EU DORA Art. 28', source: 'Regulatory Registry', detail: 'Article 28 audit requirement for critical ICT third-party sub-dependencies with direct core reach.' },
             { id: 'Source: PCI-DSS v4.0', label: 'PCI-DSS v4.0', source: 'Security Standard', detail: 'Requirement 6.3: Software supply chain vulnerability management in Cardholder Data Environment.' },
-            { id: 'Source: SIFI Ratio F12', label: 'SIFI Ratio F12', source: 'Herfindahl Index', detail: '81.4% of total structural risk concentrated in top 5 portfolio packages.' }
+            { id: 'Source: SIFI Ratio', label: 'SIFI Ratio', source: 'Herfindahl Index', detail: '81.4% of total structural risk concentrated in top 5 portfolio packages.' }
           ]
         };
       } else if (lens === 'maintainer') {
         return {
           title: 'Engineering Maintainer Briefing: Downstream API Blast & Bus Factor',
           summary: 'Direct updates to snakeyaml break 21 repositories. Keystone prescribes intermediate boundary patch.',
-          paragraph: `Modifying snakeyaml@1.33 directly forces breaking API upgrades across 21 dependent service repositories and exposes 48M weekly downloads maintained by a single unfunded author (Bus Factor 1) [Source: npm Registry Telemetry]. To preserve backward compatibility, Keystone computes an intermediate dominator cut: upgrading internal-data-pipeline from 2.4.0 to 2.5.0 [Source: SemVer Blast Analysis F14]. This severs all 4 propagation paths while introducing 0 broken downstream regression tests and preserving 100% API contract stability across all 21 microservices [Source: NetworkX Min-Cut].`,
+          paragraph: `Modifying snakeyaml@1.33 directly forces breaking API upgrades across 21 dependent service repositories and exposes 48M weekly downloads maintained by a single unfunded author (Bus Factor 1) [Source: npm Registry Telemetry]. To preserve backward compatibility, Keystone computes an intermediate dominator cut: upgrading internal-data-pipeline from 2.4.0 to 2.5.0 [Source: SemVer Blast Analysis]. This severs all 4 propagation paths while introducing 0 broken downstream regression tests and preserving 100% API contract stability across all 21 microservices [Source: NetworkX Min-Cut].`,
           citations: [
             { id: 'Source: npm Registry Telemetry', label: 'npm Registry Telemetry', source: 'Package Metadata', detail: '48M weekly downloads, 1 maintainer, Bus Factor 1.' },
-            { id: 'Source: SemVer Blast Analysis F14', label: 'SemVer Blast Analysis F14', source: 'AST Analyzer', detail: 'Zero breaking signature changes via intermediate wrapper upgrade.' },
+            { id: 'Source: SemVer Blast Analysis', label: 'SemVer Blast Analysis', source: 'AST Analyzer', detail: 'Zero breaking signature changes via intermediate wrapper upgrade.' },
             { id: 'Source: NetworkX Min-Cut', label: 'NetworkX Min-Cut', source: 'Max-Flow Min-Cut', detail: 'Intermediate vertex cut disconnects source from sinks with minimum edge penalty.' }
           ]
         };
@@ -100,12 +100,12 @@ export const NodeIntelligencePanel: React.FC<NodeIntelligencePanelProps> = ({
         return {
           title: 'AppSec Developer Briefing: Minimum-Cut Chokepoint Severance',
           summary: 'Patch-level intervention on internal-data-pipeline eliminates 4 paths with zero new CVEs.',
-          paragraph: `Update internal-data-pipeline from 2.4.0 → 2.5.0 [Source: SemVer Upgrade Manifest]. This single patch-level change severs 4 of 4 active propagation paths from the structural chokepoint snakeyaml@1.33 [Source: Tarjan Cut-Vertex Algorithm], completely insulating Payment Gateway, Auth/IAM, Billing Analytics, and Order Processing [Source: NetworkX Reverse BFS]. Net Security Gain: +4 paths eliminated, 0 new CVEs introduced, 0 breaking API changes [Source: Cascade Net Gain F15]. Equivalent developer effort: 1 coordinated PR versus 40 independent, disconnected repository fixes.`,
+          paragraph: `Update internal-data-pipeline from 2.4.0 → 2.5.0 [Source: SemVer Upgrade Manifest]. This single patch-level change severs 4 of 4 active propagation paths from the structural chokepoint snakeyaml@1.33 [Source: Tarjan Cut-Vertex Algorithm], completely insulating Payment Gateway, Auth/IAM, Billing Analytics, and Order Processing [Source: NetworkX Reverse BFS]. Net Security Gain: +4 paths eliminated, 0 new CVEs introduced, 0 breaking API changes [Source: Cascade Net Gain]. Equivalent developer effort: 1 coordinated PR versus 40 independent, disconnected repository fixes.`,
           citations: [
             { id: 'Source: SemVer Upgrade Manifest', label: 'SemVer Upgrade Manifest', source: 'Package Diff', detail: 'Patch bump: 2.4.0 -> 2.5.0. No exported signature changes.' },
             { id: 'Source: Tarjan Cut-Vertex Algorithm', label: 'Tarjan Cut-Vertex Algorithm', source: 'Graph Topology', detail: 'Cut-vertex bisection verified: removal disconnects DAG into independent subtrees.' },
             { id: 'Source: NetworkX Reverse BFS', label: 'NetworkX Reverse BFS', source: 'Reverse Reachability', detail: '4 of 4 directed acyclic paths terminate in Tier-1 sinks.' },
-            { id: 'Source: Cascade Net Gain F15', label: 'Cascade Net Gain F15', source: 'OSV Net Verification', detail: 'Target version 2.5.0 audited against OSV database; zero known vulnerabilities.' }
+            { id: 'Source: Cascade Net Gain', label: 'Cascade Net Gain', source: 'OSV Net Verification', detail: 'Target version 2.5.0 audited against OSV database; zero known vulnerabilities.' }
           ]
         };
       }
@@ -114,23 +114,23 @@ export const NodeIntelligencePanel: React.FC<NodeIntelligencePanelProps> = ({
       return {
         title: 'Architectural Chokepoint Briefing: Pipeline Ingestion Dominator',
         summary: 'Target node for global minimum vertex cut across 40 production repositories.',
-        paragraph: `Internal library internal-data-pipeline@2.4.0 acts as the single intermediate dominator between foundational deserialization libraries and transactional engines [Source: NetworkX Dominator Tree]. Severing this node via patch update to 2.5.0 insulates Payment Gateway and Order Processing Core simultaneously across 40 downstream repositories [Source: Coordinated PR Manifest F17]. Furthermore, Keystone's F6 Dependency Confusion Shield has normalized its PURL identity (pkg:npm/@corp/internal-data-pipeline) to block unauthorized public registry squatting [Source: Keystone PURL Shield F6].`,
+        paragraph: `Internal library internal-data-pipeline@2.4.0 acts as the single intermediate dominator between foundational deserialization libraries and transactional engines [Source: NetworkX Dominator Tree]. Severing this node via patch update to 2.5.0 insulates Payment Gateway and Order Processing Core simultaneously across 40 downstream repositories [Source: Coordinated PR Manifest]. Furthermore, Keystone's Dependency Confusion Shield has normalized its PURL identity (pkg:npm/@corp/internal-data-pipeline) to block unauthorized public registry squatting [Source: Keystone PURL Shield].`,
         citations: [
           { id: 'Source: NetworkX Dominator Tree', label: 'NetworkX Dominator Tree', source: 'Dominator Tree Algorithm', detail: 'Node dominates all downstream paths leading to Platform Services.' },
-          { id: 'Source: Coordinated PR Manifest F17', label: 'Coordinated PR Manifest F17', source: 'PR Automation', detail: 'Single coordinated pull request synchronizes lockfiles across 7 consumer repos.' },
-          { id: 'Source: Keystone PURL Shield F6', label: 'Keystone PURL Shield F6', source: 'Namespace Normalizer', detail: 'Private registry scope pinned; public npm namespace squat attempt rejected.' }
+          { id: 'Source: Coordinated PR Manifest', label: 'Coordinated PR Manifest', source: 'PR Automation', detail: 'Single coordinated pull request synchronizes lockfiles across 7 consumer repos.' },
+          { id: 'Source: Keystone PURL Shield', label: 'Keystone PURL Shield', source: 'Namespace Normalizer', detail: 'Private registry scope pinned; public npm namespace squat attempt rejected.' }
         ]
       };
     }
     return {
       title: `${n.name} Supply-Chain Intelligence Briefing`,
       summary: `Audited topological analysis for ${n.name}@${n.version} across ${n.dependents} downstream services.`,
-      paragraph: `Package ${n.name}@${n.version} operates in the ${n.operationalDomain || 'Core Platform'} domain with a Keystone Systemic Score of ${n.systemicScore}/100 [Source: Topological Score F1]. It impacts ${n.dependents} downstream repositories and reaches ${n.tier1Reach} Tier-1 mission-critical assets [Source: NetworkX Reverse BFS]. Upstream maintenance health records ${n.maintainers} maintainer(s) [Source: Registry Metadata]. Keystone recommends continuous SENTINEL monitoring and strict cryptographic lockfile pinning to prevent cascading upstream contagion [Source: SemVer Pin Policy F8].`,
+      paragraph: `Package ${n.name}@${n.version} operates in the ${n.operationalDomain || 'Core Platform'} domain with a Keystone Systemic Score of ${n.systemicScore}/100 [Source: Topological Score]. It impacts ${n.dependents} downstream repositories and reaches ${n.tier1Reach} Tier-1 mission-critical assets [Source: NetworkX Reverse BFS]. Upstream maintenance health records ${n.maintainers} maintainer(s) [Source: Registry Metadata]. Keystone recommends continuous SENTINEL monitoring and strict cryptographic lockfile pinning to prevent cascading upstream contagion [Source: SemVer Pin Policy].`,
       citations: [
-        { id: 'Source: Topological Score F1', label: 'Topological Score F1', source: 'Keystone Graph Math', detail: `Composite metric: Reverse PageRank P${n.reversePageRankPercentile} and Betweenness P${n.betweennessPercentile}.` },
+        { id: 'Source: Topological Score', label: 'Topological Score', source: 'Keystone Graph Math', detail: `Composite metric: Reverse PageRank P${n.reversePageRankPercentile} and Betweenness P${n.betweennessPercentile}.` },
         { id: 'Source: NetworkX Reverse BFS', label: 'NetworkX Reverse BFS', source: 'Reachability Traversal', detail: `Direct and transitive downstream paths reach ${n.tier1Reach} Tier-1 endpoints.` },
         { id: 'Source: Registry Metadata', label: 'Registry Metadata', source: 'Package Registry', detail: `${n.maintainers} active maintainer(s) recorded in registry metadata.` },
-        { id: 'Source: SemVer Pin Policy F8', label: 'SemVer Pin Policy F8', source: 'Lockfile Policy', detail: 'Strict lockfile integrity verification active.' }
+        { id: 'Source: SemVer Pin Policy', label: 'SemVer Pin Policy', source: 'Lockfile Policy', detail: 'Strict lockfile integrity verification active.' }
       ]
     };
   };
@@ -226,52 +226,48 @@ export const NodeIntelligencePanel: React.FC<NodeIntelligencePanelProps> = ({
 
       {/* Primary Chokepoint Action: Compute Minimum Cut */}
       {(node.id === 'snakeyaml' || node.articulationPoint || node.category === 'keystone' || node.structuralRisk === 'critical') && (
-        <div className={`px-5 py-2.5 border-b ${isLight ? 'bg-amber-50/70 border-amber-200/80' : 'bg-amber-950/20 border-amber-900/40'}`}>
+        <div className={`px-5 py-2.5 border-b ${isLight ? 'bg-blue-50/50 border-blue-100' : 'bg-blue-950/20 border-blue-900/40'}`}>
           <button
             onClick={() => onStartSimulation(node.id)}
-            className={`w-full py-2.5 px-3 rounded-lg text-xs font-bold flex items-center justify-between shadow-sm transition-all cursor-pointer ${
-              isLight 
-                ? 'bg-gradient-to-r from-red-600 via-rose-600 to-amber-600 hover:from-red-700 hover:to-amber-700 text-white shadow-rose-200' 
-                : 'bg-gradient-to-r from-red-600 via-rose-600 to-amber-500 hover:from-red-500 hover:to-amber-400 text-white shadow-red-950/50'
-            }`}
+            className="w-full py-2 px-3 rounded-lg text-xs font-semibold flex items-center justify-between shadow-xs transition-colors cursor-pointer bg-blue-600 hover:bg-blue-700 text-white"
           >
             <div className="flex items-center gap-2">
-              <Zap className="w-4 h-4 fill-current animate-pulse text-amber-300" />
-              <span className="tracking-wide">Compute Minimum Cut (Sever 4 Paths)</span>
+              <Zap className="w-4 h-4" />
+              <span>Compute Minimum Cut (Sever 4 Paths)</span>
             </div>
             <ArrowRight className="w-4 h-4" />
           </button>
         </div>
       )}
 
-      {/* View Mode Switcher: Intelligence Telemetry vs F18 RAG Briefing */}
-      <div className={`flex items-center border-b px-5 pt-2.5 gap-4 text-xs font-semibold shrink-0 ${
+      {/* View Mode Switcher: Technical Analysis vs Security Briefing */}
+      <div className={`flex items-center border-b px-5 pt-2.5 gap-4 text-xs font-medium shrink-0 ${
         isLight ? 'border-slate-200 bg-white' : 'border-slate-800 bg-slate-950/40'
       }`}>
         <button
           onClick={() => setActiveTab('telemetry')}
           className={`pb-2.5 border-b-2 transition-all flex items-center gap-1.5 ${
             activeTab === 'telemetry'
-              ? isLight ? 'border-slate-900 text-slate-900 font-bold' : 'border-cyan-400 text-cyan-300 font-bold'
+              ? 'border-blue-600 text-blue-600 dark:text-blue-400 font-semibold'
               : isLight ? 'border-transparent text-slate-500 hover:text-slate-800' : 'border-transparent text-slate-400 hover:text-slate-200'
           }`}
         >
           <Activity className="w-3.5 h-3.5" />
-          <span>Intelligence & Math</span>
+          <span>Technical Analysis</span>
         </button>
 
         <button
           onClick={() => setActiveTab('briefing')}
           className={`pb-2.5 border-b-2 transition-all flex items-center gap-1.5 ${
             activeTab === 'briefing'
-              ? isLight ? 'border-purple-600 text-purple-700 font-bold' : 'border-purple-400 text-purple-300 font-bold'
+              ? 'border-blue-600 text-blue-600 dark:text-blue-400 font-semibold'
               : isLight ? 'border-transparent text-slate-500 hover:text-slate-800' : 'border-transparent text-slate-400 hover:text-slate-200'
           }`}
         >
-          <Sparkles className="w-3.5 h-3.5 text-purple-500" />
-          <span>F18 RAG Briefing</span>
-          <span className={`text-[9px] px-1.5 py-0.2 rounded font-mono font-bold border ${
-            isLight ? 'bg-purple-100 text-purple-700 border-purple-200' : 'bg-purple-950 text-purple-300 border-purple-800'
+          <Sparkles className="w-3.5 h-3.5 text-blue-500" />
+          <span>Security Briefing</span>
+          <span className={`text-[9px] px-1.5 py-0.2 rounded font-mono font-medium border ${
+            isLight ? 'bg-slate-100 text-slate-600 border-slate-200' : 'bg-slate-800 text-slate-300 border-slate-700'
           }`}>
             Grounded
           </span>
@@ -288,25 +284,25 @@ export const NodeIntelligencePanel: React.FC<NodeIntelligencePanelProps> = ({
             const currentBriefing = getFactGroundedBriefing(node, briefingLens);
             return (
               <div className="flex flex-col gap-4">
-                {/* Hallucination-Free Assurance Header */}
+                {/* Grounded Assurance Header */}
                 <div className={`p-3.5 rounded-lg border flex flex-col gap-1.5 ${
                   isLight 
-                    ? 'bg-gradient-to-r from-purple-50/90 via-slate-50 to-indigo-50/90 border-purple-200' 
-                    : 'bg-gradient-to-r from-purple-950/40 via-slate-900/60 to-indigo-950/40 border-purple-900/60'
+                    ? 'bg-slate-50 border-slate-200' 
+                    : 'bg-slate-900/60 border-slate-800'
                 }`}>
                   <div className="flex items-center justify-between">
-                    <span className="font-bold text-xs flex items-center gap-1.5 text-purple-700 dark:text-purple-300">
-                      <Sparkles className="w-3.5 h-3.5 text-purple-500" />
-                      <span>F18 Fact-Grounded RAG Narrator</span>
+                    <span className="font-semibold text-xs flex items-center gap-1.5 text-slate-900 dark:text-slate-100">
+                      <Sparkles className="w-3.5 h-3.5 text-blue-500" />
+                      <span>Security Briefing</span>
                     </span>
-                    <span className={`text-[9px] font-mono font-bold px-1.5 py-0.2 rounded border uppercase ${
-                      isLight ? 'bg-white text-purple-800 border-purple-200' : 'bg-slate-900 text-purple-300 border-purple-800'
+                    <span className={`text-[9px] font-mono font-medium px-1.5 py-0.2 rounded border uppercase ${
+                      isLight ? 'bg-white text-slate-600 border-slate-200' : 'bg-slate-800 text-slate-300 border-slate-700'
                     }`}>
                       Deterministic Citations
                     </span>
                   </div>
-                  <p className={`text-[11px] leading-tight ${isLight ? 'text-slate-600' : 'text-slate-400'}`}>
-                    <em>"The LLM narrates. The graph computes. Neither does the other's job."</em> Every assertion is backed by deterministic graph math and ingested OSV advisories.
+                  <p className={`text-[11px] leading-relaxed ${isLight ? 'text-slate-600' : 'text-slate-400'}`}>
+                    Every assertion is backed by deterministic graph math and ingested OSV advisories.
                   </p>
                 </div>
 
@@ -514,14 +510,14 @@ export const NodeIntelligencePanel: React.FC<NodeIntelligencePanelProps> = ({
                 ) : (
                   <ShieldAlert className="w-4 h-4 text-amber-600 dark:text-amber-400" />
                 )}
-                <span className={`text-xs font-bold uppercase tracking-wider ${
+                <span className={`text-xs font-semibold uppercase tracking-wider ${
                   node.stealthSignals.includes('DEPENDENCY_CONFUSION')
-                    ? isLight ? 'text-purple-900' : 'text-purple-300'
+                    ? isLight ? 'text-blue-900' : 'text-blue-300'
                     : isLight ? 'text-amber-900' : 'text-amber-300'
                 }`}>
                   {node.stealthSignals.includes('DEPENDENCY_CONFUSION') 
-                    ? 'F6 Dependency Confusion Shield' 
-                    : 'F4 Pre-CVE Stealth Signals'}
+                    ? 'Dependency Confusion Protection' 
+                    : 'Pre-CVE Risk Signals'}
                 </span>
               </div>
               <span className={`text-[9px] font-mono px-2 py-0.5 rounded font-bold uppercase ${
@@ -904,7 +900,7 @@ export const NodeIntelligencePanel: React.FC<NodeIntelligencePanelProps> = ({
                   <span className={`text-xs font-semibold uppercase tracking-wider ${
                     isLight ? 'text-slate-800' : 'text-slate-200'
                   }`}>
-                    F8 Infection Channel Reachability
+                    Infection Channel Reachability
                   </span>
                 </div>
                 <span className={`text-[10px] font-bold px-2 py-0.5 rounded border uppercase ${
@@ -968,11 +964,11 @@ export const NodeIntelligencePanel: React.FC<NodeIntelligencePanelProps> = ({
                 </div>
               </div>
 
-              {/* F8 Dual-Vector Footnote */}
+              {/* Dual-Vector Footnote */}
               <div className={`text-[10px] leading-relaxed p-2 rounded border ${
                 isLight ? 'bg-cyan-50/50 border-cyan-100 text-cyan-950' : 'bg-cyan-950/20 border-cyan-900/30 text-cyan-300'
               }`}>
-                <strong>F8 Dual Vector Defense: </strong>
+                <strong>Dual Vector Defense: </strong>
                 Prevents supply-chain blindspots like SolarWinds & XZ Utils where build-time infection completely bypasses runtime method inspections.
               </div>
             </div>
@@ -987,7 +983,7 @@ export const NodeIntelligencePanel: React.FC<NodeIntelligencePanelProps> = ({
                   <span className={`text-xs font-semibold uppercase tracking-wider ${
                     isLight ? 'text-slate-900' : 'text-slate-100'
                   }`}>
-                    F9 Noise Suppression Stack
+                    Noise Suppression Stack
                   </span>
                 </div>
                 <span className={`text-[10px] font-bold px-2 py-0.5 rounded border uppercase ${
@@ -1110,7 +1106,7 @@ export const NodeIntelligencePanel: React.FC<NodeIntelligencePanelProps> = ({
                       <span className={`text-xs font-semibold uppercase tracking-wider ${
                         isLight ? 'text-slate-900' : 'text-slate-100'
                       }`}>
-                        F11 Impact Concentration Index
+                        Impact Concentration Index
                       </span>
                     </div>
                     <span className="font-mono font-bold text-xs text-red-600 dark:text-red-400">
@@ -1446,17 +1442,9 @@ export const NodeIntelligencePanel: React.FC<NodeIntelligencePanelProps> = ({
           <>
             <button
               onClick={() => onStartSimulation(node.id)}
-              className={`w-full py-2.5 px-3 rounded-lg text-xs font-bold flex items-center justify-center gap-2 shadow-sm transition-all cursor-pointer ${
-                node.id === 'snakeyaml' || node.articulationPoint || node.category === 'keystone'
-                  ? isLight 
-                    ? 'bg-gradient-to-r from-red-600 via-rose-600 to-amber-600 hover:from-red-700 hover:to-amber-700 text-white shadow-rose-200' 
-                    : 'bg-gradient-to-r from-red-600 via-rose-600 to-amber-500 hover:from-red-500 hover:to-amber-400 text-white shadow-red-950/50'
-                  : isLight 
-                  ? 'bg-slate-900 hover:bg-slate-800 text-white' 
-                  : 'bg-slate-100 hover:bg-white text-slate-900'
-              }`}
+              className="w-full py-2.5 px-3 rounded-lg text-xs font-semibold flex items-center justify-center gap-2 shadow-xs transition-colors cursor-pointer bg-blue-600 hover:bg-blue-700 text-white"
             >
-              <Zap className="w-3.5 h-3.5 fill-current animate-pulse text-amber-300" />
+              <Zap className="w-3.5 h-3.5" />
               <span>
                 {node.id === 'snakeyaml' || node.articulationPoint || node.category === 'keystone'
                   ? 'Compute Minimum Cut (Sever 4 Paths)'
@@ -1467,13 +1455,13 @@ export const NodeIntelligencePanel: React.FC<NodeIntelligencePanelProps> = ({
 
             <button
               onClick={() => onFreezeCircuitBreaker(node.id)}
-              className={`w-full py-2 px-3 rounded-md text-xs font-medium border flex items-center justify-center gap-1.5 transition-colors ${
+              className={`w-full py-2 px-3 rounded-lg text-xs font-medium border flex items-center justify-center gap-1.5 transition-colors cursor-pointer ${
                 isCircuitBreakerFrozen
                   ? isLight ? 'bg-amber-50 text-amber-800 border-amber-300' : 'bg-amber-950/40 text-amber-300 border-amber-800/50'
-                  : isLight ? 'bg-white hover:bg-slate-50 text-slate-700 border-slate-200' : 'bg-slate-900 hover:bg-slate-800 text-slate-300 border-slate-800'
+                  : isLight ? 'bg-white hover:bg-slate-50 text-slate-700 border-slate-300 shadow-xs' : 'bg-slate-800 hover:bg-slate-700 text-slate-200 border-slate-700'
               }`}
             >
-              <Lock className="w-3.5 h-3.5 text-slate-500" />
+              <Lock className="w-3.5 h-3.5 text-slate-400" />
               <span>{isCircuitBreakerFrozen ? 'Circuit Breaker: FROZEN' : 'Freeze CI/CD Intake (Circuit Breaker)'}</span>
             </button>
           </>

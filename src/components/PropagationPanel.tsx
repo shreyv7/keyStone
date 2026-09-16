@@ -40,11 +40,11 @@ export const PropagationPanel: React.FC<PropagationPanelProps> = ({
       <div className={`flex items-start justify-between border-b pb-3 mb-3 shrink-0 ${isLight ? 'border-slate-200' : 'border-slate-800'}`}>
         <div>
           <div className="flex items-center gap-2 mb-1">
-            <GitFork className="w-4 h-4 text-cyan-500" />
+            <GitFork className="w-4 h-4 text-blue-600 dark:text-blue-400" />
             <span className={`font-semibold text-xs uppercase tracking-wider ${
               isLight ? 'text-slate-900' : 'text-slate-200'
             }`}>
-              F8 Dual-Channel Propagation Pathways
+              Dual-Channel Propagation Pathways
             </span>
           </div>
           <div className={`text-xs ${isLight ? 'text-slate-500' : 'text-slate-400'}`}>
@@ -61,16 +61,16 @@ export const PropagationPanel: React.FC<PropagationPanelProps> = ({
         </button>
       </div>
 
-      {/* F8 Dual-Channel Contagion Analysis Banner */}
+      {/* Dual-Channel Contagion Analysis Banner */}
       <div className={`p-3 rounded-lg border mb-3 text-xs leading-relaxed shrink-0 ${
         isLight 
-          ? 'bg-gradient-to-r from-cyan-50/70 via-slate-50 to-amber-50/70 border-slate-200 text-slate-700' 
-          : 'bg-gradient-to-r from-cyan-950/30 via-slate-900/60 to-amber-950/30 border-slate-800 text-slate-300'
+          ? 'bg-slate-50/80 border-slate-200 text-slate-700' 
+          : 'bg-slate-900/60 border-slate-800 text-slate-300'
       }`}>
         <div className="flex items-center justify-between mb-1">
-          <span className="font-bold flex items-center gap-1.5">
-            <Layers className="w-3.5 h-3.5 text-cyan-600 dark:text-cyan-400" />
-            <span>F8 Dual Infection Channel Mechanism</span>
+          <span className="font-semibold flex items-center gap-1.5">
+            <Layers className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
+            <span>Dual Infection Channel Mechanism</span>
           </span>
           <span className={`text-[10px] font-mono px-1.5 py-0.2 rounded font-semibold ${
             isLight ? 'bg-white text-slate-700 border border-slate-200' : 'bg-slate-900 text-slate-300 border border-slate-700'
