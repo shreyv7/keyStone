@@ -315,7 +315,7 @@ export const EcosystemGraph: React.FC<EcosystemGraphProps> = ({
 
     // 1. Scene
     const scene = new THREE.Scene();
-    const bgHex = isLight ? 0xffffff : 0x06080d;
+    const bgHex = isLight ? 0xffffff : 0x080616;
     scene.background = new THREE.Color(bgHex);
     scene.fog = new THREE.FogExp2(bgHex, isLight ? 0.0035 : 0.0055);
     sceneRef.current = scene;
@@ -1023,7 +1023,7 @@ export const EcosystemGraph: React.FC<EcosystemGraphProps> = ({
   useEffect(() => {
     if (!sceneRef.current) return;
     const scene = sceneRef.current;
-    const bgHex = isLight ? 0xffffff : 0x06080d;
+    const bgHex = isLight ? 0xffffff : 0x080616;
     scene.background = new THREE.Color(bgHex);
     scene.fog = new THREE.FogExp2(bgHex, isLight ? 0.0035 : 0.0055);
 
@@ -1117,7 +1117,7 @@ export const EcosystemGraph: React.FC<EcosystemGraphProps> = ({
 
   return (
     <div className={`relative w-full h-full overflow-hidden select-none transition-colors duration-300 ${
-      isLight ? 'bg-white' : 'bg-[#06080d]'
+      isLight ? 'bg-white' : 'bg-[#080616]'
     }`}>
       <div ref={mountRef} className="w-full h-full" />
 

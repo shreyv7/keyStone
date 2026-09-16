@@ -1,39 +1,23 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useRef } from "react";
 import {
-  ShieldCheck,
   Network,
   Activity,
   ArrowRight,
-  Sparkles,
-  Lock,
   GitPullRequest,
-  CheckCircle2,
-  XCircle,
-  ChevronRight,
-  Layers,
-  BarChart3,
-  PlayCircle,
-  Play,
-  Server,
-  FileCode2,
-  Cpu,
-  RefreshCw,
-  ExternalLink,
   ChevronDown,
-  Terminal,
-  Filter,
-  Check,
-  GitMerge,
-  Radar,
-  HelpCircle,
-  Copy,
-  ChevronUp,
-  AlertTriangle,
-  FileSpreadsheet,
-  Code2
+  Lock,
+  Mail,
+  Eye,
+  EyeOff,
+  GitBranch,
+  ShieldAlert,
+  CheckCircle2,
+  KeyRound,
+  RefreshCw,
+  Sparkles,
+  Zap
 } from "lucide-react";
 import { KeystoneStats } from "../types";
-import { HeroTopologyShowcase } from "./HeroTopologyShowcase";
 import { InteractiveTopologyCanvas } from "./InteractiveTopologyCanvas";
 
 interface LandingPageProps {
@@ -41,7 +25,7 @@ interface LandingPageProps {
   onEnterConsole: () => void;
   onLaunchScenario: (scenarioId: string) => void;
   onOpenAskKeystone: () => void;
-  onOpenAuth?: (mode: 'signin' | 'onboard') => void;
+  onOpenAuth?: (mode: "signin" | "onboard") => void;
 }
 
 export const LandingPage: React.FC<LandingPageProps> = ({
@@ -51,110 +35,97 @@ export const LandingPage: React.FC<LandingPageProps> = ({
   onOpenAskKeystone,
   onOpenAuth
 }) => {
-  // Interactive Showcase Tab State
-  const [activeTab, setActiveTab] = useState<"engine" | "propagation" | "mincut" | "stealth">("engine");
-  
-  // Interactive Calculator State
-  const [calcTier1Services, setCalcTier1Services] = useState<number>(4);
-  const [calcSharedDeps, setCalcSharedDeps] = useState<number>(3);
-  const [calcDailyVolume, setCalcDailyVolume] = useState<number>(85); // Millions USD
-  
-  // FAQ Accordion State
-  const [openFaq, setOpenFaq] = useState<number | null>(0);
-
-  // Quick Copy Feedback
-  const [copiedPr, setCopiedPr] = useState(false);
-
-  const handleCopyPrManifest = () => {
-    const manifest = JSON.stringify({
-      policy_action: "CIRCUIT_BREAKER_FREEZE",
-      target_keystone: "pkg:maven/org.yaml/snakeyaml@1.33",
-      freeze_scope: "enterprise_wide_auto_merge",
-      recommended_min_cut: {
-        target_package: "pkg:maven/com.internal/internal-data-pipeline@2.5.0",
-        semver_jump: "patch",
-        net_security_gain: 4,
-        financial_blast_reduction: "94.2%",
-        insulated_assets: ["Payment-Gateway", "Auth-IAM", "Billing-Analytics", "Order-Core"]
-      }
-    }, null, 2);
-    navigator.clipboard.writeText(manifest);
-    setCopiedPr(true);
-    setTimeout(() => setCopiedPr(false), 2000);
-  };
-
-  // Scroll state for dynamic fixed topbar overlay
-  const [isScrolled, setIsScrolled] = useState(false);
-
   const containerRef = useRef<HTMLDivElement>(null);
 
-  const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
-    const scrollTop = e.currentTarget.scrollTop;
-    if (scrollTop > 20 && !isScrolled) {
-      setIsScrolled(true);
-    } else if (scrollTop <= 20 && isScrolled) {
-      setIsScrolled(false);
+  // Sign In Form State (matching AuthOnboardingModal)
+  const [signInEmail, setSignInEmail] = useState("alex.chen@acme-corp.com");
+  const [signInPassword, setSignInPassword] = useState("••••••••••••");
+  const [showPassword, setShowPassword] = useState(false);
+  const [rememberMe, setRememberMe] = useState(true);
+  const [isAuthenticating, setIsAuthenticating] = useState(false);
+
+  // Smooth scroll handler
+  const scrollToSection = (id: string) => {
+    const el = document.getElementById(id);
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth" });
     }
   };
 
+  const handleSignIn = (e?: React.FormEvent) => {
+    if (e) e.preventDefault();
+    setIsAuthenticating(true);
+    setTimeout(() => {
+      setIsAuthenticating(false);
+      onEnterConsole();
+    }, 600);
+  };
+
+  const handleQuickDemo = () => {
+    setIsAuthenticating(true);
+    setTimeout(() => {
+      setIsAuthenticating(false);
+      onLaunchScenario("snakeyaml_hero");
+    }, 400);
+  };
+
   return (
-    <div 
+    <div
       ref={containerRef}
-      onScroll={handleScroll}
-      className="min-h-screen w-full flex flex-col font-sans bg-white text-slate-900 overflow-y-auto overflow-x-hidden relative select-none cyber-cursor-active"
+      className="min-h-screen w-full flex flex-col font-sans bg-[#080616] text-white overflow-y-auto overflow-x-hidden relative select-none scroll-smooth"
     >
-      {/* Interactive Procedural Dependency Graph Canvas (Steady, calm automatic drift) */}
-      <InteractiveTopologyCanvas />
+      {/* Interactive Procedural Dependency Network Canvas (Deepest Void #080616 with Neon Nodes) */}
+      <InteractiveTopologyCanvas theme="dark" />
 
-      {/* Atmospheric translucent screen layer ensuring razor-sharp typography */}
-      <div className="fixed inset-0 pointer-events-none z-0 bg-gradient-to-b from-white/70 via-white/55 to-white/70" />
+      {/* Atmospheric translucent screen layer ensuring contrast */}
+      <div className="fixed inset-0 pointer-events-none z-0 bg-gradient-to-b from-[#080616]/75 via-[#080616]/45 to-[#080616]/85" />
 
-      {/* Dynamic Fixed Glassmorphic Capsule Topbar Overlay */}
-      <div className="fixed top-4 left-0 right-0 z-50 flex justify-center px-4 pointer-events-none transition-all duration-300">
-        <header 
-          className={`pointer-events-auto max-w-5xl w-full h-14 px-6 rounded-full flex items-center justify-between transition-all duration-300 backdrop-blur-xl ${
-            isScrolled 
-              ? 'glass-gold-nav-scrolled shadow-xl shadow-amber-900/10 scale-[0.99] py-1' 
-              : 'glass-gold-nav shadow-lg shadow-amber-900/5'
-          }`}
-        >
-          <div className="flex items-center gap-8">
-            {/* Logo */}
-            <div className="flex items-center gap-2.5 cursor-pointer group" onClick={onEnterConsole}>
-              <img 
-                src="/assets/logo.png" 
-                alt="Keystone" 
-                className="w-8 h-8 object-contain transition-transform group-hover:scale-105" 
-              />
-              <div className="flex items-center">
-                <span className="font-heading font-bold tracking-tight text-base text-slate-950">
-                  KEYSTONE
-                </span>
-              </div>
-            </div>
-
-            {/* Nav Menu */}
-            <nav className="hidden md:flex items-center gap-6 text-xs font-semibold text-slate-700 font-body">
-              <a href="#product" className="hover:text-slate-950 transition-colors">
-                Product
-              </a>
-              <a href="#architecture" className="hover:text-slate-950 transition-colors">
-                Architecture
-              </a>
-              <a href="#calculator" className="hover:text-slate-950 transition-colors">
-                ROI Calculator
-              </a>
-              <a href="#faq" className="hover:text-slate-950 transition-colors">
-                Docs
-              </a>
-            </nav>
+      {/* ─── Top Navigation Bar (Harmonized Keystone Glass Capsule) ─── */}
+      <div className="fixed top-4 left-0 right-0 z-50 flex justify-center px-4 pointer-events-none">
+        <header className="pointer-events-auto max-w-5xl w-full h-14 px-6 rounded-full flex items-center justify-between transition-all backdrop-blur-xl bg-[#080616]/85 border border-[#1a1953] shadow-xl shadow-black/60">
+          {/* Authentic Keystone Logo */}
+          <div
+            className="flex items-center gap-3 cursor-pointer group"
+            onClick={onEnterConsole}
+          >
+            <img
+              src="/assets/logo.png"
+              alt="Keystone"
+              className="w-7 h-7 object-contain transition-transform group-hover:scale-105"
+            />
+            <span className="font-heading font-bold tracking-tight text-base text-white flex items-center gap-2">
+              KEYSTONE
+              <span className="w-1.5 h-1.5 rounded-full bg-[#2f2fe4] shadow-[0_0_8px_#2f2fe4] animate-pulse" />
+            </span>
           </div>
 
-          {/* Clean Pill Actions */}
+          {/* Nav Anchors */}
+          <nav className="hidden sm:flex items-center gap-7 text-xs font-semibold text-slate-300 font-body">
+            <button
+              onClick={() => scrollToSection("process")}
+              className="hover:text-white transition-colors cursor-pointer"
+            >
+              The Process
+            </button>
+            <button
+              onClick={() => scrollToSection("process")}
+              className="hover:text-white transition-colors cursor-pointer"
+            >
+              Architecture
+            </button>
+            <button
+              onClick={() => scrollToSection("signin")}
+              className="hover:text-white transition-colors cursor-pointer"
+            >
+              Sign In
+            </button>
+          </nav>
+
+          {/* Action Button */}
           <div className="flex items-center gap-2.5">
             <button
-              onClick={() => onOpenAuth ? onOpenAuth('signin') : onEnterConsole()}
-              className="px-5 py-2 rounded-full text-xs font-heading font-semibold text-slate-900 hover:text-black bg-white/95 hover:bg-white border border-[#d8be98] shadow-xs hover:shadow-amber-900/10 transition-all cursor-pointer"
+              onClick={() => scrollToSection("signin")}
+              className="px-5 py-2 rounded-full text-xs font-heading font-semibold text-white bg-[#2f2fe4] hover:bg-[#4343f8] transition-all cursor-pointer shadow-[0_0_15px_rgba(47,47,228,0.35)]"
             >
               Sign In
             </button>
@@ -162,559 +133,496 @@ export const LandingPage: React.FC<LandingPageProps> = ({
         </header>
       </div>
 
-      {/* Hero Section - Full Initial Viewport Fold (Only Crystal Centerpiece visible on load) */}
-      <section className="relative z-10 min-h-screen w-full flex flex-col items-center justify-between px-4 sm:px-6 pt-20 sm:pt-24 pb-6 text-center select-none">
-        <div className="w-full flex-1 flex flex-col items-center justify-center max-w-4xl sm:max-w-5xl md:max-w-6xl lg:max-w-7xl mx-auto my-auto">
-          {/* 3D Champagne-Gold & Crystal Topology Centerpiece (from gemini.png) */}
-          <div className="relative w-full flex flex-col items-center justify-center">
-            <img 
-              src="/keystone-hero-crystal.png" 
-              alt="Stop chasing 10,000 CVEs. KEYSTONE: Cut the structural keystones." 
-              className="w-full max-h-[74vh] sm:max-h-[78vh] md:max-h-[80vh] object-contain drop-shadow-md select-none pointer-events-none"
-              draggable={false}
-            />
-            {/* Accessible Semantic Heading for Screen Readers & SEO */}
-            <h1 className="sr-only">
-              Stop chasing 10,000 CVEs. KEYSTONE: Cut the structural keystones.
-            </h1>
-          </div>
+      {/* ─── HERO SECTION ─── */}
+      <section className="relative z-10 min-h-screen w-full flex flex-col items-center justify-center px-6 pt-24 pb-16 text-center max-w-4xl mx-auto my-auto">
+        {/* Subtitle Badge */}
+        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#1a1953]/50 border border-[#162e93] text-[#d4d3ff] text-xs font-semibold tracking-wide uppercase mb-6 animate-in fade-in slide-in-from-top-3">
+          <Sparkles className="w-3.5 h-3.5 text-[#2f2fe4]" />
+          <span>Open Source Supply Chains · The Ripple Effect</span>
         </div>
 
-        {/* Elegant Scroll cue at the bottom of the first viewport */}
-        <div 
-          onClick={() => {
-            if (containerRef.current) {
-              containerRef.current.scrollTo({ top: window.innerHeight * 0.96, behavior: 'smooth' });
-            }
-          }}
-          className="pt-2 pb-4 flex flex-col items-center gap-1.5 text-slate-400 hover:text-slate-800 transition-colors cursor-pointer group select-none"
-        >
-          <span className="text-[10px] font-heading font-semibold tracking-widest uppercase text-slate-400 group-hover:text-slate-700 transition-colors">
-            Scroll to Explore
+        {/* Hero Headline */}
+        <h1 className="font-heading text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight text-white leading-[1.12] mb-6">
+          One compromised package.
+          <br />
+          <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-[#d4d3ff] to-[#2f2fe4]">
+            A hundred breached services.
           </span>
-          <ChevronDown className="w-4 h-4 text-slate-400 group-hover:text-slate-700 transition-transform group-hover:translate-y-0.5 animate-bounce" />
-        </div>
-      </section>
+        </h1>
 
-      {/* Main Narrative & Interactive Product Showcase Section (Revealed upon scrolling) */}
-      <section className="relative z-10 pt-16 md:pt-20 pb-16 px-6 max-w-7xl mx-auto flex flex-col items-center text-center">
-        {/* Refined Subtitle */}
-        <p className="font-body text-base sm:text-lg lg:text-xl max-w-3xl leading-relaxed text-slate-700 font-medium mb-12">
-          Legacy scanners score open-source dependencies in isolation, burying engineering in alerts and bot pull requests. 
-          <strong className="font-semibold text-slate-950"> KEYSTONE</strong> analyzes full multi-repo dependency graphs, pinpoints hidden chokepoints 
-          <em> before</em> public CVEs appear, and prescribes surgical <strong className="font-semibold text-amber-900/90">minimum-cut fixes</strong> in 1 coordinated PR.
+        {/* Hero Narrative */}
+        <p className="font-body text-base sm:text-lg text-slate-300 max-w-2xl leading-relaxed mb-10 font-normal">
+          Modern software depends on deeply nested open-source graphs. Traditional
+          tools evaluate packages in isolation — missing structural chokepoints and
+          spamming teams with 40 disconnected alerts. 
+          <strong className="text-white font-semibold"> KEYSTONE</strong> pinpoints the
+          keystone dependencies before advisories exist, and severs attack paths with a single coordinated fix.
         </p>
 
-        {/* Reimagined Interactive Product Interface Showcase Window */}
-        <HeroTopologyShowcase
-          onEnterConsole={onEnterConsole}
-          onLaunchScenario={onLaunchScenario}
-        />
-      </section>
+        {/* Minimal CTAs */}
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-3 w-full max-w-sm mb-16">
+          <button
+            onClick={() => scrollToSection("process")}
+            className="w-full sm:w-auto px-6 py-3 rounded-full text-sm font-heading font-bold text-white bg-[#2f2fe4] hover:bg-[#4343f8] shadow-[0_0_20px_rgba(47,47,228,0.4)] transition-all flex items-center justify-center gap-2 cursor-pointer group"
+          >
+            <span>See The Process</span>
+            <ChevronDown className="w-4 h-4 text-white group-hover:translate-y-0.5 transition-transform" />
+          </button>
 
-      {/* The 3-Stage Topological Engine Section */}
-      <section id="architecture" className="relative z-10 py-20 px-6 max-w-7xl mx-auto w-full border-t border-slate-200">
-        <div className="text-center max-w-3xl mx-auto mb-16">
-          <h2 className="font-heading text-3xl sm:text-4xl font-bold tracking-tight text-slate-950 mb-4">
-            How Keystone Works Under the Hood
-          </h2>
-          <p className="font-body text-sm sm:text-base leading-relaxed text-slate-600">
-            A three-stage computational pipeline turning resolved dependency DAGs into surgical remediation actions.
-          </p>
+          <button
+            onClick={() => scrollToSection("signin")}
+            className="w-full sm:w-auto px-6 py-3 rounded-full text-sm font-heading font-semibold text-slate-200 hover:text-white bg-[#1a1953]/50 hover:bg-[#1a1953] border border-[#162e93] transition-all flex items-center justify-center gap-2 cursor-pointer"
+          >
+            <span>Sign In to Console</span>
+            <ArrowRight className="w-4 h-4 text-slate-400" />
+          </button>
         </div>
 
-        {/* Segmented Control Tabs */}
-        <div className="flex justify-center mb-8">
-          <div className="inline-flex p-1 rounded-xl border border-slate-200 bg-slate-100/80 font-heading">
-            <button
-              onClick={() => setActiveTab("engine")}
-              className={"flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-bold transition-all cursor-pointer " + (activeTab === "engine" ? "bg-white text-slate-950 shadow-xs" : "text-slate-600 hover:text-slate-950")}
-            >
-              <Network className="w-3.5 h-3.5 text-blue-600" />
-              <span>Stage 1: Structural Danger</span>
-            </button>
-
-            <button
-              onClick={() => setActiveTab("propagation")}
-              className={"flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-bold transition-all cursor-pointer " + (activeTab === "propagation" ? "bg-white text-slate-950 shadow-xs" : "text-slate-600 hover:text-slate-950")}
-            >
-              <Activity className="w-3.5 h-3.5 text-red-600" />
-              <span>Stage 2: Realized Risk & Cascade</span>
-            </button>
-
-            <button
-              onClick={() => setActiveTab("mincut")}
-              className={"flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-bold transition-all cursor-pointer " + (activeTab === "mincut" ? "bg-white text-slate-950 shadow-xs" : "text-slate-600 hover:text-slate-950")}
-            >
-              <GitPullRequest className="w-3.5 h-3.5 text-emerald-600" />
-              <span>Stage 3: Minimum-Cut Prescription</span>
-            </button>
-
-            <button
-              onClick={() => setActiveTab("stealth")}
-              className={"flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-bold transition-all cursor-pointer " + (activeTab === "stealth" ? "bg-white text-slate-950 shadow-xs" : "text-slate-600 hover:text-slate-950")}
-            >
-              <Radar className="w-3.5 h-3.5 text-amber-600" />
-              <span>Stealth Infiltration Radar</span>
-            </button>
+        {/* Minimalist Micro-Metrics Bar */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 w-full max-w-3xl pt-8 border-t border-[#1a1953] text-left">
+          <div className="p-3.5 rounded-xl bg-[#0d0a27]/90 border border-[#1a1953]">
+            <div className="text-[11px] font-medium text-slate-400 uppercase tracking-wider">Detection</div>
+            <div className="text-base font-bold text-white mt-0.5">Day −400 Pre-CVE</div>
+            <div className="text-[11px] text-slate-400">CVE-independent radar</div>
           </div>
-        </div>
-
-        {/* Tab Content Box */}
-        <div className="w-full rounded-2xl border border-slate-200 bg-white p-8 md:p-12 shadow-md">
-          {activeTab === "engine" && (
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
-              <div>
-                <h3 className="text-2xl sm:text-3xl font-bold tracking-tight text-slate-950 mb-4">
-                  Find the Load-Bearing Packages Before They Break
-                </h3>
-                <p className="text-sm leading-relaxed text-slate-600 mb-6">
-                  Danger is not an intrinsic property of a package — it is a property of <strong>where that package sits</strong> in your dependency network. KEYSTONE identifies cut-vertices whose compromise fractures all redundant paths across your architecture.
-                </p>
-                <div className="grid grid-cols-2 gap-4 mb-6">
-                  <div className="p-4 rounded-xl border border-slate-200 bg-slate-50">
-                    <div className="text-xs font-bold text-slate-500 uppercase tracking-wider">Popularity Paradox</div>
-                    <div className="text-lg font-bold mt-1 text-slate-900">OpenSSF 0.48 (Low)</div>
-                    <div className="text-xs text-slate-500 mt-1">Ignored by standard alerts</div>
-                  </div>
-                  <div className="p-4 rounded-xl border border-slate-200 bg-slate-50">
-                    <div className="text-xs font-bold text-slate-500 uppercase tracking-wider">Keystone Topology</div>
-                    <div className="text-lg font-bold mt-1 text-blue-600">Top 0.5% (Critical)</div>
-                    <div className="text-xs text-slate-500 mt-1">Single Point of Failure</div>
-                  </div>
-                </div>
-                <button
-                  onClick={onEnterConsole}
-                  className="inline-flex items-center gap-2 text-sm font-bold text-blue-600 hover:text-blue-800 cursor-pointer"
-                >
-                  <span>Explore In Live Console</span>
-                  <ArrowRight className="w-4 h-4" />
-                </button>
-              </div>
-
-              {/* Code/Metric Box */}
-              <div className="rounded-xl border border-slate-200 bg-slate-950 text-slate-200 p-6 font-mono text-xs overflow-hidden shadow-inner">
-                <div className="flex items-center justify-between pb-3 border-b border-slate-800 mb-4">
-                  <span className="text-emerald-400 font-bold">STAGE_1_GRAPH_ANALYSIS</span>
-                  <span className="text-slate-400 text-[10px]">TIME_TO_CALC: 48ms</span>
-                </div>
-                <div className="space-y-2 leading-relaxed">
-                  <div className="text-slate-500">// Tarjan Articulation Cut-Vertex Detection</div>
-                  <div className="text-emerald-400">✓ Ingested 42 GitHub/GitLab repositories (CycloneDX SBOMs)</div>
-                  <div className="text-red-400 font-bold">! CRITICAL ARTICULATION POINT: snakeyaml@1.33</div>
-                  <div className="text-slate-300 pl-4">├── Reverse PageRank Percentile : 98.4%</div>
-                  <div className="text-slate-300 pl-4">├── Betweenness Centrality      : 0.042 (Top 0.5%)</div>
-                  <div className="text-amber-400 pl-4">├── Maintainer Team             : 1 Unfunded Dev (Bus Factor 1)</div>
-                  <div className="text-slate-300 pl-4">└── Downstream Production Apps  : 21 Services Reachable</div>
-                  <div className="mt-3 p-3 rounded bg-red-950/60 border border-red-800 text-red-300 text-[11px]">
-                    FLAG: Popularity Paradox detected. CVSS is moderate, but structural risk is catastrophic.
-                  </div>
-                </div>
-              </div>
-            </div>
-          )}
-
-          {activeTab === "propagation" && (
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
-              <div>
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md text-xs font-semibold mb-4 bg-red-50 text-red-700 border border-red-200">
-                  <Activity className="w-3.5 h-3.5" />
-                  <span>Dual Infection Channels & Pin Dynamics</span>
-                </div>
-                <h3 className="text-2xl sm:text-3xl font-bold tracking-tight text-slate-950 mb-4">
-                  Simulate Contagion Ripple Before Merging
-                </h3>
-                <p className="text-sm leading-relaxed text-slate-600 mb-6">
-                  Test what happens if an open-source library or maintainer account is compromised. Keystone models permeable SemVer ranges (^, ~) vs cryptographic lockfiles, distinguishes Runtime from Build-Time channels, and calculates financial blast exposure.
-                </p>
-                <ul className="space-y-3 mb-6 text-sm text-slate-700">
-                  <li className="flex items-center gap-3">
-                    <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
-                    <span>Permeable Edges (P=0.95) vs Shielded Lockfiles (P=0.15)</span>
-                  </li>
-                  <li className="flex items-center gap-3">
-                    <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
-                    <span>Asset-Weighted Sinks: Multiplies blast radius by Tier-1 revenue exposure</span>
-                  </li>
-                  <li className="flex items-center gap-3">
-                    <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
-                    <span>Herfindahl Concentration Index: Alerts on cross-portfolio epidemics</span>
-                  </li>
-                </ul>
-                <button
-                  onClick={() => onLaunchScenario("snakeyaml_hero")}
-                  className="inline-flex items-center gap-2 text-sm font-bold text-red-600 hover:text-red-800 cursor-pointer"
-                >
-                  <span>Launch Live SnakeYAML Compromise Cascade</span>
-                  <ArrowRight className="w-4 h-4" />
-                </button>
-              </div>
-
-              <div className="rounded-xl border border-slate-200 bg-slate-950 text-slate-200 p-6 font-mono text-xs overflow-hidden shadow-inner">
-                <div className="flex items-center justify-between pb-3 border-b border-slate-800 mb-4">
-                  <span className="text-red-400 font-bold">PROPAGATION_SIMULATOR</span>
-                  <span className="px-2 py-0.5 rounded bg-red-950 text-red-400 text-[10px]">CONTAGION: ACTIVE</span>
-                </div>
-                <div className="space-y-2">
-                  <div className="text-slate-400">Root Compromise: [snakeyaml] → Permeable SemVer (^)</div>
-                  <div className="text-red-400">├── [internal-data-pipeline:2.4.0] (Infected in 12s)</div>
-                  <div className="text-red-400">│   ├── [auth-token-service] (Infected in 24s)</div>
-                  <div className="text-red-400">│   │   └── [TIER-1: Core Banking Vault] (EXPOSED)</div>
-                  <div className="text-red-400">│   └── [stream-processor] (Infected in 31s)</div>
-                  <div className="text-red-400">│       └── [TIER-1: User PII Database] (EXPOSED)</div>
-                  <div className="mt-4 pt-3 border-t border-slate-800 flex justify-between items-center text-[11px]">
-                    <span className="text-slate-400">Reachable Chains: 4 Active</span>
-                    <span className="text-red-400 font-bold">Daily Exposure: $85,000,000</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          )}
-
-          {activeTab === "mincut" && (
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
-              <div>
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md text-xs font-semibold mb-4 bg-emerald-50 text-emerald-700 border border-emerald-200">
-                  <GitPullRequest className="w-3.5 h-3.5" />
-                  <span>Max-Flow Min-Cut Network Optimization</span>
-                </div>
-                <h3 className="text-2xl sm:text-3xl font-bold tracking-tight text-slate-950 mb-4">
-                  1 Surgical Coordinated PR Instead of 40 Bot Spams
-                </h3>
-                <p className="text-sm leading-relaxed text-slate-600 mb-6">
-                  Why waste developer sprints patching dozens of individual services? Keystone solves the Flow-Network Minimum Vertex Cut, identifying the single intermediate dominator package that disconnects 100% of attack paths with zero breaking changes.
-                </p>
-                <div className="space-y-3 mb-6 text-sm">
-                  <div className="p-3 rounded-lg border border-slate-200 bg-slate-50 flex items-center justify-between">
-                    <span className="font-medium text-slate-800">Single Dominator Package:</span>
-                    <span className="font-mono text-blue-700 font-bold">internal-data-pipeline (2.4.0 → 2.5.0)</span>
-                  </div>
-                  <div className="p-3 rounded-lg border border-slate-200 bg-slate-50 flex items-center justify-between">
-                    <span className="font-medium text-slate-800">Propagation Paths Severed:</span>
-                    <span className="font-mono text-emerald-700 font-bold">4 / 4 (100% Inoculation)</span>
-                  </div>
-                  <div className="p-3 rounded-lg border border-slate-200 bg-slate-50 flex items-center justify-between">
-                    <span className="font-medium text-slate-800">Renovate Circuit Breaker:</span>
-                    <span className="font-mono text-slate-800 font-bold">AUTO_FREEZE_EMITTED</span>
-                  </div>
-                </div>
-                <button
-                  onClick={handleCopyPrManifest}
-                  className="inline-flex items-center gap-2 text-xs font-bold px-4 py-2.5 rounded-lg bg-slate-900 text-white hover:bg-slate-800 transition-all cursor-pointer"
-                >
-                  {copiedPr ? <Check className="w-4 h-4 text-emerald-400" /> : <Copy className="w-4 h-4" />}
-                  <span>{copiedPr ? "Copied PR Manifest JSON!" : "Copy Coordinated Fix Manifest"}</span>
-                </button>
-              </div>
-
-              {/* Visual Preview */}
-              <div className="rounded-xl border border-slate-200 bg-white overflow-hidden shadow-sm">
-                <img
-                  src="/keystone-app-ui-light.jpg"
-                  alt="Minimum Cut Architecture Diagram"
-                  className="w-full h-auto object-cover max-h-[360px]"
-                />
-              </div>
-            </div>
-          )}
-
-          {activeTab === "stealth" && (
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
-              <div>
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md text-xs font-semibold mb-4 bg-amber-50 text-amber-700 border border-amber-200">
-                  <Radar className="w-3.5 h-3.5" />
-                  <span>Sentinel Mode: CVE-Independent Infiltration Radar</span>
-                </div>
-                <h3 className="text-2xl sm:text-3xl font-bold tracking-tight text-slate-950 mb-4">
-                  Detect Malicious Hijacking 30 Days Before Disclosure
-                </h3>
-                <p className="text-sm leading-relaxed text-slate-600 mb-6">
-                  The biggest supply-chain breaches in history (XZ Utils, Event-Stream, SolarWinds) had no CVE while the attackers were active. Keystone’s pre-CVE heuristic engine flags account takeovers, Git-to-tarball hash divergences, and suspicious transitive blooms.
-                </p>
-                <div className="space-y-3 mb-6 text-sm text-slate-700">
-                  <div className="flex items-start gap-2.5">
-                    <CheckCircle2 className="w-4 h-4 text-amber-600 mt-0.5 shrink-0" />
-                    <div>
-                      <strong className="font-semibold text-slate-900">FRESH_MAINTAINER:</strong> Detects newly registered contributor accounts suddenly publishing major releases.
-                    </div>
-                  </div>
-                  <div className="flex items-start gap-2.5">
-                    <CheckCircle2 className="w-4 h-4 text-amber-600 mt-0.5 shrink-0" />
-                    <div>
-                      <strong className="font-semibold text-slate-900">DIVERGENT_ARTIFACT_HASH:</strong> Verifies registry tarball sha256 against Git release tags to catch build tampering.
-                    </div>
-                  </div>
-                  <div className="flex items-start gap-2.5">
-                    <CheckCircle2 className="w-4 h-4 text-amber-600 mt-0.5 shrink-0" />
-                    <div>
-                      <strong className="font-semibold text-slate-900">CENTRALITY_VELOCITY:</strong> Alarms when a quiet package surfs a +100% adoption surge across lockfile commits.
-                    </div>
-                  </div>
-                </div>
-                <button
-                  onClick={() => onLaunchScenario("fresh_maintainer_anomaly")}
-                  className="inline-flex items-center gap-2 text-sm font-bold text-amber-700 hover:text-amber-900 cursor-pointer"
-                >
-                  <span>Travel -30 Days on Forensic Timeline</span>
-                  <ArrowRight className="w-4 h-4" />
-                </button>
-              </div>
-
-              <div className="rounded-xl border border-slate-200 bg-white overflow-hidden shadow-sm">
-                <img
-                  src="/keystone-stealth-radar.jpg"
-                  alt="Stealth Threat Radar"
-                  className="w-full h-auto object-cover max-h-[360px]"
-                />
-              </div>
-            </div>
-          )}
-        </div>
-      </section>
-
-      {/* Interactive ROI & Blast Exposure Calculator */}
-      <section id="calculator" className="relative z-10 py-20 px-6 max-w-7xl mx-auto w-full border-t border-slate-200">
-        <div className="text-center max-w-3xl mx-auto mb-14">
-          <div className="font-heading inline-flex items-center gap-1.5 px-3 py-1 rounded-md text-xs font-semibold uppercase tracking-wider mb-3 bg-blue-50 text-blue-700 border border-blue-200">
-            <BarChart3 className="w-3.5 h-3.5" />
-            <span>Interactive ROI & Blast Model</span>
+          <div className="p-3.5 rounded-xl bg-[#0d0a27]/90 border border-[#1a1953]">
+            <div className="text-[11px] font-medium text-slate-400 uppercase tracking-wider">Topology</div>
+            <div className="text-base font-bold text-[#2f2fe4] mt-0.5">Dominator Trees</div>
+            <div className="text-[11px] text-slate-400">Lengauer–Tarjan chokepoints</div>
           </div>
-          <h2 className="font-heading text-3xl sm:text-4xl font-bold tracking-tight text-slate-950 mb-4">
-            Simulate Your Organization’s Chokepoint Risk
-          </h2>
-          <p className="font-body text-sm sm:text-base leading-relaxed text-slate-600">
-            Adjust parameters to estimate your Systemic Concentration and calculate hours saved by replacing bot PR storms with minimum-cut prescriptions.
-          </p>
-        </div>
-
-        <div className="max-w-5xl mx-auto rounded-2xl border border-slate-200 bg-white p-8 md:p-12 shadow-md grid grid-cols-1 lg:grid-cols-2 gap-10">
-          {/* Controls Column */}
-          <div className="space-y-6">
-            <h3 className="text-lg font-bold text-slate-900">Ecosystem Scale Parameters</h3>
-            
-            {/* Slider 1 */}
-            <div>
-              <div className="flex justify-between text-xs font-semibold mb-2">
-                <span className="text-slate-700">Tier-1 Crown Jewel Services</span>
-                <span className="font-mono text-blue-700 font-bold">{calcTier1Services} Services</span>
-              </div>
-              <input
-                type="range"
-                min="1"
-                max="20"
-                value={calcTier1Services}
-                onChange={(e) => setCalcTier1Services(parseInt(e.target.value))}
-                className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-blue-600"
-              />
-              <div className="text-[11px] text-slate-500 mt-1">
-                Payment gateways, user authentication, customer databases, order processing.
-              </div>
-            </div>
-
-            {/* Slider 2 */}
-            <div>
-              <div className="flex justify-between text-xs font-semibold mb-2">
-                <span className="text-slate-700">Shared Foundational Keystones</span>
-                <span className="font-mono text-blue-700 font-bold">{calcSharedDeps} Cut-Vertices</span>
-              </div>
-              <input
-                type="range"
-                min="1"
-                max="10"
-                value={calcSharedDeps}
-                onChange={(e) => setCalcSharedDeps(parseInt(e.target.value))}
-                className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-blue-600"
-              />
-              <div className="text-[11px] text-slate-500 mt-1">
-                Low-level articulation dependencies (parsers, crypto wrappers, network utilities).
-              </div>
-            </div>
-
-            {/* Slider 3 */}
-            <div>
-              <div className="flex justify-between text-xs font-semibold mb-2">
-                <span className="text-slate-700">Estimated Daily Transaction Throughput</span>
-                <span className="font-mono text-blue-700 font-bold">${calcDailyVolume}M / Day</span>
-              </div>
-              <input
-                type="range"
-                min="10"
-                max="250"
-                step="5"
-                value={calcDailyVolume}
-                onChange={(e) => setCalcDailyVolume(parseInt(e.target.value))}
-                className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-blue-600"
-              />
-              <div className="text-[11px] text-slate-500 mt-1">
-                Total throughput passing across mission-critical dependent microservices.
-              </div>
-            </div>
+          <div className="p-3.5 rounded-xl bg-[#0d0a27]/90 border border-[#1a1953]">
+            <div className="text-[11px] font-medium text-slate-400 uppercase tracking-wider">Remediation</div>
+            <div className="text-base font-bold text-white mt-0.5">1 Coordinated PR</div>
+            <div className="text-[11px] text-slate-400">Instead of 40 bot PRs</div>
           </div>
-
-          {/* Real-time Calculation Output Column */}
-          <div className="rounded-xl border border-slate-200 bg-slate-50 p-6 flex flex-col justify-between">
-            <div>
-              <div className="text-xs uppercase tracking-wider font-bold text-slate-500 mb-1">
-                Calculated Risk Projection
-              </div>
-              <div className="text-3xl font-black text-red-600 mb-6 flex items-baseline gap-2">
-                <span>${(calcDailyVolume * (calcTier1Services / 4)).toFixed(0)}M</span>
-                <span className="text-xs font-normal text-slate-500">Asset Exposure</span>
-              </div>
-
-              <div className="space-y-4 text-xs">
-                <div className="flex justify-between items-center pb-2.5 border-b border-slate-200">
-                  <span className="text-slate-600">SIFI Concentration Ratio:</span>
-                  <span className="font-mono font-bold text-red-600">{Math.min(95, 60 + calcSharedDeps * 7)}% in Top 5</span>
-                </div>
-                <div className="flex justify-between items-center pb-2.5 border-b border-slate-200">
-                  <span className="text-slate-600">Traditional Bot PRs Generated:</span>
-                  <span className="font-mono font-bold text-amber-700">{calcTier1Services * 8} Fragmented PRs</span>
-                </div>
-                <div className="flex justify-between items-center pb-2.5 border-b border-slate-200">
-                  <span className="text-slate-600">Keystone Coordinated PRs:</span>
-                  <span className="font-mono font-bold text-emerald-700">1 Single Min-Cut PR</span>
-                </div>
-                <div className="flex justify-between items-center pb-2.5 border-b border-slate-200">
-                  <span className="text-slate-600">Engineering Hours Saved:</span>
-                  <span className="font-mono font-bold text-blue-700">{calcTier1Services * 6} Hours / Sprint</span>
-                </div>
-              </div>
-            </div>
-
-            <button
-              onClick={onEnterConsole}
-              className="mt-6 w-full py-3 rounded-xl text-xs font-bold bg-slate-900 hover:bg-blue-600 text-white shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer"
-            >
-              <span>Audit Your Real Dependencies</span>
-              <ArrowRight className="w-4 h-4" />
-            </button>
+          <div className="p-3.5 rounded-xl bg-[#0d0a27]/90 border border-[#1a1953]">
+            <div className="text-[11px] font-medium text-slate-400 uppercase tracking-wider">Safety</div>
+            <div className="text-base font-bold text-[#2f2fe4] mt-0.5">Zero Breakage</div>
+            <div className="text-[11px] text-slate-400">AST & ABI verified</div>
           </div>
         </div>
       </section>
 
-
-
-      {/* Frequently Asked Questions (FAQ) Accordion */}
-      <section id="faq" className="relative z-10 py-20 px-6 max-w-5xl mx-auto w-full border-t border-slate-200">
-        <div className="text-center max-w-3xl mx-auto mb-14">
-          <div className="font-heading inline-flex items-center gap-1.5 px-3 py-1 rounded-md text-xs font-semibold uppercase tracking-wider mb-3 bg-slate-100 text-slate-700 border border-slate-200">
-            <HelpCircle className="w-3.5 h-3.5" />
-            <span>Technical FAQ</span>
+      {/* ─── THE PROCESS SECTION (3 ESSENTIAL FEATURES - CONCURRENT PALETTE) ─── */}
+      <section id="process" className="relative z-10 py-24 px-6 max-w-4xl mx-auto w-full">
+        {/* Section Header */}
+        <div className="text-center max-w-xl mx-auto mb-20">
+          <div className="text-xs font-bold text-[#2f2fe4] tracking-widest uppercase mb-2">
+            The Keystone Architecture
           </div>
-          <h2 className="font-heading text-3xl sm:text-4xl font-bold tracking-tight text-slate-950 mb-4">
-            Frequently Asked Questions
+          <h2 className="font-heading text-3xl sm:text-4xl font-bold tracking-tight text-white">
+            How Keystone Works
           </h2>
-          <p className="font-body text-sm sm:text-base leading-relaxed text-slate-600">
-            Everything engineering leads and security executives ask about Keystone’s topology engine.
+          <p className="text-sm sm:text-base text-slate-300 mt-3">
+            Three disciplined stages that replace reactive vulnerability chasing with proactive, mathematical defense.
           </p>
         </div>
 
-        <div className="space-y-4">
-          {[
-            {
-              q: "Isn't this just Snyk or Dependabot with a graph visualization on top?",
-              a: "No — the underlying math is impossible within single-repo tools. Cross-repository minimum vertex cut, reverse PageRank, and Tarjan articulation points are mathematically undefined without a unified portfolio DAG. Single-repo tools lack the graph; Keystone solves the network."
-            },
-            {
-              q: "How does Keystone prevent alert fatigue when hundreds of packages exist?",
-              a: "Keystone deploys a 3-layer false-positive suppression stack: (1) Reachability filtering drops dead-code paths to 0.1x weight, (2) Dual runtime vs build-time channel isolation stops cross-contamination, and (3) Ingested VEX declarations automatically silence proven unreachables."
-            },
-            {
-              q: "What if a proposed Minimum-Cut update introduces a brand new CVE?",
-              a: "Before surfacing any recommendation, Stage 3 executes the Cascade Net Security Gain check: ΔNetGain = Paths Severed − New CVEs Introduced ≥ 0. If an upgrade target version contains known vulnerabilities in OSV, Keystone automatically rejects it and seeks an alternative dominator."
-            },
-            {
-              q: "Can Keystone analyze private internal repositories and closed packages?",
-              a: "Yes. In addition to the Google deps.dev public API, Keystone natively ingests standard CycloneDX and SPDX SBOM JSON formats as well as package-lock.json, pom.xml, and poetry.lock files directly from enterprise CI/CD runners."
-            },
-            {
-              q: "How does the Renovate Circuit Breaker work in production?",
-              a: "When Keystone identifies an escalating keystone or stealth anomaly, it emits a standardized JSON policy directive that hooks into Renovate or Dependabot configurations to halt automatic PR merges enterprise-wide until security review completes."
-            }
-          ].map((item, idx) => {
-            const isOpen = openFaq === idx;
-            return (
-              <div
-                key={idx}
-                className="rounded-xl border border-slate-200 bg-white transition-all overflow-hidden shadow-2xs"
-              >
-                <button
-                  onClick={() => setOpenFaq(isOpen ? null : idx)}
-                  className="w-full p-5 text-left flex items-center justify-between gap-4 font-bold text-sm text-slate-900 hover:text-blue-600 cursor-pointer"
-                >
-                  <span className={isOpen ? "text-blue-600" : ""}>
-                    {item.q}
+        {/* Vertical Step-by-Step Flow */}
+        <div className="space-y-12 relative">
+          {/* Subtle Palette Vertical Connector */}
+          <div className="hidden md:block absolute left-8 top-10 bottom-10 w-px bg-gradient-to-b from-[#2f2fe4]/60 via-[#162e93]/50 to-[#1a1953]/60 -z-10" />
+
+          {/* ─── STEP 01: TOPOLOGICAL RADAR ─── */}
+          <div className="relative flex flex-col md:flex-row items-start gap-8 p-8 rounded-2xl bg-[#0d0a27]/95 border border-[#1a1953] shadow-xl shadow-black/70 hover:border-[#162e93] transition-colors">
+            {/* Step Indicator Badge */}
+            <div className="w-14 h-14 shrink-0 rounded-xl bg-[#1a1953] border border-[#162e93] flex flex-col items-center justify-center text-[#2f2fe4]">
+              <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Stage</span>
+              <span className="font-heading text-lg font-bold text-white">01</span>
+            </div>
+
+            {/* Content & Narrative */}
+            <div className="flex-1">
+              <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-[#1a1953]/60 text-slate-200 border border-[#162e93] mb-2">
+                <Network className="w-3 h-3 text-[#2f2fe4]" />
+                <span>CVE-Independent Topological Radar</span>
+              </div>
+              <h3 className="text-xl sm:text-2xl font-bold text-white mb-3">
+                Discover the Keystones Before Anyone Files a CVE
+              </h3>
+              <p className="text-sm text-slate-300 leading-relaxed mb-6">
+                Attacks like <strong>XZ Utils</strong> or <strong>event-stream</strong> sat inside production software for months before public discovery. Traditional scanners cannot see them because no CVE exists yet. KEYSTONE computes <strong>Directed Dominance Coverage</strong> and <strong>Downstream PageRank</strong> to reveal structural single points of failure on Day −400.
+              </p>
+
+              {/* Contrast Card */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 p-4 rounded-xl bg-[#080616] border border-[#1a1953] text-xs">
+                <div className="p-3 rounded-lg bg-[#0d0a27] border border-[#1a1953]/80">
+                  <div className="text-slate-400 font-medium text-[11px] uppercase">Traditional Scan View</div>
+                  <div className="font-semibold text-slate-200 mt-1 flex items-center gap-1.5">
+                    <span className="w-2 h-2 rounded-full bg-emerald-400"></span>
+                    <span>0 CVEs · Looks 100% Safe</span>
+                  </div>
+                  <p className="text-[11px] text-slate-400 mt-1">High GitHub stars, zero active alerts.</p>
+                </div>
+                <div className="p-3 rounded-lg bg-[#1a1953]/50 border border-[#162e93]">
+                  <div className="text-white font-semibold text-[11px] uppercase">Keystone Topology Radar</div>
+                  <div className="font-bold text-white mt-1 flex items-center gap-1.5">
+                    <span className="w-2 h-2 rounded-full bg-[#2f2fe4] shadow-[0_0_8px_#2f2fe4] animate-pulse"></span>
+                    <span>Structural Keystone (Top 0.5%)</span>
+                  </div>
+                  <p className="text-[11px] text-slate-300 mt-1">100% bottleneck across 4 core services.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* ─── STEP 02: THE RIPPLE EFFECT ─── */}
+          <div className="relative flex flex-col md:flex-row items-start gap-8 p-8 rounded-2xl bg-[#0d0a27]/95 border border-[#1a1953] shadow-xl shadow-black/70 hover:border-[#162e93] transition-colors">
+            {/* Step Indicator Badge */}
+            <div className="w-14 h-14 shrink-0 rounded-xl bg-[#1a1953] border border-[#162e93] flex flex-col items-center justify-center text-[#2f2fe4]">
+              <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Stage</span>
+              <span className="font-heading text-lg font-bold text-white">02</span>
+            </div>
+
+            {/* Content & Narrative */}
+            <div className="flex-1">
+              <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-[#1a1953]/60 text-slate-200 border border-[#162e93] mb-2">
+                <Activity className="w-3 h-3 text-[#2f2fe4]" />
+                <span>Realized Threat Gating & Cascades</span>
+              </div>
+              <h3 className="text-xl sm:text-2xl font-bold text-white mb-3">
+                Trace the Propagation Path to Crown Jewels
+              </h3>
+              <p className="text-sm text-slate-300 leading-relaxed mb-6">
+                A vulnerability in an isolated CLI tool is low impact. But when that package is deeply embedded beneath your <strong>Payment Gateway</strong> and <strong>IAM Auth</strong>, a single exploit cascades. KEYSTONE maps the exact transmission path, factoring in EPSS exploitability, CISA KEV, and Business Impact Index (BII).
+              </p>
+
+              {/* Path Trace Visualization */}
+              <div className="p-4 rounded-xl bg-[#080616] text-slate-200 border border-[#1a1953] text-xs font-mono">
+                <div className="text-[11px] text-slate-400 mb-3 font-sans font-semibold uppercase tracking-wider flex items-center justify-between">
+                  <span>Cascade Propagation Flow</span>
+                  <span className="text-[#2f2fe4] font-mono flex items-center gap-1">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#2f2fe4] shadow-[0_0_8px_#2f2fe4] animate-ping" />
+                    Active Transmission
                   </span>
-                  {isOpen ? <ChevronUp className="w-4 h-4 shrink-0 text-blue-600" /> : <ChevronDown className="w-4 h-4 shrink-0 text-slate-400" />}
-                </button>
-                {isOpen && (
-                  <div className="px-5 pb-5 text-xs leading-relaxed border-t border-slate-100 pt-3 text-slate-600">
-                    {item.a}
+                </div>
+                <div className="flex flex-col sm:flex-row items-center gap-2">
+                  <div className="px-3 py-1.5 rounded bg-[#1a1953] border border-[#162e93] text-white font-bold">
+                    snakeyaml@1.33
                   </div>
-                )}
+                  <span className="text-[#2f2fe4]">──►</span>
+                  <div className="px-3 py-1.5 rounded bg-[#1a1953]/60 border border-[#1a1953] text-slate-200">
+                    internal-pipeline@2.4.0
+                  </div>
+                  <span className="text-[#2f2fe4]">──►</span>
+                  <div className="px-3 py-1.5 rounded bg-[#162e93] border border-[#2f2fe4] text-white font-bold">
+                    [Payment-Gateway] + [Auth-IAM]
+                  </div>
+                </div>
               </div>
-            );
-          })}
-        </div>
-      </section>
+            </div>
+          </div>
 
-      {/* Enterprise Bottom Call To Action */}
-      <section className="relative z-10 py-20 px-6 max-w-7xl mx-auto w-full text-center">
-        <div className="rounded-2xl border border-slate-200 p-12 md:p-16 bg-slate-950 text-white shadow-xl relative overflow-hidden">
-          <div className="relative z-10 max-w-3xl mx-auto">
-            <h2 className="font-heading text-3xl sm:text-5xl font-bold tracking-tight mb-6">
-              Experience the Keystone Topology Console
-            </h2>
-            <p className="font-body text-slate-300 text-sm sm:text-base mb-8 leading-relaxed">
-              Explore your live ecosystem topology, simulate targeted breaches, and generate coordinated 
-              multi-repo mitigations in seconds.
-            </p>
-            <div className="flex flex-wrap items-center justify-center gap-4">
-              <button
-                onClick={onEnterConsole}
-                className="font-heading flex items-center gap-2.5 px-8 py-4 rounded-xl text-sm font-bold bg-blue-600 hover:bg-blue-500 text-white shadow-lg transition-all hover:scale-105 active:scale-95 cursor-pointer"
-              >
-                <Network className="w-4 h-4" />
-                <span>Enter Live Console</span>
-                <ArrowRight className="w-4 h-4" />
-              </button>
+          {/* ─── STEP 03: SURGICAL MIN-CUT ─── */}
+          <div className="relative flex flex-col md:flex-row items-start gap-8 p-8 rounded-2xl bg-[#0d0a27]/95 border border-[#1a1953] shadow-xl shadow-black/70 hover:border-[#162e93] transition-colors">
+            {/* Step Indicator Badge */}
+            <div className="w-14 h-14 shrink-0 rounded-xl bg-[#1a1953] border border-[#162e93] flex flex-col items-center justify-center text-[#2f2fe4]">
+              <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Stage</span>
+              <span className="font-heading text-lg font-bold text-white">03</span>
+            </div>
 
-              <button
-                onClick={onOpenAskKeystone}
-                className="font-heading flex items-center gap-2 px-6 py-4 rounded-xl border border-slate-700 bg-slate-900 hover:bg-slate-800 text-slate-200 text-sm font-semibold transition-all cursor-pointer"
-              >
-                <Sparkles className="w-4 h-4 text-cyan-400" />
-                <span>Talk to Keystone AI Copilot</span>
-              </button>
+            {/* Content & Narrative */}
+            <div className="flex-1">
+              <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-[#1a1953]/60 text-slate-200 border border-[#162e93] mb-2">
+                <GitPullRequest className="w-3 h-3 text-[#2f2fe4]" />
+                <span>Unit-Capacity Minimum Vertex Cut</span>
+              </div>
+              <h3 className="text-xl sm:text-2xl font-bold text-white mb-3">
+                1 Coordinated Fix Instead of 40 Broken PRs
+              </h3>
+              <p className="text-sm text-slate-300 leading-relaxed mb-6">
+                Legacy tools open 40 independent PRs across 40 repositories, creating chaos and merge conflicts. KEYSTONE calculates the <strong>Unit-Capacity Minimum Vertex Cut</strong> to find the single common ancestor. Verified via AST call-site extraction and bytecode ABI linkage to guarantee <strong>zero compilation breakage</strong>.
+              </p>
+
+              {/* Resolution Comparison */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 p-4 rounded-xl bg-[#080616] border border-[#1a1953] text-xs">
+                <div className="p-3 rounded-lg bg-[#0d0a27] border border-[#1a1953]/80 text-slate-400">
+                  <div className="font-bold text-slate-300 mb-1">❌ Legacy Approach</div>
+                  <ul className="space-y-1 text-[11px] text-slate-400">
+                    <li>• 40 uncoordinated Dependabot PRs</li>
+                    <li>• 18 CI build failures (`ERESOLVE`)</li>
+                    <li>• Alert fatigue & delayed releases</li>
+                  </ul>
+                </div>
+                <div className="p-3 rounded-lg bg-[#1a1953]/50 border border-[#162e93] text-white">
+                  <div className="font-bold text-[#d4d3ff] mb-1">✅ Keystone Surgical Cut</div>
+                  <ul className="space-y-1 text-[11px] text-slate-200">
+                    <li>• 1 Coordinated PR in root parent</li>
+                    <li>• 0 broken AST call-sites verified</li>
+                    <li>• 100% attack path severed instantly</li>
+                  </ul>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Clean Light-mode Enterprise Footer */}
-      <footer className="w-full border-t border-slate-200 py-10 px-6 text-xs bg-slate-50 text-slate-600 relative z-10">
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
-          <div className="flex items-center gap-3">
-            <img 
-              src="/assets/logo.png" 
-              alt="Keystone" 
-              className="w-7 h-7 object-contain" 
-            />
-            <span className="font-bold tracking-tight text-slate-900">KEYSTONE</span>
-            <span>— Deterministic Software Supply Chain Intelligence System</span>
+      {/* ─── THE ACTUAL LOGIN PAGE (HARMONIZED EXACT 2-COLUMN LAYOUT) ─── */}
+      <section id="signin" className="relative z-10 py-24 px-6 max-w-6xl mx-auto w-full">
+        <div className="rounded-3xl bg-[#0d0a27] border border-[#1a1953] shadow-2xl shadow-black/80 overflow-hidden flex flex-col lg:flex-row">
+          {/* LEFT COLUMN: ARCHITECTURAL VALUE PROPOSITION (from AuthOnboardingModal) */}
+          <div className="w-full lg:w-5/12 bg-[#100d2f] p-8 sm:p-12 flex flex-col justify-between border-b lg:border-b-0 lg:border-r border-[#1a1953]">
+            <div>
+              {/* Keystone Brand */}
+              <div className="flex items-center gap-2.5 mb-8">
+                <img
+                  src="/assets/logo.png"
+                  alt="Keystone"
+                  className="w-7 h-7 object-contain"
+                />
+                <span className="font-heading font-bold text-white tracking-tight text-sm flex items-center gap-2">
+                  KEYSTONE
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#2f2fe4] shadow-[0_0_8px_#2f2fe4]" />
+                </span>
+              </div>
+
+              {/* Title & Description */}
+              <h2 className="text-2xl sm:text-3xl font-heading font-bold text-white tracking-tight leading-snug mb-4">
+                Map every dependency.
+                <br />
+                <span className="text-[#d4d3ff]">
+                  Neutralize every chokepoint.
+                </span>
+              </h2>
+              <p className="text-xs sm:text-sm text-slate-300 leading-relaxed mb-8">
+                Gain architectural visibility across your entire multi-repo estate. Identify single points of failure, simulate cascade contagion, and orchestrate surgical fixes with zero breaking changes.
+              </p>
+
+              {/* Key Features */}
+              <div className="space-y-4">
+                <div className="flex items-start gap-3">
+                  <div className="w-7 h-7 rounded-lg bg-[#1a1953] border border-[#162e93] flex items-center justify-center shrink-0 mt-0.5 text-[#2f2fe4]">
+                    <GitBranch className="w-3.5 h-3.5" />
+                  </div>
+                  <div>
+                    <h4 className="text-xs font-bold text-white">Enterprise Multi-Repo DAG</h4>
+                    <p className="text-[11px] text-slate-300">Unify 40+ repositories into one continuous dependency flow network.</p>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-3">
+                  <div className="w-7 h-7 rounded-lg bg-[#1a1953] border border-[#162e93] flex items-center justify-center shrink-0 mt-0.5 text-[#2f2fe4]">
+                    <ShieldAlert className="w-3.5 h-3.5" />
+                  </div>
+                  <div>
+                    <h4 className="text-xs font-bold text-white">Tarjan Articulation Points</h4>
+                    <p className="text-[11px] text-slate-300">Isolate single points of failure and stealth maintainer takeovers on Day −400.</p>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-3">
+                  <div className="w-7 h-7 rounded-lg bg-[#1a1953] border border-[#162e93] flex items-center justify-center shrink-0 mt-0.5 text-[#2f2fe4]">
+                    <CheckCircle2 className="w-3.5 h-3.5" />
+                  </div>
+                  <div>
+                    <h4 className="text-xs font-bold text-white">1 Coordinated PR vs. 40 Bot PRs</h4>
+                    <p className="text-[11px] text-slate-300">Flow-network minimum cut algorithms prescribe surgical remediations with zero breaks.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Compliance Footer */}
+            <div className="pt-8 mt-8 border-t border-[#1a1953]/80 text-[10px] text-slate-400 uppercase tracking-widest font-mono flex items-center gap-3">
+              <span>SOC2 Type II</span>
+              <span>•</span>
+              <span>ISO 27001</span>
+              <span>•</span>
+              <span>CycloneDX & SPDX</span>
+            </div>
           </div>
 
-          <div className="flex flex-wrap items-center gap-6 text-slate-600">
-            <button onClick={onEnterConsole} className="hover:text-slate-950 transition-colors cursor-pointer">
-              3D Topology Console
-            </button>
-            <button onClick={onOpenAskKeystone} className="hover:text-slate-950 transition-colors cursor-pointer">
-              NLQ AI Copilot
-            </button>
-            <span className="text-[11px] font-mono px-2 py-1 rounded bg-slate-200 text-slate-700">
-              CycloneDX & SPDX Compliant
+          {/* RIGHT COLUMN: THE EXACT SIGN-IN FORM (from AuthOnboardingModal) */}
+          <div className="w-full lg:w-7/12 p-8 sm:p-12 lg:p-14 flex flex-col justify-center bg-[#0d0a27]">
+            <div className="max-w-md mx-auto w-full space-y-6">
+              <div>
+                <h3 className="text-2xl font-bold tracking-tight text-white">Welcome back</h3>
+                <p className="text-xs text-slate-300 mt-1">
+                  Log in with your enterprise credentials or organization SSO
+                </p>
+              </div>
+
+              {/* GitHub 1-Click SSO Card */}
+              <div
+                onClick={() => handleSignIn()}
+                className="p-4 rounded-xl border border-[#1a1953] bg-[#1a1953]/30 hover:bg-[#1a1953]/60 hover:border-[#162e93] transition-all cursor-pointer group flex items-center justify-between"
+              >
+                <div className="flex items-center gap-3.5">
+                  <div className="w-10 h-10 rounded-lg bg-[#080616] border border-[#1a1953] flex items-center justify-center text-white">
+                    <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24">
+                      <path fillRule="evenodd" clipRule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" />
+                    </svg>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-sm font-bold text-white">Continue with GitHub</span>
+                    <span className="text-[10px] font-mono px-1.5 py-0.5 rounded border border-[#162e93] bg-[#1a1953] text-[#d4d3ff] font-semibold">
+                      Instant SSO
+                    </span>
+                  </div>
+                </div>
+                <ArrowRight className="w-4 h-4 text-slate-400 group-hover:text-white group-hover:translate-x-0.5 transition-transform" />
+              </div>
+
+              {/* Alternative SSO Buttons */}
+              <div className="grid grid-cols-2 gap-2.5">
+                <button
+                  type="button"
+                  onClick={() => handleSignIn()}
+                  className="flex items-center justify-center gap-2 p-2.5 rounded-lg border border-[#1a1953] bg-[#1a1953]/20 hover:bg-[#1a1953]/50 text-xs font-semibold text-slate-300 hover:text-white transition-colors cursor-pointer"
+                >
+                  <KeyRound className="w-3.5 h-3.5 text-[#2f2fe4]" />
+                  <span>Okta / SAML SSO</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => handleSignIn()}
+                  className="flex items-center justify-center gap-2 p-2.5 rounded-lg border border-[#1a1953] bg-[#1a1953]/20 hover:bg-[#1a1953]/50 text-xs font-semibold text-slate-300 hover:text-white transition-colors cursor-pointer"
+                >
+                  <GitBranch className="w-3.5 h-3.5 text-[#2f2fe4]" />
+                  <span>GitLab Workspace</span>
+                </button>
+              </div>
+
+              {/* Divider */}
+              <div className="relative flex items-center justify-center my-4">
+                <div className="w-full border-t border-[#1a1953]" />
+                <span className="absolute px-3 text-[11px] uppercase tracking-wider font-mono font-medium bg-[#0d0a27] text-slate-400">
+                  or with work email
+                </span>
+              </div>
+
+              {/* Email & Password Form */}
+              <form onSubmit={handleSignIn} className="space-y-3.5">
+                <div>
+                  <label className="block text-xs font-medium text-slate-300 mb-1">
+                    Work Email
+                  </label>
+                  <div className="relative">
+                    <Mail className="w-3.5 h-3.5 absolute left-3 top-3 text-[#2f2fe4]" />
+                    <input
+                      type="email"
+                      value={signInEmail}
+                      onChange={(e) => setSignInEmail(e.target.value)}
+                      placeholder="name@company.com"
+                      required
+                      className="w-full pl-9 pr-3 py-2 rounded-lg border border-[#1a1953] bg-[#080616] text-white text-xs placeholder-slate-500 focus:outline-none focus:border-[#2f2fe4] transition-colors"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <div className="flex items-center justify-between mb-1">
+                    <label className="text-xs font-medium text-slate-300">
+                      Password
+                    </label>
+                    <a href="#signin" className="text-[11px] text-[#d4d3ff] hover:underline transition-colors">
+                      Forgot password?
+                    </a>
+                  </div>
+                  <div className="relative">
+                    <Lock className="w-3.5 h-3.5 absolute left-3 top-3 text-[#2f2fe4]" />
+                    <input
+                      type={showPassword ? "text" : "password"}
+                      value={signInPassword}
+                      onChange={(e) => setSignInPassword(e.target.value)}
+                      placeholder="Enter your password"
+                      required
+                      className="w-full pl-9 pr-9 py-2 rounded-lg border border-[#1a1953] bg-[#080616] text-white text-xs placeholder-slate-500 focus:outline-none focus:border-[#2f2fe4] transition-colors"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword(!showPassword)}
+                      className="absolute right-3 top-2.5 text-slate-400 hover:text-white cursor-pointer"
+                    >
+                      {showPassword ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
+                    </button>
+                  </div>
+                </div>
+
+                <div className="flex items-center justify-between pt-1">
+                  <label className="flex items-center gap-2 cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={rememberMe}
+                      onChange={(e) => setRememberMe(e.target.checked)}
+                      className="rounded border-[#1a1953] bg-[#080616] text-[#2f2fe4] focus:ring-0"
+                    />
+                    <span className="text-xs text-slate-300">Remember this login</span>
+                  </label>
+                </div>
+
+                <button
+                  type="submit"
+                  disabled={isAuthenticating}
+                  className="w-full mt-2 py-2.5 rounded-lg bg-[#2f2fe4] hover:bg-[#4343f8] text-white font-bold text-xs shadow-[0_0_20px_rgba(47,47,228,0.4)] transition-all flex items-center justify-center gap-2 cursor-pointer"
+                >
+                  {isAuthenticating ? (
+                    <>
+                      <RefreshCw className="w-3.5 h-3.5 animate-spin text-white" />
+                      <span>Authenticating credentials...</span>
+                    </>
+                  ) : (
+                    <>
+                      <span>Sign In to Console</span>
+                      <ArrowRight className="w-3.5 h-3.5 text-white" />
+                    </>
+                  )}
+                </button>
+              </form>
+
+              {/* 1-Click Instant Demo Button */}
+              <div
+                onClick={handleQuickDemo}
+                className="p-3.5 rounded-xl border border-[#1a1953] bg-[#1a1953]/25 hover:bg-[#1a1953]/50 hover:border-[#162e93] transition-all cursor-pointer flex items-center justify-between text-xs"
+              >
+                <div className="flex items-center gap-2.5">
+                  <Zap className="w-4 h-4 text-[#2f2fe4]" />
+                  <div>
+                    <div className="font-semibold text-white">Instant Demo Sandbox</div>
+                    <div className="text-[11px] text-slate-300">Pre-loaded Acme Corp estate (42 Repos)</div>
+                  </div>
+                </div>
+                <ArrowRight className="w-3.5 h-3.5 text-slate-400" />
+              </div>
+
+              {/* Full Onboarding Link */}
+              <div className="pt-2 text-center text-xs text-slate-400">
+                <span>New enterprise deployment? </span>
+                <button
+                  onClick={() => onOpenAuth ? onOpenAuth("onboard") : onEnterConsole()}
+                  className="font-bold text-[#d4d3ff] hover:underline cursor-pointer"
+                >
+                  Configure Onboarding Wizard →
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ─── MINIMAL FOOTER ─── */}
+      <footer className="relative z-10 py-8 px-6 border-t border-[#1a1953]/80 text-center text-xs text-slate-400 font-body">
+        <div className="max-w-5xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div className="flex items-center gap-2">
+            <span className="font-heading font-bold text-white">KEYSTONE</span>
+            <span>· Enterprise Supply Chain Intelligence</span>
+          </div>
+          <div className="flex items-center gap-4">
+            <span className="text-[11px] font-mono text-slate-300 flex items-center gap-1.5">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#2f2fe4] shadow-[0_0_8px_#2f2fe4] animate-pulse" />
+              SYS_RADAR_ONLINE
             </span>
+            <button
+              onClick={() => {
+                if (containerRef.current) {
+                  containerRef.current.scrollTo({ top: 0, behavior: "smooth" });
+                }
+              }}
+              className="hover:text-white transition-colors cursor-pointer"
+            >
+              Back to Top ↑
+            </button>
           </div>
         </div>
       </footer>
