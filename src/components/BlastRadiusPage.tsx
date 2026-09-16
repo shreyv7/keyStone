@@ -49,12 +49,6 @@ export const BlastRadiusPage: React.FC<BlastRadiusPageProps> = ({
         {/* Top Header Banner */}
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 pb-6 border-b border-slate-200/80 dark:border-slate-800">
           <div>
-            <div className="flex items-center gap-2 mb-1.5">
-              <span className="w-2.5 h-2.5 rounded-full bg-rose-500 animate-pulse" />
-              <span className="text-xs font-mono font-bold tracking-wider uppercase text-rose-600 dark:text-rose-400">
-                Live Active Cascade Telemetry
-              </span>
-            </div>
             <h1 className="text-2xl md:text-3xl font-bold tracking-tight text-slate-900 dark:text-white font-heading">
               Blast Radius Intelligence
             </h1>
