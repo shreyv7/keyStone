@@ -72,124 +72,136 @@ export const RiskWatchlist: React.FC<RiskWatchlistProps> = ({
   }, [nodes]);
 
   return (
-    <div className="flex-1 flex flex-col h-full overflow-y-auto p-6 space-y-6 select-none ks-bg-app">
-      {/* Header bar */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 border-b border-slate-200/80 dark:border-slate-800 pb-6">
-        <div>
-          <h1 className="text-2xl md:text-3xl font-bold tracking-tight text-slate-900 dark:text-white font-heading">
-            Systemic Risk Watchlist
-          </h1>
-          <p className="text-sm mt-3 max-w-2xl text-slate-500 dark:text-slate-400 font-sans leading-relaxed">
-            Prioritize dependencies by network position, downstream reachability to critical assets, and velocity alarms.
-          </p>
-        </div>
+    <div className="w-full h-full overflow-y-auto px-6 py-6 select-text ks-bg-app">
+      <div className="max-w-7xl mx-auto flex flex-col gap-6">
+        {/* Header bar */}
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 border-b border-slate-200/80 dark:border-slate-800 pb-6">
+          <div>
+            <h1 className="text-2xl md:text-3xl font-bold tracking-tight text-slate-900 dark:text-white font-heading">
+              Systemic Risk Watchlist
+            </h1>
+            <p className="text-sm mt-2 max-w-2xl text-slate-500 dark:text-slate-400 font-sans leading-relaxed">
+              Prioritize dependencies by network position, downstream reachability to critical assets, and velocity alarms.
+            </p>
+          </div>
 
-        <div className="flex items-center gap-3 shrink-0">
-          <button
-            onClick={() => setIsExportModalOpen(true)}
-            className="btn-3d-secondary px-4 py-2 rounded-xl text-xs font-semibold text-slate-700 dark:text-slate-200 flex items-center gap-2 cursor-pointer select-none"
-            title="Export Systemic Risk Register (CSV, JSON, Markdown)"
-          >
-            <Download className="w-4 h-4 text-blue-500" />
-            <span>Export Risk Register</span>
-          </button>
+          <div className="flex items-center gap-3 shrink-0">
+            <button
+              onClick={() => setIsExportModalOpen(true)}
+              className="px-3.5 py-2 rounded-lg text-xs font-medium text-slate-700 dark:text-slate-200 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-750 flex items-center gap-2 cursor-pointer select-none shadow-xs transition-colors"
+              title="Export Systemic Risk Register (CSV, JSON, Markdown)"
+            >
+              <Download className="w-4 h-4 text-blue-600 dark:text-blue-400" />
+              <span>Export Risk Register</span>
+            </button>
 
-          <button
-            onClick={onReturnToGraph}
-            className="btn-3d-primary px-4 py-2 rounded-xl text-xs font-bold text-white flex items-center gap-2 cursor-pointer select-none"
-          >
-            <Layers className="w-4 h-4" />
-            <span>Return to Topology Map</span>
-          </button>
-        </div>
-      </div>
-
-      {/* Highlights summary banner (4 columns) */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="connector-3d-card p-4 flex flex-col justify-between gap-1.5">
-          <div className="text-[11px] font-semibold uppercase tracking-wider text-slate-400 font-mono">Top Articulation Keystone</div>
-          <div className="text-xl font-bold font-mono text-slate-900 dark:text-white mt-1">snakeyaml@1.33</div>
-          <div className="text-xs text-slate-500 dark:text-slate-400 mt-1 pt-1 border-t border-slate-200/60 dark:border-slate-800">
-            Tarjan cut-vertex reaching 4 Tier-1 services (CVSS 48/100).
+            <button
+              onClick={onReturnToGraph}
+              className="px-4 py-2 rounded-lg text-xs font-medium text-white bg-blue-600 hover:bg-blue-700 flex items-center gap-2 cursor-pointer select-none shadow-xs transition-colors"
+            >
+              <Layers className="w-4 h-4" />
+              <span>Return to Topology Map</span>
+            </button>
           </div>
         </div>
 
-        {/* F5 Velocity Summary Card */}
-        <div className="connector-3d-card p-4 flex flex-col justify-between gap-1.5">
-          <div className="flex items-center justify-between">
-            <span className="text-[11px] font-semibold uppercase tracking-wider text-slate-400 font-mono">
-              Leading Velocity Alarm
-            </span>
-            <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-blue-500/10 text-blue-500 border border-blue-500/20 font-semibold">
-              {escalatingCount} Escalating
-            </span>
+        {/* Highlights summary banner (4 columns) */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="p-4 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/70 shadow-xs flex flex-col justify-between gap-1.5">
+            <div className="text-[11px] font-semibold uppercase tracking-wider text-slate-400 font-mono">Top Articulation Keystone</div>
+            <div className="text-xl font-bold font-mono text-slate-900 dark:text-white mt-1">snakeyaml@1.33</div>
+            <div className="text-xs text-slate-500 dark:text-slate-400 mt-1 pt-1 border-t border-slate-200/60 dark:border-slate-800">
+              Tarjan cut-vertex reaching 4 Tier-1 services (CVSS 48/100).
+            </div>
           </div>
-          <div className="text-xl font-bold font-mono text-slate-900 dark:text-white flex items-center gap-1.5 mt-1">
-            <TrendingUp className="w-4 h-4 text-blue-500" />
-            <span>+142% 90d Surge</span>
+
+          {/* Velocity Summary Card */}
+          <div className="p-4 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/70 shadow-xs flex flex-col justify-between gap-1.5">
+            <div className="flex items-center justify-between">
+              <span className="text-[11px] font-semibold uppercase tracking-wider text-slate-400 font-mono">
+                Leading Velocity Alarm
+              </span>
+              <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/20 font-semibold">
+                {escalatingCount} Escalating
+              </span>
+            </div>
+            <div className="text-xl font-bold font-mono text-slate-900 dark:text-white flex items-center gap-1.5 mt-1">
+              <TrendingUp className="w-4 h-4 text-blue-600 dark:text-blue-400" />
+              <span>+142% 90d Surge</span>
+            </div>
+            <div className="text-xs text-slate-500 dark:text-slate-400 mt-1 pt-1 border-t border-slate-200/60 dark:border-slate-800">
+              <code>snakeyaml</code> Reverse PageRank surged across lockfiles.
+            </div>
           </div>
-          <div className="text-xs text-slate-500 dark:text-slate-400 mt-1 pt-1 border-t border-slate-200/60 dark:border-slate-800">
-            <code>snakeyaml</code> Reverse PageRank surged across lockfiles.
+
+          <div className="p-4 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/70 shadow-xs flex flex-col justify-between gap-1.5">
+            <div className="text-[11px] font-semibold uppercase tracking-wider text-slate-400 font-mono">Dependency Concentration</div>
+            <div className="text-xl font-bold font-mono text-slate-900 dark:text-white mt-1">81% in Top 5 Nodes</div>
+            <div className="text-xs text-slate-500 dark:text-slate-400 mt-1 pt-1 border-t border-slate-200/60 dark:border-slate-800">
+              Ecosystem reachability is concentrated in shared libraries.
+            </div>
+          </div>
+
+          <div className="p-4 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/70 shadow-xs flex flex-col justify-between gap-1.5">
+            <div className="text-[11px] font-semibold uppercase tracking-wider text-slate-400 font-mono">Tier-1 Sinks Exposed</div>
+            <div className="text-xl font-bold font-mono text-slate-900 dark:text-white mt-1">4 Core Services</div>
+            <div className="text-xs text-slate-500 dark:text-slate-400 mt-1 pt-1 border-t border-slate-200/60 dark:border-slate-800">
+              Payment Gateway, Auth/IAM, Order Core, Realtime Risk.
+            </div>
           </div>
         </div>
 
-        <div className="connector-3d-card p-4 flex flex-col justify-between gap-1.5">
-          <div className="text-[11px] font-semibold uppercase tracking-wider text-slate-400 font-mono">Dependency Concentration</div>
-          <div className="text-xl font-bold font-mono text-slate-900 dark:text-white mt-1">81% in Top 5 Nodes</div>
-          <div className="text-xs text-slate-500 dark:text-slate-400 mt-1 pt-1 border-t border-slate-200/60 dark:border-slate-800">
-            Ecosystem reachability is concentrated in shared libraries.
+        {/* Filter Tabs */}
+        <div className="flex items-center justify-between gap-2 flex-wrap">
+          <div className="flex items-center gap-1 p-1 rounded-lg bg-slate-100 dark:bg-slate-800/90 border border-slate-200 dark:border-slate-700">
+            <button
+              onClick={() => setWatchlistFilter('all')}
+              className={`px-3 py-1.5 rounded-md text-xs font-medium transition-all cursor-pointer ${
+                watchlistFilter === 'all'
+                  ? 'bg-blue-600 text-white shadow-xs'
+                  : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
+              }`}
+            >
+              All Monitored ({nodes.length})
+            </button>
+            <button
+              onClick={() => setWatchlistFilter('escalating')}
+              className={`px-3 py-1.5 rounded-md text-xs font-medium transition-all cursor-pointer flex items-center gap-1.5 ${
+                watchlistFilter === 'escalating'
+                  ? 'bg-blue-600 text-white shadow-xs'
+                  : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
+              }`}
+            >
+              <TrendingUp className="w-3.5 h-3.5" />
+              <span>Escalating Keystones ({escalatingCount})</span>
+            </button>
+            <button
+              onClick={() => setWatchlistFilter('cut-vertex')}
+              className={`px-3 py-1.5 rounded-md text-xs font-medium transition-all cursor-pointer ${
+                watchlistFilter === 'cut-vertex'
+                  ? 'bg-blue-600 text-white shadow-xs'
+                  : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
+              }`}
+            >
+              Cut-Vertices ({cutVertexCount})
+            </button>
+            <button
+              onClick={() => setWatchlistFilter('tier1')}
+              className={`px-3 py-1.5 rounded-md text-xs font-medium transition-all cursor-pointer ${
+                watchlistFilter === 'tier1'
+                  ? 'bg-blue-600 text-white shadow-xs'
+                  : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
+              }`}
+            >
+              Tier-1 Exposed ({nodes.filter(n => n.tier1Reach > 0).length})
+            </button>
           </div>
+
+          <span className="text-xs font-mono text-slate-500 hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/60">
+            <CornerDownLeft className="w-3.5 h-3.5 text-blue-500" />
+            <span>Use ↑↓ arrows to navigate • Enter to inspect</span>
+          </span>
         </div>
-
-        <div className="connector-3d-card p-4 flex flex-col justify-between gap-1.5">
-          <div className="text-[11px] font-semibold uppercase tracking-wider text-slate-400 font-mono">Tier-1 Sinks Exposed</div>
-          <div className="text-xl font-bold font-mono text-slate-900 dark:text-white mt-1">4 Core Services</div>
-          <div className="text-xs text-slate-500 dark:text-slate-400 mt-1 pt-1 border-t border-slate-200/60 dark:border-slate-800">
-            Payment Gateway, Auth/IAM, Order Core, Realtime Risk.
-          </div>
-        </div>
-      </div>
-
-      {/* Filter Tabs */}
-      <div className="flex items-center gap-2 flex-wrap">
-        <Button
-          variant={watchlistFilter === 'all' ? 'primary' : 'secondary'}
-          size="sm"
-          onClick={() => setWatchlistFilter('all')}
-        >
-          All Monitored ({nodes.length})
-        </Button>
-
-        <Button
-          variant={watchlistFilter === 'escalating' ? 'primary' : 'secondary'}
-          size="sm"
-          icon={<TrendingUp className="w-3.5 h-3.5" />}
-          onClick={() => setWatchlistFilter('escalating')}
-        >
-          Escalating Keystones ({escalatingCount})
-        </Button>
-
-        <Button
-          variant={watchlistFilter === 'cut-vertex' ? 'primary' : 'secondary'}
-          size="sm"
-          onClick={() => setWatchlistFilter('cut-vertex')}
-        >
-          Cut-Vertices ({cutVertexCount})
-        </Button>
-
-        <Button
-          variant={watchlistFilter === 'tier1' ? 'primary' : 'secondary'}
-          size="sm"
-          onClick={() => setWatchlistFilter('tier1')}
-        >
-          Tier-1 Exposed ({nodes.filter(n => n.tier1Reach > 0).length})
-        </Button>
-
-        <span className="text-xs font-mono text-slate-500 ml-auto hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-lg ks-card">
-          <CornerDownLeft className="w-4 h-4 text-blue-500" />
-          <span>Use ↑↓ arrows to navigate • Enter to inspect</span>
-        </span>
-      </div>
 
       {/* Main Table */}
       <div className={`rounded-xl border overflow-hidden ${
@@ -317,7 +329,7 @@ export const RiskWatchlist: React.FC<RiskWatchlistProps> = ({
                     <td className="py-3.5 px-4 text-right">
                       <button
                         onClick={() => onSelectNode(node.id)}
-                        className="btn-3d-primary px-3 py-1 rounded-lg text-xs font-bold text-white cursor-pointer select-none"
+                        className="px-3 py-1 rounded-md text-xs font-medium text-white bg-blue-600 hover:bg-blue-700 cursor-pointer select-none shadow-xs transition-colors"
                       >
                         Inspect
                       </button>
@@ -344,6 +356,7 @@ export const RiskWatchlist: React.FC<RiskWatchlistProps> = ({
         nodes={nodes}
         stats={KEYSTONE_STATS}
       />
+      </div>
     </div>
   );
 };

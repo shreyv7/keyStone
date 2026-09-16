@@ -570,14 +570,16 @@ export function App() {
 
           {/* Risk Watchlist View Tab */}
           {activeView === 'watchlist' && (
-            <RiskWatchlist
-              nodes={MOCK_NODES}
-              onSelectNode={(id) => {
-                setSelectedNodeId(id);
-                setActiveView('ecosystem');
-              }}
-              onReturnToGraph={() => setActiveView('ecosystem')}
-            />
+            <div className="absolute inset-0 z-20">
+              <RiskWatchlist
+                nodes={MOCK_NODES}
+                onSelectNode={(id) => {
+                  setSelectedNodeId(id);
+                  setActiveView('ecosystem');
+                }}
+                onReturnToGraph={() => setActiveView('ecosystem')}
+              />
+            </div>
           )}
 
           {/* Scenarios View Tab */}
