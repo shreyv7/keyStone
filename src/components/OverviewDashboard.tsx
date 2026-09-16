@@ -500,11 +500,11 @@ export const OverviewDashboard: React.FC<OverviewDashboardProps> = ({
                 className={`px-2.5 py-1 rounded-md text-xs font-semibold flex items-center gap-1.5 transition-all cursor-pointer ${
                   rightPanelTab === 'dominator'
                     ? isLight 
-                      ? 'bg-purple-900 text-white shadow-xs' 
-                      : 'bg-purple-600 text-white shadow-xs'
+                      ? 'bg-[rgb(23,85,230)] text-white shadow-xs' 
+                      : 'bg-blue-600 text-white shadow-xs'
                     : isLight 
-                      ? 'text-purple-700 hover:bg-purple-50' 
-                      : 'text-purple-400 hover:bg-purple-950/40'
+                      ? 'text-slate-600 hover:text-slate-900 hover:bg-slate-100' 
+                      : 'text-slate-400 hover:text-white hover:bg-slate-800'
                 }`}
               >
                 <TreePine className="w-3.5 h-3.5" />
@@ -517,11 +517,11 @@ export const OverviewDashboard: React.FC<OverviewDashboardProps> = ({
                   className={`px-2.5 py-1 rounded-md text-xs font-semibold flex items-center gap-1.5 transition-all cursor-pointer ${
                     rightPanelTab === 'lens_matrix'
                       ? isLight 
-                        ? 'bg-purple-900 text-white shadow-xs' 
-                        : 'bg-purple-600 text-white shadow-xs'
+                        ? 'bg-[rgb(23,85,230)] text-white shadow-xs' 
+                        : 'bg-blue-600 text-white shadow-xs'
                       : isLight 
-                        ? 'text-slate-600 hover:text-slate-900' 
-                        : 'text-slate-400 hover:text-white'
+                        ? 'text-slate-600 hover:text-slate-900 hover:bg-slate-100' 
+                        : 'text-slate-400 hover:text-white hover:bg-slate-800'
                   }`}
                 >
                   <Building2 className="w-3.5 h-3.5" />

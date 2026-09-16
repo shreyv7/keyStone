@@ -265,42 +265,42 @@ export const EcosystemGraph: React.FC<EcosystemGraphProps> = ({
       // Default palette by category/tier
       if (node.category === 'tier1-asset') {
         return {
-          main: 0x6366f1, // Indigo / Royal Violet for Tier-1
-          emissive: 0x4338ca,
-          emissiveIntensity: 0.7,
-          ringColor: 0x818cf8
+          main: 0x1755e6, // Primary Cobalt Blue for Tier-1
+          emissive: 0x0f3da8,
+          emissiveIntensity: 0.6,
+          ringColor: 0x4682f9
         };
       }
       if (node.category === 'application') {
         return {
-          main: 0x3b82f6, // Blue
-          emissive: 0x1d4ed8,
+          main: 0x2e70ee, // Royal Blue
+          emissive: 0x1a54c4,
           emissiveIntensity: 0.4,
           ringColor: 0x60a5fa
         };
       }
       if (node.category === 'service') {
         return {
-          main: 0x0ea5e9, // Sky blue
-          emissive: 0x0369a1,
+          main: 0x60a5fa, // Sky Blue
+          emissive: 0x2563eb,
           emissiveIntensity: 0.3,
-          ringColor: 0x38bdf8
+          ringColor: 0x93c5fd
         };
       }
       if (node.category === 'internal-lib') {
         return {
-          main: 0x14b8a6, // Teal
-          emissive: 0x0f766e,
-          emissiveIntensity: 0.4,
-          ringColor: 0x2dd4bf
+          main: 0x64748b, // Slate Steel
+          emissive: 0x334155,
+          emissiveIntensity: 0.3,
+          ringColor: 0x94a3b8
         };
       }
       // Open source
       return {
-        main: 0x64748b, // Cool Slate
-        emissive: 0x334155,
+        main: 0x334155, // Dark Slate Keystones
+        emissive: 0x1e293b,
         emissiveIntensity: 0.2,
-        ringColor: 0x94a3b8
+        ringColor: 0x475569
       };
     },
     [selectedNodeId, hoveredNodeId, compromisedNodeIds, highlightedNodeIds, activePropagationPath, simulationPhase, timeTravelDay, showStructuralSize]
@@ -371,7 +371,7 @@ export const EcosystemGraph: React.FC<EcosystemGraphProps> = ({
       const ringRadius = 45 - Math.abs(y) * 0.3;
       const ringGeo = new THREE.RingGeometry(ringRadius - 0.2, ringRadius, 64);
       const ringMat = new THREE.MeshBasicMaterial({
-        color: i === 4 ? (isLight ? 0x4f46e5 : 0x6366f1) : i === 0 ? (isLight ? 0xe11d48 : 0xf43f5e) : (isLight ? 0x94a3b8 : 0x334155),
+        color: i === 4 ? (isLight ? 0x1755e6 : 0x2e70ee) : (isLight ? 0x94a3b8 : 0x334155),
         side: THREE.DoubleSide,
         transparent: true,
         opacity: isLight ? 0.25 : 0.12
@@ -1128,17 +1128,17 @@ export const EcosystemGraph: React.FC<EcosystemGraphProps> = ({
         {dependencyCone ? (
           <div className={`mb-1 px-2.5 py-1 rounded-lg border text-[11px] font-mono font-bold flex items-center gap-2 shadow-sm ${
             isLight 
-              ? 'bg-amber-50 border-amber-300 text-amber-900' 
-              : 'bg-amber-950/60 border-amber-800 text-amber-300'
+              ? 'bg-blue-50 border-blue-200 text-blue-900' 
+              : 'bg-blue-950/60 border-blue-800 text-blue-300'
           }`}>
-            <span className="w-2 h-2 rounded-full bg-amber-500 animate-ping inline-block" />
+            <span className="w-2 h-2 rounded-full bg-blue-500 animate-ping inline-block" />
             <span>CONE ISOLATION: {dependencyCone.allConeNodes.size} nodes ({dependencyCone.coneEdges.size} edges)</span>
           </div>
         ) : (
           <div className={`text-[10px] font-mono uppercase tracking-wider mb-1 flex items-center gap-1.5 ${
-            isLight ? 'text-slate-500 font-semibold' : 'text-slate-500'
+            isLight ? 'text-slate-500 font-semibold' : 'text-slate-400'
           }`}>
-            <span className="w-1.5 h-1.5 rounded-full bg-cyan-400"></span>
+            <span className="w-1.5 h-1.5 rounded-full bg-blue-500"></span>
             5-Layer Stratified Topology
           </div>
         )}
@@ -1146,31 +1146,31 @@ export const EcosystemGraph: React.FC<EcosystemGraphProps> = ({
         <div className={`flex items-center gap-2 text-xs font-mono transition-colors ${
           depthFilter === 5 || depthFilter === 0 ? (isLight ? 'text-slate-800 font-semibold' : 'text-slate-200') : 'opacity-40'
         }`}>
-          <span className="w-2.5 h-2.5 rounded bg-indigo-500 shadow-xs shadow-indigo-500/50"></span>
+          <span className="w-2.5 h-2.5 rounded bg-[rgb(23,85,230)] shadow-xs shadow-blue-500/50"></span>
           <span>L5: Tier-1 Sinks & Assets (Apex)</span>
         </div>
         <div className={`flex items-center gap-2 text-xs font-mono transition-colors ${
           depthFilter === 4 || depthFilter === 0 ? (isLight ? 'text-slate-800 font-semibold' : 'text-slate-200') : 'opacity-40'
         }`}>
-          <span className="w-2.5 h-2.5 rounded bg-blue-500"></span>
+          <span className="w-2.5 h-2.5 rounded bg-[rgb(46,112,238)]"></span>
           <span>L4: Business Applications</span>
         </div>
         <div className={`flex items-center gap-2 text-xs font-mono transition-colors ${
           depthFilter === 3 || depthFilter === 0 ? (isLight ? 'text-slate-800 font-semibold' : 'text-slate-200') : 'opacity-40'
         }`}>
-          <span className="w-2.5 h-2.5 rounded bg-sky-500"></span>
+          <span className="w-2.5 h-2.5 rounded bg-blue-400"></span>
           <span>L3: Platform Microservices</span>
         </div>
         <div className={`flex items-center gap-2 text-xs font-mono transition-colors ${
           depthFilter === 2 || depthFilter === 0 ? (isLight ? 'text-slate-800 font-semibold' : 'text-slate-200') : 'opacity-40'
         }`}>
-          <span className="w-2.5 h-2.5 rounded bg-teal-500"></span>
+          <span className="w-2.5 h-2.5 rounded bg-slate-500"></span>
           <span>L2: Shared Internal Libraries</span>
         </div>
         <div className={`flex items-center gap-2 text-xs font-mono transition-colors ${
           depthFilter === 1 || depthFilter === 0 ? (isLight ? 'text-slate-800 font-semibold' : 'text-slate-200') : 'opacity-40'
         }`}>
-          <span className="w-2.5 h-2.5 rounded bg-rose-500 shadow-xs shadow-rose-500/50"></span>
+          <span className="w-2.5 h-2.5 rounded bg-slate-700"></span>
           <span>L1: Foundational Open-Source (Keystones)</span>
         </div>
       </div>

@@ -63,7 +63,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
         { id: 'ecosystem', label: 'Topology Map', icon: <Network className="w-3.5 h-3.5" /> },
         { id: 'overview', label: 'Security Posture', icon: <BarChart3 className="w-3.5 h-3.5" /> },
         { id: 'watchlist', label: 'Risk Watchlist', icon: <ShieldAlert className="w-3.5 h-3.5" />, count: '5' },
-        { id: 'blast-radius', label: 'Blast Radius', icon: <Flame className="w-3.5 h-3.5 text-rose-500" />, count: 'Live' },
+        { id: 'blast-radius', label: 'Blast Radius', icon: <Flame className="w-3.5 h-3.5" />, count: 'Live' },
         { id: 'mitigation', label: 'Remediation', icon: <Wrench className="w-3.5 h-3.5" />, count: 'Active' }
       ]
     },
@@ -161,32 +161,32 @@ export const Sidebar: React.FC<SidebarProps> = ({
       </div>
 
       {/* Bottom Section: Macro Metrics and Risk Concentration */}
-      <div className="flex flex-col gap-2 pt-2 border-t ks-border">
+      <div className="flex flex-col gap-2 pt-2 border-t border-slate-200 dark:border-slate-800">
         {/* Quick Macro Metrics: Critical Sinks & Tier-1 Exposed */}
         {isCollapsed ? (
           <div 
             className="flex flex-col items-center gap-0.5 text-center"
             title={`${stats.criticalDependencies} Critical Sinks • ${stats.tier1Assets} Tier-1 Exposed`}
           >
-            <span className="text-[10px] font-mono font-bold text-rose-400">{stats.tier1Assets}T1</span>
-            <span className="text-[9px] text-slate-400">{stats.criticalDependencies}S</span>
+            <span className="text-[10px] font-mono font-bold text-blue-600 dark:text-blue-400">{stats.tier1Assets}T1</span>
+            <span className="text-[9px] text-slate-600 dark:text-slate-400">{stats.criticalDependencies}S</span>
           </div>
         ) : (
           <div className="grid grid-cols-2 gap-1.5 text-center">
-            <div className="p-2 rounded-lg ks-card">
-              <div className="text-base font-bold font-mono text-slate-100">
+            <div className="p-2 rounded-lg bg-slate-100/90 dark:bg-[rgb(21,26,49)] border border-slate-200 dark:border-[rgba(46,112,238,0.2)]">
+              <div className="text-base font-bold font-mono text-slate-900 dark:text-white">
                 {stats.criticalDependencies}
               </div>
-              <div className="text-[10px] font-medium text-slate-400 mt-0.5">
+              <div className="text-[10px] font-medium text-slate-600 dark:text-slate-400 mt-0.5">
                 Critical Sinks
               </div>
             </div>
 
-            <div className="p-2 rounded-lg ks-card">
-              <div className="text-base font-bold font-mono text-rose-400">
+            <div className="p-2 rounded-lg bg-slate-100/90 dark:bg-[rgb(21,26,49)] border border-slate-200 dark:border-[rgba(46,112,238,0.2)]">
+              <div className="text-base font-bold font-mono text-blue-600 dark:text-blue-400">
                 {stats.tier1Assets}
               </div>
-              <div className="text-[10px] font-medium text-slate-400 mt-0.5">
+              <div className="text-[10px] font-medium text-slate-600 dark:text-slate-400 mt-0.5">
                 Tier-1 Exposed
               </div>
             </div>
@@ -196,27 +196,27 @@ export const Sidebar: React.FC<SidebarProps> = ({
         {/* Risk Concentration Card */}
         {isCollapsed ? (
           <div 
-            className="p-2 rounded-xl ks-card flex flex-col items-center justify-center gap-1"
+            className="p-2 rounded-xl bg-slate-100/90 dark:bg-[rgb(21,26,49)] border border-slate-200 dark:border-[rgba(46,112,238,0.2)] flex flex-col items-center justify-center gap-1"
             title={`Risk Concentration: ${stats.sifiConcentrationRatio}% SIFI (Top 5 dependencies)`}
           >
-            <span className="text-xs text-rose-400 font-bold font-mono">{stats.sifiConcentrationRatio}%</span>
-            <div className="w-5 h-1 rounded-full bg-rose-500 shadow-[0_0_6px_rgba(244,63,94,0.5)]" />
+            <span className="text-xs text-blue-600 dark:text-blue-400 font-bold font-mono">{stats.sifiConcentrationRatio}%</span>
+            <div className="w-5 h-1 rounded-full bg-blue-600 dark:bg-blue-500 shadow-[0_0_6px_rgba(46,112,238,0.5)]" />
           </div>
         ) : (
-          <div className="p-3 rounded-xl ks-card flex flex-col gap-2">
+          <div className="p-3 rounded-xl bg-slate-100/90 dark:bg-[rgb(21,26,49)] border border-slate-200 dark:border-[rgba(46,112,238,0.2)] flex flex-col gap-2">
             <div className="flex items-center justify-between text-xs">
-              <span className="font-semibold text-slate-200">Risk Concentration</span>
-              <span className="text-rose-400 font-bold font-mono">{stats.sifiConcentrationRatio}%</span>
+              <span className="font-semibold text-slate-900 dark:text-slate-200">Risk Concentration</span>
+              <span className="text-blue-600 dark:text-blue-400 font-bold font-mono">{stats.sifiConcentrationRatio}%</span>
             </div>
             {/* Recessed Progress Bar */}
-            <div className="w-full h-2 rounded-full overflow-hidden bg-slate-950 border border-slate-800">
+            <div className="w-full h-2 rounded-full overflow-hidden bg-slate-200 dark:bg-slate-900 border border-slate-300 dark:border-slate-700/60">
               <div 
-                className="h-full bg-gradient-to-r from-rose-600 to-rose-500 rounded-full"
+                className="h-full bg-gradient-to-r from-blue-600 to-indigo-600 rounded-full"
                 style={{ width: `${stats.sifiConcentrationRatio}%` }}
               />
             </div>
-            <div className="text-xs leading-relaxed text-slate-400">
-              Top 5 dependencies account for <strong className="text-slate-200 font-semibold">81%</strong> of total reachability.
+            <div className="text-xs leading-relaxed text-slate-600 dark:text-slate-400">
+              Top 5 dependencies account for <strong className="text-slate-900 dark:text-white font-semibold">{stats.sifiConcentrationRatio}%</strong> of total reachability.
             </div>
           </div>
         )}
