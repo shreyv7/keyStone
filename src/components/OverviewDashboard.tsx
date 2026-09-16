@@ -27,7 +27,8 @@ import {
   ChevronUp,
   FileText,
   Compass,
-  AlertCircle
+  AlertCircle,
+  Ban
 } from 'lucide-react';
 import { KeystoneStats, EcosystemNode, RoleLens } from '../types';
 import { useTheme } from '../context/ThemeContext';
@@ -36,6 +37,7 @@ import { DominatorLeaderboard } from './DominatorLeaderboard';
 import { PortfolioRiskTrendChart } from './PortfolioRiskTrendChart';
 import { ReportExportModal } from './ReportExportModal';
 import { OnboardingEmptyState } from './OnboardingEmptyState';
+import { VulnerabilityDetectedModal } from './VulnerabilityDetectedModal';
 import { Download, LayoutTemplate } from 'lucide-react';
 
 interface OverviewDashboardProps {
@@ -68,6 +70,8 @@ export const OverviewDashboard: React.FC<OverviewDashboardProps> = ({
   const { isLight } = useTheme();
   const [rightPanelTab, setRightPanelTab] = useState<'quadrant' | 'dominator' | 'lens_matrix'>('quadrant');
   const [isExportModalOpen, setIsExportModalOpen] = useState(false);
+  const [isVulnerabilityModalOpen, setIsVulnerabilityModalOpen] = useState(false);
+  const [isShipmentBlocked, setIsShipmentBlocked] = useState(false);
   const [isPreviewEmptyState, setIsPreviewEmptyState] = useState(false);
   const [expandedBriefingId, setExpandedBriefingId] = useState<string | null>('snakeyaml');
   const [expandedEvidenceId, setExpandedEvidenceId] = useState<string | null>(null);
@@ -84,9 +88,7 @@ export const OverviewDashboard: React.FC<OverviewDashboardProps> = ({
   }, [topRisks, nodes]);
 
   const handleHeroAction = () => {
-    if (onLaunchHeroDemo) onLaunchHeroDemo();
-    else if (onStartDemoScenario) onStartDemoScenario();
-    else if (onGoToEcosystem) onGoToEcosystem();
+    setIsVulnerabilityModalOpen(true);
   };
 
   return (
@@ -174,6 +176,45 @@ export const OverviewDashboard: React.FC<OverviewDashboardProps> = ({
           </button>
         </div>
       </div>
+
+      {/* Shipment Blocked Warning Banner */}
+      {isShipmentBlocked && (
+        <div className="p-4 rounded-xl border border-red-500/40 bg-red-500/10 text-red-700 dark:text-red-300 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-sm animate-fade-in">
+          <div className="flex items-center gap-3">
+            <div className="p-2 rounded-lg bg-red-500/20 text-red-600 dark:text-red-400 shrink-0">
+              <Ban className="w-5 h-5" />
+            </div>
+            <div>
+              <div className="font-semibold text-sm flex items-center gap-2 flex-wrap">
+                <span>Production Deployment Blocked</span>
+                <span className="text-[10px] uppercase font-mono px-2 py-0.5 rounded bg-red-600 text-white font-bold">
+                  Do Not Ship
+                </span>
+                <span className="text-xs font-mono opacity-80">CVE-2022-1471</span>
+              </div>
+              <p className="text-xs mt-0.5 opacity-90">
+                Critical vulnerability detected in <code className="font-mono font-bold">snakeyaml@1.33</code>. Release pipeline locked to prevent systemic breach across 4 Tier-1 assets.
+              </p>
+            </div>
+          </div>
+          <div className="flex items-center gap-2 shrink-0">
+            <button
+              onClick={() => setIsVulnerabilityModalOpen(true)}
+              className="px-3 py-1.5 rounded-lg text-xs font-medium border border-red-400 dark:border-red-600 hover:bg-red-500/20 transition-colors cursor-pointer"
+            >
+              Inspect Advisory
+            </button>
+            {onOpenPRModal && (
+              <button
+                onClick={onOpenPRModal}
+                className="px-3 py-1.5 rounded-lg text-xs font-medium bg-red-600 hover:bg-red-700 text-white transition-colors cursor-pointer"
+              >
+                Apply Fix PR
+              </button>
+            )}
+          </div>
+        </div>
+      )}
 
       {nodes.length === 0 || isPreviewEmptyState ? (
         <OnboardingEmptyState
@@ -851,6 +892,26 @@ export const OverviewDashboard: React.FC<OverviewDashboardProps> = ({
         nodes={nodes}
         stats={stats}
         activeLens={activeLens}
+      />
+
+      {/* Critical Vulnerability Detection Alert Modal */}
+      <VulnerabilityDetectedModal
+        isOpen={isVulnerabilityModalOpen}
+        onClose={() => setIsVulnerabilityModalOpen(false)}
+        onBlockShipment={() => {
+          setIsShipmentBlocked(true);
+          setIsVulnerabilityModalOpen(false);
+        }}
+        onSimulateInGraph={() => {
+          setIsVulnerabilityModalOpen(false);
+          if (onLaunchHeroDemo) onLaunchHeroDemo();
+          else if (onStartDemoScenario) onStartDemoScenario();
+          else if (onGoToEcosystem) onGoToEcosystem();
+        }}
+        onOpenPRModal={() => {
+          setIsVulnerabilityModalOpen(false);
+          if (onOpenPRModal) onOpenPRModal();
+        }}
       />
     </div>
   );
