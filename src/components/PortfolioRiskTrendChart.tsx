@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { TrendingUp, AlertTriangle, ShieldCheck, Clock, Zap, DollarSign, Activity } from 'lucide-react';
+import { TrendingUp, AlertTriangle, ShieldCheck, Clock, Zap, Activity } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
 
 interface TrendSnapshot {
@@ -56,25 +56,25 @@ const SNAPSHOTS_90D: TrendSnapshot[] = [
     keystonesCount: 5,
     milestone: 'Stealth Anomaly',
     badgeType: 'anomaly',
-    narrative: '🚨 Stealth Anomaly: Un-notified maintainer churn & commit surge in snakeyaml.'
+    narrative: 'Stealth Anomaly: Un-notified maintainer churn & commit surge in snakeyaml.'
   },
   {
     day: -15,
     date: 'Day -15 (Jan 26)',
-    systemicScore: 84,
-    financialExposureM: 71.8,
-    keystonesCount: 6,
-    narrative: 'Structural articulation point hardens across 21 downstream services.'
+    systemicScore: 82,
+    financialExposureM: 78.4,
+    keystonesCount: 5,
+    narrative: 'Transitive reachability permeates Payment Gateway and Auth/IAM pipelines.'
   },
   {
     day: 0,
-    date: 'Day 0 (Today)',
-    systemicScore: 92,
+    date: 'Day 0 (Current State)',
+    systemicScore: 84,
     financialExposureM: 85.0,
-    keystonesCount: 7,
-    milestone: 'Public CVE',
+    keystonesCount: 5,
+    milestone: 'Day 0 Risk Alert',
     badgeType: 'cve',
-    narrative: '💥 Public Disclosure: CVE-2022-1471 Deserialization RCE published.'
+    narrative: 'Active SIFI State: Articulation cut-vertex dominating data parsing across 21 services.'
   },
   {
     day: 7,
@@ -84,7 +84,7 @@ const SNAPSHOTS_90D: TrendSnapshot[] = [
     keystonesCount: 0,
     milestone: 'Min-Cut Fix',
     badgeType: 'remediated',
-    narrative: '🛡️ Minimum Cut Applied: internal-data-pipeline v2.5.0 severs 100% of attack vectors.'
+    narrative: 'Minimum Cut Applied: internal-data-pipeline v2.5.0 severs 100% of attack vectors.'
   }
 ];
 
@@ -105,14 +105,12 @@ export const PortfolioRiskTrendChart: React.FC = () => {
     return SNAPSHOTS_90D;
   }, [timeRange]);
 
-  // Selected snapshot for inspection
   const activeSnapshot = visibleSnapshots[Math.min(hoveredIndex, visibleSnapshots.length - 1)] || visibleSnapshots[visibleSnapshots.length - 1];
 
-  // Chart coordinate mapping (viewBox: 760 x 200)
   const chartWidth = 760;
-  const chartHeight = 200;
+  const chartHeight = 190;
   const padX = 45;
-  const padY = 25;
+  const padY = 22;
   const graphWidth = chartWidth - padX * 2;
   const graphHeight = chartHeight - padY * 2;
 
@@ -125,7 +123,7 @@ export const PortfolioRiskTrendChart: React.FC = () => {
 
       if (metric === 'exposure') {
         val = snap.financialExposureM;
-        maxVal = 100; // up to $100M
+        maxVal = 100;
       } else if (metric === 'keystones') {
         val = snap.keystonesCount;
         maxVal = 8;
@@ -136,120 +134,108 @@ export const PortfolioRiskTrendChart: React.FC = () => {
     });
   }, [visibleSnapshots, metric, graphWidth, graphHeight]);
 
-  // Generate SVG path strings
   const { linePath, areaPath } = useMemo(() => {
     if (points.length === 0) return { linePath: '', areaPath: '' };
-
     let d = `M ${points[0].x} ${points[0].y}`;
     for (let i = 1; i < points.length; i++) {
       const prev = points[i - 1];
       const curr = points[i];
-      // Smooth cubic bezier
-      const cp1x = prev.x + (curr.x - prev.x) / 2;
-      const cp1y = prev.y;
-      const cp2x = prev.x + (curr.x - prev.x) / 2;
-      const cp2y = curr.y;
-      d += ` C ${cp1x} ${cp1y}, ${cp2x} ${cp2y}, ${curr.x} ${curr.y}`;
+      const cx1 = prev.x + (curr.x - prev.x) / 2;
+      const cy1 = prev.y;
+      const cx2 = prev.x + (curr.x - prev.x) / 2;
+      const cy2 = curr.y;
+      d += ` C ${cx1} ${cy1}, ${cx2} ${cy2}, ${curr.x} ${curr.y}`;
     }
 
     const last = points[points.length - 1];
     const first = points[0];
-    const bottomY = padY + graphHeight;
-    const area = `${d} L ${last.x} ${bottomY} L ${first.x} ${bottomY} Z`;
-
+    const baselineY = padY + graphHeight;
+    const area = `${d} L ${last.x} ${baselineY} L ${first.x} ${baselineY} Z`;
     return { linePath: d, areaPath: area };
   }, [points, graphHeight]);
 
   return (
-    <div className={`p-5 rounded-xl border transition-colors select-none ${
-      isLight 
-        ? 'bg-white border-slate-200 shadow-xs' 
-        : 'bg-slate-900/50 border-slate-800'
-    }`}>
-      {/* Chart Header Controls */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b pb-4 mb-4 border-slate-200 dark:border-slate-800">
+    <div className="connector-3d-card p-5 select-none flex flex-col gap-4">
+      {/* Chart Header Controls - Connectors Style */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b pb-3 border-slate-200/80 dark:border-slate-800">
         <div>
           <div className="flex items-center gap-2">
-            <TrendingUp className="w-4 h-4 text-cyan-600 dark:text-cyan-400" />
-            <h3 className="text-sm font-bold tracking-tight">Portfolio Risk Trajectory (90-Day Timeline)</h3>
-            <span className={`text-[10px] font-mono px-2 py-0.5 rounded uppercase font-semibold border ${
-              isLight ? 'bg-amber-50 text-amber-700 border-amber-200' : 'bg-amber-950/40 text-amber-400 border-amber-800/60'
-            }`}>
-              F22 Forensics
+            <TrendingUp className="w-4 h-4 text-blue-600 dark:text-blue-400" />
+            <h3 className="text-sm font-bold tracking-tight text-slate-900 dark:text-white font-heading">
+              Portfolio Risk Trajectory (90-Day Forensics)
+            </h3>
+            <span className="text-[10px] font-mono px-2 py-0.5 rounded uppercase font-bold bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/20">
+              F22 Timeline
             </span>
           </div>
-          <p className={`text-xs mt-0.5 ${isLight ? 'text-slate-500' : 'text-slate-400'}`}>
-            Tracks aggregate systemic fragility over time, highlighting pre-CVE anomaly emergence and post-fix insulation.
+          <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
+            Tracks aggregate systemic exposure over time, highlighting pre-CVE anomalies and minimum-cut insulation.
           </p>
         </div>
 
         <div className="flex items-center gap-2 flex-wrap">
-          {/* Metric Selector Pills */}
-          <div className={`p-0.5 rounded-lg border flex items-center ${
-            isLight ? 'bg-white border-slate-200 shadow-xs' : 'bg-slate-800 border-slate-700'
-          }`}>
+          {/* Metric Selector Tabs */}
+          <div className="flex items-center gap-1 p-1 rounded-xl connector-3d-card">
             <button
               onClick={() => setMetric('score')}
-              className={`px-2.5 py-1 rounded text-xs font-medium transition-colors ${
+              className={`px-3 py-1 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
                 metric === 'score'
-                  ? isLight ? 'bg-white text-cyan-700 shadow-xs font-semibold' : 'bg-cyan-950 text-cyan-300 font-semibold'
-                  : isLight ? 'text-slate-600 hover:text-slate-900' : 'text-slate-400 hover:text-slate-200'
+                  ? 'btn-3d-primary text-white'
+                  : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
               }`}
             >
               Risk Score
             </button>
             <button
               onClick={() => setMetric('exposure')}
-              className={`px-2.5 py-1 rounded text-xs font-medium transition-colors ${
+              className={`px-3 py-1 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
                 metric === 'exposure'
-                  ? isLight ? 'bg-white text-purple-700 shadow-xs font-semibold' : 'bg-purple-950 text-purple-300 font-semibold'
-                  : isLight ? 'text-slate-600 hover:text-slate-900' : 'text-slate-400 hover:text-slate-200'
+                  ? 'btn-3d-primary text-white'
+                  : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
               }`}
             >
               $ Financial
             </button>
             <button
               onClick={() => setMetric('keystones')}
-              className={`px-2.5 py-1 rounded text-xs font-medium transition-colors ${
+              className={`px-3 py-1 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
                 metric === 'keystones'
-                  ? isLight ? 'bg-white text-amber-700 shadow-xs font-semibold' : 'bg-amber-950 text-amber-300 font-semibold'
-                  : isLight ? 'text-slate-600 hover:text-slate-900' : 'text-slate-400 hover:text-slate-200'
+                  ? 'btn-3d-primary text-white'
+                  : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
               }`}
             >
               Keystones
             </button>
           </div>
 
-          {/* Time Range Pills */}
-          <div className={`p-0.5 rounded-lg border flex items-center ${
-            isLight ? 'bg-slate-100 border-slate-200' : 'bg-slate-800 border-slate-700'
-          }`}>
+          {/* Time Range Tabs */}
+          <div className="flex items-center gap-1 p-1 rounded-xl connector-3d-card">
             <button
               onClick={() => { setTimeRange('90d'); setHoveredIndex(6); }}
-              className={`px-2 py-1 rounded text-xs font-medium transition-colors ${
+              className={`px-2.5 py-1 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
                 timeRange === '90d'
-                  ? isLight ? 'bg-white text-slate-900 shadow-xs font-semibold' : 'bg-slate-700 text-white font-semibold'
-                  : isLight ? 'text-slate-500 hover:text-slate-900' : 'text-slate-400 hover:text-slate-200'
+                  ? 'btn-3d-primary text-white'
+                  : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
               }`}
             >
               90d
             </button>
             <button
               onClick={() => { setTimeRange('30d'); setHoveredIndex(4); }}
-              className={`px-2 py-1 rounded text-xs font-medium transition-colors ${
+              className={`px-2.5 py-1 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
                 timeRange === '30d'
-                  ? isLight ? 'bg-white text-slate-900 shadow-xs font-semibold' : 'bg-slate-700 text-white font-semibold'
-                  : isLight ? 'text-slate-500 hover:text-slate-900' : 'text-slate-400 hover:text-slate-200'
+                  ? 'btn-3d-primary text-white'
+                  : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
               }`}
             >
               30d
             </button>
             <button
               onClick={() => { setTimeRange('14d'); setHoveredIndex(2); }}
-              className={`px-2 py-1 rounded text-xs font-medium transition-colors ${
+              className={`px-2.5 py-1 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
                 timeRange === '14d'
-                  ? isLight ? 'bg-white text-slate-900 shadow-xs font-semibold' : 'bg-slate-700 text-white font-semibold'
-                  : isLight ? 'text-slate-500 hover:text-slate-900' : 'text-slate-400 hover:text-slate-200'
+                  ? 'btn-3d-primary text-white'
+                  : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
               }`}
             >
               14d
@@ -265,18 +251,11 @@ export const PortfolioRiskTrendChart: React.FC = () => {
           className="w-full h-44 overflow-visible"
         >
           <defs>
+            {/* Unified Brand Blue Area Gradient */}
             <linearGradient id="areaGradient" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="#ef4444" stopOpacity={isLight ? '0.35' : '0.45'} />
-              <stop offset="40%" stopColor="#f59e0b" stopOpacity={isLight ? '0.2' : '0.25'} />
-              <stop offset="85%" stopColor="#06b6d4" stopOpacity={isLight ? '0.08' : '0.1'} />
-              <stop offset="100%" stopColor="#06b6d4" stopOpacity="0.0" />
-            </linearGradient>
-
-            <linearGradient id="strokeGradient" x1="0" y1="0" x2="1" y2="0">
-              <stop offset="0%" stopColor="#10b981" />
-              <stop offset="50%" stopColor="#f59e0b" />
-              <stop offset="85%" stopColor="#ef4444" />
-              <stop offset="100%" stopColor="#06b6d4" />
+              <stop offset="0%" stopColor="#1755e6" stopOpacity={isLight ? '0.22' : '0.35'} />
+              <stop offset="70%" stopColor="#2e70ee" stopOpacity={isLight ? '0.05' : '0.08'} />
+              <stop offset="100%" stopColor="#2e70ee" stopOpacity="0.0" />
             </linearGradient>
           </defs>
 
@@ -298,9 +277,7 @@ export const PortfolioRiskTrendChart: React.FC = () => {
                   x={padX - 8} 
                   y={y + 3} 
                   textAnchor="end" 
-                  className={`text-[9px] font-mono fill-current ${
-                    isLight ? 'text-slate-400' : 'text-slate-500'
-                  }`}
+                  className="text-[9px] font-mono fill-slate-400"
                 >
                   {metric === 'score' 
                     ? `${Math.round(ratio * 100)}` 
@@ -319,78 +296,73 @@ export const PortfolioRiskTrendChart: React.FC = () => {
           <path 
             d={linePath} 
             fill="none" 
-            stroke="url(#strokeGradient)" 
-            strokeWidth="3" 
-            strokeLinecap="round" 
-            strokeLinejoin="round" 
+            stroke="#1755e6" 
+            strokeWidth="2.5" 
+            strokeLinecap="round"
           />
 
-          {/* Active Hover Scrub Line */}
-          {points[hoveredIndex] && (
-            <line 
-              x1={points[hoveredIndex].x} 
-              y1={padY} 
-              x2={points[hoveredIndex].x} 
-              y2={padY + graphHeight} 
-              stroke={isLight ? '#64748b' : '#94a3b8'} 
-              strokeDasharray="3 3" 
-              strokeWidth="1.5"
-            />
-          )}
-
-          {/* Data Points with Milestone Highlights */}
+          {/* Interactive Data Points */}
           {points.map(({ x, y, snap, i }) => {
-            const isHovered = i === hoveredIndex;
-            const isAnomaly = snap.day === -30;
-            const isCve = snap.day === 0;
-            const isRemediated = snap.day === 7;
-
-            let fillColor = '#06b6d4';
-            if (snap.day <= -60) fillColor = '#10b981';
-            else if (isAnomaly) fillColor = '#f59e0b';
-            else if (isCve) fillColor = '#ef4444';
-            else if (isRemediated) fillColor = '#10b981';
+            const isHovered = hoveredIndex === i;
+            const isCritical = snap.day === 0;
 
             return (
               <g 
                 key={snap.day} 
-                className="cursor-pointer transition-transform"
+                className="cursor-pointer"
                 onMouseEnter={() => setHoveredIndex(i)}
               >
-                {/* Milestone Pulse Rings */}
-                {(isAnomaly || isCve) && (
-                  <circle 
-                    cx={x} 
-                    cy={y} 
-                    r={isHovered ? 14 : 9} 
-                    fill={fillColor} 
-                    opacity="0.25" 
-                    className="animate-ping" 
+                {/* Active Hover Guide Line */}
+                {isHovered && (
+                  <line 
+                    x1={x} 
+                    y1={padY} 
+                    x2={x} 
+                    y2={padY + graphHeight} 
+                    stroke="#1755e6" 
+                    strokeWidth="1.5" 
+                    strokeDasharray="3 3"
+                    opacity={0.8}
                   />
                 )}
 
-                {/* Outer Ring */}
+                {/* Point Halo */}
+                {isCritical && (
+                  <circle 
+                    cx={x} 
+                    cy={y} 
+                    r={isHovered ? 11 : 8} 
+                    fill="none" 
+                    stroke="#1755e6" 
+                    strokeWidth="2"
+                    strokeDasharray="3 2"
+                    className="animate-pulse"
+                  />
+                )}
+
+                {/* Point Dot */}
                 <circle 
                   cx={x} 
                   cy={y} 
-                  r={isHovered ? 7 : (isAnomaly || isCve || isRemediated) ? 5.5 : 4} 
-                  fill={fillColor} 
-                  stroke={isLight ? '#ffffff' : '#090d16'} 
-                  strokeWidth={isHovered ? 2.5 : 1.5} 
+                  r={isHovered ? 6 : isCritical ? 5 : 4} 
+                  fill={isCritical ? '#1755e6' : isHovered ? '#2e70ee' : '#ffffff'} 
+                  stroke={isCritical ? '#ffffff' : '#1755e6'} 
+                  strokeWidth={isHovered ? 2.5 : 1.5}
+                  className="transition-all duration-150"
                 />
 
-                {/* X-Axis Date Labels */}
+                {/* X-axis date labels */}
                 <text 
                   x={x} 
                   y={padY + graphHeight + 16} 
                   textAnchor="middle" 
-                  className={`text-[10px] font-mono transition-colors ${
+                  className={`text-[9px] font-mono ${
                     isHovered 
-                      ? 'font-bold fill-cyan-500' 
-                      : isLight ? 'text-slate-400 fill-slate-400' : 'text-slate-500 fill-slate-500'
+                      ? 'fill-blue-600 font-bold' 
+                      : 'fill-slate-400'
                   }`}
                 >
-                  {snap.day === 0 ? 'Day 0' : snap.day === 7 ? 'Fix +7d' : `${snap.day}d`}
+                  {snap.day === 0 ? 'Day 0' : snap.day > 0 ? `+${snap.day}d` : `${snap.day}d`}
                 </text>
               </g>
             );
@@ -398,70 +370,48 @@ export const PortfolioRiskTrendChart: React.FC = () => {
         </svg>
       </div>
 
-      {/* Snapshot Narrative & Telemetry Bar */}
-      <div className={`mt-3 p-3 rounded-lg border flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 ${
-        activeSnapshot.badgeType === 'cve'
-          ? isLight ? 'bg-red-50/70 border-red-200 text-red-950' : 'bg-red-950/20 border-red-900/50 text-red-200'
-          : activeSnapshot.badgeType === 'anomaly'
-          ? isLight ? 'bg-amber-50/70 border-amber-200 text-amber-950' : 'bg-amber-950/20 border-amber-900/50 text-amber-200'
-          : activeSnapshot.badgeType === 'remediated'
-          ? isLight ? 'bg-emerald-50/70 border-emerald-200 text-emerald-950' : 'bg-emerald-950/20 border-emerald-900/50 text-emerald-200'
-          : isLight ? 'bg-white border-slate-200 text-slate-800 shadow-xs' : 'bg-slate-900/40 border-slate-800 text-slate-300'
-      }`}>
-        <div className="flex items-start sm:items-center gap-3">
-          <div className={`p-2 rounded-md shrink-0 ${
-            activeSnapshot.badgeType === 'cve'
-              ? 'bg-red-500/20 text-red-500'
-              : activeSnapshot.badgeType === 'anomaly'
-              ? 'bg-amber-500/20 text-amber-500'
-              : activeSnapshot.badgeType === 'remediated'
-              ? 'bg-emerald-500/20 text-emerald-500'
-              : 'bg-slate-500/20 text-slate-400'
-          }`}>
-            {activeSnapshot.badgeType === 'cve' ? (
-              <AlertTriangle className="w-4 h-4" />
-            ) : activeSnapshot.badgeType === 'anomaly' ? (
-              <Zap className="w-4 h-4" />
-            ) : activeSnapshot.badgeType === 'remediated' ? (
-              <ShieldCheck className="w-4 h-4" />
-            ) : (
-              <Clock className="w-4 h-4" />
-            )}
+      {/* Snapshot Narrative Drawer - Clean Connectors Style */}
+      <div className="p-4 rounded-xl border border-slate-200/80 dark:border-slate-800 bg-slate-50/60 dark:bg-slate-900/60 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-xs">
+        <div className="flex items-start gap-3">
+          <div className="p-2 rounded-xl bg-blue-50 dark:bg-blue-950/40 text-blue-600 dark:text-blue-400 shrink-0 mt-0.5">
+            <Activity className="w-4 h-4" />
           </div>
 
           <div>
             <div className="flex items-center gap-2 flex-wrap">
-              <span className="text-xs font-bold font-mono">{activeSnapshot.date}</span>
+              <span className="text-xs font-bold font-mono text-slate-900 dark:text-white">
+                {activeSnapshot.date}
+              </span>
               {activeSnapshot.milestone && (
-                <span className="text-[10px] uppercase font-bold px-1.5 py-0.5 rounded bg-black/10 dark:bg-white/10">
+                <span className="text-[10px] uppercase font-bold font-mono px-2 py-0.5 rounded bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/20">
                   {activeSnapshot.milestone}
                 </span>
               )}
             </div>
-            <p className="text-xs mt-0.5 opacity-90 leading-relaxed">
+            <p className="text-xs mt-1 text-slate-600 dark:text-slate-400 leading-relaxed">
               {activeSnapshot.narrative}
             </p>
           </div>
         </div>
 
-        <div className="flex items-center gap-4 shrink-0 font-mono text-xs border-t sm:border-t-0 pt-2 sm:pt-0 w-full sm:w-auto justify-between sm:justify-start">
+        <div className="flex items-center gap-5 shrink-0 font-mono text-xs border-t sm:border-t-0 pt-2 sm:pt-0 w-full sm:w-auto justify-between sm:justify-start">
           <div className="text-right">
             <span className="text-[10px] text-slate-400 block uppercase">Systemic Risk</span>
-            <span className="font-bold text-sm text-cyan-600 dark:text-cyan-400">
+            <span className="font-bold text-sm text-blue-600 dark:text-blue-400">
               {activeSnapshot.systemicScore}/100
             </span>
           </div>
 
           <div className="text-right">
             <span className="text-[10px] text-slate-400 block uppercase">Exposure</span>
-            <span className="font-bold text-sm text-purple-600 dark:text-purple-400">
+            <span className="font-bold text-sm text-slate-900 dark:text-white">
               ${activeSnapshot.financialExposureM}M/d
             </span>
           </div>
 
           <div className="text-right">
             <span className="text-[10px] text-slate-400 block uppercase">Keystones</span>
-            <span className="font-bold text-sm text-amber-600 dark:text-amber-400">
+            <span className="font-bold text-sm text-slate-900 dark:text-white">
               {activeSnapshot.keystonesCount}
             </span>
           </div>

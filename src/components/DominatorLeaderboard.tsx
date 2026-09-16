@@ -55,7 +55,7 @@ export const DominatorLeaderboard: React.FC<DominatorLeaderboardProps> = ({
         isLight ? 'border-slate-200' : 'border-slate-800'
       }`}>
         <div className="flex items-center gap-2">
-          <div className={`p-1.5 rounded-lg ${isLight ? 'bg-purple-100 text-purple-700' : 'bg-purple-950 text-purple-400'}`}>
+          <div className={`p-1.5 rounded-lg ${isLight ? 'bg-blue-50 text-blue-600' : 'bg-blue-950 text-blue-400'}`}>
             <TreePine className="w-4 h-4" />
           </div>
           <div>
@@ -64,7 +64,7 @@ export const DominatorLeaderboard: React.FC<DominatorLeaderboardProps> = ({
                 Top Structural Chokepoints
               </span>
               <span className={`text-[9px] font-mono px-1.5 py-0.5 rounded border uppercase ${
-                isLight ? 'bg-purple-50 text-purple-700 border-purple-200' : 'bg-purple-950 text-purple-300 border-purple-800'
+                isLight ? 'bg-blue-50 text-blue-700 border-blue-200' : 'bg-blue-950 text-blue-300 border-blue-800'
               }`}>
                 Dominator Tree (F2)
               </span>
@@ -105,7 +105,7 @@ export const DominatorLeaderboard: React.FC<DominatorLeaderboardProps> = ({
               onClick={() => onSelectNode && onSelectNode(node.id)}
               className={`grid grid-cols-12 items-center p-2 rounded-lg text-xs cursor-pointer transition-all border ${
                 isSelected
-                  ? isLight ? 'bg-purple-50 border-purple-300 shadow-xs' : 'bg-purple-950/40 border-purple-700 shadow-xs'
+                  ? isLight ? 'bg-blue-50 border-blue-300 shadow-xs' : 'bg-blue-950/40 border-blue-700 shadow-xs'
                   : isLight
                   ? 'hover:bg-slate-50 border-transparent hover:border-slate-200'
                   : 'hover:bg-slate-800/60 border-transparent hover:border-slate-800'
@@ -117,14 +117,14 @@ export const DominatorLeaderboard: React.FC<DominatorLeaderboardProps> = ({
 
               <div className="col-span-5 pr-1">
                 <div className={`font-mono text-[11px] font-bold truncate ${
-                  isSelected ? 'text-purple-600 dark:text-purple-400' : isLight ? 'text-slate-900' : 'text-slate-100'
+                  isSelected ? 'text-blue-600 dark:text-blue-400' : isLight ? 'text-slate-900' : 'text-slate-100'
                 }`}>
                   {node.name}
                 </div>
                 <div className="flex items-center gap-1 mt-0.5">
                   <span className={`text-[9px] font-mono px-1 py-0.2 rounded ${
                     node.articulationPoint
-                      ? isLight ? 'bg-red-100 text-red-700' : 'bg-red-950 text-red-300'
+                      ? isLight ? 'bg-slate-200 text-slate-800' : 'bg-slate-800 text-slate-200'
                       : isLight ? 'bg-slate-100 text-slate-600' : 'bg-slate-800 text-slate-400'
                   }`}>
                     {node.articulationPoint ? 'CUT-VERTEX' : isRedundant ? 'REDUNDANT' : 'LEAF'}
@@ -140,7 +140,7 @@ export const DominatorLeaderboard: React.FC<DominatorLeaderboardProps> = ({
                 {prN.toFixed(2)}
               </div>
 
-              <div className="col-span-2 text-right font-mono font-bold text-[11px] text-purple-600 dark:text-purple-400">
+              <div className="col-span-2 text-right font-mono font-bold text-[11px] text-blue-600 dark:text-blue-400">
                 {sc.toFixed(2)}
               </div>
             </div>

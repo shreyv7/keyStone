@@ -12,7 +12,8 @@ import {
   Key,
   Sliders,
   ChevronDown,
-  Rocket
+  Rocket,
+  Flame
 } from 'lucide-react';
 import { NavView, KeystoneStats } from '../types';
 import { useTheme } from '../context/ThemeContext';
@@ -62,6 +63,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
         { id: 'ecosystem', label: 'Topology Map', icon: <Network className="w-3.5 h-3.5" /> },
         { id: 'overview', label: 'Security Posture', icon: <BarChart3 className="w-3.5 h-3.5" /> },
         { id: 'watchlist', label: 'Risk Watchlist', icon: <ShieldAlert className="w-3.5 h-3.5" />, count: '5' },
+        { id: 'blast-radius', label: 'Blast Radius', icon: <Flame className="w-3.5 h-3.5 text-rose-500" />, count: 'Live' },
         { id: 'mitigation', label: 'Remediation', icon: <Wrench className="w-3.5 h-3.5" />, count: 'Active' }
       ]
     },
@@ -84,7 +86,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
   ];
 
   return (
-    <aside className={`${isCollapsed ? 'w-14 p-2' : 'w-52 lg:w-56 p-2.5'} h-full border-r ks-border bg-slate-950/95 text-slate-100 transition-all duration-200 flex flex-col justify-between select-none z-20 shrink-0 overflow-y-auto`}>
+    <aside className={`${isCollapsed ? 'w-14 p-2' : 'w-52 lg:w-56 p-2.5'} h-full border-r ks-border bg-[rgb(15,18,35)] text-slate-100 transition-all duration-200 flex flex-col justify-between select-none z-20 shrink-0 overflow-y-auto`}>
       <div className="flex flex-col gap-2.5">
         {/* Grouped & Collapsible Navigation Links */}
         <nav className="flex flex-col gap-2">

@@ -317,7 +317,7 @@ export const RiskWatchlist: React.FC<RiskWatchlistProps> = ({
                     <td className="py-3.5 px-4 text-right">
                       <button
                         onClick={() => onSelectNode(node.id)}
-                        className="px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-blue-600 hover:bg-blue-500 text-white cursor-pointer transition-colors shadow-xs"
+                        className="btn-3d-primary px-3 py-1 rounded-lg text-xs font-bold text-white cursor-pointer select-none"
                       >
                         Inspect
                       </button>

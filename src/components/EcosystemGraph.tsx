@@ -70,6 +70,10 @@ export const EcosystemGraph: React.FC<EcosystemGraphProps> = ({
   const dirLight1Ref = useRef<THREE.DirectionalLight | null>(null);
   const dirLight2Ref = useRef<THREE.DirectionalLight | null>(null);
   const layerRingsRef = useRef<THREE.Mesh[]>([]);
+  const lightningParticlesRef = useRef<THREE.Points | null>(null);
+  const lightningPositionsRef = useRef<Float32Array | null>(null);
+  const lightningProgressRef = useRef<Float32Array | null>(null);
+  const allEdgeEndpointsRef = useRef<Array<{ id: string; p1: THREE.Vector3; p2: THREE.Vector3 }>>([]);
 
   // Camera animation target
   const targetCamPosRef = useRef<THREE.Vector3 | null>(null);
@@ -472,7 +476,44 @@ export const EcosystemGraph: React.FC<EcosystemGraphProps> = ({
     scene.add(pulsePoints);
     pulseParticlesRef.current = pulsePoints;
     pulsePositionsRef.current = pulsePosArray;
-    pulseProgressRef.current = pulseProgressArray;
+    // Store all edge endpoints for lightning current traversal
+    const allEdgesWithEndpoints: Array<{ id: string; p1: THREE.Vector3; p2: THREE.Vector3 }> = [];
+    edges.forEach(edge => {
+      const src = nodeMap.get(edge.source);
+      const tgt = nodeMap.get(edge.target);
+      if (src && tgt) {
+        allEdgesWithEndpoints.push({
+          id: edge.id,
+          p1: new THREE.Vector3(...src.position),
+          p2: new THREE.Vector3(...tgt.position)
+        });
+      }
+    });
+    allEdgeEndpointsRef.current = allEdgesWithEndpoints;
+
+    // Electric Lightning Current Pulse Stream for Affected Nodes
+    const MAX_LIGHTNING_PULSES = 200;
+    const lightningPosArray = new Float32Array(MAX_LIGHTNING_PULSES * 3);
+    const lightningProgressArray = new Float32Array(MAX_LIGHTNING_PULSES);
+    for (let i = 0; i < MAX_LIGHTNING_PULSES; i++) {
+      lightningProgressArray[i] = Math.random();
+    }
+    const lightningGeo = new THREE.BufferGeometry();
+    lightningGeo.setAttribute('position', new THREE.BufferAttribute(lightningPosArray, 3));
+    const lightningMat = new THREE.PointsMaterial({
+      color: 0x38bdf8,
+      size: 2.8,
+      transparent: true,
+      opacity: 0.95,
+      blending: THREE.AdditiveBlending,
+      depthWrite: false
+    });
+    const lightningPoints = new THREE.Points(lightningGeo, lightningMat);
+    lightningPoints.visible = false;
+    scene.add(lightningPoints);
+    lightningParticlesRef.current = lightningPoints;
+    lightningPositionsRef.current = lightningPosArray;
+    lightningProgressRef.current = lightningProgressArray;
 
     // 10. Build 3D Node Meshes with Geometry Pooling (P3-8)
     const nodeMeshes = new Map<string, THREE.Group>();
@@ -481,7 +522,6 @@ export const EcosystemGraph: React.FC<EcosystemGraphProps> = ({
     const sharedUnitPsfiRingGeo = new THREE.RingGeometry(1.46, 1.60, 32);
     const sharedUnitPdiRingGeo = new THREE.RingGeometry(1.68, 1.82, 32);
     const sharedUnitAnomalyGeo = new THREE.IcosahedronGeometry(1.35, 1);
-    const sharedUnitRippleGeo = new THREE.RingGeometry(1.0, 1.15, 36);
 
     nodes.forEach(node => {
       const group = new THREE.Group();
@@ -504,31 +544,6 @@ export const EcosystemGraph: React.FC<EcosystemGraphProps> = ({
       sphereMesh.userData = { baseRadius: 1.0 };
       sphereMesh.scale.setScalar(radius);
       group.add(sphereMesh);
-
-      // Dedicated Concentric Ripple Pulse Rings (for concerned node visual wave feedback)
-      const rippleMat1 = new THREE.MeshBasicMaterial({
-        color: 0x38bdf8,
-        side: THREE.DoubleSide,
-        transparent: true,
-        opacity: 0,
-        depthWrite: false
-      });
-      const rippleMesh1 = new THREE.Mesh(sharedUnitRippleGeo, rippleMat1);
-      rippleMesh1.name = 'rippleRing1';
-      rippleMesh1.visible = false;
-      group.add(rippleMesh1);
-
-      const rippleMat2 = new THREE.MeshBasicMaterial({
-        color: 0x38bdf8,
-        side: THREE.DoubleSide,
-        transparent: true,
-        opacity: 0,
-        depthWrite: false
-      });
-      const rippleMesh2 = new THREE.Mesh(sharedUnitRippleGeo, rippleMat2);
-      rippleMesh2.name = 'rippleRing2';
-      rippleMesh2.visible = false;
-      group.add(rippleMesh2);
 
       // Dedicated Gold Dominator Ring (Lengauer-Tarjan articulation chokepoint)
       const isDominator = node.articulationPoint || !!node.dominatorMetrics?.isDominatorChokepoint;
@@ -659,7 +674,7 @@ export const EcosystemGraph: React.FC<EcosystemGraphProps> = ({
     container.addEventListener('pointerdown', handlePointerDown);
     container.addEventListener('click', handleClick);
 
-    // 12. Resize Observer
+    // 12. Resize Observer (Window + Container resize for dynamic compression)
     const handleResize = () => {
       if (!container || !renderer || !camera) return;
       const w = container.clientWidth;
@@ -669,6 +684,11 @@ export const EcosystemGraph: React.FC<EcosystemGraphProps> = ({
       renderer.setSize(w, h);
     };
     window.addEventListener('resize', handleResize);
+
+    const resizeObserver = new ResizeObserver(() => {
+      handleResize();
+    });
+    resizeObserver.observe(container);
 
     // 13. Animation Loop
     let animationFrameId: number;
@@ -692,66 +712,42 @@ export const EcosystemGraph: React.FC<EcosystemGraphProps> = ({
         }
       }
 
-      // Dedicated Expanding Ripple Wave Feedback on Concerned Nodes
+      // Animate electric lightning current flowing between all affected nodes
       const activeCone = dependencyConeRef.current;
-      if (activeCone) {
-        const focusId = activeCone.focusId;
-        nodeMeshes.forEach((group, nodeId) => {
-          const ripple1 = group.getObjectByName('rippleRing1') as THREE.Mesh;
-          const ripple2 = group.getObjectByName('rippleRing2') as THREE.Mesh;
-          if (!ripple1 || !ripple2) return;
+      if (
+        activeCone && 
+        activeCone.coneEdges.size > 0 && 
+        lightningParticlesRef.current && 
+        lightningPositionsRef.current && 
+        lightningProgressRef.current
+      ) {
+        const activeEdges = allEdgeEndpointsRef.current.filter(e => activeCone.coneEdges.has(e.id));
+        if (activeEdges.length > 0) {
+          lightningParticlesRef.current.visible = true;
+          const currentSpeed = 1.65;
+          const pulseCount = lightningProgressRef.current.length;
 
-          const isConcerned = activeCone.allConeNodes.has(nodeId);
-          if (!isConcerned) {
-            ripple1.visible = false;
-            ripple2.visible = false;
-            return;
+          for (let i = 0; i < pulseCount; i++) {
+            lightningProgressRef.current[i] = (lightningProgressRef.current[i] + delta * currentSpeed) % 1.0;
+            const edgeIndex = i % activeEdges.length;
+            const edgeItem = activeEdges[edgeIndex];
+            const t = lightningProgressRef.current[i];
+
+            // Linear traversal along connecting edge wire
+            const basePos = edgeItem.p1.clone().lerp(edgeItem.p2, t);
+
+            // Subtle electric micro-arc jitter (high-tech cyber stream)
+            const jitter = Math.sin(elapsedTime * 45 + i * 1.7) * 0.14;
+            lightningPositionsRef.current[i * 3] = basePos.x + jitter;
+            lightningPositionsRef.current[i * 3 + 1] = basePos.y + jitter;
+            lightningPositionsRef.current[i * 3 + 2] = basePos.z + jitter;
           }
-
-          ripple1.visible = true;
-          ripple2.visible = true;
-
-          // Billboard ripple rings directly to face the camera screen at all turntable angles
-          ripple1.quaternion.copy(camera.quaternion);
-          ripple2.quaternion.copy(camera.quaternion);
-
-          const isFocus = nodeId === focusId;
-          const isAncestor = activeCone.ancestors.has(nodeId);
-          const currentRad = (group.userData.currentRadius as number) || 2.0;
-
-          // Cascading ripple waves: focus node initiates, connected dependencies cascade
-          const phaseOffset = isFocus ? 0.0 : (isAncestor ? 0.28 : 0.54);
-          const cycleSpeed = isFocus ? 1.6 : 1.25;
-          const p1 = (elapsedTime * cycleSpeed + phaseOffset) % 1.0;
-          const p2 = (elapsedTime * cycleSpeed + phaseOffset + 0.5) % 1.0;
-
-          const waveColor = isFocus 
-            ? 0x38bdf8 // Bright electric cyan for selected node
-            : isAncestor 
-              ? 0x818cf8 // Royal indigo for upstream sinks
-              : 0x34d399; // Emerald green for foundational dependencies
-
-          // Wave 1
-          const scale1 = currentRad * (1.1 + p1 * (isFocus ? 2.8 : 2.0));
-          ripple1.scale.setScalar(scale1);
-          const mat1 = ripple1.material as THREE.MeshBasicMaterial;
-          mat1.color.setHex(waveColor);
-          mat1.opacity = Math.pow(1 - p1, 1.4) * (isFocus ? 0.95 : 0.65);
-
-          // Wave 2
-          const scale2 = currentRad * (1.1 + p2 * (isFocus ? 2.8 : 2.0));
-          ripple2.scale.setScalar(scale2);
-          const mat2 = ripple2.material as THREE.MeshBasicMaterial;
-          mat2.color.setHex(waveColor);
-          mat2.opacity = Math.pow(1 - p2, 1.4) * (isFocus ? 0.95 : 0.65);
-        });
-      } else {
-        nodeMeshes.forEach(group => {
-          const r1 = group.getObjectByName('rippleRing1');
-          const r2 = group.getObjectByName('rippleRing2');
-          if (r1) r1.visible = false;
-          if (r2) r2.visible = false;
-        });
+          lightningParticlesRef.current.geometry.attributes.position.needsUpdate = true;
+        } else {
+          lightningParticlesRef.current.visible = false;
+        }
+      } else if (lightningParticlesRef.current) {
+        lightningParticlesRef.current.visible = false;
       }
 
       // Rotate semantic rings around key nodes
@@ -801,6 +797,7 @@ export const EcosystemGraph: React.FC<EcosystemGraphProps> = ({
     return () => {
       cancelAnimationFrame(animationFrameId);
       window.removeEventListener('resize', handleResize);
+      resizeObserver.disconnect();
       container.removeEventListener('mousemove', handlePointerMove);
       container.removeEventListener('pointerdown', handlePointerDown);
       container.removeEventListener('click', handleClick);
@@ -966,6 +963,11 @@ export const EcosystemGraph: React.FC<EcosystemGraphProps> = ({
         if (!isInConeEdge) {
           lineMat.color.setHex(isLight ? 0xe2e8f0 : 0x0f172a);
           lineMat.opacity = 0.015; // Deep ghosted dimming outside cone
+          return;
+        } else {
+          // Live electric wire connection between affected nodes
+          lineMat.color.setHex(0x38bdf8);
+          lineMat.opacity = 0.85;
           return;
         }
       }

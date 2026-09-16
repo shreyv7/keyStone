@@ -40,6 +40,8 @@ import { ApiKeysPage } from './components/ApiKeysPage';
 import { ProfilePage } from './components/ProfilePage';
 import { HardwarePage } from './components/HardwarePage';
 import { RolloutCockpitView } from './components/RolloutCockpitView';
+import { RemediationPage } from './components/RemediationPage';
+import { BlastRadiusPage } from './components/BlastRadiusPage';
 import { Globe } from 'lucide-react';
 import { useTheme } from './context/ThemeContext';
 
@@ -193,11 +195,10 @@ export function App() {
   // Compute Minimum-Cut Intervention
   const handleComputeMitigation = useCallback(() => {
     setSimulationPhase('mitigation_computed');
-    setIsMitigationPanelOpen(true);
+    setIsMitigationPanelOpen(false);
     setIsPropagationPanelOpen(false);
-    // Focus the intervention node
-    setSelectedNodeId('internal-data-pipeline');
-    setHighlightedNodeIds(new Set(['internal-data-pipeline', 'snakeyaml']));
+    setSelectedNodeId('snakeyaml');
+    setActiveView('mitigation');
   }, []);
 
   // Apply Simulated Fix
@@ -383,94 +384,101 @@ export function App() {
 
         {/* Center Main Stage */}
         <main className="relative flex-1 w-full h-full overflow-hidden">
-          {/* 3D WebGL Ecosystem Graph */}
-          <EcosystemGraph
-            nodes={MOCK_NODES}
-            edges={MOCK_EDGES}
-            selectedNodeId={selectedNodeId}
-            hoveredNodeId={hoveredNodeId}
-            onSelectNode={handleSelectNode}
-            onHoverNode={handleHoverNode}
-            showStructuralSize={showStructuralSize}
-            simulationPhase={simulationPhase}
-            activePropagationPath={activePropagationPath}
-            compromisedNodeIds={compromisedNodeIds}
-            severedEdgeIds={severedEdgeIds}
-            highlightedNodeIds={highlightedNodeIds}
-            timeTravelDay={timeTravelDay}
-            autoRotate={autoRotate}
-            showDominatorMode={showDominatorMode}
-            scopeFilter={scopeFilter}
-            channelFilter={channelFilter}
-          />
+          {/* 3D WebGL Ecosystem Graph Stage Wrapper - Dynamically compresses and shifts to left on node selection */}
+          <div className={`h-full relative transition-all duration-300 ease-out overflow-hidden ${
+            selectedNode && activeView === 'ecosystem' && !isMitigationPanelOpen
+              ? 'mr-0 sm:mr-96 lg:mr-[420px]'
+              : 'mr-0'
+          }`}>
+            {/* 3D WebGL Ecosystem Graph */}
+            <EcosystemGraph
+              nodes={MOCK_NODES}
+              edges={MOCK_EDGES}
+              selectedNodeId={selectedNodeId}
+              hoveredNodeId={hoveredNodeId}
+              onSelectNode={handleSelectNode}
+              onHoverNode={handleHoverNode}
+              showStructuralSize={showStructuralSize}
+              simulationPhase={simulationPhase}
+              activePropagationPath={activePropagationPath}
+              compromisedNodeIds={compromisedNodeIds}
+              severedEdgeIds={severedEdgeIds}
+              highlightedNodeIds={highlightedNodeIds}
+              timeTravelDay={timeTravelDay}
+              autoRotate={autoRotate}
+              showDominatorMode={showDominatorMode}
+              scopeFilter={scopeFilter}
+              channelFilter={channelFilter}
+            />
 
-          {/* Graph Controls Overlay */}
-          <GraphControls
-            onResetView={() => setSelectedNodeId(null)}
-            onFocusKeystone={() => setSelectedNodeId('snakeyaml')}
-            showStructuralRisk={showStructuralSize}
-            onToggleStructuralRisk={() => setShowStructuralSize(prev => !prev)}
-            showBlastRadius={showBlastRadius}
-            onToggleBlastRadius={() => setShowBlastRadius(prev => !prev)}
-            showPropagation={showPropagation}
-            onTogglePropagation={() => setShowPropagation(prev => !prev)}
-            showDominatorMode={showDominatorMode}
-            onToggleDominatorMode={() => setShowDominatorMode(prev => !prev)}
-            scopeFilter={scopeFilter}
-            onScopeChange={setScopeFilter}
-            channelFilter={channelFilter}
-            onChannelChange={setChannelFilter}
-            autoRotate={autoRotate}
-            onToggleAutoRotate={() => setAutoRotate(prev => !prev)}
-            onOpenLegend={() => setIsLegendOpen(true)}
-          />
+            {/* Graph Controls Overlay */}
+            <GraphControls
+              onResetView={() => setSelectedNodeId(null)}
+              onFocusKeystone={() => setSelectedNodeId('snakeyaml')}
+              showStructuralRisk={showStructuralSize}
+              onToggleStructuralRisk={() => setShowStructuralSize(prev => !prev)}
+              showBlastRadius={showBlastRadius}
+              onToggleBlastRadius={() => setShowBlastRadius(prev => !prev)}
+              showPropagation={showPropagation}
+              onTogglePropagation={() => setShowPropagation(prev => !prev)}
+              showDominatorMode={showDominatorMode}
+              onToggleDominatorMode={() => setShowDominatorMode(prev => !prev)}
+              scopeFilter={scopeFilter}
+              onScopeChange={setScopeFilter}
+              channelFilter={channelFilter}
+              onChannelChange={setChannelFilter}
+              autoRotate={autoRotate}
+              onToggleAutoRotate={() => setAutoRotate(prev => !prev)}
+              onOpenLegend={() => setIsLegendOpen(true)}
+            />
 
-          {/* F11 Popularity Paradox Callout Banner */}
-          {showParadoxBanner && showStructuralSize && selectedNode && selectedNode.conventionalScore < 55 && selectedNode.systemicScore >= 80 && (
-            <div className={`absolute top-28 left-5 z-20 max-w-md p-3 rounded-xl border shadow-xl backdrop-blur-md flex items-start justify-between gap-3 animate-in fade-in slide-in-from-top-2 ${
-              isLight ? 'bg-amber-50/95 border-amber-300 text-amber-950' : 'bg-amber-950/90 border-amber-800 text-amber-100'
-            }`}>
-              <div className="flex items-start gap-2">
-                <span className="text-base leading-none mt-0.5">⚡</span>
-                <div>
-                  <div className="flex items-center gap-1.5 font-bold text-xs">
-                    <span>POPULARITY PARADOX DETECTED</span>
-                    <span className={`text-[9px] font-mono px-1 py-0.2 rounded border uppercase ${
-                      isLight ? 'bg-white text-amber-800 border-amber-300' : 'bg-black text-amber-300 border-amber-700'
-                    }`}>
-                      F11 Metric Divergence
-                    </span>
-                  </div>
-                  <div className="text-[11px] mt-1 leading-snug">
-                    <strong>OpenSSF Score:</strong> {(selectedNode.conventionalScore / 100).toFixed(2)} (Appears Safe) ↔ <strong>Structural Position:</strong> Top 1% Articulation Chokepoint ({selectedNode.systemicScore}/100).
-                  </div>
-                  <div className={`text-[10px] mt-0.5 opacity-80 ${isLight ? 'text-amber-800' : 'text-amber-200'}`}>
-                    Single-point chokepoint masked by isolated vanity scores.
+            {/* F11 Popularity Paradox Callout Banner */}
+            {showParadoxBanner && showStructuralSize && selectedNode && selectedNode.conventionalScore < 55 && selectedNode.systemicScore >= 80 && (
+              <div className={`absolute top-28 left-5 z-20 max-w-md p-3 rounded-xl border shadow-xl backdrop-blur-md flex items-start justify-between gap-3 animate-in fade-in slide-in-from-top-2 ${
+                isLight ? 'bg-amber-50/95 border-amber-300 text-amber-950' : 'bg-amber-950/90 border-amber-800 text-amber-100'
+              }`}>
+                <div className="flex items-start gap-2">
+                  <span className="text-base leading-none mt-0.5">⚡</span>
+                  <div>
+                    <div className="flex items-center gap-1.5 font-bold text-xs">
+                      <span>POPULARITY PARADOX DETECTED</span>
+                      <span className={`text-[9px] font-mono px-1 py-0.2 rounded border uppercase ${
+                        isLight ? 'bg-white text-amber-800 border-amber-300' : 'bg-black text-amber-300 border-amber-700'
+                      }`}>
+                        F11 Metric Divergence
+                      </span>
+                    </div>
+                    <div className="text-[11px] mt-1 leading-snug">
+                      <strong>OpenSSF Score:</strong> {(selectedNode.conventionalScore / 100).toFixed(2)} (Appears Safe) ↔ <strong>Structural Position:</strong> Top 1% Articulation Chokepoint ({selectedNode.systemicScore}/100).
+                    </div>
+                    <div className={`text-[10px] mt-0.5 opacity-80 ${isLight ? 'text-amber-800' : 'text-amber-200'}`}>
+                      Single-point chokepoint masked by isolated vanity scores.
+                    </div>
                   </div>
                 </div>
+                <button
+                  onClick={() => setShowParadoxBanner(false)}
+                  className="text-xs px-1 rounded text-slate-400 hover:text-slate-600 dark:hover:text-slate-200"
+                >
+                  ✕
+                </button>
               </div>
-              <button
-                onClick={() => setShowParadoxBanner(false)}
-                className="text-xs px-1 rounded text-slate-400 hover:text-slate-600 dark:hover:text-slate-200"
-              >
-                ✕
-              </button>
-            </div>
-          )}
+            )}
 
-          {/* F2 Dominator Chokepoints Leaderboard Overlay */}
-          {showDominatorMode && activeView === 'ecosystem' && (
-            <DominatorLeaderboard
-              nodes={MOCK_NODES}
-              selectedNodeId={selectedNodeId}
-              onSelectNode={handleSelectNode}
-              onClose={() => setShowDominatorMode(false)}
-              isOverlay={true}
-            />
-          )}
+            {/* F2 Dominator Chokepoints Leaderboard Overlay */}
+            {showDominatorMode && activeView === 'ecosystem' && (
+              <DominatorLeaderboard
+                nodes={MOCK_NODES}
+                selectedNodeId={selectedNodeId}
+                onSelectNode={handleSelectNode}
+                onClose={() => setShowDominatorMode(false)}
+                isOverlay={true}
+              />
+            )}
 
-          {/* Hover Tooltip */}
-          <NodeTooltip node={hoveredNode} position={hoveredPosition} />
+            {/* Hover Tooltip */}
+            <NodeTooltip node={hoveredNode} position={hoveredPosition} />
+          </div>
 
           {/* Right-Side Node Intelligence Panel */}
           {selectedNode && activeView === 'ecosystem' && !isMitigationPanelOpen && (
@@ -595,21 +603,33 @@ export function App() {
             />
           )}
 
-          {/* Mitigation Standalone View Tab */}
+          {/* Dedicated Blast Radius Telemetry View Tab */}
+          {activeView === 'blast-radius' && (
+            <div className="absolute inset-0 z-20">
+              <BlastRadiusPage
+                onNavigateRemediation={() => setActiveView('mitigation')}
+                onReturnToGraph={() => setActiveView('ecosystem')}
+                onSelectNode={(id) => {
+                  setSelectedNodeId(id);
+                  setActiveView('ecosystem');
+                }}
+              />
+            </div>
+          )}
+
+          {/* Dedicated Remediation Center View Tab */}
           {activeView === 'mitigation' && (
-            <div className="absolute inset-0 z-20 pointer-events-none flex items-center justify-end">
-              <div className="pointer-events-auto">
-                <MitigationPanel
-                  candidates={MOCK_MITIGATION_CANDIDATES}
-                  selectedStrategy={selectedStrategy}
-                  onSelectStrategy={setSelectedStrategy}
-                  onApplyFix={handleApplyFix}
-                  isApplied={simulationPhase === 'mitigation_applied'}
-                  onClose={() => setActiveView('ecosystem')}
-                  onOpenPRModal={() => setIsPRModalOpen(true)}
-                  onResetSimulation={handleResetSimulation}
-                />
-              </div>
+            <div className="absolute inset-0 z-20">
+              <RemediationPage
+                candidates={MOCK_MITIGATION_CANDIDATES}
+                nodes={MOCK_NODES}
+                activeLens={activeLens}
+                onOpenPRModal={() => setIsPRModalOpen(true)}
+                onOpenSBOMModal={() => setIsSBOMModalOpen(true)}
+                onReturnToGraph={() => setActiveView('ecosystem')}
+                onApplyFix={() => handleApplyFix()}
+                isApplied={simulationPhase === 'mitigation_applied'}
+              />
             </div>
           )}
 
