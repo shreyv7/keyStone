@@ -1,5 +1,5 @@
-import React from 'react';
-import { Flame, ShieldAlert, GitFork, Activity, ArrowRight } from 'lucide-react';
+import React, { useState } from 'react';
+import { Flame, ShieldAlert, GitFork, Activity, ArrowRight, ChevronUp, ChevronDown } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
 
 interface BlastRadiusHUDProps {
@@ -24,58 +24,98 @@ export const BlastRadiusHUD: React.FC<BlastRadiusHUDProps> = ({
   canMitigate
 }) => {
   const { isLight } = useTheme();
+  const [isMinimized, setIsMinimized] = useState<boolean>(false);
+
+  if (isMinimized) {
+    return (
+      <div className="absolute top-4 right-4 z-20 select-none animate-in fade-in slide-in-from-top-2 duration-200">
+        <button
+          onClick={() => setIsMinimized(false)}
+          title="Expand Blast Radius Telemetry"
+          className={`flex items-center gap-2.5 px-3.5 py-2 rounded-xl border backdrop-blur-xl shadow-xl text-xs font-semibold transition-all hover:scale-105 cursor-pointer ${
+            isLight
+              ? 'bg-white/95 border-slate-200 text-slate-800 shadow-slate-200/50'
+              : 'bg-slate-900/95 border-slate-800 text-slate-100 shadow-black/60'
+          }`}
+        >
+          <span className="w-2 h-2 rounded-full bg-red-500 animate-ping shrink-0" />
+          <span className="font-semibold text-red-600 dark:text-red-400 font-mono">
+            {affectedServicesCount} Affected Services
+          </span>
+          <span className="text-slate-400 font-normal">| {financialExposure}</span>
+          <span className={`text-[10px] font-semibold px-2 py-0.5 rounded border ${
+            isLight ? 'bg-red-50 text-red-700 border-red-200' : 'bg-red-950/40 text-red-400 border-red-800/50'
+          }`}>
+            Active Cascade
+          </span>
+          <ChevronDown className="w-3.5 h-3.5 text-slate-400 ml-0.5" />
+        </button>
+      </div>
+    );
+  }
 
   return (
-    <div className={`absolute top-20 right-6 z-20 w-80 rounded-lg p-4 shadow-xl backdrop-blur-md select-none border transition-colors ${
+    <div className={`absolute top-4 right-4 z-20 w-80 rounded-2xl p-4 shadow-2xl backdrop-blur-2xl select-none border transition-all animate-in fade-in slide-in-from-top-2 duration-250 ${
       isLight 
-        ? 'bg-white border-slate-200 text-slate-800' 
-        : 'bg-slate-950/95 border-slate-800 text-slate-100'
+        ? 'bg-white/95 border-slate-200/90 shadow-slate-300/40 text-slate-800' 
+        : 'bg-[#0a0f1d]/90 border-slate-800/90 shadow-black/70 text-slate-100'
     }`}>
-      {/* Title */}
-      <div className={`flex items-center justify-between border-b pb-2.5 mb-3 ${isLight ? 'border-slate-200' : 'border-slate-800'}`}>
+      {/* Header */}
+      <div className={`flex items-center justify-between border-b pb-2.5 mb-3 ${isLight ? 'border-slate-200/80' : 'border-slate-800/80'}`}>
         <div className="flex items-center gap-2">
-          <span className="w-2 h-2 rounded-full bg-red-600" />
+          <span className="w-2 h-2 rounded-full bg-red-600 animate-pulse" />
           <span className={`font-semibold text-xs tracking-tight ${isLight ? 'text-slate-900' : 'text-slate-100'}`}>
             Blast Radius Telemetry
           </span>
         </div>
-        <span className={`text-[10px] font-semibold px-2 py-0.5 rounded border ${
-          isLight 
-            ? 'bg-red-50 text-red-700 border-red-200' 
-            : 'bg-red-950/40 text-red-400 border-red-800/50'
-        }`}>
-          Active Cascade
-        </span>
+        <div className="flex items-center gap-1.5">
+          <span className={`text-[10px] font-semibold px-2 py-0.5 rounded border ${
+            isLight 
+              ? 'bg-red-50 text-red-700 border-red-200' 
+              : 'bg-red-950/40 text-red-400 border-red-800/50'
+          }`}>
+            Active Cascade
+          </span>
+          <button
+            onClick={() => setIsMinimized(true)}
+            title="Minimize Telemetry HUD"
+            className={`p-1 rounded-md transition-colors cursor-pointer ${
+              isLight ? 'text-slate-400 hover:text-slate-700 hover:bg-slate-100' : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800'
+            }`}
+          >
+            <ChevronUp className="w-3.5 h-3.5" />
+          </button>
+        </div>
       </div>
 
       {/* Grid of Key Metrics */}
       <div className="grid grid-cols-2 gap-2 mb-3">
-        <div className={`p-2.5 rounded-md border flex flex-col ${
-          isLight ? 'bg-white border-slate-200 shadow-xs' : 'bg-slate-900/60 border-slate-800'
+        <div className={`p-2.5 rounded-xl border flex flex-col ${
+          isLight ? 'bg-slate-50/70 border-slate-200 shadow-xs' : 'bg-slate-900/60 border-slate-800'
         }`}>
           <span className={`text-[11px] font-medium ${isLight ? 'text-slate-500' : 'text-slate-400'}`}>Affected Services</span>
           <span className={`text-xl font-bold font-mono mt-0.5 ${isLight ? 'text-slate-900' : 'text-slate-100'}`}>{affectedServicesCount}</span>
           <span className={`text-[10px] ${isLight ? 'text-slate-400' : 'text-slate-500'}`}>Across 42 repos</span>
         </div>
 
-        <div className={`p-2.5 rounded-md border flex flex-col ${
-          isLight ? 'bg-red-50/50 border-red-200' : 'bg-red-950/30 border-red-900/40'
+        <div className={`p-2.5 rounded-xl border flex flex-col ${
+          isLight ? 'bg-red-50/60 border-red-200' : 'bg-red-950/30 border-red-900/40'
         }`}>
           <span className={`text-[11px] font-semibold ${isLight ? 'text-red-700' : 'text-red-300'}`}>Critical Services</span>
           <span className="text-xl font-bold font-mono text-red-600 mt-0.5">{tier1Count}</span>
-          <span className={`text-[10px] ${isLight ? 'text-red-600/80' : 'text-red-400/80'}`}>Mission-Critical Services</span>
+          <span className={`text-[10px] ${isLight ? 'text-red-600/80' : 'text-red-400/80'}`}>Mission-Critical</span>
         </div>
 
-        <div className={`p-2.5 rounded-md border flex flex-col ${
-          isLight ? 'bg-white border-slate-200 shadow-xs' : 'bg-slate-900/60 border-slate-800'
+        <div className={`p-2.5 rounded-xl border flex flex-col ${
+          isLight ? 'bg-slate-50/70 border-slate-200 shadow-xs' : 'bg-slate-900/60 border-slate-800'
         }`}>
           <span className={`text-[11px] font-medium ${isLight ? 'text-slate-500' : 'text-slate-400'}`}>Propagation Paths</span>
           <span className={`text-xl font-bold font-mono mt-0.5 ${isLight ? 'text-amber-600' : 'text-amber-400'}`}>{propagationPathsCount}</span>
-          <span className={`text-[10px] ${isLight ? 'text-slate-400' : 'text-slate-500'}`}>Active dependency chains</span>
+          <span className={`text-[10px] ${isLight ? 'text-slate-400' : 'text-slate-500'}`}>Active flow paths</span>
         </div>
 
-        <div className={`p-2.5 rounded-md border flex flex-col ${
-          isLight ? 'bg-white border-slate-200 shadow-xs' : 'bg-slate-900/60 border-slate-800'
+        <div className={`p-2.5 rounded-xl border flex flex-col ${
+          isLight ? 'bg-slate-50/70 border-slate-200 shadow-xs' : 'bg-slate-900/60 border-slate-800'
         }`}>
           <span className={`text-[11px] font-medium ${isLight ? 'text-slate-500' : 'text-slate-400'}`}>Daily Flow Exposed</span>
           <span className="text-base font-bold font-mono text-red-600 mt-0.5">{financialExposure}</span>
@@ -83,10 +123,9 @@ export const BlastRadiusHUD: React.FC<BlastRadiusHUDProps> = ({
         </div>
       </div>
 
-      {/* F11 Impact Concentration Index Card */}
-      {/* Impact Concentration Card */}
-      <div className={`p-3 rounded-lg border mb-3 text-xs flex flex-col gap-2 ${
-        isLight ? 'bg-white border-slate-200 shadow-xs' : 'bg-slate-900/60 border-slate-800'
+      {/* Contagion Breadth Card */}
+      <div className={`p-3 rounded-xl border mb-3 text-xs flex flex-col gap-2 ${
+        isLight ? 'bg-slate-50/70 border-slate-200 shadow-xs' : 'bg-slate-900/60 border-slate-800'
       }`}>
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-1.5 font-semibold text-[11px]">
@@ -136,7 +175,7 @@ export const BlastRadiusHUD: React.FC<BlastRadiusHUDProps> = ({
       </div>
 
       {/* Contagion Summary */}
-      <div className={`p-2.5 rounded-md border text-xs leading-relaxed mb-3 ${
+      <div className={`p-2.5 rounded-xl border text-xs leading-relaxed mb-3 ${
         isLight ? 'bg-slate-50 border-slate-200 text-slate-700' : 'bg-slate-900/60 border-slate-800 text-slate-300'
       }`}>
         <div className="text-red-600 font-semibold mb-0.5 flex items-center gap-1">
@@ -150,7 +189,7 @@ export const BlastRadiusHUD: React.FC<BlastRadiusHUDProps> = ({
       <div className="flex flex-col gap-2">
         <button
           onClick={onViewPaths}
-          className={`w-full py-2 px-3 rounded-md text-xs font-semibold flex items-center justify-center gap-2 border transition-colors ${
+          className={`w-full py-2 px-3 rounded-xl text-xs font-semibold flex items-center justify-center gap-2 border transition-colors cursor-pointer ${
             isLight 
               ? 'bg-white hover:bg-slate-50 text-slate-800 border-slate-200 shadow-xs' 
               : 'bg-slate-900 hover:bg-slate-800 text-slate-200 border-slate-800'
@@ -163,7 +202,7 @@ export const BlastRadiusHUD: React.FC<BlastRadiusHUDProps> = ({
         {canMitigate && (
           <button
             onClick={onComputeMitigation}
-            className="w-full py-2 px-3 rounded-md text-xs font-medium flex items-center justify-center gap-2 transition-colors bg-blue-600 hover:bg-blue-700 text-white shadow-xs"
+            className="w-full py-2 px-3 rounded-xl text-xs font-semibold flex items-center justify-center gap-2 transition-all bg-[#2f2fe4] hover:bg-[#4343f8] text-white shadow-xs cursor-pointer"
           >
             <span>Plan Targeted Fix</span>
             <ArrowRight className="w-3.5 h-3.5" />

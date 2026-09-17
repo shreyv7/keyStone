@@ -24,7 +24,7 @@ export const TimelinePlayer: React.FC<TimelinePlayerProps> = ({
 }) => {
   const { isLight } = useTheme();
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
-  const [isMinimized, setIsMinimized] = useState<boolean>(false);
+  const [isMinimized, setIsMinimized] = useState<boolean>(true);
 
   // Auto-play animation (-90d -> 0d)
   useEffect(() => {
@@ -95,10 +95,10 @@ export const TimelinePlayer: React.FC<TimelinePlayerProps> = ({
 
   if (isMinimized) {
     return (
-      <div className="absolute bottom-5 left-1/2 -translate-x-1/2 z-20 select-none animate-in fade-in slide-in-from-bottom-2 duration-200">
+      <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-20 select-none animate-in fade-in slide-in-from-bottom-2 duration-200">
         <button
           onClick={() => setIsMinimized(false)}
-          className={`flex items-center gap-2.5 px-3.5 py-1.5 rounded-full border shadow-xl text-xs font-semibold backdrop-blur-xl transition-all hover:scale-105 cursor-pointer ${
+          className={`flex items-center gap-2.5 px-4 py-2 rounded-xl border shadow-xl text-xs font-semibold backdrop-blur-xl transition-all hover:scale-105 cursor-pointer ${
             isLight
               ? 'bg-white/95 border-slate-200 text-slate-800 shadow-slate-200/50'
               : 'bg-slate-900/95 border-slate-800 text-slate-200 shadow-black/60'
@@ -115,7 +115,7 @@ export const TimelinePlayer: React.FC<TimelinePlayerProps> = ({
   }
 
   return (
-    <div className="absolute bottom-5 left-1/2 -translate-x-1/2 z-20 w-[94%] max-w-xl select-none animate-in fade-in slide-in-from-bottom-3 duration-250">
+    <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-20 w-[94%] max-w-lg select-none animate-in fade-in slide-in-from-bottom-3 duration-250">
       <div className={`rounded-2xl border backdrop-blur-2xl shadow-2xl p-3 sm:p-3.5 transition-all ${
         isLight
           ? 'bg-white/95 border-slate-200/90 shadow-slate-300/40 text-slate-800'

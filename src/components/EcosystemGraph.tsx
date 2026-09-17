@@ -3,6 +3,7 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { EcosystemNode, EcosystemEdge, PropagationPath } from '../types';
 import { useTheme } from '../context/ThemeContext';
+import { ChevronUp, ChevronDown, Layers } from 'lucide-react';
 
 interface EcosystemGraphProps {
   nodes: EcosystemNode[];
@@ -52,6 +53,7 @@ export const EcosystemGraph: React.FC<EcosystemGraphProps> = ({
   isKeystoneFocused = false,
 }) => {
   const { isLight } = useTheme();
+  const [isStratumExpanded, setIsStratumExpanded] = useState<boolean>(false);
   const mountRef = useRef<HTMLDivElement>(null);
   const sceneRef = useRef<THREE.Scene | null>(null);
   const cameraRef = useRef<THREE.PerspectiveCamera | null>(null);
@@ -1121,57 +1123,64 @@ export const EcosystemGraph: React.FC<EcosystemGraphProps> = ({
     }`}>
       <div ref={mountRef} className="w-full h-full" />
 
-      {/* Floating 3D Stratum Layer Indicators & Active Cone Status on Left Edge */}
-      <div className={`absolute left-6 bottom-7 z-10 flex flex-col gap-1.5 select-none transition-opacity ${
-        isLight ? 'opacity-95' : 'opacity-90'
-      }`}>
-        {dependencyCone ? (
-          <div className={`mb-1 px-2.5 py-1 rounded-lg border text-[11px] font-medium flex items-center gap-2 shadow-sm ${
-            isLight 
-              ? 'bg-blue-50 border-blue-200 text-blue-900' 
-              : 'bg-blue-950/60 border-blue-800 text-blue-300'
-          }`}>
-            <span className="w-2 h-2 rounded-full bg-blue-500 animate-ping inline-block" />
-            <span>Impact Scope: {dependencyCone.allConeNodes.size} packages ({dependencyCone.coneEdges.size} connections)</span>
-          </div>
-        ) : (
-          <div className={`text-[10px] uppercase tracking-wider mb-1 flex items-center gap-1.5 ${
-            isLight ? 'text-slate-500 font-semibold' : 'text-slate-400'
-          }`}>
-            <span className="w-1.5 h-1.5 rounded-full bg-blue-500"></span>
-            Ecosystem Architecture
-          </div>
-        )}
+      {/* Sleek Collapsible Stratum Indicator at Bottom-Left */}
+      <div className="absolute left-4 bottom-4 z-10 select-none">
+        <div className={`rounded-xl border backdrop-blur-xl shadow-lg transition-all ${
+          isLight ? 'bg-white/95 border-slate-200/90 shadow-slate-200/50 text-slate-800' : 'bg-slate-900/90 border-slate-800/90 shadow-black/60 text-slate-200'
+        }`}>
+          {/* Always visible compact header button */}
+          <button
+            onClick={() => setIsStratumExpanded(prev => !prev)}
+            title={isStratumExpanded ? "Collapse architecture tiers" : "Expand architecture tiers"}
+            className="flex items-center gap-2 px-3 py-1.5 cursor-pointer text-xs font-medium hover:opacity-90 transition-opacity"
+          >
+            {dependencyCone ? (
+              <>
+                <span className="w-2 h-2 rounded-full bg-blue-500 animate-ping shrink-0" />
+                <span className="font-semibold text-blue-600 dark:text-blue-400 text-[11px]">
+                  Impact Scope: {dependencyCone.allConeNodes.size} packages ({dependencyCone.coneEdges.size} connections)
+                </span>
+              </>
+            ) : (
+              <>
+                <div className="flex items-center -space-x-1 shrink-0">
+                  <span className="w-2.5 h-2.5 rounded-full bg-indigo-500 border border-slate-900" />
+                  <span className="w-2.5 h-2.5 rounded-full bg-blue-500 border border-slate-900" />
+                  <span className="w-2.5 h-2.5 rounded-full bg-sky-500 border border-slate-900" />
+                  <span className="w-2.5 h-2.5 rounded-full bg-teal-500 border border-slate-900" />
+                  <span className="w-2.5 h-2.5 rounded-full bg-rose-500 border border-slate-900" />
+                </div>
+                <span className="text-[11px] text-slate-600 dark:text-slate-400 font-medium">5 Architecture Tiers</span>
+              </>
+            )}
+            <ChevronUp className={`w-3 h-3 text-slate-400 transition-transform duration-200 ${isStratumExpanded ? 'rotate-180' : ''}`} />
+          </button>
 
-        <div className={`flex items-center gap-2 text-xs transition-colors ${
-          depthFilter === 5 || depthFilter === 0 ? (isLight ? 'text-slate-800 font-semibold' : 'text-slate-200') : 'opacity-40'
-        }`}>
-          <span className="w-2.5 h-2.5 rounded bg-indigo-500 shadow-xs shadow-indigo-500/50"></span>
-          <span>Tier 1: Critical Services</span>
-        </div>
-        <div className={`flex items-center gap-2 text-xs transition-colors ${
-          depthFilter === 4 || depthFilter === 0 ? (isLight ? 'text-slate-800 font-semibold' : 'text-slate-200') : 'opacity-40'
-        }`}>
-          <span className="w-2.5 h-2.5 rounded bg-blue-500"></span>
-          <span>Tier 2: Business Applications</span>
-        </div>
-        <div className={`flex items-center gap-2 text-xs transition-colors ${
-          depthFilter === 3 || depthFilter === 0 ? (isLight ? 'text-slate-800 font-semibold' : 'text-slate-200') : 'opacity-40'
-        }`}>
-          <span className="w-2.5 h-2.5 rounded bg-sky-500"></span>
-          <span>Tier 3: Platform Microservices</span>
-        </div>
-        <div className={`flex items-center gap-2 text-xs transition-colors ${
-          depthFilter === 2 || depthFilter === 0 ? (isLight ? 'text-slate-800 font-semibold' : 'text-slate-200') : 'opacity-40'
-        }`}>
-          <span className="w-2.5 h-2.5 rounded bg-teal-500"></span>
-          <span>Tier 4: Shared Libraries</span>
-        </div>
-        <div className={`flex items-center gap-2 text-xs transition-colors ${
-          depthFilter === 1 || depthFilter === 0 ? (isLight ? 'text-slate-800 font-semibold' : 'text-slate-200') : 'opacity-40'
-        }`}>
-          <span className="w-2.5 h-2.5 rounded bg-rose-500 shadow-xs shadow-rose-500/50"></span>
-          <span>Tier 5: Open-Source Dependencies</span>
+          {/* Expanded Tier Details (Collapsible) */}
+          {isStratumExpanded && (
+            <div className="px-3 pb-2.5 pt-1.5 border-t border-slate-200/80 dark:border-slate-800/80 flex flex-col gap-1.5 animate-in fade-in slide-in-from-bottom-1">
+              <div className="flex items-center gap-2 text-[11px]">
+                <span className="w-2 h-2 rounded bg-indigo-500 shrink-0 shadow-xs shadow-indigo-500/50"></span>
+                <span>Tier 1: Critical Services</span>
+              </div>
+              <div className="flex items-center gap-2 text-[11px]">
+                <span className="w-2 h-2 rounded bg-blue-500 shrink-0"></span>
+                <span>Tier 2: Business Applications</span>
+              </div>
+              <div className="flex items-center gap-2 text-[11px]">
+                <span className="w-2 h-2 rounded bg-sky-500 shrink-0"></span>
+                <span>Tier 3: Platform Microservices</span>
+              </div>
+              <div className="flex items-center gap-2 text-[11px]">
+                <span className="w-2 h-2 rounded bg-teal-500 shrink-0"></span>
+                <span>Tier 4: Shared Libraries</span>
+              </div>
+              <div className="flex items-center gap-2 text-[11px]">
+                <span className="w-2 h-2 rounded bg-rose-500 shrink-0 shadow-xs shadow-rose-500/50"></span>
+                <span>Tier 5: Open-Source Dependencies</span>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>

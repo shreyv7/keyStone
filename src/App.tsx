@@ -435,7 +435,7 @@ export function App() {
 
             {/* Popularity Paradox Callout Banner */}
             {activeView === 'ecosystem' && showParadoxBanner && showStructuralSize && selectedNode && selectedNode.conventionalScore < 55 && selectedNode.systemicScore >= 80 && (
-              <div className={`absolute top-28 left-5 z-20 max-w-md p-3 rounded-xl border shadow-xl backdrop-blur-md flex items-start justify-between gap-3 animate-in fade-in slide-in-from-top-2 ${
+              <div className={`absolute top-16 left-4 z-20 max-w-md p-3 rounded-xl border shadow-xl backdrop-blur-md flex items-start justify-between gap-3 animate-in fade-in slide-in-from-top-2 ${
                 isLight ? 'bg-amber-50/95 border-amber-300 text-amber-950' : 'bg-amber-950/90 border-amber-800 text-amber-100'
               }`}>
                 <div className="flex items-start gap-2">
