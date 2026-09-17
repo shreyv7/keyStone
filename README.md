@@ -10,6 +10,7 @@
 
 [![Live Demo: Vercel](https://img.shields.io/badge/Live%20Demo-key--stone--alpha.vercel.app-black?logo=vercel&logoColor=white)](https://key-stone-alpha.vercel.app)
 [![Watch Demo: YouTube](https://img.shields.io/badge/Demo-YouTube%20Walkthrough-red?logo=youtube)](https://youtu.be/65S1EqlpmWg)
+[![Build Instructions: startup.md](https://img.shields.io/badge/Build%20Instructions-startup.md-informational?logo=markdown)](startup.md)
 [![Governing Standard: SemVer 2.0.0](https://img.shields.io/badge/SemVer-2.0.0-blue.svg)](https://semver.org/)
 [![PURL: RFC 3986](https://img.shields.io/badge/Identity-RFC%203986%20PURL-green.svg)](https://github.com/package-url/purl-spec)
 [![VEX: CycloneDX 1.6 / CSAF](https://img.shields.io/badge/VEX-CycloneDX%201.6%20%7C%20CSAF-orange.svg)](https://cyclonedx.org/)
@@ -29,6 +30,8 @@
 >
 > **Our Proposed Solution:**  
 > **KEYSTONE** was engineered from first principles to fulfill this exact mandate. Rather than inspecting manifest files in isolation, KEYSTONE unifies an organization's cross-repository estate into a **directed property graph $G=(V, E)$**, evaluates pre-disclosure structural fragility, simulates step-by-step contagion cascades to quantify blast radius across business applications, and solves a **unit-capacity minimum vertex-cut** to prescribe surgical, non-breaking remediations with mathematically visible reasoning.
+>
+> 🛠️ **Build & Execution Instructions:** Complete prerequisites, local setup, build commands, and execution instructions are documented in [`startup.md`](startup.md).
 
 ---
 
@@ -36,20 +39,21 @@
 
 1. [Executive Summary: Market Landscape & Why KEYSTONE Stands Out](#-executive-summary-market-landscape--why-keystone-stands-out)
 2. [Video Walkthrough & Live Demo](#-video-walkthrough--live-demo)
-3. [Universal Invariants & Epistemic Laws](#-universal-invariants--epistemic-laws)
-4. [The Multi-Stage Threat Horizon](#-the-multi-stage-threat-horizon)
-5. [Four-Stage Architectural Pipeline](#-four-stage-architectural-pipeline)
+3. [Build & Startup Instructions (`startup.md`)](#-build--startup-instructions)
+4. [Universal Invariants & Epistemic Laws](#-universal-invariants--epistemic-laws)
+5. [The Multi-Stage Threat Horizon](#-the-multi-stage-threat-horizon)
+6. [Four-Stage Architectural Pipeline](#-four-stage-architectural-pipeline)
    - [Stage 0: Feasible Data Ingestion & Source Routing](#stage-0-feasible-data-ingestion--source-routing)
    - [Stage 1: Structural Danger Engine & Autonomous Evidence Synthesis](#stage-1-structural-danger-engine--autonomous-evidence-synthesis)
    - [Stage 2: Operational Realized Threat Gating & Incident Triage](#stage-2-operational-realized-threat-gating--incident-triage)
    - [Stage 3: Constraint-Guided Remediation & Phased Rollout Engine](#stage-3-constraint-guided-remediation--phased-rollout-engine)
-6. [Enterprise Backend Microservices Architecture](#-enterprise-backend-microservices-architecture)
-7. [Data Architecture & Storage Topology](#-data-architecture--storage-topology)
-8. [API Contracts & CI/CD Gate](#-api-contracts--cicd-gate)
-9. [Interactive Frontend & 3D Topology HUD](#-interactive-frontend--3d-topology-hud)
-10. [Core Platform Capabilities & Modules](#-core-platform-capabilities--modules)
-11. [Observability, Reliability & SLAs](#-observability-reliability--slas)
-12. [Governing Standards & References](#-governing-standards--references)
+7. [Enterprise Backend Microservices Architecture](#-enterprise-backend-microservices-architecture)
+8. [Data Architecture & Storage Topology](#-data-architecture--storage-topology)
+9. [API Contracts & CI/CD Gate](#-api-contracts--cicd-gate)
+10. [Interactive Frontend & 3D Topology HUD](#-interactive-frontend--3d-topology-hud)
+11. [Core Platform Capabilities & Modules](#-core-platform-capabilities--modules)
+12. [Observability, Reliability & SLAs](#-observability-reliability--slas)
+13. [Governing Standards & References](#-governing-standards--references)
 
 ---
 
@@ -102,7 +106,30 @@ Experience the KEYSTONE platform in action — including the real-time 3D WebGL 
 </div>
 
 > 📺 **Watch the Full Demo on YouTube:** [https://youtu.be/65S1EqlpmWg](https://youtu.be/65S1EqlpmWg)  
-> 🌐 **Interactive Live Deployment:** [https://key-stone-alpha.vercel.app](https://key-stone-alpha.vercel.app)
+> 🌐 **Interactive Live Deployment:** [https://key-stone-alpha.vercel.app](https://key-stone-alpha.vercel.app)  
+> 🛠️ **Build Instructions:** [`startup.md`](startup.md)
+
+---
+
+## 🛠️ Build & Startup Instructions
+
+All local development, prerequisite requirements, dependency installation, and build instructions are documented in:
+
+👉 **[`startup.md`](startup.md)**
+
+### Quick Command Reference
+```bash
+# 1. Install dependencies
+npm install
+
+# 2. Start local development server (with hot reload)
+npm run dev
+
+# 3. Build optimized production distribution
+npm run build
+```
+
+> 📖 *For complete environment variable configuration (`.env.example`), Node.js/browser prerequisites, and troubleshooting, consult the comprehensive guide in [`startup.md`](startup.md).*
 
 ---
 
