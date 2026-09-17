@@ -11,6 +11,7 @@ export interface BlastEvent {
 interface InteractiveTopologyCanvasProps {
   onBlast?: (blast: BlastEvent) => void;
   theme?: 'dark' | 'light';
+  embedded?: boolean;
 }
 
 interface GraphNode {
@@ -75,7 +76,8 @@ const DEPENDENCY_NAMES = [
 
 export const InteractiveTopologyCanvas: React.FC<InteractiveTopologyCanvasProps> = ({
   onBlast,
-  theme = 'dark'
+  theme = 'dark',
+  embedded = false
 }) => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const [hudReceipt, setHudReceipt] = useState<{
@@ -176,8 +178,16 @@ export const InteractiveTopologyCanvas: React.FC<InteractiveTopologyCanvasProps>
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    let width = (canvas.width = window.innerWidth);
-    let height = (canvas.height = window.innerHeight);
+    const measureCanvas = () => {
+      const bounds = canvas.parentElement?.getBoundingClientRect();
+      return {
+        width: Math.max(1, Math.floor(bounds?.width ?? window.innerWidth)),
+        height: Math.max(1, Math.floor(bounds?.height ?? window.innerHeight))
+      };
+    };
+    const initialSize = measureCanvas();
+    let width = canvas.width = initialSize.width;
+    let height = canvas.height = initialSize.height;
 
     // Initial setup of dense, thick nodes ONLY ONCE on mount
     const count = Math.min(85, Math.max(50, Math.floor((width * height) / 14000)));
@@ -233,14 +243,16 @@ export const InteractiveTopologyCanvas: React.FC<InteractiveTopologyCanvasProps>
 
     const handleResize = () => {
       if (!canvas) return;
-      width = canvas.width = window.innerWidth;
-      height = canvas.height = window.innerHeight;
+      const nextSize = measureCanvas();
+      width = canvas.width = nextSize.width;
+      height = canvas.height = nextSize.height;
       // Do NOT regenerate nodes on resize, just wrap existing ones
     };
 
     const handleMouseMove = (e: MouseEvent) => {
-      mouseRef.current.x = e.clientX;
-      mouseRef.current.y = e.clientY;
+      const bounds = canvas.getBoundingClientRect();
+      mouseRef.current.x = e.clientX - bounds.left;
+      mouseRef.current.y = e.clientY - bounds.top;
     };
 
     const handleMouseLeave = () => {
@@ -248,9 +260,12 @@ export const InteractiveTopologyCanvas: React.FC<InteractiveTopologyCanvasProps>
       mouseRef.current.y = -1000;
     };
 
-    window.addEventListener('resize', handleResize);
-    window.addEventListener('mousemove', handleMouseMove, { passive: true });
-    document.addEventListener('mouseleave', handleMouseLeave);
+    const resizeObserver = new ResizeObserver(handleResize);
+    resizeObserver.observe(canvas.parentElement ?? canvas);
+    if (!embedded) {
+      window.addEventListener('mousemove', handleMouseMove, { passive: true });
+      document.addEventListener('mouseleave', handleMouseLeave);
+    }
 
     let animFrameId: number;
 
@@ -430,12 +445,14 @@ export const InteractiveTopologyCanvas: React.FC<InteractiveTopologyCanvasProps>
     animFrameId = requestAnimationFrame(render);
 
     return () => {
-      window.removeEventListener('resize', handleResize);
-      window.removeEventListener('mousemove', handleMouseMove);
-      document.removeEventListener('mouseleave', handleMouseLeave);
+      resizeObserver.disconnect();
+      if (!embedded) {
+        window.removeEventListener('mousemove', handleMouseMove);
+        document.removeEventListener('mouseleave', handleMouseLeave);
+      }
       cancelAnimationFrame(animFrameId);
     };
-  }, []); // Run ONCE on mount! Never re-initializes on mouse events
+  }, [embedded, theme]);
 
   useEffect(() => {
     if (!hudReceipt) return;
@@ -446,11 +463,11 @@ export const InteractiveTopologyCanvas: React.FC<InteractiveTopologyCanvasProps>
   }, [hudReceipt]);
 
   return (
-    <div className="fixed inset-0 pointer-events-auto z-0 overflow-hidden select-none bg-[#080616]">
+    <div className={`${embedded ? 'absolute pointer-events-none' : 'fixed pointer-events-auto'} inset-0 z-0 overflow-hidden select-none bg-[#080616]`}>
       <canvas
         ref={canvasRef}
-        onClick={handleClick}
-        className="w-full h-full cursor-pointer bg-[#080616]"
+        onClick={embedded ? undefined : handleClick}
+        className={`w-full h-full bg-[#080616] ${embedded ? '' : 'cursor-pointer'}`}
       />
 
       {hudReceipt && (

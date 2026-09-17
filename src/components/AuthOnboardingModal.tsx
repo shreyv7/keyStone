@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   ShieldCheck, 
   ArrowRight, 
@@ -29,6 +29,7 @@ import {
 } from 'lucide-react';
 import { UserProfile, RoleLens, OnboardingConfig } from '../types';
 import { useTheme } from '../context/ThemeContext';
+import { InteractiveTopologyCanvas } from './InteractiveTopologyCanvas';
 
 interface AuthOnboardingModalProps {
   initialMode?: 'signin' | 'onboard';
@@ -70,153 +71,6 @@ export const AuthOnboardingModal: React.FC<AuthOnboardingModalProps> = ({
   const [scanProgress, setScanProgress] = useState<number>(0);
   const [scanPhaseIndex, setScanPhaseIndex] = useState<number>(0);
   const [isScanDone, setIsScanDone] = useState<boolean>(false);
-
-  // Canvas ref for animated mini graph
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-
-  // Animated Background Mini-Graph for Left Panel
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
-
-    let animationFrameId: number;
-    let width = (canvas.width = canvas.parentElement?.clientWidth || 500);
-    let height = (canvas.height = canvas.parentElement?.clientHeight || 650);
-
-    const handleResize = () => {
-      if (!canvas || !canvas.parentElement) return;
-      width = canvas.width = canvas.parentElement.clientWidth;
-      height = canvas.height = canvas.parentElement.clientHeight;
-    };
-    window.addEventListener('resize', handleResize);
-
-    // Nodes for topological graph
-    const nodes: Array<{
-      x: number;
-      y: number;
-      vx: number;
-      vy: number;
-      radius: number;
-      color: string;
-      label: string;
-      isKeystone?: boolean;
-    }> = [
-      { x: width * 0.5, y: height * 0.52, vx: 0.1, vy: 0.08, radius: 14, color: '#ef4444', label: 'snakeyaml (Keystone)', isKeystone: true },
-      { x: width * 0.28, y: height * 0.35, vx: -0.15, vy: 0.1, radius: 7, color: '#38bdf8', label: 'jackson-databind' },
-      { x: width * 0.72, y: height * 0.38, vx: 0.12, vy: -0.1, radius: 8, color: '#06b6d4', label: 'spring-core' },
-      { x: width * 0.22, y: height * 0.65, vx: -0.08, vy: -0.12, radius: 9, color: '#10b981', label: 'Auth Svc (Tier-1)' },
-      { x: width * 0.78, y: height * 0.68, vx: 0.1, vy: 0.15, radius: 10, color: '#10b981', label: 'Payment Gateway' },
-      { x: width * 0.5, y: height * 0.25, vx: 0.05, vy: -0.08, radius: 6, color: '#6366f1', label: 'commons-lang3' },
-      { x: width * 0.45, y: height * 0.8, vx: -0.1, vy: 0.05, radius: 9, color: '#10b981', label: 'Order Processing' },
-      { x: width * 0.65, y: height * 0.2, vx: -0.05, vy: 0.1, radius: 5, color: '#94a3b8', label: 'log4j-api' },
-      { x: width * 0.35, y: height * 0.18, vx: 0.08, vy: -0.05, radius: 5, color: '#94a3b8', label: 'slf4j-api' },
-    ];
-
-    const links = [
-      [0, 1], [0, 2], [0, 3], [0, 4], [0, 6],
-      [1, 5], [2, 7], [1, 8], [3, 6], [4, 6]
-    ];
-
-    let pulse = 0;
-
-    const render = () => {
-      pulse += 0.04;
-      ctx.clearRect(0, 0, width, height);
-
-      // Draw subtle grid
-      ctx.strokeStyle = 'rgba(255, 255, 255, 0.03)';
-      ctx.lineWidth = 1;
-      const gridSize = 36;
-      for (let x = 0; x < width; x += gridSize) {
-        ctx.beginPath();
-        ctx.moveTo(x, 0);
-        ctx.lineTo(x, height);
-        ctx.stroke();
-      }
-      for (let y = 0; y < height; y += gridSize) {
-        ctx.beginPath();
-        ctx.moveTo(0, y);
-        ctx.lineTo(width, y);
-        ctx.stroke();
-      }
-
-      // Update node positions with gentle floating
-      nodes.forEach(node => {
-        node.x += node.vx;
-        node.y += node.vy;
-        if (node.x < 40 || node.x > width - 40) node.vx *= -1;
-        if (node.y < 40 || node.y > height - 40) node.vy *= -1;
-      });
-
-      // Draw edges with flow packets
-      links.forEach(([i, j]) => {
-        const n1 = nodes[i];
-        const n2 = nodes[j];
-        if (!n1 || !n2) return;
-
-        const isKeystoneLink = n1.isKeystone || n2.isKeystone;
-
-        ctx.beginPath();
-        ctx.moveTo(n1.x, n1.y);
-        ctx.lineTo(n2.x, n2.y);
-        ctx.strokeStyle = isKeystoneLink 
-          ? 'rgba(239, 68, 68, 0.28)' 
-          : 'rgba(56, 189, 248, 0.16)';
-        ctx.lineWidth = isKeystoneLink ? 2 : 1;
-        ctx.stroke();
-
-        // Flow particle
-        const t = (Math.sin(pulse + i * 0.7) + 1) / 2;
-        const px = n1.x + (n2.x - n1.x) * t;
-        const py = n1.y + (n2.y - n1.y) * t;
-        ctx.beginPath();
-        ctx.arc(px, py, isKeystoneLink ? 2.5 : 1.5, 0, Math.PI * 2);
-        ctx.fillStyle = isKeystoneLink ? '#ef4444' : '#38bdf8';
-        ctx.shadowColor = isKeystoneLink ? '#ef4444' : '#38bdf8';
-        ctx.shadowBlur = 8;
-        ctx.fill();
-        ctx.shadowBlur = 0;
-      });
-
-      // Draw nodes
-      nodes.forEach(node => {
-        if (node.isKeystone) {
-          // Outer pulse rings
-          const ringRadius = node.radius + 8 + Math.sin(pulse) * 4;
-          ctx.beginPath();
-          ctx.arc(node.x, node.y, ringRadius, 0, Math.PI * 2);
-          ctx.strokeStyle = `rgba(239, 68, 68, ${0.4 - Math.sin(pulse) * 0.15})`;
-          ctx.lineWidth = 1.5;
-          ctx.stroke();
-        }
-
-        ctx.beginPath();
-        ctx.arc(node.x, node.y, node.radius, 0, Math.PI * 2);
-        ctx.fillStyle = node.color;
-        ctx.shadowColor = node.color;
-        ctx.shadowBlur = node.isKeystone ? 18 : 8;
-        ctx.fill();
-        ctx.shadowBlur = 0;
-
-        // Label
-        ctx.fillStyle = 'rgba(255, 255, 255, 0.75)';
-        ctx.font = '10px JetBrains Mono, monospace';
-        ctx.textAlign = 'center';
-        ctx.fillText(node.label, node.x, node.y + node.radius + 13);
-      });
-
-      animationFrameId = requestAnimationFrame(render);
-    };
-
-    render();
-
-    return () => {
-      window.removeEventListener('resize', handleResize);
-      cancelAnimationFrame(animationFrameId);
-    };
-  }, []);
 
   // Step 4 Scanning Simulation
   useEffect(() => {
@@ -295,76 +149,22 @@ export const AuthOnboardingModal: React.FC<AuthOnboardingModalProps> = ({
       isLight ? 'bg-white text-slate-900' : 'bg-slate-900 text-slate-100'
     }`}>
       {/* ========================================================================= */}
-      {/* LEFT PANEL: Rich Showcase, Live Topology Animation & Enterprise Proof     */}
+      {/* LEFT PANEL: Landing-page topology background */}
       {/* ========================================================================= */}
-      <div className="relative w-full lg:w-5/12 xl:w-5/12 bg-gradient-to-br from-slate-950 via-[#070d1a] to-[#0b162b] text-white p-8 lg:p-12 xl:p-16 flex flex-col justify-between overflow-hidden border-b lg:border-b-0 lg:border-r border-slate-800 shrink-0">
-          {/* Animated Canvas Layer */}
-          <div className="absolute inset-0 pointer-events-none opacity-60">
-            <canvas ref={canvasRef} className="w-full h-full" />
+      <div className="relative w-full lg:w-5/12 xl:w-5/12 bg-gradient-to-br from-slate-950 via-[#070d1a] to-[#0b162b] overflow-hidden border-b lg:border-b-0 lg:border-r border-slate-800 shrink-0">
+          {/* Reuse the landing page's animated dependency topology. */}
+          <InteractiveTopologyCanvas theme="dark" embedded />
+          <div className="absolute inset-0 pointer-events-none bg-gradient-to-b from-[#080616]/75 via-[#080616]/45 to-[#080616]/85" />
+
+          <div className="relative z-10 p-8 lg:p-12 xl:p-16">
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight text-white leading-[1.12]">
+              Map every dependency. <br />
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-sky-300 to-indigo-300">
+                Neutralize every chokepoint.
+              </span>
+            </h1>
           </div>
 
-          {/* Radial Glow Overlay */}
-          <div className="absolute top-0 right-0 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none" />
-          <div className="absolute bottom-0 left-0 w-80 h-80 bg-red-500/10 rounded-full blur-3xl pointer-events-none" />
-
-          {/* Hero Value Statement */}
-          <div className="relative z-10 pt-4">
-            <div className="space-y-4">
-              <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight text-white leading-[1.12]">
-                Map every dependency. <br />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-sky-300 to-indigo-300">
-                  Neutralize every chokepoint.
-                </span>
-              </h1>
-              <p className="text-sm sm:text-base text-slate-300 font-medium leading-relaxed max-w-lg">
-                Gain architectural visibility across your entire multi-repo estate. Identify single points of failure, simulate cascade contagion, and orchestrate surgical fixes with zero breaking changes.
-              </p>
-            </div>
-          </div>
-
-          {/* Core Architectural Highlights */}
-          <div className="relative z-10 my-8 space-y-4">
-            <div className="flex items-start gap-3">
-              <div className="w-7 h-7 rounded-full bg-cyan-950/80 border border-cyan-800/60 flex items-center justify-center shrink-0 mt-0.5 text-cyan-400">
-                <GitBranch className="w-3.5 h-3.5" />
-              </div>
-              <div>
-                <h4 className="text-xs font-bold text-slate-100">Cross-Repository Mapping</h4>
-                <p className="text-[11px] text-slate-400">Unify all repositories into a clear dependency network.</p>
-              </div>
-            </div>
-
-            <div className="flex items-start gap-3">
-              <div className="w-7 h-7 rounded-full bg-red-950/80 border border-red-800/60 flex items-center justify-center shrink-0 mt-0.5 text-red-400">
-                <ShieldAlert className="w-3.5 h-3.5" />
-              </div>
-              <div>
-                <h4 className="text-xs font-bold text-slate-100">Single Point of Failure Detection</h4>
-                <p className="text-[11px] text-slate-400">Isolate critical chokepoints and unmaintained dependencies early.</p>
-              </div>
-            </div>
-
-            <div className="flex items-start gap-3">
-              <div className="w-7 h-7 rounded-full bg-emerald-950/80 border border-emerald-800/60 flex items-center justify-center shrink-0 mt-0.5 text-emerald-400">
-                <CheckCircle2 className="w-3.5 h-3.5" />
-              </div>
-              <div>
-                <h4 className="text-xs font-bold text-slate-100">Targeted Remediation</h4>
-                <p className="text-[11px] text-slate-400">Apply one coordinated fix that protects all services without breaking changes.</p>
-              </div>
-            </div>
-          </div>
-
-          {/* Compliance Badges Footer */}
-          <div className="relative z-10 pt-6 border-t border-slate-800/80">
-            <div className="flex items-center gap-3 text-[10px] text-slate-500 uppercase tracking-widest font-mono">
-              <span>SOC2 Type II</span>
-              <span>•</span>
-              <span>ISO 27001</span>
-              <span>•</span>
-              <span>CycloneDX & SPDX</span>
-            </div>
-          </div>
         </div>
 
         {/* ========================================================================= */}
