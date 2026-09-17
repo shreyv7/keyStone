@@ -10,6 +10,9 @@ Keystone maps your entire dependency ecosystem as an interactive 3D graph, surfa
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-v4-06B6D4?logo=tailwindcss&logoColor=white)](https://tailwindcss.com)
 [![Vite](https://img.shields.io/badge/Vite-6-646CFF?logo=vite&logoColor=white)](https://vitejs.dev)
 [![Google Gemini](https://img.shields.io/badge/Gemini_AI-NLQ_Assistant-4285F4?logo=google&logoColor=white)](https://ai.google.dev)
+[![Live Prototype](https://img.shields.io/badge/🚀_Live_Prototype-key--stone--alpha.vercel.app-2f2fe4?style=for-the-badge)](https://key-stone-alpha.vercel.app)
+
+> **[🚀 Try the Live Prototype →](https://key-stone-alpha.vercel.app)**
 
 ---
 

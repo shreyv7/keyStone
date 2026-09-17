@@ -150,6 +150,15 @@ export const LandingPage: React.FC<LandingPageProps> = ({
             <ArrowRight className="w-4 h-4 text-white group-hover:translate-x-0.5 transition-transform" />
           </button>
 
+          <a
+            href="https://key-stone-alpha.vercel.app"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="w-full sm:w-auto px-6 py-3 rounded-full text-sm font-heading font-bold text-white border border-[#2f2fe4] hover:bg-[#2f2fe4]/20 shadow-[0_0_12px_rgba(47,47,228,0.25)] transition-all flex items-center justify-center gap-2 cursor-pointer group"
+          >
+            <span>🚀 Try Live Prototype</span>
+            <ArrowRight className="w-4 h-4 text-blue-300 group-hover:translate-x-0.5 transition-transform" />
+          </a>
 
           <button
             onClick={() => scrollToSection("process")}
@@ -159,6 +168,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
             <ChevronDown className="w-3.5 h-3.5" />
           </button>
         </div>
+
 
         {/* Minimalist Micro-Metrics Bar */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 w-full max-w-3xl pt-8 border-t border-[#1a1953] text-left">
