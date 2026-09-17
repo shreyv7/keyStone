@@ -82,7 +82,6 @@ export function App() {
   const [showDominatorMode, setShowDominatorMode] = useState<boolean>(false);
   const [scopeFilter, setScopeFilter] = useState<'all' | 'production' | 'dev'>('all');
   const [channelFilter, setChannelFilter] = useState<'all' | 'runtime' | 'build'>('all');
-  const [showParadoxBanner, setShowParadoxBanner] = useState<boolean>(true);
   const [autoRotate, setAutoRotate] = useState<boolean>(false);
 
   // Simulation State
@@ -105,7 +104,9 @@ export function App() {
   const [isPRModalOpen, setIsPRModalOpen] = useState<boolean>(false);
   const [isSBOMModalOpen, setIsSBOMModalOpen] = useState<boolean>(false);
   const [isCircuitBreakerFrozen, setIsCircuitBreakerFrozen] = useState<boolean>(false);
-  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState<boolean>(false);
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState<boolean>(() =>
+    typeof window !== 'undefined' && window.matchMedia('(max-width: 767px)').matches
+  );
 
   // Resolve selected node object
   const selectedNode = useMemo(
@@ -340,7 +341,7 @@ export function App() {
 
   return (
     <div className={`relative w-screen h-screen overflow-hidden flex flex-col transition-colors duration-200 select-none ${
-      isLight ? 'bg-white text-slate-900' : 'bg-[#080616] text-slate-100'
+      isLight ? 'bg-white text-slate-900' : 'bg-[#07090e] text-slate-100'
     }`}>
       {/* Top Application Bar */}
       <TopBar
@@ -386,7 +387,9 @@ export function App() {
         <main className="relative flex-1 w-full h-full overflow-hidden">
           {/* 3D WebGL Ecosystem Graph Stage Wrapper - Dynamically compresses and shifts to left on node selection */}
           <div className={`h-full relative transition-all duration-300 ease-out overflow-hidden ${
-            selectedNode && activeView === 'ecosystem' && !isMitigationPanelOpen
+            isLight ? 'bg-white' : 'bg-[#07090e]'
+          } ${
+            selectedNode && activeView === 'ecosystem' && !isMitigationPanelOpen && simulationPhase === 'idle'
               ? 'mr-0 sm:mr-96 lg:mr-[420px]'
               : 'mr-0'
           }`}>
@@ -409,6 +412,14 @@ export function App() {
               showDominatorMode={showDominatorMode}
               scopeFilter={scopeFilter}
               channelFilter={channelFilter}
+              bottomOverlay={
+                activeView === 'ecosystem' && !isMitigationPanelOpen ? (
+                  <TimelinePlayer
+                    timeTravelDay={timeTravelDay}
+                    onChangeTimeTravel={setTimeTravelDay}
+                  />
+                ) : null
+              }
             />
             {/* Graph Controls Overlay */}
             {activeView === 'ecosystem' && (
@@ -433,38 +444,6 @@ export function App() {
               />
             )}
 
-            {/* Popularity Paradox Callout Banner */}
-            {activeView === 'ecosystem' && showParadoxBanner && showStructuralSize && selectedNode && selectedNode.conventionalScore < 55 && selectedNode.systemicScore >= 80 && (
-              <div className={`absolute top-16 left-4 z-20 max-w-md p-3 rounded-xl border shadow-xl backdrop-blur-md flex items-start justify-between gap-3 animate-in fade-in slide-in-from-top-2 ${
-                isLight ? 'bg-amber-50/95 border-amber-300 text-amber-950' : 'bg-amber-950/90 border-amber-800 text-amber-100'
-              }`}>
-                <div className="flex items-start gap-2">
-                  <span className="text-base leading-none mt-0.5">⚡</span>
-                  <div>
-                    <div className="flex items-center gap-1.5 font-semibold text-xs">
-                      <span>Popularity Paradox Detected</span>
-                      <span className={`text-[9px] font-mono px-1.5 py-0.5 rounded border uppercase ${
-                        isLight ? 'bg-white text-amber-800 border-amber-300' : 'bg-black text-amber-300 border-amber-700'
-                      }`}>
-                        Metric Divergence
-                      </span>
-                    </div>
-                    <div className="text-[11px] mt-1 leading-snug">
-                      <strong>OpenSSF Score:</strong> {(selectedNode.conventionalScore / 100).toFixed(2)} (Appears Safe) ↔ <strong>Structural Position:</strong> Top 1% Articulation Chokepoint ({selectedNode.systemicScore}/100).
-                    </div>
-                    <div className={`text-[10px] mt-0.5 opacity-80 ${isLight ? 'text-amber-800' : 'text-amber-200'}`}>
-                      Single-point chokepoint masked by isolated vanity scores.
-                    </div>
-                  </div>
-                </div>
-                <button
-                  onClick={() => setShowParadoxBanner(false)}
-                  className="text-xs px-1 rounded text-slate-400 hover:text-slate-600 dark:hover:text-slate-200"
-                >
-                  ✕
-                </button>
-              </div>
-            )}
 
             {/* Dominator Chokepoints Leaderboard Overlay */}
             {showDominatorMode && activeView === 'ecosystem' && (
@@ -507,6 +486,7 @@ export function App() {
               isSimulating={simulationPhase === 'simulating'}
               onViewPaths={() => setIsPropagationPanelOpen(true)}
               onComputeMitigation={handleComputeMitigation}
+              onResetSimulation={handleResetSimulation}
               canMitigate={simulationPhase === 'active_compromise'}
             />
           )}
@@ -534,14 +514,6 @@ export function App() {
               onClose={() => setIsMitigationPanelOpen(false)}
               onOpenPRModal={() => setIsPRModalOpen(true)}
               onResetSimulation={handleResetSimulation}
-            />
-          )}
-
-          {/* Floating Timeline Forensics Player Dock */}
-          {activeView === 'ecosystem' && !isMitigationPanelOpen && (
-            <TimelinePlayer
-              timeTravelDay={timeTravelDay}
-              onChangeTimeTravel={setTimeTravelDay}
             />
           )}
 

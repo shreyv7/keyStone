@@ -39,6 +39,8 @@ import { useTheme } from '../context/ThemeContext';
 import { Button } from './ui/Button';
 import { Card } from './ui/Card';
 import { Badge } from './ui/Badge';
+import { PageHeader } from './ui/PageHeader';
+import { MetricStrip } from './ui/MetricStrip';
 
 export interface ConnectorsPageProps {
   onOpenSBOMModal?: () => void;
@@ -481,8 +483,8 @@ const INITIAL_CONNECTORS: ConnectorItem[] = [
         label: 'Build Gate Enforcement Policy',
         placeholder: '',
         type: 'select',
-        options: ['Block PR merge on SIFI surge (Strict)', 'Post PR comment & SARIF report only', 'Auto-dispatch branch severance recommendation'],
-        defaultValue: 'Block PR merge on SIFI surge (Strict)'
+        options: ['Block merge when dependency impact surges', 'Post PR comment and SARIF report only', 'Recommend a protected dependency update'],
+        defaultValue: 'Block merge when dependency impact surges'
       }
     ],
     details: { 
@@ -586,7 +588,7 @@ const INITIAL_CONNECTORS: ConnectorItem[] = [
   },
   {
     id: 'pagerduty',
-    name: 'PagerDuty SIFI Escalation',
+    name: 'PagerDuty Risk Escalation',
     category: 'alerts',
     categoryLabel: 'Incident & ChatOps',
     description: 'Escalate on-call alerts for critical sink paths',
@@ -911,7 +913,7 @@ export const ConnectorsPage: React.FC<ConnectorsPageProps> = ({ onOpenSBOMModal 
             ...item,
             status: 'connected',
             lastSync: 'Just now',
-            scope: item.scope || (wizardScope === 'all' ? '42 Repos' : 'Tier-1 Core'),
+            scope: item.scope || (wizardScope === 'all' ? '42 repositories' : 'Critical services'),
             webhookHealth: '100% Health',
             details: {
               ...item.details,
@@ -989,7 +991,7 @@ export const ConnectorsPage: React.FC<ConnectorsPageProps> = ({ onOpenSBOMModal 
   };
 
   return (
-    <div className="w-full h-full overflow-y-auto px-6 py-6 select-text ks-bg-app">
+    <div className="w-full h-full overflow-y-auto px-4 py-5 sm:px-6 select-text ks-bg-app">
       <div className="max-w-7xl mx-auto flex flex-col gap-5">
         
         {/* Toast Notification */}
@@ -1000,106 +1002,44 @@ export const ConnectorsPage: React.FC<ConnectorsPageProps> = ({ onOpenSBOMModal 
           </div>
         )}
 
-        {/* Top Header Banner - Clean & Airy */}
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 pb-6 border-b border-slate-200/80 dark:border-slate-800">
-          <div>
-            <h1 className="text-2xl lg:text-3xl font-bold tracking-tight text-slate-900 dark:text-white">Connectors & Integrations</h1>
-            <p className="text-sm mt-1.5 max-w-3xl leading-relaxed text-slate-600 dark:text-slate-300">
-              Manage integrations for source control, package registries, CI/CD pipelines, and notifications.
-            </p>
-          </div>
-
-          <div className="flex items-center gap-2.5 shrink-0 flex-wrap">
-            {onOpenSBOMModal && (
+        <PageHeader
+          title="Connectors"
+          description="Manage the sources Keystone monitors and quickly resolve connections that need attention."
+          primaryAction={
+            <button onClick={() => setIsAddModalOpen(true)} className="ks-btn ks-btn-primary ks-btn-md">
+              <Plus className="w-4 h-4" />
+              <span>Add connector</span>
+            </button>
+          }
+          secondaryActions={onOpenSBOMModal ? (
               <button
                 onClick={onOpenSBOMModal}
-                className={`flex items-center gap-2 px-3.5 py-2 rounded-lg text-xs font-medium border transition-all cursor-pointer select-none shadow-xs ${
-                  isLight
-                    ? 'bg-white hover:bg-slate-50 border-slate-200 text-slate-800'
-                    : 'bg-slate-900 hover:bg-slate-800 border-slate-700 text-slate-200'
-                }`}
+                className="ks-btn ks-btn-secondary ks-btn-md"
                 title="Connect Repository / Import Dependencies"
               >
-                <UploadCloud className="w-4 h-4 text-blue-600 dark:text-blue-400" />
-                <span>Import Dependency Data</span>
+                <UploadCloud className="w-4 h-4" />
+                <span>Import data</span>
               </button>
-            )}
+            ) : undefined}
+        />
 
-            <button
-              onClick={() => setIsAddModalOpen(true)}
-              className="px-4 py-2 rounded-lg text-xs font-medium text-white bg-blue-600 hover:bg-blue-700 flex items-center gap-1.5 cursor-pointer select-none shadow-xs transition-colors"
-            >
-              <Plus className="w-4 h-4" />
-              <span>Add Connector</span>
-            </button>
-          </div>
-        </div>
+        <MetricStrip items={[
+          { label: 'Connected sources', value: `${connectedCount} of ${connectors.length}`, detail: 'All connected sources are healthy', tone: 'healthy' },
+          { label: 'Repositories monitored', value: '42', detail: 'Production scope', tone: 'info' },
+          { label: 'Next sync', value: '12 minutes', detail: 'No failed deliveries', tone: 'neutral' },
+        ]} />
 
-        {/* 3D Telemetry Status Ribbon - Streamlined */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3.5">
-          <div className="connector-3d-card p-3.5 flex flex-col justify-between">
-            <div className="flex items-center justify-between">
-              <span className="text-[11px] font-semibold uppercase tracking-wider text-slate-400 font-mono">Active Connectors</span>
-              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-            </div>
-            <div className="flex items-baseline gap-2 mt-1">
-              <span className="text-2xl font-bold font-mono text-slate-900 dark:text-white">{connectedCount}</span>
-              <span className="text-xs text-slate-500 font-mono">/ {connectors.length} configured</span>
-            </div>
-            <div className="flex items-center justify-between text-[11px] text-slate-500 mt-1 pt-1 border-t border-slate-200/60 dark:border-slate-800">
-              <span className="text-emerald-600 dark:text-emerald-400 font-medium flex items-center gap-1">
-                <CheckCircle2 className="w-3 h-3" /> All healthy
-              </span>
-              <button
-                onClick={handleSyncAll}
-                disabled={isSyncingAll}
-                className="text-blue-500 hover:text-blue-400 font-medium flex items-center gap-1 cursor-pointer transition-colors"
-                title="Resync all active connections"
-              >
-                <RefreshCw className={`w-3 h-3 ${isSyncingAll ? 'animate-spin' : ''}`} />
-                <span>Sync All</span>
-              </button>
-            </div>
-          </div>
-
-          <div className="connector-3d-card p-3.5 flex flex-col justify-between">
-            <span className="text-[11px] font-semibold uppercase tracking-wider text-slate-400 font-mono">Monitored Repos</span>
-            <div className="flex items-baseline gap-2 mt-1">
-              <span className="text-2xl font-bold font-mono text-slate-900 dark:text-white">42</span>
-              <span className="text-xs text-slate-500 font-mono">Production Core</span>
-            </div>
-            <div className="text-[11px] text-slate-500 mt-1 pt-1 border-t border-slate-200/60 dark:border-slate-800">
-              Next scheduled diff in <strong className="text-slate-700 dark:text-slate-300">12m</strong>
-            </div>
-          </div>
-
-          <div className="connector-3d-card p-3.5 flex flex-col justify-between">
-            <span className="text-[11px] font-semibold uppercase tracking-wider text-slate-400 font-mono">Keystones Mapped</span>
-            <div className="flex items-baseline gap-2 mt-1">
-              <span className="text-2xl font-bold font-mono text-slate-900 dark:text-white">1,489</span>
-              <span className="text-xs text-slate-500 font-mono">transitive nodes</span>
-            </div>
-            <div className="text-[11px] text-rose-500 font-medium mt-1 pt-1 border-t border-slate-200/60 dark:border-slate-800 flex items-center gap-1">
-              <AlertCircle className="w-3 h-3" /> 5 SIFI Escalations
-            </div>
-          </div>
-
-          <div className="connector-3d-card p-3.5 flex flex-col justify-between">
-            <span className="text-[11px] font-semibold uppercase tracking-wider text-slate-400 font-mono">Sync Reliability</span>
-            <div className="flex items-baseline gap-2 mt-1">
-              <span className="text-2xl font-bold font-mono text-slate-900 dark:text-white">99.98%</span>
-              <span className="text-xs text-slate-500 font-mono">p99 &lt; 140ms</span>
-            </div>
-            <div className="text-[11px] text-slate-500 mt-1 pt-1 border-t border-slate-200/60 dark:border-slate-800">
-              0 dropped delivery events
-            </div>
-          </div>
+        <div className="flex justify-end">
+          <button onClick={handleSyncAll} disabled={isSyncingAll} className="ks-btn ks-btn-ghost ks-btn-sm">
+            <RefreshCw className={`w-3.5 h-3.5 ${isSyncingAll ? 'animate-spin' : ''}`} />
+            <span>{isSyncingAll ? 'Syncing sources...' : 'Sync all sources'}</span>
+          </button>
         </div>
 
         {/* Filter and Search Bar */}
         <div className="flex flex-col sm:flex-row items-center justify-between gap-3 pt-0.5">
           {/* Category Tabs */}
-          <div className="flex items-center gap-1.5 p-1 rounded-xl connector-3d-card overflow-x-auto w-full sm:w-auto">
+          <div className="flex items-center gap-1.5 p-1 rounded-lg border border-slate-200 bg-slate-50 dark:border-slate-800 dark:bg-slate-900/60 overflow-x-auto w-full sm:w-auto">
             {[
               { id: 'all', label: `All (${connectors.length})` },
               { id: 'scm', label: 'Source Control' },
@@ -1112,7 +1052,7 @@ export const ConnectorsPage: React.FC<ConnectorsPageProps> = ({ onOpenSBOMModal 
                 onClick={() => setActiveCategory(tab.id as any)}
                 className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer whitespace-nowrap select-none ${
                   activeCategory === tab.id
-                    ? 'btn-3d-primary text-white'
+                    ? 'bg-[#2f2fe4] text-white'
                     : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-200/50 dark:hover:bg-slate-800/50'
                 }`}
               >
@@ -1201,7 +1141,7 @@ export const ConnectorsPage: React.FC<ConnectorsPageProps> = ({ onOpenSBOMModal 
                   {/* Fluid Hardware-Accelerated Drawer (Buttery 60fps hover reveal) */}
                   <div className="connector-expand-drawer">
                     <div className="connector-expand-inner">
-                      <div className="pt-2.5 flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 ease-out delay-75 border-t border-slate-200/40 dark:border-slate-800/60 mt-1">
+                      <div className="pt-2.5 flex flex-col gap-2 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-200 ease-out delay-75 border-t border-slate-200/40 dark:border-slate-800/60 mt-1">
                         {/* Concise Description */}
                         <p className="text-xs text-slate-600 dark:text-slate-300 font-sans leading-snug">
                           {item.description}
@@ -1427,7 +1367,7 @@ export const ConnectorsPage: React.FC<ConnectorsPageProps> = ({ onOpenSBOMModal 
                         : 'ks-border hover:bg-slate-100 dark:hover:bg-slate-800/60 text-slate-600 dark:text-slate-400'
                     }`}
                   >
-                    <span className="font-semibold block text-xs">Tier-1 Sinks Only</span>
+                    <span className="font-semibold block text-xs">Critical services only</span>
                     <span className="text-[10px] text-slate-500">Restricted to Crown Jewels & sensitive sinks</span>
                   </button>
                 </div>
@@ -1720,4 +1660,3 @@ export const ConnectorsPage: React.FC<ConnectorsPageProps> = ({ onOpenSBOMModal 
     </div>
   );
 };
-

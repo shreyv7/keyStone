@@ -3,7 +3,6 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { EcosystemNode, EcosystemEdge, PropagationPath } from '../types';
 import { useTheme } from '../context/ThemeContext';
-import { ChevronUp, ChevronDown, Layers } from 'lucide-react';
 
 interface EcosystemGraphProps {
   nodes: EcosystemNode[];
@@ -27,6 +26,7 @@ interface EcosystemGraphProps {
   showP1Only?: boolean;
   showClusters?: boolean;
   isKeystoneFocused?: boolean;
+  bottomOverlay?: React.ReactNode;
 }
 
 export const EcosystemGraph: React.FC<EcosystemGraphProps> = ({
@@ -51,9 +51,9 @@ export const EcosystemGraph: React.FC<EcosystemGraphProps> = ({
   showP1Only = false,
   showClusters = false,
   isKeystoneFocused = false,
+  bottomOverlay,
 }) => {
   const { isLight } = useTheme();
-  const [isStratumExpanded, setIsStratumExpanded] = useState<boolean>(false);
   const mountRef = useRef<HTMLDivElement>(null);
   const sceneRef = useRef<THREE.Scene | null>(null);
   const cameraRef = useRef<THREE.PerspectiveCamera | null>(null);
@@ -145,25 +145,23 @@ export const EcosystemGraph: React.FC<EcosystemGraphProps> = ({
     (node: EcosystemNode) => {
       if (showStructuralSize) {
         if (node.id === 'snakeyaml') {
-          // Dynamic time-travel expansion: from Day -90 (2.0) -> Day -30 (3.8) -> Day 0 (5.8)
-          if (timeTravelDay <= -60) return 2.0;
+          // Dynamic time-travel expansion: from Day -90 (1.4) -> Day -30 (2.0) -> Day 0 (2.6)
+          if (timeTravelDay <= -60) return 1.4;
           if (timeTravelDay <= -30) {
             const t = (timeTravelDay - (-60)) / 30;
-            return 2.0 + t * 1.8;
+            return 1.4 + t * 0.6;
           }
           const t = (timeTravelDay - (-30)) / 30;
-          return 3.8 + t * 2.0;
+          return 2.0 + t * 0.6;
         }
-        // Strict SC formula: from 1.2 to 4.8 strictly proportional to systemicScore (0 to 100)
+        // Strict SC formula: proportional to systemicScore (0 to 100), bounded between 0.9 and 2.2
         const sc = (node.systemicScore || 0) / 100;
-        return 1.2 + sc * 3.6;
+        return 0.9 + sc * 1.3;
       }
       
-      // Conventional Vulnerability View Mode (Feature 11 Popularity Paradox):
-      // Nodes are scaled strictly by conventional CVSS/OpenSSF score
-      // A chokepoint like snakeyaml (CVSS 0, OpenSSF 48) appears as a tiny, inconspicuous dot (1.4)
+      // Conventional Vulnerability View Mode:
       const conv = (node.conventionalScore || 30) / 100;
-      return 1.0 + conv * 1.6;
+      return 0.8 + conv * 0.9;
     },
     [showStructuralSize, timeTravelDay]
   );
@@ -267,42 +265,42 @@ export const EcosystemGraph: React.FC<EcosystemGraphProps> = ({
       // Default palette by category/tier
       if (node.category === 'tier1-asset') {
         return {
-          main: 0x1755e6, // Primary Cobalt Blue for Tier-1
-          emissive: 0x0f3da8,
-          emissiveIntensity: 0.6,
-          ringColor: 0x4682f9
+          main: 0x3b82f6, // Radiant Cobalt Blue for Tier-1 Apex
+          emissive: 0x1d4ed8,
+          emissiveIntensity: 0.75,
+          ringColor: 0x60a5fa
         };
       }
       if (node.category === 'application') {
         return {
-          main: 0x2e70ee, // Royal Blue
-          emissive: 0x1a54c4,
-          emissiveIntensity: 0.4,
-          ringColor: 0x60a5fa
+          main: 0x60a5fa, // Bright Sky Blue
+          emissive: 0x2563eb,
+          emissiveIntensity: 0.6,
+          ringColor: 0x93c5fd
         };
       }
       if (node.category === 'service') {
         return {
-          main: 0x60a5fa, // Sky Blue
-          emissive: 0x2563eb,
-          emissiveIntensity: 0.3,
-          ringColor: 0x93c5fd
+          main: 0x38bdf8, // Electric Cyan
+          emissive: 0x0284c7,
+          emissiveIntensity: 0.55,
+          ringColor: 0x7dd3fc
         };
       }
       if (node.category === 'internal-lib') {
         return {
-          main: 0x64748b, // Slate Steel
-          emissive: 0x334155,
-          emissiveIntensity: 0.3,
-          ringColor: 0x94a3b8
+          main: 0x818cf8, // Indigo Electric
+          emissive: 0x4f46e5,
+          emissiveIntensity: 0.5,
+          ringColor: 0xa5b4fc
         };
       }
       // Open source
       return {
-        main: 0x334155, // Dark Slate Keystones
-        emissive: 0x1e293b,
-        emissiveIntensity: 0.2,
-        ringColor: 0x475569
+        main: 0x94a3b8, // Luminous Silver-Slate for Keystone open-source packages
+        emissive: 0x475569,
+        emissiveIntensity: 0.5,
+        ringColor: 0xcbd5e1
       };
     },
     [selectedNodeId, hoveredNodeId, compromisedNodeIds, highlightedNodeIds, activePropagationPath, simulationPhase, timeTravelDay, showStructuralSize]
@@ -317,9 +315,9 @@ export const EcosystemGraph: React.FC<EcosystemGraphProps> = ({
 
     // 1. Scene
     const scene = new THREE.Scene();
-    const bgHex = isLight ? 0xffffff : 0x080616;
+    const bgHex = isLight ? 0xffffff : 0x3d5272;
     scene.background = new THREE.Color(bgHex);
-    scene.fog = new THREE.FogExp2(bgHex, isLight ? 0.0035 : 0.0055);
+    scene.fog = new THREE.FogExp2(bgHex, isLight ? 0.0035 : 0.0032);
     sceneRef.current = scene;
 
     // 2. Camera
@@ -332,7 +330,7 @@ export const EcosystemGraph: React.FC<EcosystemGraphProps> = ({
     renderer.setSize(width, height);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = isLight ? 1.15 : 1.1;
+    renderer.toneMappingExposure = isLight ? 1.15 : 1.15;
     container.innerHTML = '';
     container.appendChild(renderer.domElement);
     rendererRef.current = renderer;
@@ -351,16 +349,16 @@ export const EcosystemGraph: React.FC<EcosystemGraphProps> = ({
     controlsRef.current = controls;
 
     // 5. Subtle ambient & directional lights
-    const ambientLight = new THREE.AmbientLight(isLight ? 0xffffff : 0xdbeafe, isLight ? 1.3 : 0.9);
+    const ambientLight = new THREE.AmbientLight(isLight ? 0xffffff : 0xe0f2fe, isLight ? 1.4 : 1.25);
     scene.add(ambientLight);
     ambientLightRef.current = ambientLight;
 
-    const dirLight1 = new THREE.DirectionalLight(isLight ? 0x0284c7 : 0x38bdf8, isLight ? 1.1 : 1.4);
+    const dirLight1 = new THREE.DirectionalLight(isLight ? 0x0284c7 : 0x38bdf8, isLight ? 1.2 : 1.5);
     dirLight1.position.set(40, 60, 40);
     scene.add(dirLight1);
     dirLight1Ref.current = dirLight1;
 
-    const dirLight2 = new THREE.DirectionalLight(isLight ? 0x6366f1 : 0x818cf8, isLight ? 0.8 : 0.9);
+    const dirLight2 = new THREE.DirectionalLight(isLight ? 0x6366f1 : 0xa5b4fc, isLight ? 0.9 : 1.25);
     dirLight2.position.set(-40, -30, -30);
     scene.add(dirLight2);
     dirLight2Ref.current = dirLight2;
@@ -373,10 +371,10 @@ export const EcosystemGraph: React.FC<EcosystemGraphProps> = ({
       const ringRadius = 45 - Math.abs(y) * 0.3;
       const ringGeo = new THREE.RingGeometry(ringRadius - 0.2, ringRadius, 64);
       const ringMat = new THREE.MeshBasicMaterial({
-        color: i === 4 ? (isLight ? 0x1755e6 : 0x2e70ee) : (isLight ? 0x94a3b8 : 0x334155),
+        color: i === 4 ? (isLight ? 0x1755e6 : 0x38bdf8) : (isLight ? 0x64748b : 0x94a3b8),
         side: THREE.DoubleSide,
         transparent: true,
-        opacity: isLight ? 0.25 : 0.12
+        opacity: isLight ? 0.35 : 0.28
       });
       const ringMesh = new THREE.Mesh(ringGeo, ringMat);
       ringMesh.rotation.x = Math.PI / 2;
@@ -428,8 +426,8 @@ export const EcosystemGraph: React.FC<EcosystemGraphProps> = ({
       const baseColor = isProp 
         ? new THREE.Color(0xf43f5e) 
         : edge.channel === 'build-time'
-          ? new THREE.Color(isLight ? 0xb45309 : 0xca8a04)
-          : new THREE.Color(isLight ? 0x94a3b8 : 0x334155);
+          ? new THREE.Color(isLight ? 0xb45309 : 0xfbbf24)
+          : new THREE.Color(isLight ? 0x64748b : 0x93c5fd);
 
       batchedPositions.push(p1.x, p1.y, p1.z, p2.x, p2.y, p2.z);
       batchedColors.push(baseColor.r, baseColor.g, baseColor.b, baseColor.r, baseColor.g, baseColor.b);
@@ -440,7 +438,7 @@ export const EcosystemGraph: React.FC<EcosystemGraphProps> = ({
       const lineMat = new THREE.LineBasicMaterial({
         color: baseColor,
         transparent: true,
-        opacity: isLight ? (isProp ? 0.6 : 0.28) : (isProp ? 0.45 : 0.2),
+        opacity: isLight ? (isProp ? 0.8 : 0.45) : (isProp ? 0.8 : 0.42),
         linewidth: 1
       });
 
@@ -467,11 +465,12 @@ export const EcosystemGraph: React.FC<EcosystemGraphProps> = ({
     const pulseGeo = new THREE.BufferGeometry();
     pulseGeo.setAttribute('position', new THREE.BufferAttribute(pulsePosArray, 3));
     const pulseMat = new THREE.PointsMaterial({
-      color: 0xff3b30,
-      size: 2.2,
+      color: isLight ? 0xdc2626 : 0xff3b30,
+      size: isLight ? 3 : 2.2,
       transparent: true,
-      opacity: 0.9,
-      blending: THREE.AdditiveBlending
+      opacity: isLight ? 1 : 0.9,
+      blending: isLight ? THREE.NormalBlending : THREE.AdditiveBlending,
+      depthWrite: false
     });
     const pulsePoints = new THREE.Points(pulseGeo, pulseMat);
     pulsePoints.visible = false;
@@ -503,11 +502,11 @@ export const EcosystemGraph: React.FC<EcosystemGraphProps> = ({
     const lightningGeo = new THREE.BufferGeometry();
     lightningGeo.setAttribute('position', new THREE.BufferAttribute(lightningPosArray, 3));
     const lightningMat = new THREE.PointsMaterial({
-      color: 0x38bdf8,
-      size: 2.8,
+      color: isLight ? 0x1d4ed8 : 0x38bdf8,
+      size: isLight ? 3.4 : 2.8,
       transparent: true,
-      opacity: 0.95,
-      blending: THREE.AdditiveBlending,
+      opacity: isLight ? 1 : 0.95,
+      blending: isLight ? THREE.NormalBlending : THREE.AdditiveBlending,
       depthWrite: false
     });
     const lightningPoints = new THREE.Points(lightningGeo, lightningMat);
@@ -599,7 +598,7 @@ export const EcosystemGraph: React.FC<EcosystemGraphProps> = ({
         color: 0xd946ef, // Fuchsia / Magenta
         wireframe: true,
         transparent: true,
-        opacity: hasAnomaly ? 0.35 : 0.0
+        opacity: hasAnomaly ? 0.15 : 0.0
       });
       const anomalyMesh = new THREE.Mesh(sharedUnitAnomalyGeo, anomalyMat);
       anomalyMesh.name = 'anomalyHalo';
@@ -658,6 +657,8 @@ export const EcosystemGraph: React.FC<EcosystemGraphProps> = ({
 
     const handleClick = (event: MouseEvent) => {
       if (event.button !== 0) return;
+      // If the click originated from any overlay or child control, ignore
+      if (renderer && event.target !== renderer.domElement) return;
       const dx = Math.abs(event.clientX - pointerDownPos.x);
       const dy = Math.abs(event.clientY - pointerDownPos.y);
       // If user dragged more than 6px, treat as turntable rotation, not a click
@@ -846,7 +847,7 @@ export const EcosystemGraph: React.FC<EcosystemGraphProps> = ({
       if (isConeFocus) {
         targetRadius *= 1.35;
       } else if (isDimmed) {
-        targetRadius *= 0.4;
+        targetRadius *= 0.85;
       }
       group.userData.currentRadius = targetRadius;
 
@@ -855,10 +856,10 @@ export const EcosystemGraph: React.FC<EcosystemGraphProps> = ({
         const mat = core.material as THREE.MeshStandardMaterial;
         mat.color.setHex(colors.main);
         mat.emissive.setHex(colors.emissive);
-        mat.emissiveIntensity = isConeFocus ? 2.4 : (isDimmed ? 0.02 : colors.emissiveIntensity);
+        mat.emissiveIntensity = isConeFocus ? 2.4 : (isDimmed ? 0.45 : colors.emissiveIntensity);
 
         if (isDimmed) {
-          mat.opacity = 0.08;
+          mat.opacity = 0.82;
           mat.transparent = true;
         } else {
           mat.opacity = 1.0;
@@ -919,6 +920,24 @@ export const EcosystemGraph: React.FC<EcosystemGraphProps> = ({
     if (starMatRef.current) {
       starMatRef.current.opacity = dependencyCone ? 0.05 : (isLight ? 0.3 : 0.45);
     }
+
+    const pulseMaterial = pulseParticlesRef.current?.material as THREE.PointsMaterial | undefined;
+    if (pulseMaterial) {
+      pulseMaterial.color.setHex(isLight ? 0xdc2626 : 0xff3b30);
+      pulseMaterial.size = isLight ? 3 : 2.2;
+      pulseMaterial.opacity = isLight ? 1 : 0.9;
+      pulseMaterial.blending = isLight ? THREE.NormalBlending : THREE.AdditiveBlending;
+      pulseMaterial.needsUpdate = true;
+    }
+
+    const lightningMaterial = lightningParticlesRef.current?.material as THREE.PointsMaterial | undefined;
+    if (lightningMaterial) {
+      lightningMaterial.color.setHex(isLight ? 0x1d4ed8 : 0x38bdf8);
+      lightningMaterial.size = isLight ? 3.4 : 2.8;
+      lightningMaterial.opacity = isLight ? 1 : 0.95;
+      lightningMaterial.blending = isLight ? THREE.NormalBlending : THREE.AdditiveBlending;
+      lightningMaterial.needsUpdate = true;
+    }
   }, [
     nodes,
     showStructuralSize,
@@ -963,13 +982,13 @@ export const EcosystemGraph: React.FC<EcosystemGraphProps> = ({
       if (dependencyCone) {
         const isInConeEdge = dependencyCone.coneEdges.has(edgeId);
         if (!isInConeEdge) {
-          lineMat.color.setHex(isLight ? 0xe2e8f0 : 0x0f172a);
-          lineMat.opacity = 0.015; // Deep ghosted dimming outside cone
+          lineMat.color.setHex(isLight ? 0x64748b : 0x93c5fd);
+          lineMat.opacity = isLight ? 0.45 : 0.40; // Visible structural context
           return;
         } else {
           // Live electric wire connection between affected nodes
           lineMat.color.setHex(0x38bdf8);
-          lineMat.opacity = 0.85;
+          lineMat.opacity = 0.95;
           return;
         }
       }
@@ -1001,8 +1020,8 @@ export const EcosystemGraph: React.FC<EcosystemGraphProps> = ({
       // Default state inside active cone or full portfolio view
       lineMat.color.copy(item.baseColor);
       lineMat.opacity = isLight 
-        ? (item.isProp ? 0.65 : (dependencyCone ? 0.55 : 0.28)) 
-        : (item.isProp ? 0.55 : (dependencyCone ? 0.45 : 0.18));
+        ? (item.isProp ? 0.8 : (dependencyCone ? 0.65 : 0.45)) 
+        : (item.isProp ? 0.8 : (dependencyCone ? 0.65 : 0.42));
     });
 
     // Control pulse visibility
@@ -1025,29 +1044,29 @@ export const EcosystemGraph: React.FC<EcosystemGraphProps> = ({
   useEffect(() => {
     if (!sceneRef.current) return;
     const scene = sceneRef.current;
-    const bgHex = isLight ? 0xffffff : 0x080616;
+    const bgHex = isLight ? 0xffffff : 0x3d5272;
     scene.background = new THREE.Color(bgHex);
-    scene.fog = new THREE.FogExp2(bgHex, isLight ? 0.0035 : 0.0055);
+    scene.fog = new THREE.FogExp2(bgHex, isLight ? 0.0035 : 0.0032);
 
     // Update WebGLRenderer clearColor & tone mapping exposure
     if (rendererRef.current) {
       rendererRef.current.setClearColor(bgHex, 1);
-      rendererRef.current.toneMappingExposure = isLight ? 1.2 : 1.1;
+      rendererRef.current.toneMappingExposure = isLight ? 1.15 : 1.15;
     }
 
     if (ambientLightRef.current) {
-      ambientLightRef.current.intensity = isLight ? 1.5 : 0.9;
-      ambientLightRef.current.color.setHex(isLight ? 0xffffff : 0xdbeafe);
+      ambientLightRef.current.intensity = isLight ? 1.4 : 1.25;
+      ambientLightRef.current.color.setHex(isLight ? 0xffffff : 0xe0f2fe);
     }
 
     if (dirLight1Ref.current) {
-      dirLight1Ref.current.intensity = isLight ? 1.1 : 1.4;
+      dirLight1Ref.current.intensity = isLight ? 1.2 : 1.5;
       dirLight1Ref.current.color.setHex(isLight ? 0x0284c7 : 0x38bdf8);
     }
 
     if (dirLight2Ref.current) {
-      dirLight2Ref.current.intensity = isLight ? 0.8 : 0.9;
-      dirLight2Ref.current.color.setHex(isLight ? 0x6366f1 : 0x818cf8);
+      dirLight2Ref.current.intensity = isLight ? 0.9 : 1.25;
+      dirLight2Ref.current.color.setHex(isLight ? 0x6366f1 : 0xa5b4fc);
     }
 
     if (starMatRef.current) {
@@ -1057,10 +1076,10 @@ export const EcosystemGraph: React.FC<EcosystemGraphProps> = ({
 
     layerRingsRef.current.forEach((mesh, idx) => {
       const mat = mesh.material as THREE.MeshBasicMaterial;
-      if (idx === 4) mat.color.setHex(isLight ? 0x4f46e5 : 0x6366f1);
+      if (idx === 4) mat.color.setHex(isLight ? 0x1755e6 : 0x38bdf8);
       else if (idx === 0) mat.color.setHex(isLight ? 0xe11d48 : 0xf43f5e);
-      else mat.color.setHex(isLight ? 0x94a3b8 : 0x334155);
-      mat.opacity = isLight ? 0.25 : 0.12;
+      else mat.color.setHex(isLight ? 0x64748b : 0x94a3b8);
+      mat.opacity = isLight ? 0.35 : 0.28;
     });
 
     // Recompute base colors on edges
@@ -1071,14 +1090,14 @@ export const EcosystemGraph: React.FC<EcosystemGraphProps> = ({
       const baseColor = isProp 
         ? new THREE.Color(0xf43f5e) 
         : edge.channel === 'build-time'
-          ? new THREE.Color(isLight ? 0xb45309 : 0xca8a04)
-          : new THREE.Color(isLight ? 0x64748b : 0x334155);
+          ? new THREE.Color(isLight ? 0xb45309 : 0xfbbf24)
+          : new THREE.Color(isLight ? 0x64748b : 0x93c5fd);
       item.baseColor = baseColor;
       
       if (!severedEdgeIds.has(edgeId)) {
         const lineMat = item.line.material as THREE.LineBasicMaterial;
         lineMat.color.copy(baseColor);
-        lineMat.opacity = isLight ? (isProp ? 0.65 : 0.35) : (isProp ? 0.45 : 0.2);
+        lineMat.opacity = isLight ? (isProp ? 0.8 : 0.45) : (isProp ? 0.8 : 0.42);
       }
     });
 
@@ -1119,70 +1138,57 @@ export const EcosystemGraph: React.FC<EcosystemGraphProps> = ({
 
   return (
     <div className={`relative w-full h-full overflow-hidden select-none transition-colors duration-300 ${
-      isLight ? 'bg-white' : 'bg-[#080616]'
+      isLight ? 'bg-white' : 'bg-[#3d5272]'
     }`}>
       <div ref={mountRef} className="w-full h-full" />
 
-      {/* Sleek Collapsible Stratum Indicator at Bottom-Left */}
-      <div className="absolute left-4 bottom-4 z-10 select-none">
-        <div className={`rounded-xl border backdrop-blur-xl shadow-lg transition-all ${
-          isLight ? 'bg-white/95 border-slate-200/90 shadow-slate-200/50 text-slate-800' : 'bg-slate-900/90 border-slate-800/90 shadow-black/60 text-slate-200'
+      {/* Ambient Canvas Background Node Colorscheme Legend */}
+      <div className="absolute left-4 bottom-16 z-10 select-none pointer-events-none">
+        <div className={`flex flex-wrap items-center gap-x-3 gap-y-1 px-3 py-1.5 rounded-lg border backdrop-blur-xs text-[11px] transition-colors ${
+          isLight 
+            ? 'bg-white/70 border-slate-200/90 text-slate-700 shadow-xs' 
+            : 'bg-slate-950/40 border-slate-700/40 text-slate-300'
         }`}>
-          {/* Always visible compact header button */}
-          <button
-            onClick={() => setIsStratumExpanded(prev => !prev)}
-            title={isStratumExpanded ? "Collapse architecture tiers" : "Expand architecture tiers"}
-            className="flex items-center gap-2 px-3 py-1.5 cursor-pointer text-xs font-medium hover:opacity-90 transition-opacity"
-          >
-            {dependencyCone ? (
-              <>
-                <span className="w-2 h-2 rounded-full bg-blue-500 animate-ping shrink-0" />
-                <span className="font-semibold text-blue-600 dark:text-blue-400 text-[11px]">
-                  Impact Scope: {dependencyCone.allConeNodes.size} packages ({dependencyCone.coneEdges.size} connections)
-                </span>
-              </>
-            ) : (
-              <>
-                <div className="flex items-center -space-x-1 shrink-0">
-                  <span className="w-2.5 h-2.5 rounded-full bg-indigo-500 border border-slate-900" />
-                  <span className="w-2.5 h-2.5 rounded-full bg-blue-500 border border-slate-900" />
-                  <span className="w-2.5 h-2.5 rounded-full bg-sky-500 border border-slate-900" />
-                  <span className="w-2.5 h-2.5 rounded-full bg-teal-500 border border-slate-900" />
-                  <span className="w-2.5 h-2.5 rounded-full bg-rose-500 border border-slate-900" />
-                </div>
-                <span className="text-[11px] text-slate-600 dark:text-slate-400 font-medium">5 Architecture Tiers</span>
-              </>
-            )}
-            <ChevronUp className={`w-3 h-3 text-slate-400 transition-transform duration-200 ${isStratumExpanded ? 'rotate-180' : ''}`} />
-          </button>
-
-          {/* Expanded Tier Details (Collapsible) */}
-          {isStratumExpanded && (
-            <div className="px-3 pb-2.5 pt-1.5 border-t border-slate-200/80 dark:border-slate-800/80 flex flex-col gap-1.5 animate-in fade-in slide-in-from-bottom-1">
-              <div className="flex items-center gap-2 text-[11px]">
-                <span className="w-2 h-2 rounded bg-indigo-500 shrink-0 shadow-xs shadow-indigo-500/50"></span>
-                <span>Tier 1: Critical Services</span>
-              </div>
-              <div className="flex items-center gap-2 text-[11px]">
-                <span className="w-2 h-2 rounded bg-blue-500 shrink-0"></span>
-                <span>Tier 2: Business Applications</span>
-              </div>
-              <div className="flex items-center gap-2 text-[11px]">
-                <span className="w-2 h-2 rounded bg-sky-500 shrink-0"></span>
-                <span>Tier 3: Platform Microservices</span>
-              </div>
-              <div className="flex items-center gap-2 text-[11px]">
-                <span className="w-2 h-2 rounded bg-teal-500 shrink-0"></span>
-                <span>Tier 4: Shared Libraries</span>
-              </div>
-              <div className="flex items-center gap-2 text-[11px]">
-                <span className="w-2 h-2 rounded bg-rose-500 shrink-0 shadow-xs shadow-rose-500/50"></span>
-                <span>Tier 5: Open-Source Dependencies</span>
-              </div>
-            </div>
-          )}
+          <span className="text-[10px] uppercase font-mono tracking-wider font-semibold opacity-60">Node Colors:</span>
+          <div className="flex items-center gap-1.5">
+            <span className="w-2.5 h-2.5 rounded-full bg-[#3b82f6] shadow-xs shadow-blue-500/50 shrink-0" />
+            <span>T1 Critical Services</span>
+          </div>
+          <div className="flex items-center gap-1.5">
+            <span className="w-2.5 h-2.5 rounded-full bg-[#60a5fa] shrink-0" />
+            <span>T2 Applications</span>
+          </div>
+          <div className="flex items-center gap-1.5">
+            <span className="w-2.5 h-2.5 rounded-full bg-[#38bdf8] shrink-0" />
+            <span>T3 Services</span>
+          </div>
+          <div className="flex items-center gap-1.5">
+            <span className="w-2.5 h-2.5 rounded-full bg-[#818cf8] shrink-0" />
+            <span>T4 Libraries</span>
+          </div>
+          <div className="flex items-center gap-1.5">
+            <span className="w-2.5 h-2.5 rounded-full bg-[#94a3b8] shrink-0" />
+            <span>T5 Open-Source</span>
+          </div>
+          <span className="w-px h-3 bg-slate-500/30 mx-0.5 shrink-0" />
+          <div className="flex items-center gap-1.5">
+            <span className="w-2.5 h-2.5 rounded-full bg-[#ef4444] shadow-xs shadow-red-500/50 shrink-0" />
+            <span className={isLight ? 'text-red-600 font-medium' : 'text-red-400 font-medium'}>Critical Risk</span>
+          </div>
         </div>
       </div>
+
+      {bottomOverlay && (
+        <div 
+          onClick={(e) => e.stopPropagation()}
+          onPointerDown={(e) => e.stopPropagation()}
+          className="absolute left-4 right-4 bottom-4 z-20 flex items-center select-none pointer-events-none"
+        >
+          <div className="pointer-events-auto w-full">
+            {bottomOverlay}
+          </div>
+        </div>
+      )}
     </div>
   );
 };

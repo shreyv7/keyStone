@@ -23,6 +23,9 @@ import {
 import { useTheme } from '../context/ThemeContext';
 import { MitigationCandidate, RoleLens, EcosystemNode } from '../types';
 import { MOCK_MITIGATION_CANDIDATES, MOCK_NODES } from '../data/mockEcosystem';
+import { PageHeader } from './ui/PageHeader';
+import { MetricStrip } from './ui/MetricStrip';
+import { Disclosure } from './ui/Disclosure';
 
 interface RemediationPageProps {
   candidates?: MitigationCandidate[];
@@ -87,8 +90,8 @@ const PACKAGE_PROFILES: PackageRemediationProfile[] = [
     strategyOptions: [
       {
         id: 'min_cut',
-        title: 'Minimum-Cut Intervention (Recommended)',
-        description: 'Upgrade to SnakeYAML 1.34 with SafeConstructor enforced at the internal shared library layer, severing all 4 DAG chains with 0 breaking changes.',
+        title: 'Recommended update',
+        description: 'Upgrade to SnakeYAML 1.34 with SafeConstructor enforced at the internal shared library layer, severing all 4 attack paths with 0 breaking changes.',
         pathsSevered: 4,
         financialReduction: '$85M / Day',
         breakingChanges: 0,
@@ -310,54 +313,42 @@ export const RemediationPage: React.FC<RemediationPageProps> = ({
   };
 
   return (
-    <div className="w-full h-full overflow-y-auto px-6 py-6 select-text ks-bg-app">
-      <div className="max-w-7xl mx-auto flex flex-col gap-6">
+    <div className="w-full h-full overflow-y-auto px-4 py-5 sm:px-6 select-text ks-bg-app">
+      <div className="max-w-7xl mx-auto flex flex-col gap-5">
 
-        {/* Top Header Banner */}
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 pb-6 border-b border-slate-200/80 dark:border-slate-800">
-          <div>
-            <div className="flex items-center gap-2 mb-1.5">
-              <span className="w-2.5 h-2.5 rounded-full bg-blue-600 animate-pulse" />
-              <span className="text-xs font-mono font-bold tracking-wider uppercase text-blue-600 dark:text-blue-400">
-                Minimum-Cut Supply Chain Optimization
-              </span>
-            </div>
-            <h1 className="text-2xl md:text-3xl font-bold tracking-tight text-slate-900 dark:text-white font-heading">
-              Remediation Center
-            </h1>
-            <p className="text-sm mt-2 max-w-2xl text-slate-500 dark:text-slate-400 font-sans leading-relaxed">
-              Targeted network interventions: sever maximum downstream reachability paths to mission-critical sinks with minimum engineering overhead.
-            </p>
-          </div>
-
-          <div className="flex items-center gap-3 shrink-0 flex-wrap">
+        <PageHeader
+          title="Remediation"
+          description="Review the recommended dependency update, its expected protection, and compatibility evidence."
+          primaryAction={
+            <button
+              onClick={onOpenPRModal}
+              className="ks-btn ks-btn-primary ks-btn-md"
+            >
+              <GitPullRequest className="w-4 h-4" />
+              <span>Review recommended fix</span>
+            </button>
+          }
+          secondaryActions={
+            <>
             {onOpenSBOMModal && (
               <button
                 onClick={onOpenSBOMModal}
-                className="px-3.5 py-2 rounded-lg text-xs font-medium text-slate-700 dark:text-slate-200 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-750 flex items-center gap-2 cursor-pointer select-none shadow-xs transition-colors"
+                className="ks-btn ks-btn-secondary ks-btn-md"
               >
-                <UploadCloud className="w-4 h-4 text-blue-500" />
-                <span>Ingest SBOM / Lockfile</span>
+                <UploadCloud className="w-4 h-4" />
+                <span>Import data</span>
               </button>
             )}
-
             <button
               onClick={onReturnToGraph}
-              className="px-3.5 py-2 rounded-lg text-xs font-medium text-slate-700 dark:text-slate-200 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-750 flex items-center gap-2 cursor-pointer select-none shadow-xs transition-colors"
+              className="ks-btn ks-btn-ghost ks-btn-md"
             >
-              <Layers className="w-4 h-4 text-blue-500" />
-              <span>Topology Map</span>
+              <Layers className="w-4 h-4" />
+              <span>Topology</span>
             </button>
-
-            <button
-              onClick={onOpenPRModal}
-              className="px-4 py-2 rounded-lg text-xs font-medium text-white bg-blue-600 hover:bg-blue-700 flex items-center gap-2 cursor-pointer select-none shadow-xs transition-colors"
-            >
-              <GitPullRequest className="w-4 h-4" />
-              <span>Dispatch Coordinated PR</span>
-            </button>
-          </div>
-        </div>
+            </>
+          }
+        />
 
         {/* 2-Column Layout: Left Package/SBOM Selector vs. Right Remediation Cockpit */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
@@ -367,10 +358,10 @@ export const RemediationPage: React.FC<RemediationPageProps> = ({
             <div className="connector-3d-card p-4 flex flex-col gap-3">
               <div className="flex items-center justify-between">
                 <span className="text-xs font-bold font-mono uppercase tracking-wider text-slate-400">
-                  Monitored Dependencies ({filteredPackages.length})
+                  Dependencies ({filteredPackages.length})
                 </span>
                 <span className="text-[10px] font-mono font-semibold px-2 py-0.5 rounded bg-blue-500/10 text-blue-600 border border-blue-500/20">
-                  Select to Remediate
+                  Select one
                 </span>
               </div>
 
@@ -430,13 +421,13 @@ export const RemediationPage: React.FC<RemediationPageProps> = ({
                         <span>{pkg.ecosystem}</span>
                         {pkg.articulationPoint && (
                           <span className="font-mono text-[10px] px-1.5 py-0.2 rounded bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-300 dark:border-slate-700">
-                            Cut-Vertex
+                            High impact
                           </span>
                         )}
                       </div>
 
                       <div className="text-[11px] font-mono pt-1.5 border-t border-slate-200/60 dark:border-slate-800/80 flex items-center justify-between text-slate-400">
-                        <span>Tier-1 Reach: <strong className="text-slate-700 dark:text-slate-300">{pkg.tier1Reach} Sinks</strong></span>
+                        <span><strong className="text-slate-700 dark:text-slate-300">{pkg.tier1Reach} critical services</strong></span>
                         <span className="text-emerald-600 dark:text-emerald-400 font-semibold">{pkg.financialReduction}</span>
                       </div>
                     </div>
@@ -468,7 +459,7 @@ export const RemediationPage: React.FC<RemediationPageProps> = ({
                     </span>
                   </div>
                   <p className="text-xs text-slate-500 mt-1">
-                    Ecosystem: {activePackage.ecosystem} • CVSS Score: {activePackage.conventionalScore}/100 ➔ Systemic Exposure: {activePackage.systemicScore}/100
+                    {activePackage.ecosystem} · Protects {activePackage.tier1Reach} critical services · {activeStrategy.breakingChanges} breaking changes expected
                   </p>
                 </div>
 
@@ -489,17 +480,17 @@ export const RemediationPage: React.FC<RemediationPageProps> = ({
                     ) : (
                       <>
                         <Zap className="w-3.5 h-3.5 text-blue-500" />
-                        <span>Apply Simulated Cut</span>
+                        <span>Preview applied state</span>
                       </>
                     )}
                   </button>
 
                   <button
                     onClick={onOpenPRModal}
-                    className="px-4 py-2 rounded-lg text-xs font-medium text-white bg-blue-600 hover:bg-blue-700 flex items-center gap-1.5 cursor-pointer select-none shadow-xs transition-colors"
+                    className="px-4 py-2 rounded-lg text-xs font-bold text-white bg-[#2f2fe4] hover:bg-[#4343f8] shadow-[0_0_15px_rgba(47,47,228,0.35)] flex items-center gap-1.5 cursor-pointer select-none transition-all"
                   >
                     <GitPullRequest className="w-3.5 h-3.5" />
-                    <span>Open PR</span>
+                    <span>Review PR</span>
                   </button>
                 </div>
               </div>
@@ -512,7 +503,7 @@ export const RemediationPage: React.FC<RemediationPageProps> = ({
                     onClick={() => setSelectedStrategyId(strat.id)}
                     className={`px-3.5 py-1.5 rounded-md text-xs font-medium transition-all cursor-pointer whitespace-nowrap select-none flex-1 text-center ${
                       selectedStrategyId === strat.id
-                        ? 'bg-blue-600 text-white shadow-xs'
+                        ? 'bg-[#2f2fe4] text-white shadow-xs'
                         : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
                     }`}
                   >
@@ -534,48 +525,19 @@ export const RemediationPage: React.FC<RemediationPageProps> = ({
                 </div>
               </div>
 
-              {/* Impact Delta Grid (4 Tiles) */}
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                <div className="p-3 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 flex flex-col justify-between">
-                  <span className="text-[10px] font-mono uppercase font-bold text-slate-400">Paths Severed</span>
-                  <div className="text-xl font-bold font-mono text-blue-600 dark:text-blue-400 mt-1">
-                    {activeStrategy.pathsSevered} / 4
-                  </div>
-                  <span className="text-[10px] text-slate-500 mt-0.5">DAG connections cut</span>
-                </div>
+              <MetricStrip items={[
+                { label: 'Exposure paths removed', value: `${activeStrategy.pathsSevered} / 4`, detail: 'Known propagation paths', tone: 'info' },
+                { label: 'Business flow protected', value: activeStrategy.financialReduction, detail: 'Estimated daily impact', tone: 'healthy' },
+                { label: 'Breaking changes', value: activeStrategy.breakingChanges, detail: 'Verified call-site compatibility', tone: activeStrategy.breakingChanges === 0 ? 'healthy' : 'warning' },
+              ]} />
 
-                <div className="p-3 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 flex flex-col justify-between">
-                  <span className="text-[10px] font-mono uppercase font-bold text-slate-400">Blast Reduction</span>
-                  <div className="text-xl font-bold font-mono text-emerald-600 dark:text-emerald-400 mt-1">
-                    {activeStrategy.financialReduction}
-                  </div>
-                  <span className="text-[10px] text-slate-500 mt-0.5">Payment flow saved</span>
-                </div>
-
-                <div className="p-3 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 flex flex-col justify-between">
-                  <span className="text-[10px] font-mono uppercase font-bold text-slate-400">Breaking Changes</span>
-                  <div className="text-xl font-bold font-mono text-slate-900 dark:text-white mt-1">
-                    {activeStrategy.breakingChanges}
-                  </div>
-                  <span className="text-[10px] text-slate-500 mt-0.5">Zero API incompatibilities</span>
-                </div>
-
-                <div className="p-3 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 flex flex-col justify-between">
-                  <span className="text-[10px] font-mono uppercase font-bold text-slate-400">Security Gain</span>
-                  <div className="text-xl font-bold font-mono text-blue-600 dark:text-blue-400 mt-1">
-                    +{activeStrategy.securityGain}%
-                  </div>
-                  <span className="text-[10px] text-slate-500 mt-0.5">Structural insulation</span>
-                </div>
-              </div>
-
-              {/* Code Diff Preview Card */}
-              <div className="flex flex-col gap-2 pt-2 border-t border-slate-200/80 dark:border-slate-800">
+              <Disclosure title="Implementation preview" summary="Dependency diff and exact version change">
+                <div className="flex flex-col gap-2">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <FileCode className="w-4 h-4 text-blue-500" />
-                    <span className="text-xs font-bold font-mono uppercase text-slate-700 dark:text-slate-300">
-                      Prescribed Patch Blueprint
+                    <span className="text-xs font-semibold text-slate-700 dark:text-slate-300">
+                      Proposed dependency diff
                     </span>
                   </div>
                   <button
@@ -592,7 +554,37 @@ export const RemediationPage: React.FC<RemediationPageProps> = ({
                     {activePackage.diffSnippet}
                   </pre>
                 </div>
-              </div>
+                </div>
+              </Disclosure>
+
+              {/* Progressive Disclosure: Contract Compatibility & Bytecode Proofs */}
+              <details className={`group rounded-xl border p-3.5 transition-colors ${
+                isLight ? 'bg-slate-50 border-slate-200' : 'bg-slate-950/60 border-slate-800'
+              }`}>
+                <summary className="flex items-center justify-between text-xs font-semibold cursor-pointer select-none text-slate-700 dark:text-slate-300 group-hover:text-blue-600 dark:group-hover:text-blue-400">
+                  <span className="flex items-center gap-2">
+                    <ShieldCheck className="w-4 h-4 text-emerald-500" />
+                    <span>Technical compatibility evidence (42/42 methods verified)</span>
+                  </span>
+                  <span className="text-[10px] font-mono font-medium px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">
+                    0 Breaking Changes
+                  </span>
+                </summary>
+                <div className="mt-3 pt-3 border-t border-slate-200/80 dark:border-slate-800 flex flex-col gap-2 text-xs text-slate-600 dark:text-slate-400">
+                  <div className="flex items-center justify-between">
+                    <span>AST Call-site Verification:</span>
+                    <span className="font-mono font-semibold text-slate-800 dark:text-slate-200">42 INVOKEVIRTUAL calls verified identical</span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span>Vulnerability Remediation:</span>
+                    <span className="font-mono text-emerald-600 dark:text-emerald-400 font-semibold">Removes CVE-2022-1471 (RCE Constructor)</span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span>Cryptographic Integrity Lock:</span>
+                    <span className="font-mono text-[11px] text-slate-500 truncate max-w-[240px]">sha256:7f83b165...88df</span>
+                  </div>
+                </div>
+              </details>
 
               {/* Action Callout Bar */}
               <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-3">
@@ -607,10 +599,10 @@ export const RemediationPage: React.FC<RemediationPageProps> = ({
 
                 <button
                   onClick={onOpenPRModal}
-                  className="px-4 py-2 rounded-lg text-xs font-medium text-white bg-blue-600 hover:bg-blue-700 flex items-center gap-2 shrink-0 cursor-pointer select-none shadow-xs transition-colors"
+                  className="px-4 py-2 rounded-lg text-xs font-bold text-white bg-[#2f2fe4] hover:bg-[#4343f8] shadow-[0_0_15px_rgba(47,47,228,0.35)] flex items-center gap-2 shrink-0 cursor-pointer select-none transition-all"
                 >
                   <GitPullRequest className="w-4 h-4" />
-                  <span>Create Coordinated PR</span>
+                    <span>Create coordinated PR</span>
                 </button>
               </div>
             </div>

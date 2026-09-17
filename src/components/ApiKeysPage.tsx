@@ -17,6 +17,9 @@ import {
   Clock
 } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
+import { PageHeader } from './ui/PageHeader';
+import { MetricStrip } from './ui/MetricStrip';
+import { Disclosure } from './ui/Disclosure';
 
 interface ApiKeyItem {
   id: string;
@@ -126,87 +129,40 @@ export const ApiKeysPage: React.FC = () => {
   };
 
   return (
-    <div className={`w-full h-full overflow-y-auto px-6 py-8 select-text ${
+    <div className={`w-full h-full overflow-y-auto px-4 py-5 sm:px-6 select-text ${
       isLight ? 'bg-white text-slate-900' : 'bg-[#080616] text-slate-100'
     }`}>
       <div className="max-w-6xl mx-auto flex flex-col gap-6">
         
-        {/* Header */}
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 pb-6 border-b border-slate-200/80 dark:border-slate-800">
-          <div>
-            <h1 className="text-2xl md:text-3xl font-bold tracking-tight text-slate-900 dark:text-white">API Keys & Machine Access</h1>
-            <p className="text-sm mt-2 max-w-3xl text-slate-600 dark:text-slate-400 leading-relaxed">
-              Manage scoped API credentials for CI/CD pipelines, automated scanners, and integrations.
-            </p>
-          </div>
-
+        <PageHeader
+          title="API Keys"
+          description="Manage credentials used by CI pipelines, scanner agents, and integrations."
+          primaryAction={
           <button
             onClick={() => {
               setNewlyCreatedSecret(null);
               setIsCreateModalOpen(true);
             }}
-            className="btn-3d-primary px-4 py-2.5 rounded-xl text-xs font-bold text-white flex items-center gap-2 cursor-pointer select-none shrink-0"
+            className="ks-btn ks-btn-primary ks-btn-md"
           >
             <Plus className="w-4 h-4" />
-            <span>Generate New API Key</span>
+            <span>Generate API key</span>
           </button>
-        </div>
+          }
+        />
 
-        {/* Quick Stats Banner */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-          <div className="connector-3d-card p-4 flex flex-col justify-between gap-1.5">
-            <span className="text-[11px] font-semibold uppercase tracking-wider text-slate-400 font-mono">Active API Keys</span>
-            <div className="flex items-baseline gap-2 mt-1">
-              <span className="text-2xl font-bold font-mono text-slate-900 dark:text-white">
-                {keys.filter(k => k.status === 'active').length}
-              </span>
-              <span className="text-xs text-slate-500 dark:text-slate-400 font-mono">Tokens</span>
-            </div>
-            <span className="text-[11px] text-emerald-600 dark:text-emerald-400 flex items-center gap-1.5 font-medium mt-1 pt-1 border-t border-slate-200/60 dark:border-slate-800">
-              <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" /> FIPS 140-2 Keyring
-            </span>
-          </div>
-
-          <div className="connector-3d-card p-4 flex flex-col justify-between gap-1.5">
-            <span className="text-[11px] font-semibold uppercase tracking-wider text-slate-400 font-mono">Monthly API Invocations</span>
-            <div className="flex items-baseline gap-2 mt-1">
-              <span className="text-2xl font-bold font-mono text-slate-900 dark:text-white">142,800</span>
-              <span className="text-xs text-slate-500 dark:text-slate-400 font-mono">calls</span>
-            </div>
-            <span className="text-[11px] text-slate-500 dark:text-slate-400 mt-1 pt-1 border-t border-slate-200/60 dark:border-slate-800">
-              p99 latency 14ms
-            </span>
-          </div>
-
-          <div className="connector-3d-card p-4 flex flex-col justify-between gap-1.5">
-            <span className="text-[11px] font-semibold uppercase tracking-wider text-slate-400 font-mono">Authentication Success</span>
-            <div className="flex items-baseline gap-2 mt-1">
-              <span className="text-2xl font-bold font-mono text-slate-900 dark:text-white">100%</span>
-              <span className="text-xs text-slate-500 dark:text-slate-400 font-mono">0 auth failures</span>
-            </div>
-            <span className="text-[11px] text-slate-500 dark:text-slate-400 mt-1 pt-1 border-t border-slate-200/60 dark:border-slate-800">
-              Zero rogue calls
-            </span>
-          </div>
-
-          <div className="connector-3d-card p-4 flex flex-col justify-between gap-1.5">
-            <span className="text-[11px] font-semibold uppercase tracking-wider text-slate-400 font-mono">Rate Limit Quota</span>
-            <div className="flex items-baseline gap-2 mt-1">
-              <span className="text-2xl font-bold font-mono text-slate-900 dark:text-white">10,000</span>
-              <span className="text-xs text-slate-500 dark:text-slate-400 font-mono">req / min</span>
-            </div>
-            <span className="text-[11px] text-slate-500 dark:text-slate-400 mt-1 pt-1 border-t border-slate-200/60 dark:border-slate-800">
-              Enterprise Dedicated
-            </span>
-          </div>
-        </div>
+        <MetricStrip items={[
+          { label: 'Active keys', value: keys.filter(k => k.status === 'active').length, detail: 'Scoped machine credentials', tone: 'healthy' },
+          { label: 'Monthly requests', value: '142,800', detail: '14ms p99 latency', tone: 'info' },
+          { label: 'Authentication failures', value: '0', detail: 'No unauthorized calls detected', tone: 'healthy' },
+        ]} />
 
         {/* API Keys Table */}
         <div className="connector-3d-card overflow-hidden">
           <div className="p-4 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between">
             <div>
-              <h3 className="text-sm font-semibold text-slate-900 dark:text-white">Active Machine Credentials</h3>
-              <p className="text-xs text-slate-500 dark:text-slate-400">Scoped tokens for CLI automation and CI/CD pipelines.</p>
+              <h3 className="text-sm font-semibold text-slate-900 dark:text-white">Machine credentials</h3>
+              <p className="text-xs text-slate-500 dark:text-slate-400">Scoped access for automation and CI pipelines.</p>
             </div>
           </div>
 
@@ -283,16 +239,8 @@ export const ApiKeysPage: React.FC = () => {
           </div>
         </div>
 
-        {/* API Usage & Documentation Drawer */}
-        <div className={`p-6 rounded-xl border flex flex-col gap-4 ${
-          isLight ? 'bg-white border-slate-200 shadow-xs' : 'bg-slate-900/60 border-slate-800'
-        }`}>
+        <Disclosure title="API quickstart" summary="Code examples for command line, Python, and TypeScript">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-            <div className="flex items-center gap-2.5">
-              <Terminal className="w-5 h-5 text-blue-600 dark:text-blue-400" />
-              <h3 className="text-sm font-semibold text-slate-900 dark:text-white">API Quickstart & Code Snippets</h3>
-            </div>
-
             <div className={`flex items-center gap-1 p-1 rounded-lg border ${
               isLight ? 'bg-white border-slate-200 shadow-xs' : 'bg-slate-950 border-slate-800'
             }`}>
@@ -340,7 +288,7 @@ curl -X POST https://api.keystonesecurity.io/v1/sbom/ingest \\
   -H "Content-Type: application/json" \\
   -d @bom.json
 
-# 2. Query Crown Jewel blast radius for snakeyaml
+# 2. Query critical-service impact for snakeyaml
 curl -X GET "https://api.keystonesecurity.io/v1/graph/keystones/snakeyaml/blast-radius?depth=4" \\
   -H "Authorization: Bearer key_live_9x8a...4b12"`}
               </pre>
@@ -352,9 +300,9 @@ curl -X GET "https://api.keystonesecurity.io/v1/graph/keystones/snakeyaml/blast-
 
 client = KeystoneClient(api_key="key_live_9x8a...4b12")
 
-# Inspect systemic score and articulation status
+# Inspect portfolio impact and single-point-of-failure status
 risk = client.keystones.get_systemic_score("snakeyaml")
-print(f"SIFI Score: {risk.systemic_score} | Cut Vertex: {risk.articulation_point}")
+print(f"Impact score: {risk.systemic_score} | Single point: {risk.articulation_point}")
 
 # Dispatch coordinated PR
 if risk.systemic_score > 0.70:
@@ -386,7 +334,7 @@ if (!passes) {
               </pre>
             )}
           </div>
-        </div>
+        </Disclosure>
 
       </div>
 

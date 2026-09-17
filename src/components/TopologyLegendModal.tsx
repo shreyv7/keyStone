@@ -51,7 +51,7 @@ export const TopologyLegendModal: React.FC<TopologyLegendModalProps> = ({ isOpen
               }`}>
                 <span className="w-3 h-3 rounded-full bg-red-600 shrink-0"></span>
                 <div>
-                  <div className="font-semibold">Critical Chokepoint</div>
+                  <div className="font-semibold">High-impact dependency</div>
                   <div className={`text-[10px] ${isLight ? 'text-slate-500' : 'text-slate-400'}`}>Single point of failure</div>
                 </div>
               </div>
@@ -62,7 +62,7 @@ export const TopologyLegendModal: React.FC<TopologyLegendModalProps> = ({ isOpen
                 <span className="w-3 h-3 rounded-full bg-indigo-600 shrink-0"></span>
                 <div>
                   <div className="font-semibold">Critical Service</div>
-                  <div className={`text-[10px] ${isLight ? 'text-slate-500' : 'text-slate-400'}`}>Tier-1 protected asset</div>
+                  <div className={`text-[10px] ${isLight ? 'text-slate-500' : 'text-slate-400'}`}>Critical protected service</div>
                 </div>
               </div>
 
@@ -107,7 +107,7 @@ export const TopologyLegendModal: React.FC<TopologyLegendModalProps> = ({ isOpen
               <div className="flex items-center gap-2.5">
                 <span className="w-4 h-0.5 bg-emerald-600 shrink-0"></span>
                 <span className={isLight ? 'text-slate-700' : 'text-slate-300'}>
-                  Severed Link: <strong className="text-emerald-600">Targeted Fix</strong>
+                  Protected link: <strong className="text-emerald-600">Recommended fix</strong>
                 </span>
               </div>
               <div className="flex items-center gap-2.5">

@@ -187,7 +187,7 @@ export const LeftFilterPanel: React.FC<LeftFilterPanelProps> = ({
           >
             <div className="flex items-center gap-1.5">
               <TreePine className="w-3.5 h-3.5 text-purple-500" />
-              <span>Dominator Chokepoints</span>
+              <span>High-impact dependencies</span>
             </div>
             {showDominators ? (
               <CheckSquare className="w-3.5 h-3.5 text-purple-600" />

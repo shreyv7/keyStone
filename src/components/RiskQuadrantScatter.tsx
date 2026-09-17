@@ -653,7 +653,7 @@ export const RiskQuadrantScatter: React.FC<RiskQuadrantScatterProps> = ({
 
             {hoveredPlotItem.node.articulationPoint && (
               <div className="text-[10px] font-bold text-red-600 dark:text-red-400 flex items-center gap-1">
-                <span>Critical Chokepoint</span>
+                <span>High-impact dependency</span>
               </div>
             )}
 

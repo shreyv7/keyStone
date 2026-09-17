@@ -61,7 +61,7 @@ export const DominatorLeaderboard: React.FC<DominatorLeaderboardProps> = ({
           <div>
             <div className="flex items-center gap-1.5">
               <span className={`text-xs font-bold ${isLight ? 'text-slate-900' : 'text-slate-100'}`}>
-                Top Chokepoints
+                High-impact dependencies
               </span>
             </div>
             <div className={`text-[10px] ${isLight ? 'text-slate-500' : 'text-slate-400'}`}>
@@ -122,7 +122,7 @@ export const DominatorLeaderboard: React.FC<DominatorLeaderboardProps> = ({
                       ? isLight ? 'bg-slate-200 text-slate-800' : 'bg-slate-800 text-slate-200'
                       : isLight ? 'bg-slate-100 text-slate-600' : 'bg-slate-800 text-slate-400'
                   }`}>
-                    {node.articulationPoint ? 'Chokepoint' : isRedundant ? 'Redundant' : 'Leaf'}
+                    {node.articulationPoint ? 'High impact' : isRedundant ? 'Redundant route' : 'Limited impact'}
                   </span>
                 </div>
               </div>
@@ -143,14 +143,14 @@ export const DominatorLeaderboard: React.FC<DominatorLeaderboardProps> = ({
         })}
       </div>
 
-      {/* Diamond Redundancy Proof Footnote */}
+      {/* Explanation of redundant dependency paths. */}
       <div className={`p-2.5 rounded-b-xl border-t text-[10px] leading-snug ${
         isLight ? 'bg-slate-50 border-slate-200 text-slate-600' : 'bg-slate-950 border-slate-800 text-slate-400'
       }`}>
         <div className="flex items-start gap-1.5">
           <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500 shrink-0 mt-0.5" />
           <span>
-            <strong>Diamond Redundancy:</strong> Components with multi-path fallback (e.g. redundant parsers) drop DC(v) to zero, proving architectural resilience.
+            <strong>Redundant paths:</strong> Components with multiple fallback routes are less likely to interrupt services when one dependency fails.
           </span>
         </div>
       </div>

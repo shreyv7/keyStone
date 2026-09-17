@@ -292,7 +292,7 @@ export const HeroTopologyShowcase: React.FC<HeroTopologyShowcaseProps> = ({
                     }`}
                 >
                   <Activity className="w-3.5 h-3.5" />
-                  <span>Simulate Cascade</span>
+                  <span>Simulate impact</span>
                 </button>
 
                 <button
@@ -306,7 +306,7 @@ export const HeroTopologyShowcase: React.FC<HeroTopologyShowcaseProps> = ({
                     }`}
                 >
                   <Scissors className="w-3.5 h-3.5" />
-                  <span>Targeted Fix</span>
+                  <span>Recommended fix</span>
                 </button>
               </div>
             </div>
@@ -323,7 +323,7 @@ export const HeroTopologyShowcase: React.FC<HeroTopologyShowcaseProps> = ({
                   onClick={() => setMode("mincut")}
                   className="px-2.5 py-1 rounded bg-red-600 hover:bg-red-700 text-white font-bold font-heading text-[11px] cursor-pointer shadow-xs shrink-0 ml-2"
                 >
-                  Deploy Targeted Fix
+                  Deploy recommended fix
                 </button>
               </div>
             )}
@@ -757,7 +757,7 @@ export const HeroTopologyShowcase: React.FC<HeroTopologyShowcaseProps> = ({
                 {mode === "mincut" ? "$0 Exposure" : "$85,000,000"}
               </div>
               <div className="text-[10px] text-slate-500">
-                {mode === "mincut" ? "100% Assets Protected" : "Tier-1 Payment & Auth Sinks"}
+                {mode === "mincut" ? "100% Assets Protected" : "Critical payment and identity services"}
               </div>
             </div>
           </div>

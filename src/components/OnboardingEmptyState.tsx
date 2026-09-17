@@ -92,7 +92,7 @@ export const OnboardingEmptyState: React.FC<OnboardingEmptyStateProps> = ({
               <ShieldAlert className="w-4 h-4" />
             </div>
             <h4 className="text-xs font-bold uppercase tracking-wider mb-1">
-              Critical Chokepoints
+              High-impact dependencies
             </h4>
             <p className={`text-xs leading-relaxed ${isLight ? 'text-slate-500' : 'text-slate-400'}`}>
               Identifies single points of failure and targeted remediations that sever contagion paths with zero breaking API changes.

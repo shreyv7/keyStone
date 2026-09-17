@@ -19,6 +19,8 @@ import {
   Trash2
 } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
+import { PageHeader } from './ui/PageHeader';
+import { MetricStrip } from './ui/MetricStrip';
 
 interface HardwareNode {
   id: string;
@@ -111,80 +113,36 @@ export const HardwarePage: React.FC = () => {
   };
 
   return (
-    <div className={`w-full h-full overflow-y-auto px-6 py-8 select-text ${
+    <div className={`w-full h-full overflow-y-auto px-4 py-5 sm:px-6 select-text ${
       isLight ? 'bg-white text-slate-900' : 'bg-[#080616] text-slate-100'
     }`}>
       <div className="max-w-6xl mx-auto flex flex-col gap-6">
         
-        {/* Header */}
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 pb-6 border-b border-slate-200/80 dark:border-slate-800">
-          <div>
-            <h1 className="text-2xl md:text-3xl font-bold tracking-tight text-slate-900 dark:text-white">Hardware & Scanner Agents</h1>
-            <p className="text-sm mt-2 max-w-3xl text-slate-600 dark:text-slate-400 leading-relaxed">
-              Manage on-premises and private VPC scanner nodes for local analysis and air-gapped environments.
-            </p>
-          </div>
-
+        <PageHeader
+          title="Scanner Agents"
+          description="Monitor scanner health, active capacity, and errors that need attention."
+          primaryAction={
           <button
             onClick={() => setIsRegisterModalOpen(true)}
-            className="btn-3d-primary px-4 py-2.5 rounded-xl text-xs font-bold text-white flex items-center gap-2 cursor-pointer select-none shrink-0"
+            className="ks-btn ks-btn-primary ks-btn-md"
           >
             <Plus className="w-4 h-4" />
-            <span>Register New Edge Node</span>
+            <span>Deploy scanner agent</span>
           </button>
-        </div>
+          }
+        />
 
-        {/* Status Metrics Ribbon */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-          <div className="connector-3d-card p-4 flex flex-col justify-between gap-1.5">
-            <span className="text-[11px] font-semibold uppercase tracking-wider text-slate-400 font-mono">Node Status</span>
-            <div className="flex items-baseline gap-2 mt-1">
-              <span className="text-2xl font-bold font-mono text-slate-900 dark:text-white">{onlineCount}</span>
-              <span className="text-xs text-slate-500 dark:text-slate-400 font-mono">/ {nodes.length} Online</span>
-            </div>
-            <span className="text-[11px] text-slate-500 dark:text-slate-400 flex items-center gap-1 mt-1 pt-1 border-t border-slate-200/60 dark:border-slate-800">
-              {degradedCount > 0 ? `${degradedCount} Node Degraded (Queue backlog)` : 'All nodes operational'}
-            </span>
-          </div>
-
-          <div className="connector-3d-card p-4 flex flex-col justify-between gap-1.5">
-            <span className="text-[11px] font-semibold uppercase tracking-wider text-slate-400 font-mono">Aggregate Ingestion Rate</span>
-            <div className="flex items-baseline gap-2 mt-1">
-              <span className="text-2xl font-bold font-mono text-slate-900 dark:text-white">420</span>
-              <span className="text-xs text-slate-500 dark:text-slate-400 font-mono">SBOMs / hr</span>
-            </div>
-            <span className="text-[11px] text-slate-500 dark:text-slate-400 mt-1 pt-1 border-t border-slate-200/60 dark:border-slate-800">
-              52,130 lifetime scans
-            </span>
-          </div>
-
-          <div className="connector-3d-card p-4 flex flex-col justify-between gap-1.5">
-            <span className="text-[11px] font-semibold uppercase tracking-wider text-slate-400 font-mono">Private Mesh</span>
-            <div className="flex items-baseline gap-2 mt-1">
-              <span className="text-2xl font-bold font-mono text-slate-900 dark:text-white">mTLS 1.3</span>
-            </div>
-            <span className="text-[11px] text-emerald-600 dark:text-emerald-400 font-medium flex items-center gap-1 mt-1 pt-1 border-t border-slate-200/60 dark:border-slate-800">
-              <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" /> End-to-end encrypted
-            </span>
-          </div>
-
-          <div className="connector-3d-card p-4 flex flex-col justify-between gap-1.5">
-            <span className="text-[11px] font-semibold uppercase tracking-wider text-slate-400 font-mono">Average Processing Latency</span>
-            <div className="flex items-baseline gap-2 mt-1">
-              <span className="text-2xl font-bold font-mono text-slate-900 dark:text-white">18ms</span>
-              <span className="text-xs text-slate-500 dark:text-slate-400 font-mono">p99</span>
-            </div>
-            <span className="text-[11px] text-slate-500 dark:text-slate-400 mt-1 pt-1 border-t border-slate-200/60 dark:border-slate-800">
-              Sub-second graph sync
-            </span>
-          </div>
-        </div>
+        <MetricStrip items={[
+          { label: 'Agent health', value: `${onlineCount} of ${nodes.length} online`, detail: degradedCount > 0 ? `${degradedCount} agent needs attention` : 'All agents healthy', tone: degradedCount > 0 ? 'warning' : 'healthy' },
+          { label: 'Active scan capacity', value: '420/hour', detail: 'Dependency manifests processed', tone: 'info' },
+          { label: 'Processing latency', value: '18ms', detail: '99th percentile', tone: 'neutral' },
+        ]} />
 
         {/* Nodes Table */}
         <div className="connector-3d-card overflow-hidden">
           <div className="p-4 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between">
-            <h3 className="text-sm font-semibold text-slate-900 dark:text-white">Registered Scanner Appliances</h3>
-            <span className="text-xs text-slate-500 dark:text-slate-400 font-mono">3 Assigned Nodes</span>
+            <h3 className="text-sm font-semibold text-slate-900 dark:text-white">Scanner agents</h3>
+            <span className="text-xs text-slate-500 dark:text-slate-400">{nodes.length} registered</span>
           </div>
 
           <div className="overflow-x-auto">

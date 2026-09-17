@@ -59,7 +59,7 @@ export const NodeTooltip: React.FC<NodeTooltipProps> = ({ node, position }) => {
         <div className={isLight ? 'text-slate-500' : 'text-slate-400'}>Reverse PageRank:</div>
         <div className={`text-right font-semibold ${isLight ? 'text-slate-800' : 'text-slate-200'}`}>{node.reversePageRankPercentile}th %ile</div>
 
-        <div className={isLight ? 'text-slate-500' : 'text-slate-400'}>Chokepoint:</div>
+        <div className={isLight ? 'text-slate-500' : 'text-slate-400'}>High impact:</div>
         <div className={`text-right font-semibold ${node.articulationPoint ? (isLight ? 'text-rose-600' : 'text-rose-400') : (isLight ? 'text-slate-500' : 'text-slate-400')}`}>
           {node.articulationPoint ? 'YES (Critical)' : 'NO'}
         </div>

@@ -23,6 +23,9 @@ import {
 } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
 import { RoleLens } from '../types';
+import { PageHeader } from './ui/PageHeader';
+import { MetricStrip } from './ui/MetricStrip';
+import { Disclosure } from './ui/Disclosure';
 
 interface RolloutCockpitViewProps {
   onReturnToGraph?: () => void;
@@ -134,61 +137,48 @@ export const RolloutCockpitView: React.FC<RolloutCockpitViewProps> = ({
   };
 
   return (
-    <div className={`absolute inset-0 z-20 backdrop-blur-md p-6 lg:p-8 flex flex-col gap-5 overflow-y-auto select-none ${
+    <div className={`absolute inset-0 z-20 backdrop-blur-md p-4 sm:p-6 lg:p-8 flex flex-col gap-5 overflow-y-auto select-none ${
       isLight ? 'bg-white text-slate-900' : 'bg-[#080616]/95 text-slate-100'
     }`}>
-      {/* Top Navigation & Breadcrumbs */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 pb-6 border-b border-slate-200/80 dark:border-slate-800">
-        <div>
-          <div className="flex items-center gap-2">
-            <h1 className="text-2xl md:text-3xl font-bold tracking-tight text-slate-900 dark:text-white font-heading">
-              Rollout Cockpit & Evidence Gate
-            </h1>
-          </div>
-          <p className="text-sm mt-1 max-w-2xl text-slate-500 dark:text-slate-400 font-sans leading-relaxed">
-            Campaign <span className="font-mono font-semibold text-blue-500">CAMP-2026-09-SNAKEYAML</span> (snakeyaml@1.33 ➔ 2.0) • Phased cohort deployments with cryptographic integrity lock.
-          </p>
-        </div>
-
-        <div className="flex items-center gap-3 shrink-0">
+      <PageHeader
+        title="Rollout Cockpit"
+        description="Track the snakeyaml update, resolve the active deployment hold, and promote each service group safely."
+        primaryAction={onOpenPRModal ? (
+          <button onClick={onOpenPRModal} className="ks-btn ks-btn-primary ks-btn-md">
+            <FileCode2 className="h-4 w-4" /> Review rollout PR
+          </button>
+        ) : undefined}
+        secondaryActions={
+          <>
           <button
             onClick={handleDownloadAuditTrail}
-            className="btn-3d-secondary px-4 py-2 rounded-xl text-xs font-semibold text-slate-700 dark:text-slate-200 flex items-center gap-2 cursor-pointer select-none"
+            className="ks-btn ks-btn-secondary ks-btn-md"
           >
-            {downloadedReceipt ? <Check className="w-3.5 h-3.5 text-emerald-500" /> : <Download className="w-3.5 h-3.5 text-blue-500" />}
-            <span>{downloadedReceipt ? 'Exported JSON' : 'Export Audit Trail'}</span>
+            {downloadedReceipt ? <Check className="w-3.5 h-3.5 text-emerald-500" /> : <Download className="w-3.5 h-3.5 text-slate-400" />}
+            <span>{downloadedReceipt ? 'Exported' : 'Export audit'}</span>
           </button>
 
           {onReturnToGraph && (
             <button
               onClick={onReturnToGraph}
-              className="btn-3d-primary px-4 py-2 rounded-xl text-xs font-bold text-white flex items-center gap-2 cursor-pointer select-none"
+              className="ks-btn ks-btn-ghost ks-btn-md"
             >
-              <span>Back to Topology</span>
-              <ArrowRight className="w-3.5 h-3.5" />
+              <span>Topology</span>
             </button>
           )}
-        </div>
-      </div>
+          </>
+        }
+      />
+
+      <MetricStrip items={[
+        { label: 'Current stage', value: isCohort1Promoted ? 'Critical services' : isSoakAccelerated ? 'Ready to promote' : 'Core service soak', detail: 'Phased deployment', tone: 'info' },
+        { label: 'Rollout progress', value: isCohort1Promoted ? '100%' : isSoakAccelerated ? '67%' : '48%', detail: 'Services updated', tone: isCohort1Promoted ? 'healthy' : 'neutral' },
+        { label: 'Needs attention', value: isFreezeOverridden ? 'Waiver active' : 'Deployment hold', detail: 'Critical services are waiting', tone: isFreezeOverridden ? 'warning' : 'critical' },
+      ]} />
 
       {/* Anti-TOCTOU Cryptographic Binding Indicator & Freeze Alert Bar */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-        {/* Anti-TOCTOU State Lock Card */}
-        <div className={`p-4 rounded-xl border flex flex-col justify-between gap-3 ${
-          isLight ? 'bg-slate-50/70 border-slate-200 shadow-xs' : 'bg-slate-900/60 border-slate-800'
-        }`}>
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-1.5">
-              <ShieldCheck className="w-4 h-4 text-emerald-500" />
-              <span className="text-xs font-bold">
-                Cryptographic Integrity Lock
-              </span>
-            </div>
-            <span className="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-emerald-500/10 text-emerald-500 border border-emerald-500/20">
-              Verified SHA-256
-            </span>
-          </div>
-
+        <Disclosure title="Artifact integrity" summary="Deployment artifact matches the reviewed lockfile">
           <div className="flex flex-col gap-1.5 text-xs font-mono">
             <div className="flex items-center justify-between">
               <span className={`${isLight ? 'text-slate-500' : 'text-slate-400'}`}>Lockfile SHA-256:</span>
@@ -208,8 +198,8 @@ export const RolloutCockpitView: React.FC<RolloutCockpitViewProps> = ({
               <span className="font-medium text-slate-700 dark:text-slate-300">{commitSha}</span>
             </div>
             <div className="flex items-center justify-between">
-              <span className={`${isLight ? 'text-slate-500' : 'text-slate-400'}`}>Time-Of-Check Binding:</span>
-              <span className="text-emerald-600 dark:text-emerald-400 font-semibold">Immutable (Zero Drift)</span>
+              <span className={`${isLight ? 'text-slate-500' : 'text-slate-400'}`}>Deployment binding:</span>
+              <span className="text-emerald-600 dark:text-emerald-400 font-semibold">No drift detected</span>
             </div>
           </div>
 
@@ -218,7 +208,7 @@ export const RolloutCockpitView: React.FC<RolloutCockpitViewProps> = ({
           }`}>
             Cryptographic verification ensures staging artifacts match production deployment.
           </div>
-        </div>
+        </Disclosure>
 
         {/* Enterprise Change Freeze Alert Card */}
         <div className={`p-4 rounded-xl border flex flex-col justify-between gap-3 lg:col-span-2 ${
@@ -236,14 +226,14 @@ export const RolloutCockpitView: React.FC<RolloutCockpitViewProps> = ({
               <div>
                 <div className="flex items-center gap-2">
                   <span className="text-xs font-bold uppercase tracking-wider">
-                    Enterprise Change Freeze Alert
+                    Critical services are on hold
                   </span>
                   <span className={`text-[10px] font-mono px-2 py-0.2 rounded font-bold uppercase border ${
                     isFreezeOverridden
                       ? 'bg-amber-500/20 text-amber-500 border-amber-500/40'
                       : 'bg-red-500/20 text-red-500 border-red-500/40'
                   }`}>
-                    {isFreezeOverridden ? 'OVERRIDE AUTHORIZED' : 'SOX Q3 FINANCIAL CLOSE'}
+                    {isFreezeOverridden ? 'WAIVER ACTIVE' : 'FINANCIAL CLOSE WINDOW'}
                   </span>
                 </div>
                 <p className={`text-[11px] ${isLight ? 'text-slate-600' : 'text-slate-400'}`}>
@@ -269,7 +259,7 @@ export const RolloutCockpitView: React.FC<RolloutCockpitViewProps> = ({
             <div className="flex items-center gap-2 text-xs">
               <AlertTriangle className={`w-3.5 h-3.5 ${isFreezeOverridden ? 'text-amber-500' : 'text-red-500'}`} />
               <span className={`${isLight ? 'text-slate-700' : 'text-slate-300'}`}>
-                <strong>Residual Exposure:</strong> CVE-2022-1471 remains unpatched on <code>payment-gateway</code> and <code>auth-iam</code>.
+                <strong>Still exposed:</strong> CVE-2022-1471 remains unpatched on <code>payment-gateway</code> and <code>auth-iam</code>.
               </span>
             </div>
 
@@ -279,14 +269,14 @@ export const RolloutCockpitView: React.FC<RolloutCockpitViewProps> = ({
                   onClick={() => setShowOverrideConfirm(true)}
                   className="px-2.5 py-1 rounded text-xs font-semibold bg-red-600 hover:bg-red-500 text-white transition-colors cursor-pointer"
                 >
-                  Force Policy Override Gate
+                  Request emergency waiver
                 </button>
               ) : (
                 <button
                   onClick={() => setIsFreezeOverridden(false)}
                   className="px-2.5 py-1 rounded text-xs font-semibold bg-slate-700 hover:bg-slate-600 text-white transition-colors cursor-pointer"
                 >
-                  Re-engage SOX Freeze
+                  Restore deployment hold
                 </button>
               )}
             </div>
@@ -305,7 +295,7 @@ export const RolloutCockpitView: React.FC<RolloutCockpitViewProps> = ({
               <h3 className="font-bold text-sm">Authorize Emergency Freeze Override</h3>
             </div>
             <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
-              Bypassing the SOX Financial Close change freeze will allow promotion to Tier-1 Regulated applications (<strong>payment-gateway</strong>). This action triggers an immutable compliance notification to the CISO, Internal Audit, and SecOps Slack channel.
+              Bypassing the financial-close hold will allow deployment to regulated applications (<strong>payment-gateway</strong>). This action notifies the CISO, Internal Audit, and SecOps Slack channel.
             </p>
             <div className="flex items-center justify-end gap-2 pt-2">
               <button
@@ -338,11 +328,11 @@ export const RolloutCockpitView: React.FC<RolloutCockpitViewProps> = ({
           <div className="flex items-center gap-2">
             <Layers className="w-4 h-4 text-blue-500" />
             <span className="font-bold text-sm tracking-tight">
-              Phased Cohort Promotion Timeline
+              Rollout progress
             </span>
           </div>
           <div className="text-[11px] text-slate-500 font-mono">
-            Pipeline: Canary (Tier-3) ──► Core (Tier-2) ──► Crown Jewels (Tier-1)
+            Canary services → Core services → Critical services
           </div>
         </div>
 
@@ -355,10 +345,10 @@ export const RolloutCockpitView: React.FC<RolloutCockpitViewProps> = ({
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-1.5">
                 <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
-                <span className="text-xs font-bold uppercase">Cohort 0: Canary</span>
+                <span className="text-xs font-bold">Canary services</span>
               </div>
               <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-emerald-500 text-white uppercase">
-                PROMOTED (100%)
+                Complete
               </span>
             </div>
 
@@ -412,14 +402,14 @@ export const RolloutCockpitView: React.FC<RolloutCockpitViewProps> = ({
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-1.5">
                 <span className={`w-2 h-2 rounded-full ${isCohort1Promoted ? 'bg-emerald-500' : 'bg-blue-500 animate-pulse'}`}></span>
-                <span className="text-xs font-bold uppercase">Cohort 1: Core</span>
+                <span className="text-xs font-bold">Core services</span>
               </div>
               <span className={`text-[10px] font-mono font-bold px-2 py-0.5 rounded uppercase ${
                 isCohort1Promoted 
                   ? 'bg-emerald-500 text-white' 
                   : 'bg-blue-500/20 text-blue-500 border border-blue-500/40'
               }`}>
-                {isCohort1Promoted ? 'PROMOTED (100%)' : isSoakAccelerated ? 'VALIDATED' : 'VALIDATING (Soak)'}
+                {isCohort1Promoted ? 'Complete' : isSoakAccelerated ? 'Ready' : 'Validating'}
               </span>
             </div>
 
@@ -445,7 +435,7 @@ export const RolloutCockpitView: React.FC<RolloutCockpitViewProps> = ({
                 <span className={`font-semibold flex items-center gap-1 ${
                   isCohort1Promoted || isSoakAccelerated ? 'text-emerald-600 dark:text-emerald-400' : 'text-blue-500'
                 }`}>
-                  <CheckCircle2 className="w-3 h-3" /> {isCohort1Promoted || isSoakAccelerated ? 'Passed [P]' : 'Validating [~]'}
+                  <CheckCircle2 className="w-3 h-3" /> {isCohort1Promoted || isSoakAccelerated ? 'Passed' : 'Validating'}
                 </span>
               </div>
               <div className="flex items-center justify-between">
@@ -500,14 +490,14 @@ export const RolloutCockpitView: React.FC<RolloutCockpitViewProps> = ({
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-1.5">
                 <span className={`w-2 h-2 rounded-full ${isFreezeOverridden ? 'bg-amber-500' : 'bg-red-500 animate-pulse'}`}></span>
-                <span className="text-xs font-bold uppercase">Cohort 2: Crown Jewels</span>
+                <span className="text-xs font-bold">Critical services</span>
               </div>
               <span className={`text-[10px] font-mono font-bold px-2 py-0.5 rounded uppercase ${
                 isFreezeOverridden 
                   ? 'bg-amber-500/20 text-amber-500 border border-amber-500/40' 
                   : 'bg-red-500/20 text-red-500 border border-red-500/40'
               }`}>
-                {isFreezeOverridden ? 'STAGE-GATE ARMED' : 'HELD (SOX FREEZE)'}
+                {isFreezeOverridden ? 'Waiver active' : 'On hold'}
               </span>
             </div>
 
@@ -516,7 +506,7 @@ export const RolloutCockpitView: React.FC<RolloutCockpitViewProps> = ({
                 payment-gateway, auth-iam
               </div>
               <div className="text-[11px] text-slate-500 mt-0.5">
-                Tier-1 PCI-DSS / Regulated Sinks
+                Regulated payment and identity services
               </div>
             </div>
 
@@ -573,16 +563,8 @@ export const RolloutCockpitView: React.FC<RolloutCockpitViewProps> = ({
       {/* ========================================================= */}
       {/* 3-LENS STAKEHOLDER SWITCHER & DETAILED ACTION PLAN         */}
       {/* ========================================================= */}
-      <div className={`p-5 rounded-xl border flex flex-col gap-4 ${
-        isLight ? 'bg-white border-slate-200 shadow-xs' : 'bg-slate-900/60 border-slate-800'
-      }`}>
-        <div className="flex items-center justify-between flex-wrap gap-2 border-b pb-3 border-slate-200 dark:border-slate-800">
-          <div className="flex items-center gap-2">
-            <span className="text-xs font-bold uppercase tracking-wider">
-              Stakeholder Explanation Lens:
-            </span>
-          </div>
-
+      <Disclosure title="Role-specific rollout details" summary="Implementation, executive, and maintainer evidence">
+        <div className="flex items-center justify-end flex-wrap gap-2 border-b pb-3 border-slate-200 dark:border-slate-800">
           <div className="flex items-center gap-1.5">
             {(['developer', 'ciso', 'maintainer'] as const).map((lens) => (
               <button
@@ -726,7 +708,7 @@ export const RolloutCockpitView: React.FC<RolloutCockpitViewProps> = ({
                 isLight ? 'bg-slate-50 border-slate-200' : 'bg-slate-950/60 border-slate-800'
               }`}>
                 <div className="font-bold text-[11px] text-slate-700 dark:text-slate-300 mb-1">
-                  Blast Radius Wavefront Partitioning
+                  Impact isolation
                 </div>
                 <p className="text-[11px] text-slate-500 leading-snug">
                   By cutting the vulnerability propagation path at the shared <code>internal-data-pipeline</code> boundary, downstream critical services are completely protected from deserialization payloads.
@@ -735,32 +717,18 @@ export const RolloutCockpitView: React.FC<RolloutCockpitViewProps> = ({
             </div>
           </div>
         )}
-      </div>
+      </Disclosure>
 
       {/* ========================================================= */}
       {/* MANDATORY EVIDENCE LIMITATION DISCLOSURE BANNER           */}
       {/* ========================================================= */}
-      <div className={`p-4 rounded-xl border flex flex-col gap-2.5 ${
-        isLight ? 'bg-slate-100/90 border-slate-300 text-slate-800' : 'bg-slate-950/90 border-slate-800 text-slate-200'
-      }`}>
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <Info className="w-4 h-4 text-blue-500 shrink-0" />
-            <span className="font-bold text-xs uppercase tracking-wider">
-              Verification Scope & Boundaries
-            </span>
-          </div>
-          <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-slate-200 dark:bg-slate-800 font-semibold">
-            Scope Invariant: ClaimScope(E) ⊆ ObservationScope(E)
-          </span>
-        </div>
-
+      <Disclosure title="Verification scope and limitations" summary="What was proven statically, at runtime, and what remains unknown">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-[11px] font-mono pt-1">
           <div className={`p-2.5 rounded border ${
             isLight ? 'bg-white border-slate-200' : 'bg-slate-900 border-slate-800'
           }`}>
             <div className="font-bold text-emerald-600 dark:text-emerald-400 mb-0.5">
-              1. STATIC PROOF (VERIFIED)
+              Static proof — verified
             </div>
             <div className="text-slate-500 dark:text-slate-400">
               Ecosystem resolver feasibility, 42 JVM linkage opcodes, 0 introduced CVEs mathematically proven.
@@ -771,7 +739,7 @@ export const RolloutCockpitView: React.FC<RolloutCockpitViewProps> = ({
             isLight ? 'bg-white border-slate-200' : 'bg-slate-900 border-slate-800'
           }`}>
             <div className="font-bold text-blue-600 dark:text-blue-400 mb-0.5">
-              2. RUNTIME CANARY EVIDENCE
+              Runtime canary evidence
             </div>
             <div className="text-slate-500 dark:text-slate-400">
               Dynamic JavaBean reflection in <code>Yaml.load()</code> empirically validated in Canary Cohort 0 (<code>reporting-dashboard</code>).
@@ -782,14 +750,14 @@ export const RolloutCockpitView: React.FC<RolloutCockpitViewProps> = ({
             isLight ? 'bg-white border-slate-200' : 'bg-slate-900 border-slate-800'
           }`}>
             <div className="font-bold text-amber-600 dark:text-amber-400 mb-0.5">
-              3. UNPROVEN BOUNDARIES
+              Not yet proven
             </div>
             <div className="text-slate-500 dark:text-slate-400">
-              Dynamic reflection for <code>payment-gateway</code> remains UNKNOWN until freeze lifts. Proof from Canary cannot be inherited by Crown Jewels.
+              Dynamic reflection for <code>payment-gateway</code> remains unknown until the hold lifts. Canary evidence does not automatically apply to critical services.
             </div>
           </div>
         </div>
-      </div>
+      </Disclosure>
     </div>
   );
 };

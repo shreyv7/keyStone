@@ -144,6 +144,14 @@ export const NodeIntelligencePanel: React.FC<NodeIntelligencePanelProps> = ({
 
   const isKeystone = node.category === 'keystone' || node.id === 'snakeyaml';
   const isCompromised = simulationPhase === 'simulating' || simulationPhase === 'active_compromise';
+  const isPackageNode = ['open-source', 'internal-lib', 'keystone'].includes(node.category);
+  const nodeKind = node.category === 'tier1-asset'
+    ? 'Critical production service'
+    : node.category === 'application'
+      ? 'Application service'
+      : node.category === 'service'
+        ? 'Service'
+        : 'Dependency';
 
   // Calculate dynamic financial exposure for CISO lens
   const dailyExposureMillions = (node.tier1Reach * 18.5 + node.dependents * 1.25).toFixed(1);
@@ -171,14 +179,6 @@ export const NodeIntelligencePanel: React.FC<NodeIntelligencePanelProps> = ({
         <div className="flex items-start justify-between">
           <div>
             <div className="flex items-center gap-2 mb-1.5 flex-wrap">
-              {/* Category */}
-              <span className={`text-[10px] font-semibold px-2 py-0.5 rounded uppercase ${
-                isLight ? 'bg-slate-100 text-slate-700' : 'bg-slate-800 text-slate-300'
-              }`}>
-                {node.category.replace('-', ' ')}
-              </span>
-
-              {/* Critical Chokepoint */}
               {node.articulationPoint && (
                 <span className={`text-[10px] font-semibold px-2 py-0.5 rounded uppercase flex items-center gap-1 border ${
                   isLight 
@@ -186,17 +186,17 @@ export const NodeIntelligencePanel: React.FC<NodeIntelligencePanelProps> = ({
                     : 'bg-red-950/40 text-red-400 border-red-800/50'
                 }`}>
                   <AlertTriangle className="w-3 h-3" />
-                  Critical Chokepoint
+                  High-impact dependency
                 </span>
               )}
             </div>
 
             <h2 className="text-lg font-bold flex items-baseline gap-2">
-              <span className="font-mono">{node.name}</span>
+              <span className={isPackageNode ? 'font-mono' : ''}>{node.name}</span>
               <span className={`text-xs font-mono font-normal ${isLight ? 'text-slate-500' : 'text-slate-400'}`}>v{node.version}</span>
             </h2>
             <div className={`text-xs mt-0.5 ${isLight ? 'text-slate-500' : 'text-slate-400'}`}>
-              {node.operationalDomain || 'Ecosystem Component'}
+              {nodeKind}
             </div>
           </div>
 
@@ -210,26 +210,6 @@ export const NodeIntelligencePanel: React.FC<NodeIntelligencePanelProps> = ({
           </button>
         </div>
       </div>
-
-      {/* Primary Chokepoint Action: Plan Targeted Fix */}
-      {(node.id === 'snakeyaml' || node.articulationPoint || node.category === 'keystone' || node.structuralRisk === 'critical') && (
-        <div className={`px-5 py-2.5 border-b ${isLight ? 'bg-amber-50/70 border-amber-200/80' : 'bg-amber-950/20 border-amber-900/40'}`}>
-          <button
-            onClick={() => onStartSimulation(node.id)}
-            className={`w-full py-2.5 px-3 rounded-lg text-xs font-bold flex items-center justify-between shadow-sm transition-all cursor-pointer ${
-              isLight 
-                ? 'bg-gradient-to-r from-red-600 via-rose-600 to-amber-600 hover:from-red-700 hover:to-amber-700 text-white shadow-rose-200' 
-                : 'bg-gradient-to-r from-red-600 via-rose-600 to-amber-500 hover:from-red-500 hover:to-amber-400 text-white shadow-red-950/50'
-            }`}
-          >
-            <div className="flex items-center gap-2">
-              <Zap className="w-4 h-4 fill-current animate-pulse text-amber-300" />
-              <span className="tracking-wide">Plan Targeted Fix</span>
-            </div>
-            <ArrowRight className="w-4 h-4" />
-          </button>
-        </div>
-      )}
 
       {/* View Mode Switcher: Overview vs Security Analysis */}
       <div className={`flex items-center border-b px-5 pt-2.5 gap-4 text-xs font-semibold shrink-0 ${
@@ -256,7 +236,7 @@ export const NodeIntelligencePanel: React.FC<NodeIntelligencePanelProps> = ({
           }`}
         >
           <Sparkles className="w-3.5 h-3.5 text-purple-500" />
-          <span>Security Analysis</span>
+          <span>Technical details</span>
         </button>
       </div>
 
@@ -279,11 +259,11 @@ export const NodeIntelligencePanel: React.FC<NodeIntelligencePanelProps> = ({
                   <div className="flex items-center justify-between">
                     <span className="font-bold text-xs flex items-center gap-1.5 text-purple-700 dark:text-purple-300">
                       <Sparkles className="w-3.5 h-3.5 text-purple-500" />
-                      <span>Security Analysis & Context</span>
+                      <span>Technical evidence summary</span>
                     </span>
                   </div>
                   <p className={`text-[11px] leading-tight ${isLight ? 'text-slate-600' : 'text-slate-400'}`}>
-                    Verified citations backed by graph topology and ingested security advisories.
+                    Evidence from dependency topology and ingested security advisories.
                   </p>
                 </div>
 
@@ -333,7 +313,7 @@ export const NodeIntelligencePanel: React.FC<NodeIntelligencePanelProps> = ({
                   <div>
                     <div className="flex items-center justify-between">
                       <span className={`text-[10px] font-mono uppercase font-semibold ${isLight ? 'text-slate-500' : 'text-slate-400'}`}>
-                        Executive Narrative
+                        Analysis summary
                       </span>
                       <button
                         onClick={() => handleCopyBriefing(currentBriefing.paragraph)}
@@ -442,6 +422,21 @@ export const NodeIntelligencePanel: React.FC<NodeIntelligencePanelProps> = ({
           /* EXISTING TELEMETRY & MATH CONTENT                         */
           /* ========================================================= */
           <>
+        <div className={`rounded-xl border p-4 ${
+          node.structuralRisk === 'critical'
+            ? isLight ? 'border-red-200 bg-red-50/60' : 'border-red-900/50 bg-red-950/20'
+            : isLight ? 'border-slate-200 bg-slate-50' : 'border-slate-800 bg-slate-900/50'
+        }`}>
+          <span className={node.structuralRisk === 'critical' ? 'ks-badge ks-badge-critical' : 'ks-badge ks-badge-warning'}>
+            {node.structuralRisk === 'critical' ? 'Critical' : 'Warning'}
+          </span>
+          <h3 className="mt-2 text-sm font-bold text-slate-900 dark:text-white">
+            {node.name} affects {node.dependents} services, including {node.tier1Reach} critical services
+          </h3>
+          <p className="mt-1 text-xs leading-relaxed text-slate-600 dark:text-slate-400">
+            Review the recommended update or simulate the impact before changing production dependencies.
+          </p>
+        </div>
         
         {/* Forensic Timeline Replay Notice */}
         {timeTravelDay !== undefined && timeTravelDay < 0 && (
@@ -471,7 +466,7 @@ export const NodeIntelligencePanel: React.FC<NodeIntelligencePanelProps> = ({
                   ? 'Historical baseline: No anomalous activity detected. Committer velocity is normal and downstream dependencies are insulated.'
                   : timeTravelDay < -15
                   ? 'Pre-CVE anomaly phase: Keystone detected an uncharacteristic committer takeover and divergent release artifact 30 days prior to NVD publication.'
-                  : 'Vulnerability window: Public disclosure is active, exposing 4 Tier-1 production assets to potential systemic compromise.'}
+                  : 'Vulnerability window: Public disclosure is active, exposing 4 critical production services to potential compromise.'}
               </p>
             </div>
           </div>
@@ -553,7 +548,7 @@ export const NodeIntelligencePanel: React.FC<NodeIntelligencePanelProps> = ({
         )}
 
         {/* Scoring Attribution & Audit Receipt (Progressive Disclosure) */}
-        {node.waterfallReceipt && (
+        {node.waterfallReceipt && activeLens !== 'developer' && (
           <details className={`group rounded-xl border p-3.5 text-xs transition-colors ${
             isLight ? 'bg-slate-50 border-slate-200' : 'bg-slate-950/60 border-slate-800'
           }`}>
@@ -585,7 +580,7 @@ export const NodeIntelligencePanel: React.FC<NodeIntelligencePanelProps> = ({
                   <span className={`text-xs font-semibold uppercase tracking-wider ${
                     isLight ? 'text-purple-900' : 'text-purple-200'
                   }`}>
-                    Financial Blast Radius
+                    Financial exposure
                   </span>
                 </div>
                 <span className={`text-[10px] px-2 py-0.5 rounded font-bold uppercase ${
@@ -627,7 +622,7 @@ export const NodeIntelligencePanel: React.FC<NodeIntelligencePanelProps> = ({
                     ${dailyExposureMillions}M<span className="text-xs font-normal text-slate-500">/day</span>
                   </div>
                   <span className={`text-[10px] ${isLight ? 'text-slate-500' : 'text-slate-500'}`}>
-                    Based on {node.tier1Reach} Tier-1 sinks
+                    Based on {node.tier1Reach} critical services
                   </span>
                 </div>
 
@@ -738,12 +733,12 @@ export const NodeIntelligencePanel: React.FC<NodeIntelligencePanelProps> = ({
             }`}>
               <div className="flex items-center justify-between">
                 <span className={`text-xs font-semibold ${isLight ? 'text-slate-800' : 'text-slate-200'}`}>
-                  SIFI Contagion Factor
+                  Portfolio concentration
                 </span>
                 <span className={`text-xs font-mono font-bold ${
                   node.systemicScore >= 80 ? 'text-red-600' : 'text-amber-600'
                 }`}>
-                  {node.systemicScore >= 80 ? 'CRITICAL SIFI' : 'MODERATE SIFI'}
+                  {node.systemicScore >= 80 ? 'Critical concentration' : 'Moderate concentration'}
                 </span>
               </div>
               <div className="w-full bg-slate-200 dark:bg-slate-800 h-2.5 rounded-full overflow-hidden">
@@ -765,114 +760,42 @@ export const NodeIntelligencePanel: React.FC<NodeIntelligencePanelProps> = ({
         {/* 2. APPSEC / DEVELOPER LENS VIEW (DEFAULT)                 */}
         {/* ========================================================= */}
         {activeLens === 'developer' && (
-          <>
-            {/* Stage 1 Structural Danger Score Panel (F1 Formula: SD = T * F) */}
-            <div className={`p-4 rounded-xl border flex flex-col gap-3.5 transition-all ${
-              isLight ? 'bg-white border-slate-200 shadow-xs' : 'bg-slate-900/70 border-slate-800'
+          <details className={`group rounded-xl border ${
+            isLight ? 'bg-slate-50 border-slate-200' : 'bg-slate-950/40 border-slate-800'
+          }`}>
+            <summary className="cursor-pointer list-none p-3.5 flex items-center justify-between gap-3 select-none">
+              <div>
+                <span className={`block text-xs font-semibold ${isLight ? 'text-slate-800' : 'text-slate-200'}`}>Technical investigation</span>
+                <span className={`mt-0.5 block text-[11px] ${isLight ? 'text-slate-500' : 'text-slate-400'}`}>View scoring, package health, release signals, and detailed evidence.</span>
+              </div>
+              <span className={`text-xs transition-transform group-open:rotate-180 ${isLight ? 'text-slate-500' : 'text-slate-400'}`}>⌄</span>
+            </summary>
+            <div className="border-t border-slate-200 p-3.5 pt-4 dark:border-slate-800 flex flex-col gap-4">
+            <section className={`rounded-lg border p-3.5 ${
+              node.structuralRisk === 'critical'
+                ? isLight ? 'border-red-200 bg-red-50/50' : 'border-red-900/50 bg-red-950/20'
+                : isLight ? 'border-slate-200 bg-white' : 'border-slate-900 bg-slate-900/40'
             }`}>
-              <div className="flex items-start justify-between">
+              <div className="flex items-start justify-between gap-3">
                 <div>
-                  <div className="flex items-center gap-1.5 mb-1">
-                    <span className={`text-[9px] font-bold px-2 py-0.5 rounded border uppercase tracking-wider ${
-                      isLight 
-                        ? 'bg-cyan-50 text-cyan-800 border-cyan-200' 
-                        : 'bg-cyan-950/40 text-cyan-300 border-cyan-800/50'
-                    }`}>
-                      Structural Analysis
-                    </span>
-                    <span className={`text-[10px] ${isLight ? 'text-slate-500' : 'text-slate-400'}`}>
-                      Topology & Fragility
-                    </span>
-                  </div>
-                  <h3 className={`text-sm font-bold flex items-center gap-1.5 ${
-                    isLight ? 'text-slate-900' : 'text-slate-100'
-                  }`}>
-                    <span>Structural Risk Score</span>
-                  </h3>
+                  <h3 className={`text-sm font-semibold ${isLight ? 'text-slate-900' : 'text-slate-100'}`}>Why this matters</h3>
+                  <p className={`mt-1 text-xs leading-relaxed ${isLight ? 'text-slate-600' : 'text-slate-400'}`}>
+                    {node.articulationPoint
+                      ? 'This dependency has no safe alternate route, so a failure could interrupt connected services.'
+                      : 'Keystone found alternate routes, reducing the chance that this dependency alone interrupts service.'}
+                  </p>
                 </div>
-
-                <div className="text-right">
-                  <div className="text-2xl font-bold font-mono text-cyan-600 dark:text-cyan-400 leading-none">
-                    {structuralDangerScore}
-                    <span className="text-xs font-normal text-slate-500">/100</span>
-                  </div>
-                  <span className={`text-[9px] font-bold uppercase ${
-                    structuralDangerScore >= 80 
-                      ? 'text-red-600' 
-                      : structuralDangerScore >= 50 
-                      ? 'text-amber-600' 
-                      : 'text-emerald-600'
-                  }`}>
-                    {structuralDangerScore >= 80 ? 'Critical Risk' : structuralDangerScore >= 50 ? 'Elevated Risk' : 'Nominal Risk'}
-                  </span>
-                </div>
-              </div>
-
-              {/* Formula Factors Breakdown: T(v) and F(v) */}
-              <div className="grid grid-cols-2 gap-2 text-xs">
-                {/* T(v): Topological Centrality Factor */}
-                <div className={`p-2.5 rounded-md border flex flex-col justify-between ${
-                  isLight ? 'bg-white border-slate-200' : 'bg-slate-950/80 border-slate-800'
+                <span className={`shrink-0 text-xs font-semibold ${
+                  structuralDangerScore >= 80 ? 'text-red-600 dark:text-red-400' : structuralDangerScore >= 50 ? 'text-amber-600 dark:text-amber-400' : 'text-emerald-600 dark:text-emerald-400'
                 }`}>
-                  <div>
-                    <div className="flex items-center justify-between">
-                      <span className={`text-[10px] uppercase font-semibold ${isLight ? 'text-slate-500' : 'text-slate-400'}`}>
-                        Topology Centrality
-                      </span>
-                      <span className="font-mono font-bold text-xs text-cyan-600">
-                        {topologicalScore}%
-                      </span>
-                    </div>
-                    <div className={`text-[11px] mt-1 font-mono ${isLight ? 'text-slate-700' : 'text-slate-300'}`}>
-                      0.6·PR⁻¹ + 0.4·BC
-                    </div>
-                  </div>
-                  <div className={`text-[10px] mt-1.5 ${isLight ? 'text-slate-500' : 'text-slate-400'}`}>
-                    P{node.reversePageRankPercentile} PageRank • P{node.betweennessPercentile} Betweenness
-                  </div>
-                </div>
-
-                {/* F(v): Fragility Multiplier */}
-                <div className={`p-2.5 rounded-md border flex flex-col justify-between ${
-                  node.articulationPoint
-                    ? isLight ? 'bg-red-50/40 border-red-200' : 'bg-red-950/20 border-red-900/40'
-                    : isLight ? 'bg-white border-slate-200' : 'bg-slate-950/80 border-slate-800'
-                }`}>
-                  <div>
-                    <div className="flex items-center justify-between">
-                      <span className={`text-[10px] uppercase font-semibold ${
-                        node.articulationPoint ? 'text-red-700 dark:text-red-400' : isLight ? 'text-slate-500' : 'text-slate-400'
-                      }`}>
-                        Fragility Factor
-                      </span>
-                      <span className={`font-mono font-bold text-xs ${
-                        node.articulationPoint ? 'text-red-600' : 'text-slate-700 dark:text-slate-300'
-                      }`}>
-                        {fragilityMultiplier}×
-                      </span>
-                    </div>
-                    <div className={`text-[11px] mt-1 font-semibold ${
-                      node.articulationPoint ? 'text-red-700 dark:text-red-300' : isLight ? 'text-slate-700' : 'text-slate-300'
-                    }`}>
-                      {node.articulationPoint ? 'Critical Chokepoint' : 'Non-Chokepoint'}
-                    </div>
-                  </div>
-                  <div className={`text-[10px] mt-1.5 ${isLight ? 'text-slate-500' : 'text-slate-400'}`}>
-                    {node.maintainers} maintainer(s) • {node.dependents} dependents
-                  </div>
-                </div>
+                  {structuralDangerScore >= 80 ? 'Critical' : structuralDangerScore >= 50 ? 'Elevated' : 'Normal'}
+                </span>
               </div>
-
-              {/* Zero CVE Assertion Banner */}
-              <div className={`p-2.5 rounded-md text-[11px] leading-relaxed border ${
-                isLight 
-                  ? 'bg-cyan-50/60 border-cyan-200 text-cyan-950' 
-                  : 'bg-cyan-950/30 border-cyan-900/40 text-cyan-200'
-              }`}>
-                <strong>Topological Risk Evaluation: </strong>
-                Evaluated from dependency network topology and single-point-of-failure analysis.
+              <div className={`mt-3 flex items-center gap-4 border-t pt-3 text-xs ${isLight ? 'border-slate-200 text-slate-600' : 'border-slate-800 text-slate-400'}`}>
+                <span><strong className={isLight ? 'text-slate-900' : 'text-slate-100'}>{node.dependents}</strong> affected services</span>
+                <span><strong className={node.tier1Reach > 0 ? 'text-red-600 dark:text-red-400' : isLight ? 'text-slate-900' : 'text-slate-100'}>{node.tier1Reach}</strong> critical services</span>
               </div>
-            </div>
+            </section>
 
             {/* F4 XZ Radar: Support Divergence Deficit Barometer (PDI) */}
             <SupportDivergenceCard node={node} />
@@ -919,7 +842,7 @@ export const NodeIntelligencePanel: React.FC<NodeIntelligencePanelProps> = ({
                       <span className="text-[9px] font-bold text-emerald-600 uppercase">ACTIVE</span>
                     </div>
                     <div className={`text-[10px] leading-tight ${isLight ? 'text-slate-600' : 'text-slate-400'}`}>
-                      In-memory execution calls reach {node.tier1Reach} Tier-1 production endpoints.
+                      In-memory execution calls reach {node.tier1Reach} critical production services.
                     </div>
                   </div>
                   <div className={`text-[9px] font-mono mt-2 pt-1 border-t ${isLight ? 'border-slate-100 text-slate-500' : 'border-slate-800 text-slate-500'}`}>
@@ -1170,7 +1093,7 @@ export const NodeIntelligencePanel: React.FC<NodeIntelligencePanelProps> = ({
                 isLight ? 'text-slate-500' : 'text-slate-400'
               }`}>
                 <span>Risk Evaluation</span>
-                <span className={isLight ? 'text-slate-600' : 'text-slate-400'}>Isolated vs. Systemic</span>
+                <span className={isLight ? 'text-slate-600' : 'text-slate-400'}>Package score vs. service impact</span>
               </div>
 
               <div className="grid grid-cols-2 gap-2.5">
@@ -1195,7 +1118,7 @@ export const NodeIntelligencePanel: React.FC<NodeIntelligencePanelProps> = ({
                 <div className={`p-2.5 rounded-md border flex flex-col gap-1 ${
                   isLight ? 'bg-red-50/50 border-red-200' : 'bg-red-950/20 border-red-900/40'
                 }`}>
-                  <div className={`text-[10px] uppercase font-semibold ${isLight ? 'text-red-800' : 'text-red-300'}`}>Systemic Risk</div>
+                  <div className={`text-[10px] uppercase font-semibold ${isLight ? 'text-red-800' : 'text-red-300'}`}>Service impact risk</div>
                   <div className="flex items-baseline gap-1">
                     <span className="text-xl font-bold font-mono text-red-600">{node.systemicScore}</span>
                     <span className={`text-[10px] ${isLight ? 'text-red-600/70' : 'text-red-400/70'}`}>/ 100</span>
@@ -1221,7 +1144,7 @@ export const NodeIntelligencePanel: React.FC<NodeIntelligencePanelProps> = ({
               <div className={`p-2.5 rounded-md border ${
                 isLight ? 'bg-white border-slate-200' : 'bg-slate-900/60 border-slate-800'
               }`}>
-                <span className={`text-[10px] ${isLight ? 'text-slate-500' : 'text-slate-400'}`}>Tier-1 Reach</span>
+                <span className={`text-[10px] ${isLight ? 'text-slate-500' : 'text-slate-400'}`}>Critical services</span>
                 <div className={`text-base font-bold font-mono mt-0.5 ${node.tier1Reach > 0 ? 'text-red-600' : ''}`}>
                   {node.tier1Reach}
                 </div>
@@ -1239,12 +1162,22 @@ export const NodeIntelligencePanel: React.FC<NodeIntelligencePanelProps> = ({
             {/* F8 Dual Triage: SSVC Qualitative Decision Tree */}
             <SSVCDecisionTree node={node} />
 
-            {/* F8 Quantitative ORE Log-Additive Attribution Waterfall */}
-            <RiskWaterfall mode="ore" node={node} />
-
-            {/* Stage 2 Additive Risk Breakdown Waterfall */}
-            <RiskWaterfall mode="additive" node={node} />
-          </>
+            <details className={`group rounded-lg border p-3 ${
+              isLight ? 'bg-slate-50 border-slate-200' : 'bg-slate-950/60 border-slate-800'
+            }`}>
+              <summary className={`cursor-pointer list-none flex items-center justify-between text-xs font-semibold ${
+                isLight ? 'text-slate-700' : 'text-slate-300'
+              }`}>
+                <span>Scoring methodology</span>
+                <span className={`transition-transform group-open:rotate-180 ${isLight ? 'text-slate-500' : 'text-slate-400'}`}>⌄</span>
+              </summary>
+              <div className="mt-3 flex flex-col gap-4">
+                <RiskWaterfall mode="ore" node={node} />
+                <RiskWaterfall mode="additive" node={node} />
+              </div>
+            </details>
+            </div>
+          </details>
         )}
 
         {/* ========================================================= */}
@@ -1435,21 +1368,13 @@ export const NodeIntelligencePanel: React.FC<NodeIntelligencePanelProps> = ({
           <>
             <button
               onClick={() => onStartSimulation(node.id)}
-              className={`w-full py-2.5 px-3 rounded-lg text-xs font-bold flex items-center justify-center gap-2 shadow-sm transition-all cursor-pointer ${
-                node.id === 'snakeyaml' || node.articulationPoint || node.category === 'keystone'
-                  ? isLight 
-                    ? 'bg-gradient-to-r from-red-600 via-rose-600 to-amber-600 hover:from-red-700 hover:to-amber-700 text-white shadow-rose-200' 
-                    : 'bg-gradient-to-r from-red-600 via-rose-600 to-amber-500 hover:from-red-500 hover:to-amber-400 text-white shadow-red-950/50'
-                  : isLight 
-                  ? 'bg-slate-900 hover:bg-slate-800 text-white' 
-                  : 'bg-slate-100 hover:bg-white text-slate-900'
-              }`}
+              className="w-full py-2.5 px-4 rounded-xl text-xs font-semibold flex items-center justify-center gap-2 transition-all bg-[#2f2fe4] hover:bg-[#4343f8] text-white shadow-xs cursor-pointer"
             >
-              <Zap className="w-3.5 h-3.5 fill-current animate-pulse text-amber-300" />
+              <Zap className="w-3.5 h-3.5 fill-current" />
               <span>
                 {node.id === 'snakeyaml' || node.articulationPoint || node.category === 'keystone'
-                  ? 'Plan Targeted Fix'
-                  : 'Simulate Compromise on this Node'}
+                  ? 'Review recommended fix'
+                  : 'Simulate impact'}
               </span>
               <ArrowRight className="w-3.5 h-3.5" />
             </button>
@@ -1480,7 +1405,7 @@ export const NodeIntelligencePanel: React.FC<NodeIntelligencePanelProps> = ({
               }`}
             >
               <Layers className="w-3.5 h-3.5" />
-              <span>Simulate Downstream API Compatibility</span>
+              <span>Simulate compatibility impact</span>
             </button>
 
             <button

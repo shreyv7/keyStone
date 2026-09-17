@@ -69,7 +69,7 @@ export const TopKPIStrip: React.FC<TopKPIStripProps> = ({
           <Target className="w-3.5 h-3.5 text-purple-500" />
           <div className="flex items-baseline gap-1">
             <span className={`font-mono font-bold text-xs ${isLight ? 'text-purple-600' : 'text-purple-400'}`}>{dominatorsCount}</span>
-            <span className={`text-[10px] font-semibold ${isLight ? 'text-purple-800' : 'text-purple-300'}`}>Chokepoints</span>
+            <span className={`text-[10px] font-semibold ${isLight ? 'text-blue-800' : 'text-blue-300'}`}>High impact</span>
           </div>
         </button>
 

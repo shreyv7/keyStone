@@ -160,7 +160,7 @@ export const AuthOnboardingModal: React.FC<AuthOnboardingModalProps> = ({
             <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight text-white leading-[1.12]">
               Map every dependency. <br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-sky-300 to-indigo-300">
-                Neutralize every chokepoint.
+                Fix the dependencies with the widest impact.
               </span>
             </h1>
           </div>
@@ -540,7 +540,7 @@ export const AuthOnboardingModal: React.FC<AuthOnboardingModalProps> = ({
                   <div>
                     <h3 className="text-lg font-bold">Select your perspective & threat model</h3>
                     <p className="text-xs text-slate-500">
-                      Keystone tailors telemetry, graph weights, and PR prescriptions to your role.
+                      Keystone tailors impact summaries, evidence, and recommended fixes to your role.
                     </p>
                   </div>
 
@@ -548,7 +548,7 @@ export const AuthOnboardingModal: React.FC<AuthOnboardingModalProps> = ({
                   <div className="grid grid-cols-3 gap-2.5">
                     {[
                       { id: 'ciso', title: 'Executive / CISO', icon: ShieldAlert, desc: 'Service blast radius & business risk' },
-                      { id: 'developer', title: 'AppSec Lead', icon: SlidersHorizontal, desc: 'Chokepoint analysis & service reach' },
+                      { id: 'developer', title: 'AppSec Lead', icon: SlidersHorizontal, desc: 'Dependency impact and service reach' },
                       { id: 'maintainer', title: 'Platform Dev', icon: Terminal, desc: '1-Click coordinated multi-repo fixes' },
                     ].map((role) => {
                       const Icon = role.icon;
@@ -588,8 +588,8 @@ export const AuthOnboardingModal: React.FC<AuthOnboardingModalProps> = ({
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                       {[
                         { id: 'eliminate_alert_fatigue', label: 'Reduce Alert Noise Across Teams' },
-                        { id: 'pre_cve_stealth', label: 'Detect Unmaintained Chokepoints Early' },
-                        { id: 'min_cut_prs', label: 'Apply Targeted Multi-Repo Fixes' },
+                        { id: 'pre_cve_stealth', label: 'Find Fragile Dependencies Early' },
+                        { id: 'min_cut_prs', label: 'Coordinate Multi-Repository Fixes' },
                         { id: 'cyclonedx_sbom', label: 'Continuous SBOM & Manifest Sync' },
                         { id: 'namespace_squatting', label: 'Namespace Impersonation Protection' },
                       ].map((p) => {
@@ -759,7 +759,7 @@ export const AuthOnboardingModal: React.FC<AuthOnboardingModalProps> = ({
                     {[
                       { index: 0, label: 'Repositories Connected: 42 enterprise repositories synchronized' },
                       { index: 1, label: 'Dependencies Mapped: 1,489 transitive packages analyzed' },
-                      { index: 2, label: 'Chokepoint Analysis: Isolated 3 single points of failure' },
+                      { index: 2, label: 'Impact analysis: Found 3 single points of failure' },
                       { index: 3, label: 'Primary Risk Detected: snakeyaml@1.33 (Connected to 4 production services)' }
                     ].map((step) => {
                       const isCompleted = scanPhaseIndex > step.index || isScanDone;

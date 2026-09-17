@@ -19,6 +19,7 @@ import {
 } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
 import { RoleLens, NavView } from '../types';
+import { PageHeader } from './ui/PageHeader';
 
 export const SettingsPage: React.FC = () => {
   const { isLight } = useTheme();
@@ -27,7 +28,7 @@ export const SettingsPage: React.FC = () => {
   // General state
   const [workspaceName, setWorkspaceName] = useState('Acme Global Core Workspace');
   const [defaultLens, setDefaultLens] = useState<RoleLens>('developer');
-  const [defaultView, setDefaultView] = useState<NavView>('ecosystem');
+  const [defaultView, setDefaultView] = useState<NavView>('overview');
   const [sifiThreshold, setSifiThreshold] = useState<number>(70);
   const [timezone, setTimezone] = useState('Asia/Kolkata (IST +05:30)');
 
@@ -73,28 +74,24 @@ export const SettingsPage: React.FC = () => {
   };
 
   return (
-    <div className={`w-full h-full overflow-y-auto px-6 py-8 select-text ${
+    <div className={`w-full h-full overflow-y-auto px-4 py-5 sm:px-6 select-text ${
       isLight ? 'bg-white text-slate-900' : 'bg-[#080616] text-slate-100'
     }`}>
       <div className="max-w-6xl mx-auto flex flex-col gap-6">
         
-        {/* Header */}
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 pb-6 border-b border-slate-200/80 dark:border-slate-800">
-          <div>
-            <h1 className="text-2xl md:text-3xl font-bold tracking-tight text-slate-900 dark:text-white">System & Security Settings</h1>
-            <p className="text-sm mt-2 max-w-3xl text-slate-600 dark:text-slate-400 leading-relaxed">
-              Configure default security lenses, concentration thresholds, authentication enforcement, and data residency.
-            </p>
-          </div>
-
+        <PageHeader
+          title="Settings"
+          description="Configure workspace defaults, access controls, notifications, and data residency."
+          primaryAction={
           <button
             onClick={handleSave}
-            className="btn-3d-primary flex items-center gap-2 px-5 py-2.5 text-sm shrink-0 cursor-pointer"
+            className="ks-btn ks-btn-primary ks-btn-md"
           >
             {saveSuccess ? <Check className="w-4 h-4" /> : <Save className="w-4 h-4" />}
-            <span>{saveSuccess ? 'Saved' : 'Save All Settings'}</span>
+            <span>{saveSuccess ? 'Saved' : 'Save settings'}</span>
           </button>
-        </div>
+          }
+        />
 
         {/* Layout: Left Sidebar Tabs + Right Content */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
@@ -110,7 +107,7 @@ export const SettingsPage: React.FC = () => {
               }`}
             >
               <Sliders className="w-4 h-4" />
-              <span>General & Defaults</span>
+              <span>General</span>
             </button>
 
             <button
@@ -122,7 +119,7 @@ export const SettingsPage: React.FC = () => {
               }`}
             >
               <Shield className="w-4 h-4" />
-              <span>Security & Access (SSO)</span>
+              <span>Security & access</span>
             </button>
 
             <button
@@ -134,7 +131,7 @@ export const SettingsPage: React.FC = () => {
               }`}
             >
               <Bell className="w-4 h-4" />
-              <span>Alerts & Notifications</span>
+              <span>Notifications</span>
             </button>
 
             <button
@@ -146,7 +143,7 @@ export const SettingsPage: React.FC = () => {
               }`}
             >
               <Globe className="w-4 h-4" />
-              <span>Data Residency & KMS</span>
+              <span>Data residency</span>
             </button>
 
             <div className="pt-2 mt-2 border-t border-slate-200 dark:border-slate-800">
@@ -169,10 +166,10 @@ export const SettingsPage: React.FC = () => {
             
             {/* GENERAL SECTION */}
             {activeSection === 'general' && (
-              <div className="connector-3d-card p-6 flex flex-col gap-6">
+              <div className="ks-card p-5 flex flex-col gap-5">
                 <div>
-                  <h3 className="text-lg font-semibold text-slate-900 dark:text-white">General Workspace Configuration</h3>
-                  <p className="text-sm text-slate-500 dark:text-slate-400 mt-0.5">Control default perspectives and algorithmic thresholds.</p>
+                  <h3 className="text-lg font-semibold text-slate-900 dark:text-white">Workspace preferences</h3>
+                  <p className="text-sm text-slate-500 dark:text-slate-400 mt-0.5">Choose defaults for the way your team reviews risk.</p>
                 </div>
 
                 <div className="flex flex-col gap-5 text-sm">
@@ -213,16 +210,16 @@ export const SettingsPage: React.FC = () => {
                     </div>
                   </div>
 
-                  {/* SIFI Threshold Slider */}
+                  {/* Portfolio alert threshold */}
                   <div className={`p-4 rounded-xl border flex flex-col gap-2.5 ${
                     isLight ? 'bg-white border-slate-200 shadow-xs' : 'bg-slate-950/70 border-slate-800'
                   }`}>
                     <div className="flex items-center justify-between text-sm">
-                      <span className="font-semibold text-slate-900 dark:text-white">Systemic Risk SIFI Threshold</span>
+                      <span className="font-semibold text-slate-900 dark:text-white">Portfolio risk concentration threshold</span>
                       <span className="font-mono text-blue-600 dark:text-blue-400 font-bold text-sm">{sifiThreshold}% Concentration</span>
                     </div>
                     <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
-                      Dependencies reaching more than this percentage of critical assets are designated as systemic risks.
+                      Keystone highlights dependencies that can reach more than this share of critical services.
                     </p>
                     <input
                       type="range"
@@ -237,7 +234,7 @@ export const SettingsPage: React.FC = () => {
 
                   {/* Default Entry View */}
                   <div>
-                    <label className="text-slate-700 dark:text-slate-300 block mb-1.5 font-medium">Default Landing Console View</label>
+                    <label className="text-slate-700 dark:text-slate-300 block mb-1.5 font-medium">Default landing page</label>
                     <select
                       value={defaultView}
                       onChange={e => setDefaultView(e.target.value as NavView)}
@@ -269,7 +266,7 @@ export const SettingsPage: React.FC = () => {
 
             {/* SECURITY & SSO SECTION */}
             {activeSection === 'security' && (
-              <div className="connector-3d-card p-6 flex flex-col gap-6">
+              <div className="ks-card p-5 flex flex-col gap-5">
                 <div>
                   <h3 className="text-lg font-semibold text-slate-900 dark:text-white">Authentication & Zero Trust Security</h3>
                   <p className="text-sm text-slate-500 dark:text-slate-400 mt-0.5">SAML 2.0 Identity Provider federation, hardware WebAuthn, and session controls.</p>
@@ -359,7 +356,7 @@ export const SettingsPage: React.FC = () => {
 
             {/* NOTIFICATIONS SECTION */}
             {activeSection === 'notifications' && (
-              <div className="connector-3d-card p-6 flex flex-col gap-6">
+              <div className="ks-card p-5 flex flex-col gap-5">
                 <div>
                   <h3 className="text-lg font-semibold text-slate-900 dark:text-white">Alert Dispatches & Webhooks</h3>
                   <p className="text-sm text-slate-500 dark:text-slate-400 mt-0.5">Route high-priority security notifications to integrated communication channels.</p>
@@ -395,7 +392,7 @@ export const SettingsPage: React.FC = () => {
                   <div className="flex items-center justify-between p-4 rounded-xl border border-slate-200 dark:border-slate-800">
                     <div>
                       <span className="font-semibold block text-slate-900 dark:text-white">Daily CISO & Executive Email Digest</span>
-                      <span className="text-xs text-slate-500 dark:text-slate-400">Aggregated macro posture, total SIFI concentration, and severed vectors</span>
+                      <span className="text-xs text-slate-500 dark:text-slate-400">Portfolio posture, risk concentration, and protected dependency paths</span>
                     </div>
                     <input
                       type="checkbox"
@@ -452,7 +449,7 @@ export const SettingsPage: React.FC = () => {
 
             {/* DATA RESIDENCY & KMS */}
             {activeSection === 'residency' && (
-              <div className="connector-3d-card p-6 flex flex-col gap-6">
+              <div className="ks-card p-5 flex flex-col gap-5">
                 <div>
                   <h3 className="text-lg font-semibold text-slate-900 dark:text-white">Data Residency, Sovereignty & KMS</h3>
                   <p className="text-sm text-slate-500 dark:text-slate-400 mt-0.5">Enforce legal jurisdiction compliance and hardware cryptographic key custody.</p>

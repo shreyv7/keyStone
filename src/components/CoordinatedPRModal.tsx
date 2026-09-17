@@ -93,7 +93,7 @@ export const CoordinatedPRModal: React.FC<CoordinatedPRModalProps> = ({
             </div>
             <div>
               <div className="text-sm font-bold flex items-center gap-2 flex-wrap">
-                <span>Coordinated Multi-Repository Manifest</span>
+                <span>Recommended update plan</span>
                 {circuitBreakerFrozen && (
                   <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-600 dark:text-amber-400 border border-amber-500/30 flex items-center gap-1">
                     <Lock className="w-3 h-3" />
@@ -102,7 +102,7 @@ export const CoordinatedPRModal: React.FC<CoordinatedPRModalProps> = ({
                 )}
               </div>
               <div className={`text-xs ${isLight ? 'text-slate-500' : 'text-slate-400'}`}>
-                1 targeted fix replaces fragmented dependency PRs across {affectedRepos} repositories
+                One coordinated update replaces fragmented dependency pull requests across {affectedRepos} repositories
               </div>
             </div>
           </div>
@@ -143,7 +143,7 @@ export const CoordinatedPRModal: React.FC<CoordinatedPRModalProps> = ({
               <div className={`text-[10px] font-semibold uppercase mb-1 ${
                 isLight ? 'text-slate-500' : 'text-slate-400'
               }`}>
-                Standard Dependency Bot Output
+                Typical dependency updates
               </div>
               <div className="text-base font-bold text-slate-700 dark:text-slate-300">40 Fragmented PRs</div>
               <div className={`text-[11px] mt-1 leading-snug ${isLight ? 'text-slate-500' : 'text-slate-400'}`}>
@@ -159,7 +159,7 @@ export const CoordinatedPRModal: React.FC<CoordinatedPRModalProps> = ({
               <div className={`text-[10px] font-semibold uppercase mb-1 ${
                 isLight ? 'text-emerald-800' : 'text-emerald-300'
               }`}>
-                KEYSTONE Targeted Fix
+                Recommended update
               </div>
               <div className="text-base font-bold text-emerald-700 dark:text-emerald-400">1 Coordinated PR</div>
               <div className={`text-[11px] mt-1 leading-snug ${isLight ? 'text-emerald-900/80' : 'text-emerald-300/80'}`}>
@@ -184,7 +184,7 @@ export const CoordinatedPRModal: React.FC<CoordinatedPRModalProps> = ({
               </div>
               <div>
                 <div className="font-semibold text-xs flex items-center gap-2">
-                  <span>CI/CD Intake Quarantine (Circuit Breaker)</span>
+                  <span>Dependency quarantine</span>
                   <span className={`text-[10px] px-1.5 py-0.2 rounded font-mono ${
                     circuitBreakerFrozen ? 'bg-amber-200/80 text-amber-900 font-bold' : 'bg-slate-200 text-slate-700'
                   }`}>
@@ -307,13 +307,13 @@ export const CoordinatedPRModal: React.FC<CoordinatedPRModalProps> = ({
 
             <div className="flex flex-col gap-1.5 max-h-36 overflow-y-auto pr-1">
               {[
-                { repo: 'acme-inc/payment-service', tier: 'Tier-1 Revenue Sink' },
-                { repo: 'acme-inc/auth-session-manager', tier: 'Tier-1 IAM Sink' },
-                { repo: 'acme-inc/checkout-service', tier: 'Tier-1 Revenue Sink' },
+                { repo: 'acme-inc/payment-service', tier: 'Critical revenue service' },
+                { repo: 'acme-inc/auth-session-manager', tier: 'Critical identity service' },
+                { repo: 'acme-inc/checkout-service', tier: 'Critical revenue service' },
                 { repo: 'acme-inc/fraud-detection', tier: 'Risk Engine' },
                 { repo: 'acme-inc/partner-api-gateway', tier: 'External Gateway' },
                 { repo: 'acme-inc/storefront-web', tier: 'Consumer Web App' },
-                { repo: 'acme-inc/billing-service', tier: 'Tier-1 Settlement' }
+                { repo: 'acme-inc/billing-service', tier: 'Critical settlement service' }
               ].map(({ repo, tier }) => (
                 <div key={repo} className={`p-2 rounded border text-[11px] font-mono flex items-center justify-between ${
                   isLight ? 'bg-white border-slate-200 text-slate-800' : 'bg-slate-950/60 border-slate-800/80 text-slate-200'
