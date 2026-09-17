@@ -59,17 +59,17 @@ export const NodeTooltip: React.FC<NodeTooltipProps> = ({ node, position }) => {
         <div className={isLight ? 'text-slate-500' : 'text-slate-400'}>Reverse PageRank:</div>
         <div className={`text-right font-semibold ${isLight ? 'text-slate-800' : 'text-slate-200'}`}>{node.reversePageRankPercentile}th %ile</div>
 
-        <div className={isLight ? 'text-slate-500' : 'text-slate-400'}>Articulation:</div>
+        <div className={isLight ? 'text-slate-500' : 'text-slate-400'}>Chokepoint:</div>
         <div className={`text-right font-semibold ${node.articulationPoint ? (isLight ? 'text-rose-600' : 'text-rose-400') : (isLight ? 'text-slate-500' : 'text-slate-400')}`}>
-          {node.articulationPoint ? 'YES (Cut-Vertex)' : 'NO'}
+          {node.articulationPoint ? 'YES (Critical)' : 'NO'}
         </div>
 
         <div className={isLight ? 'text-slate-500' : 'text-slate-400'}>Dependents:</div>
         <div className={`text-right ${isLight ? 'text-slate-800' : 'text-slate-200'}`}>{node.dependents} services</div>
 
-        <div className={isLight ? 'text-slate-500' : 'text-slate-400'}>Tier-1 Reach:</div>
+        <div className={isLight ? 'text-slate-500' : 'text-slate-400'}>Critical Reach:</div>
         <div className={`text-right font-semibold ${node.tier1Reach > 0 ? (isLight ? 'text-rose-600' : 'text-rose-400') : (isLight ? 'text-slate-500' : 'text-slate-400')}`}>
-          {node.tier1Reach} Tier-1
+          {node.tier1Reach} critical
         </div>
       </div>
 

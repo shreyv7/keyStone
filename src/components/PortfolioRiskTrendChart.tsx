@@ -56,7 +56,7 @@ const SNAPSHOTS_90D: TrendSnapshot[] = [
     keystonesCount: 5,
     milestone: 'Stealth Anomaly',
     badgeType: 'anomaly',
-    narrative: '🚨 Stealth Anomaly: Un-notified maintainer churn & commit surge in snakeyaml.'
+    narrative: 'Stealth Anomaly: Un-notified maintainer churn & commit surge in snakeyaml.'
   },
   {
     day: -15,
@@ -82,9 +82,9 @@ const SNAPSHOTS_90D: TrendSnapshot[] = [
     systemicScore: 18,
     financialExposureM: 4.9,
     keystonesCount: 0,
-    milestone: 'Min-Cut Fix',
+    milestone: 'Targeted Fix',
     badgeType: 'remediated',
-    narrative: '🛡️ Minimum Cut Applied: internal-data-pipeline v2.5.0 severs 100% of attack vectors.'
+    narrative: '🛡️ Targeted Fix Applied: internal-data-pipeline v2.5.0 severs all attack vectors.'
   }
 ];
 
@@ -172,11 +172,6 @@ export const PortfolioRiskTrendChart: React.FC = () => {
           <div className="flex items-center gap-2">
             <TrendingUp className="w-4 h-4 text-cyan-600 dark:text-cyan-400" />
             <h3 className="text-sm font-bold tracking-tight">Portfolio Risk Trajectory (90-Day Timeline)</h3>
-            <span className={`text-[10px] font-mono px-2 py-0.5 rounded uppercase font-semibold border ${
-              isLight ? 'bg-amber-50 text-amber-700 border-amber-200' : 'bg-amber-950/40 text-amber-400 border-amber-800/60'
-            }`}>
-              F22 Forensics
-            </span>
           </div>
           <p className={`text-xs mt-0.5 ${isLight ? 'text-slate-500' : 'text-slate-400'}`}>
             Tracks aggregate systemic fragility over time, highlighting pre-CVE anomaly emergence and post-fix insulation.

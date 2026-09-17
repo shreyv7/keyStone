@@ -75,9 +75,9 @@ export const LeftFilterPanel: React.FC<LeftFilterPanelProps> = ({
       <div className={`p-3 border-b flex items-center justify-between ${
         isLight ? 'border-slate-200' : 'border-slate-800'
       }`}>
-        <div className="flex items-center gap-1.5 font-bold uppercase tracking-wider text-[11px]">
+        <div className="flex items-center gap-1.5 font-bold text-xs">
           <Filter className="w-3.5 h-3.5 text-indigo-500" />
-          <span>Topology Scope & Filters</span>
+          <span>Topology Filters</span>
         </div>
         <button
           onClick={() => setIsCollapsed(true)}
@@ -93,7 +93,7 @@ export const LeftFilterPanel: React.FC<LeftFilterPanelProps> = ({
       <div className="p-3.5 flex flex-col gap-3.5 overflow-y-auto max-h-[75vh]">
         {/* Scope Filter */}
         <div className="flex flex-col gap-1.5">
-          <span className={`text-[10px] font-mono font-bold uppercase ${isLight ? 'text-slate-500' : 'text-slate-400'}`}>
+          <span className={`text-[10px] font-semibold ${isLight ? 'text-slate-500' : 'text-slate-400'}`}>
             Environment Scope
           </span>
           <div className="grid grid-cols-3 gap-1">
@@ -115,7 +115,7 @@ export const LeftFilterPanel: React.FC<LeftFilterPanelProps> = ({
 
         {/* Channel Filter */}
         <div className="flex flex-col gap-1.5">
-          <span className={`text-[10px] font-mono font-bold uppercase ${isLight ? 'text-slate-500' : 'text-slate-400'}`}>
+          <span className={`text-[10px] font-semibold ${isLight ? 'text-slate-500' : 'text-slate-400'}`}>
             Execution Channel
           </span>
           <div className="grid grid-cols-3 gap-1">
@@ -144,7 +144,7 @@ export const LeftFilterPanel: React.FC<LeftFilterPanelProps> = ({
         {/* Depth Pruning Slider */}
         <div className="flex flex-col gap-1.5">
           <div className="flex items-center justify-between">
-            <span className={`text-[10px] font-mono font-bold uppercase ${isLight ? 'text-slate-500' : 'text-slate-400'}`}>
+            <span className={`text-[10px] font-semibold ${isLight ? 'text-slate-500' : 'text-slate-400'}`}>
               Nesting Depth
             </span>
             <span className={`font-mono text-[10px] font-bold ${isLight ? 'text-indigo-600' : 'text-indigo-400'}`}>
@@ -172,7 +172,7 @@ export const LeftFilterPanel: React.FC<LeftFilterPanelProps> = ({
         <div className={`flex flex-col gap-1.5 pt-1 border-t ${
           isLight ? 'border-slate-200/60' : 'border-slate-800/60'
         }`}>
-          <span className={`text-[10px] font-mono font-bold uppercase ${isLight ? 'text-slate-500' : 'text-slate-400'}`}>
+          <span className={`text-[10px] font-semibold ${isLight ? 'text-slate-500' : 'text-slate-400'}`}>
             Filter Overlays
           </span>
 

@@ -92,10 +92,10 @@ export const OnboardingEmptyState: React.FC<OnboardingEmptyStateProps> = ({
               <ShieldAlert className="w-4 h-4" />
             </div>
             <h4 className="text-xs font-bold uppercase tracking-wider mb-1">
-              Articulation Cut-Vertices
+              Critical Chokepoints
             </h4>
             <p className={`text-xs leading-relaxed ${isLight ? 'text-slate-500' : 'text-slate-400'}`}>
-              Calculates Tarjan articulation points and minimum cuts that sever 100% of attack paths with zero breaking API changes.
+              Identifies single points of failure and targeted remediations that sever contagion paths with zero breaking API changes.
             </p>
           </div>
 
@@ -107,10 +107,10 @@ export const OnboardingEmptyState: React.FC<OnboardingEmptyStateProps> = ({
               <Zap className="w-4 h-4" />
             </div>
             <h4 className="text-xs font-bold uppercase tracking-wider mb-1">
-              Pre-CVE Centrality Velocity
+              Early Anomaly Detection
             </h4>
             <p className={`text-xs leading-relaxed ${isLight ? 'text-slate-500' : 'text-slate-400'}`}>
-              Surfaces stealth malicious takeovers and abnormal maintainer churn 30+ days before public NVD disclosure.
+              Surfaces maintainer churn and dependency velocity anomalies before public advisory disclosure.
             </p>
           </div>
 
@@ -122,10 +122,10 @@ export const OnboardingEmptyState: React.FC<OnboardingEmptyStateProps> = ({
               <DollarSign className="w-4 h-4" />
             </div>
             <h4 className="text-xs font-bold uppercase tracking-wider mb-1">
-              Asset-Weighted Financial Blast
+              Financial Risk Quantification
             </h4>
             <p className={`text-xs leading-relaxed ${isLight ? 'text-slate-500' : 'text-slate-400'}`}>
-              Maps technical graph bottlenecks directly into $-denominated outage risk ($85M/day) and EU DORA Article 28 compliance scope.
+              Maps technical dependencies directly to transaction exposure and regulatory compliance requirements.
             </p>
           </div>
         </div>

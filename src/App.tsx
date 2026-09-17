@@ -304,7 +304,7 @@ export function App() {
         onComplete={(newProfile) => {
           setUserProfile(newProfile);
           setActiveLens(newProfile.roleLens);
-          setActiveView('ecosystem');
+          setActiveView('overview');
         }}
         onCancel={() => setActiveView('landing')}
       />
@@ -315,7 +315,7 @@ export function App() {
     return (
       <LandingPage
         stats={KEYSTONE_STATS}
-        onEnterConsole={() => setActiveView('ecosystem')}
+        onEnterConsole={() => setActiveView('overview')}
         onLaunchScenario={(id) => {
           setActiveView('ecosystem');
           if (id === 'snakeyaml_hero') {
@@ -405,27 +405,27 @@ export function App() {
           />
 
           {/* Graph Controls Overlay */}
-          <GraphControls
-            onResetView={() => setSelectedNodeId(null)}
-            onFocusKeystone={() => setSelectedNodeId('snakeyaml')}
-            showStructuralRisk={showStructuralSize}
-            onToggleStructuralRisk={() => setShowStructuralSize(prev => !prev)}
-            showBlastRadius={showBlastRadius}
-            onToggleBlastRadius={() => setShowBlastRadius(prev => !prev)}
-            showPropagation={showPropagation}
-            onTogglePropagation={() => setShowPropagation(prev => !prev)}
-            showDominatorMode={showDominatorMode}
-            onToggleDominatorMode={() => setShowDominatorMode(prev => !prev)}
-            scopeFilter={scopeFilter}
-            onScopeChange={setScopeFilter}
-            channelFilter={channelFilter}
-            onChannelChange={setChannelFilter}
-            autoRotate={autoRotate}
-            onToggleAutoRotate={() => setAutoRotate(prev => !prev)}
-            onOpenLegend={() => setIsLegendOpen(true)}
-          />
-
-
+          {activeView === 'ecosystem' && (
+            <GraphControls
+              onResetView={() => setSelectedNodeId(null)}
+              onFocusKeystone={() => setSelectedNodeId('snakeyaml')}
+              showStructuralRisk={showStructuralSize}
+              onToggleStructuralRisk={() => setShowStructuralSize(prev => !prev)}
+              showBlastRadius={showBlastRadius}
+              onToggleBlastRadius={() => setShowBlastRadius(prev => !prev)}
+              showPropagation={showPropagation}
+              onTogglePropagation={() => setShowPropagation(prev => !prev)}
+              showDominatorMode={showDominatorMode}
+              onToggleDominatorMode={() => setShowDominatorMode(prev => !prev)}
+              scopeFilter={scopeFilter}
+              onScopeChange={setScopeFilter}
+              channelFilter={channelFilter}
+              onChannelChange={setChannelFilter}
+              autoRotate={autoRotate}
+              onToggleAutoRotate={() => setAutoRotate(prev => !prev)}
+              onOpenLegend={() => setIsLegendOpen(true)}
+            />
+          )}
 
           {/* F2 Dominator Chokepoints Leaderboard Overlay */}
           {showDominatorMode && activeView === 'ecosystem' && (
@@ -439,10 +439,12 @@ export function App() {
           )}
 
           {/* Hover Tooltip */}
-          <NodeTooltip node={hoveredNode} position={hoveredPosition} />
+          {activeView === 'ecosystem' && (
+            <NodeTooltip node={hoveredNode} position={hoveredPosition} />
+          )}
 
           {/* Right-Side Node Intelligence Panel */}
-          {selectedNode && activeView === 'ecosystem' && !isMitigationPanelOpen && (
+          {selectedNode && activeView === 'ecosystem' && !isMitigationPanelOpen && simulationPhase === 'idle' && (
             <NodeIntelligencePanel
               node={selectedNode}
               activeLens={activeLens}

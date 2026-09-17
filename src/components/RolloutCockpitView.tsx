@@ -152,11 +152,6 @@ export const RolloutCockpitView: React.FC<RolloutCockpitViewProps> = ({
               <h1 className="text-base lg:text-lg font-bold tracking-tight">
                 Rollout Cockpit & Evidence Gate
               </h1>
-              <span className={`text-[10px] font-mono px-2 py-0.5 rounded font-bold uppercase border ${
-                isLight ? 'bg-blue-50 text-blue-700 border-blue-200' : 'bg-blue-950 text-blue-300 border-blue-800'
-              }`}>
-                F10 Stage-Gate
-              </span>
             </div>
             <p className={`text-xs ${isLight ? 'text-slate-500' : 'text-slate-400'}`}>
               Campaign <span className="font-mono font-semibold text-blue-500">CAMP-2026-09-SNAKEYAML</span> (snakeyaml@1.33 ➔ 2.0)
@@ -202,12 +197,12 @@ export const RolloutCockpitView: React.FC<RolloutCockpitViewProps> = ({
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-1.5">
               <ShieldCheck className="w-4 h-4 text-emerald-500" />
-              <span className="text-xs font-bold uppercase tracking-wider">
-                Anti-TOCTOU Cryptographic Lock
+              <span className="text-xs font-bold">
+                Cryptographic Integrity Lock
               </span>
             </div>
-            <span className="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-emerald-500/10 text-emerald-500 border border-emerald-500/20 uppercase">
-              SHA-256 MATCH
+            <span className="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-emerald-500/10 text-emerald-500 border border-emerald-500/20">
+              Verified SHA-256
             </span>
           </div>
 
@@ -238,7 +233,7 @@ export const RolloutCockpitView: React.FC<RolloutCockpitViewProps> = ({
           <div className={`text-[11px] p-2 rounded border ${
             isLight ? 'bg-emerald-50/60 border-emerald-200 text-emerald-900' : 'bg-emerald-950/20 border-emerald-900/50 text-emerald-300'
           }`}>
-            Guarantees binary artifacts validated in staging match production bits without race conditions.
+            Cryptographic verification ensures staging artifacts match production deployment.
           </div>
         </div>
 
@@ -270,8 +265,8 @@ export const RolloutCockpitView: React.FC<RolloutCockpitViewProps> = ({
                 </div>
                 <p className={`text-[11px] ${isLight ? 'text-slate-600' : 'text-slate-400'}`}>
                   {isFreezeOverridden 
-                    ? 'Security Board Emergency Waiver logged to audit ledger. Tier-1 deployment unblocked.' 
-                    : 'Tier-1 Regulated Crown Jewels are held in a strict validation hold window.'}
+                    ? 'Security Board Emergency Waiver logged to audit ledger. Critical deployment unblocked.' 
+                    : 'Critical regulated services are held in a strict validation hold window.'}
                 </p>
               </div>
             </div>
@@ -610,7 +605,7 @@ export const RolloutCockpitView: React.FC<RolloutCockpitViewProps> = ({
               <button
                 key={lens}
                 onClick={() => setActiveLens(lens)}
-                className={`px-3 py-1 rounded-md text-xs font-semibold uppercase transition-all cursor-pointer border ${
+                className={`px-3 py-1 rounded-md text-xs font-semibold transition-all cursor-pointer border ${
                   activeLens === lens
                     ? isLight 
                       ? 'bg-slate-900 text-white border-slate-900 shadow-xs' 
@@ -620,7 +615,7 @@ export const RolloutCockpitView: React.FC<RolloutCockpitViewProps> = ({
                       : 'bg-slate-800 text-slate-300 border-slate-700 hover:bg-slate-700'
                 }`}
               >
-                {lens === 'developer' ? 'Developer View' : lens === 'ciso' ? 'CISO Executive View' : 'Architect / Maintainer View'}
+                {lens === 'developer' ? 'Developer View' : lens === 'ciso' ? 'Executive View' : 'Maintainer View'}
               </button>
             ))}
           </div>
@@ -751,7 +746,7 @@ export const RolloutCockpitView: React.FC<RolloutCockpitViewProps> = ({
                   Blast Radius Wavefront Partitioning
                 </div>
                 <p className="text-[11px] text-slate-500 leading-snug">
-                  By cutting the vulnerability propagation path at the shared <code>internal-data-pipeline</code> boundary, downstream Tier-1 sinks are mathematically insulated from deserialization payloads.
+                  By cutting the vulnerability propagation path at the shared <code>internal-data-pipeline</code> boundary, downstream critical services are completely protected from deserialization payloads.
                 </p>
               </div>
             </div>
@@ -769,11 +764,11 @@ export const RolloutCockpitView: React.FC<RolloutCockpitViewProps> = ({
           <div className="flex items-center gap-2">
             <Info className="w-4 h-4 text-blue-500 shrink-0" />
             <span className="font-bold text-xs uppercase tracking-wider">
-              Mandatory Evidence Limitation Disclosure & Epistemic Boundary
+              Verification Scope & Boundaries
             </span>
           </div>
           <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-slate-200 dark:bg-slate-800 font-semibold">
-            Evidence-Scope Invariant: ClaimScope(E) ⊆ ObservationScope(E)
+            Scope Invariant: ClaimScope(E) ⊆ ObservationScope(E)
           </span>
         </div>
 

@@ -21,11 +21,12 @@ import {
   BarChart3,
   UploadCloud,
   TreePine,
-  Scale,
-  Sparkles,
-  ChevronDown,
-  ChevronUp,
-  FileText
+  Scale, 
+  Sparkles, 
+  ChevronDown, 
+  ChevronUp, 
+  FileText,
+  Clock
 } from 'lucide-react';
 import { KeystoneStats, EcosystemNode, RoleLens } from '../types';
 import { useTheme } from '../context/ThemeContext';
@@ -95,51 +96,19 @@ export const OverviewDashboard: React.FC<OverviewDashboardProps> = ({
         isLight ? 'border-slate-200' : 'border-slate-800'
       }`}>
         <div>
-          <div className="flex items-center gap-2 mb-1.5 flex-wrap">
-            <span className={`text-[11px] font-semibold uppercase px-2 py-0.5 rounded border ${
-              isLight 
-                ? 'bg-slate-100 text-slate-700 border-slate-200' 
-                : 'bg-slate-800 text-slate-300 border-slate-700'
-            }`}>
-              Portfolio Posture
-            </span>
-
-            {/* Active Lens Badge */}
-            <span className={`text-[11px] font-semibold px-2 py-0.5 rounded uppercase flex items-center gap-1 border ${
-              activeLens === 'ciso'
-                ? isLight ? 'bg-purple-50 text-purple-700 border-purple-200' : 'bg-purple-950/40 text-purple-300 border-purple-800/50'
-                : activeLens === 'maintainer'
-                ? isLight ? 'bg-blue-50 text-blue-700 border-blue-200' : 'bg-blue-950/40 text-blue-300 border-blue-800/50'
-                : isLight ? 'bg-emerald-50 text-emerald-700 border-emerald-200' : 'bg-emerald-950/40 text-emerald-300 border-emerald-800/50'
-            }`}>
-              {activeLens === 'ciso' && <Briefcase className="w-3 h-3" />}
-              {activeLens === 'developer' && <Terminal className="w-3 h-3" />}
-              {activeLens === 'maintainer' && <Layers className="w-3 h-3" />}
-              {activeLens === 'ciso' ? 'Executive (CISO) Lens' : activeLens === 'maintainer' ? 'Engineering (Maintainer) Lens' : 'AppSec (Developer) Lens'}
-            </span>
-
-            <span className={`text-xs ${isLight ? 'text-slate-500' : 'text-slate-400'}`}>
-              {activeLens === 'ciso' 
-                ? 'Financial Exposure & Regulatory Compliance Posture' 
-                : activeLens === 'maintainer'
-                ? 'Downstream Consumer Cascade & Bus Factor Vulnerabilities'
-                : 'Deterministic Topological Risk Analysis'}
-            </span>
-          </div>
-
           <h1 className={`text-2xl font-bold tracking-tight ${isLight ? 'text-slate-900' : 'text-slate-100'}`}>
             {activeLens === 'ciso' 
-              ? 'Executive Supply Chain Risk Governance' 
+              ? 'Executive Security Governance' 
               : activeLens === 'maintainer'
-              ? 'Ecosystem Dependency & Consumer Health'
-              : 'Supply Chain Structural Risk Overview'}
+              ? 'Ecosystem Dependency Health'
+              : 'Security Posture Overview'}
           </h1>
           <p className={`text-xs mt-1 max-w-2xl leading-relaxed ${isLight ? 'text-slate-600' : 'text-slate-400'}`}>
             {activeLens === 'ciso'
-              ? 'Quantifies enterprise exposure in $-denominated potential daily loss, regulatory non-compliance mandates (DORA, PCI-DSS), and systemic contagion ratios across critical assets.'
+              ? 'Financial exposure, regulatory compliance (DORA, PCI-DSS), and systemic risk across critical services.'
               : activeLens === 'maintainer'
-              ? 'Analyzes downstream breaking change cascades, library maintenance health, and single-point-of-failure packages before API contract updates are released.'
-              : 'Prioritizes open source and internal dependencies by structural network position, reachability to production sinks, and articulation chokepoints.'}
+              ? 'Maintainer health, bus factors, and package lifecycle metrics across shared libraries.'
+              : 'Structural vulnerabilities, single points of failure, and blast radius across production services.'}
           </p>
         </div>
 
@@ -147,87 +116,55 @@ export const OverviewDashboard: React.FC<OverviewDashboardProps> = ({
         <div className="flex items-center gap-2.5">
           <button
             onClick={handleHeroAction}
-            className={`px-4 py-2 rounded-md font-medium text-xs transition-colors flex items-center gap-2 ${
+            className={`px-4 py-2 rounded-lg font-bold text-xs transition-all shadow-md flex items-center gap-2 cursor-pointer ${
               activeLens === 'ciso'
                 ? isLight ? 'bg-purple-900 hover:bg-purple-800 text-white' : 'bg-purple-600 hover:bg-purple-500 text-white'
                 : activeLens === 'maintainer'
                 ? isLight ? 'bg-blue-900 hover:bg-blue-800 text-white' : 'bg-blue-600 hover:bg-blue-500 text-white'
-                : isLight ? 'bg-slate-900 hover:bg-slate-800 text-white' : 'bg-slate-100 hover:bg-white text-slate-900'
+                : 'bg-[#2f2fe4] hover:bg-[#4343f8] text-white shadow-[0_0_15px_rgba(47,47,228,0.35)]'
             }`}
           >
             {activeLens === 'ciso' ? (
               <>
                 <Briefcase className="w-3.5 h-3.5" />
-                <span>Simulate Keystone Financial Outage</span>
+                <span>Simulate Financial Outage</span>
               </>
             ) : activeLens === 'maintainer' ? (
               <>
                 <Layers className="w-3.5 h-3.5" />
-                <span>Simulate Downstream API Cascade</span>
+                <span>Simulate API Cascade</span>
               </>
             ) : (
               <>
                 <Play className="w-3.5 h-3.5 fill-current" />
-                <span>Simulate Keystone Attack</span>
+                <span>Simulate Attack Cascade</span>
               </>
             )}
           </button>
 
           <button
             onClick={onOpenPRModal}
-            className={`px-3.5 py-2 rounded-md text-xs font-medium border transition-colors flex items-center gap-2 ${
+            className={`px-3.5 py-2 rounded-lg text-xs font-semibold border transition-colors flex items-center gap-2 cursor-pointer ${
               isLight 
                 ? 'bg-white hover:bg-slate-50 text-slate-700 border-slate-200 shadow-xs' 
                 : 'bg-slate-900 hover:bg-slate-800 text-slate-200 border-slate-800'
             }`}
           >
-            <FileSpreadsheet className="w-3.5 h-3.5 text-slate-500" />
-            <span>
-              {activeLens === 'ciso' ? 'CISO Audit Manifest' : activeLens === 'maintainer' ? 'Renovate / Dependabot PRs' : 'Remediation Manifest'}
-            </span>
+            <FileSpreadsheet className="w-3.5 h-3.5 text-slate-400" />
+            <span>Review Targeted Fix</span>
           </button>
-
-          {onOpenSBOMModal && (
-            <button
-              onClick={onOpenSBOMModal}
-              className={`px-3.5 py-2 rounded-md text-xs font-medium border transition-colors flex items-center gap-2 ${
-                isLight 
-                  ? 'bg-white hover:bg-slate-50 text-slate-700 border-slate-200 shadow-xs' 
-                  : 'bg-slate-900 hover:bg-slate-800 text-slate-200 border-slate-800'
-              }`}
-              title="Connect Repository / Upload CycloneDX SBOM or Lockfile"
-            >
-              <UploadCloud className="w-3.5 h-3.5 text-cyan-600 dark:text-cyan-400" />
-              <span>Ingest SBOM / Lock</span>
-            </button>
-          )}
 
           <button
             onClick={() => setIsExportModalOpen(true)}
-            className={`px-3.5 py-2 rounded-md text-xs font-medium border transition-colors flex items-center gap-2 cursor-pointer ${
+            className={`px-3.5 py-2 rounded-lg text-xs font-semibold border transition-colors flex items-center gap-2 cursor-pointer ${
               isLight 
                 ? 'bg-white hover:bg-slate-50 text-slate-700 border-slate-200 shadow-xs' 
                 : 'bg-slate-900 hover:bg-slate-800 text-slate-200 border-slate-800'
             }`}
             title="Export Systemic Risk & Compliance Report (Markdown, JSON, CSV)"
           >
-            <Download className="w-3.5 h-3.5 text-cyan-500" />
+            <Download className="w-3.5 h-3.5 text-cyan-400" />
             <span>Export Report</span>
-          </button>
-
-          <button
-            onClick={() => setIsPreviewEmptyState(prev => !prev)}
-            className={`px-3 py-2 rounded-md text-xs font-medium border transition-colors flex items-center gap-1.5 cursor-pointer ${
-              isPreviewEmptyState
-                ? 'bg-amber-500/20 text-amber-500 border-amber-500/40 font-semibold'
-                : isLight
-                ? 'bg-white hover:bg-slate-50 text-slate-700 border-slate-200 shadow-xs'
-                : 'bg-slate-900 hover:bg-slate-800 text-slate-200 border-slate-800'
-            }`}
-            title="Toggle Enterprise Onboarding / Empty State Preview"
-          >
-            <LayoutTemplate className="w-3.5 h-3.5 text-amber-500" />
-            <span>{isPreviewEmptyState ? 'Exit Empty Preview' : 'Preview Empty State'}</span>
           </button>
         </div>
       </div>
@@ -240,14 +177,34 @@ export const OverviewDashboard: React.FC<OverviewDashboardProps> = ({
       ) : (
         <>
 
-      {/* Critical Alert Callout */}
-      <div className={`p-4 rounded-lg border flex flex-col md:flex-row items-start md:items-center justify-between gap-4 ${
+      {/* ─── 1. ECOSYSTEM STATUS & DRIFT (What is happening? & What changed?) ─── */}
+      <div className={`px-4 py-3 rounded-xl border flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-xs ${
+        isLight ? 'bg-slate-50 border-slate-200' : 'bg-[#0d0a27] border-[#1a1953]'
+      }`}>
+        <div className="flex items-center gap-2.5 flex-wrap">
+          <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.6)]" />
+          <span className="font-bold text-white">System Status:</span>
+          <span className="text-slate-300">42 repositories monitored</span>
+          <span className="text-slate-500">•</span>
+          <span className="text-slate-300">1,489 dependencies mapped</span>
+          <span className="text-slate-500">•</span>
+          <span className="text-emerald-400 font-medium">All systems synchronized</span>
+        </div>
+
+        <div className="flex items-center gap-2 text-slate-400 text-[11px]">
+          <Clock className="w-3.5 h-3.5 text-slate-400" />
+          <span>Recent changes: Maintainer inactivity on 2 core packages • 1 targeted fix available</span>
+        </div>
+      </div>
+
+      {/* ─── 2. PRIMARY RISK ALERT (What is risky? & What should I do next?) ─── */}
+      <div className={`p-4 rounded-xl border flex flex-col md:flex-row items-start md:items-center justify-between gap-4 ${
         activeLens === 'ciso'
           ? isLight ? 'bg-purple-50/70 border-purple-200 text-purple-950' : 'bg-purple-950/20 border-purple-900/50 text-purple-200'
-          : isLight ? 'bg-red-50/50 border-red-200 text-red-900' : 'bg-red-950/20 border-red-900/50 text-red-200'
+          : isLight ? 'bg-red-50/50 border-red-200 text-red-900' : 'bg-red-950/25 border-red-900/50 text-red-200'
       }`}>
-        <div className="flex items-start gap-3">
-          <div className={`p-2 rounded-md shrink-0 ${
+        <div className="flex items-start gap-3.5">
+          <div className={`p-2.5 rounded-lg shrink-0 mt-0.5 ${
             activeLens === 'ciso'
               ? isLight ? 'bg-purple-100 text-purple-700' : 'bg-purple-900/40 text-purple-300'
               : isLight ? 'bg-red-100 text-red-700' : 'bg-red-900/40 text-red-400'
@@ -255,37 +212,47 @@ export const OverviewDashboard: React.FC<OverviewDashboardProps> = ({
             {activeLens === 'ciso' ? <DollarSign className="w-5 h-5" /> : <AlertTriangle className="w-5 h-5" />}
           </div>
           <div>
-            <div className="text-sm font-semibold flex items-center gap-2">
-              <span>{activeLens === 'ciso' ? 'Systemic Financial Exposure Alert:' : 'Critical Articulation Point Identified:'}</span>
-              <code className="font-mono px-1.5 py-0.5 rounded text-xs bg-white/80 dark:bg-black/40 font-bold">snakeyaml@1.33</code>
+            <div className="text-sm font-bold flex items-center gap-2 flex-wrap">
+              <span>3 issues require immediate attention</span>
+              <span className="text-[10px] font-semibold px-2 py-0.5 rounded bg-red-500/20 text-red-300 border border-red-500/30 uppercase tracking-wide">
+                Primary Chokepoint
+              </span>
             </div>
-            <p className="text-xs mt-1 leading-relaxed opacity-90">
+            <p className="text-xs mt-1.5 leading-relaxed text-slate-300 max-w-3xl">
               {activeLens === 'ciso'
-                ? 'Single transitive dependency creates an estimated $85M/day financial exposure across 21 revenue services and 4 regulated PCI/DORA Tier-1 sinks. Immediate remediation mandate recommended.'
+                ? 'snakeyaml@1.33 creates an estimated $85M/day financial exposure across 21 revenue services and 4 regulated critical services.'
                 : activeLens === 'maintainer'
-                ? 'Package has only 1 primary maintainer while serving as an un-mocked transitive dependency for 21 internal repositories. High risk of abandonment or uncoordinated breaking changes.'
-                : 'A single transitive dependency connects 21 downstream services into 4 regulated Tier-1 assets. A targeted update to internal-data-pipeline severs all active attack vectors.'}
+                ? 'snakeyaml@1.33 has 1 primary maintainer while serving 21 internal repositories, presenting elevated abandonment risk.'
+                : 'snakeyaml@1.33 connects 21 downstream services into 4 critical services. Updating internal-data-pipeline severs all exposure paths.'}
             </p>
           </div>
         </div>
 
-        <button
-          onClick={() => onSelectNode('snakeyaml')}
-          className={`shrink-0 px-3.5 py-1.5 rounded-md text-xs font-semibold border transition-colors flex items-center gap-1.5 ${
-            activeLens === 'ciso'
-              ? isLight ? 'bg-white hover:bg-purple-50 text-purple-800 border-purple-200 shadow-xs' : 'bg-purple-900/40 hover:bg-purple-900/60 text-purple-200 border-purple-700/50'
-              : isLight ? 'bg-white hover:bg-red-50 text-red-800 border-red-200 shadow-xs' : 'bg-red-900/40 hover:bg-red-900/60 text-red-200 border-red-700/50'
-          }`}
-        >
-          <span>{activeLens === 'ciso' ? 'Review Exposure' : 'Inspect Node'}</span>
-          <ArrowRight className="w-3.5 h-3.5" />
-        </button>
+        <div className="flex items-center gap-2 shrink-0">
+          <button
+            onClick={onOpenPRModal}
+            className="px-4 py-2 rounded-lg text-xs font-bold bg-[#2f2fe4] hover:bg-[#4343f8] text-white shadow-[0_0_15px_rgba(47,47,228,0.35)] transition-all flex items-center gap-1.5 cursor-pointer"
+          >
+            <span>Review Recommended Fix</span>
+            <ArrowRight className="w-3.5 h-3.5" />
+          </button>
+          <button
+            onClick={() => onSelectNode('snakeyaml')}
+            className={`px-3 py-2 rounded-lg text-xs font-semibold border transition-colors flex items-center gap-1 cursor-pointer ${
+              activeLens === 'ciso'
+                ? isLight ? 'bg-white hover:bg-purple-50 text-purple-800 border-purple-200 shadow-xs' : 'bg-purple-900/40 hover:bg-purple-900/60 text-purple-200 border-purple-700/50'
+                : isLight ? 'bg-white hover:bg-red-50 text-red-800 border-red-200 shadow-xs' : 'border-slate-700 hover:bg-slate-800 text-slate-200'
+            }`}
+          >
+            <span>Inspect Node</span>
+          </button>
+        </div>
       </div>
 
-      {/* KPI Cards (Role-Specific) */}
+      {/* ─── 3. 4 HUMAN-READABLE METRICS (Principle 6) ─── */}
       {activeLens === 'ciso' ? (
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <div className={`p-4 rounded-lg border flex flex-col ${
+          <div className={`p-4 rounded-xl border flex flex-col ${
             isLight ? 'bg-white border-slate-200 shadow-xs' : 'bg-slate-900/60 border-slate-800'
           }`}>
             <span className={`text-xs font-medium ${isLight ? 'text-slate-500' : 'text-slate-400'}`}>Est. Financial Exposure</span>
@@ -293,23 +260,23 @@ export const OverviewDashboard: React.FC<OverviewDashboardProps> = ({
             <span className={`text-[11px] mt-1 ${isLight ? 'text-slate-500' : 'text-slate-500'}`}>Cumulative outage risk</span>
           </div>
 
-          <div className={`p-4 rounded-lg border flex flex-col ${
+          <div className={`p-4 rounded-xl border flex flex-col ${
             isLight ? 'bg-white border-slate-200 shadow-xs' : 'bg-slate-900/60 border-slate-800'
           }`}>
             <span className={`text-xs font-medium ${isLight ? 'text-slate-500' : 'text-slate-400'}`}>SIFI Concentration Ratio</span>
             <span className={`text-2xl font-bold font-mono mt-1 ${isLight ? 'text-slate-900' : 'text-slate-100'}`}>81.4%</span>
-            <span className={`text-[11px] mt-1 ${isLight ? 'text-slate-500' : 'text-slate-500'}`}>Concentrated in top 5 keystones</span>
+            <span className={`text-[11px] mt-1 ${isLight ? 'text-slate-500' : 'text-slate-500'}`}>Concentrated in top 5 dependencies</span>
           </div>
 
-          <div className={`p-4 rounded-lg border flex flex-col ${
+          <div className={`p-4 rounded-xl border flex flex-col ${
             isLight ? 'bg-white border-slate-200 shadow-xs' : 'bg-slate-900/60 border-slate-800'
           }`}>
             <span className={`text-xs font-medium ${isLight ? 'text-slate-500' : 'text-slate-400'}`}>DORA / PCI Non-Compliance</span>
-            <span className="text-2xl font-bold font-mono mt-1 text-red-600">4 Sinks</span>
+            <span className="text-2xl font-bold font-mono mt-1 text-red-600">4 Services</span>
             <span className={`text-[11px] mt-1 ${isLight ? 'text-slate-500' : 'text-slate-500'}`}>Article 28 third-party scope</span>
           </div>
 
-          <div className={`p-4 rounded-lg border flex flex-col ${
+          <div className={`p-4 rounded-xl border flex flex-col ${
             isLight ? 'bg-white border-slate-200 shadow-xs' : 'bg-slate-900/60 border-slate-800'
           }`}>
             <span className={`text-xs font-medium ${isLight ? 'text-slate-500' : 'text-slate-400'}`}>Cyber Insurability Grade</span>
@@ -319,7 +286,7 @@ export const OverviewDashboard: React.FC<OverviewDashboardProps> = ({
         </div>
       ) : activeLens === 'maintainer' ? (
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <div className={`p-4 rounded-lg border flex flex-col ${
+          <div className={`p-4 rounded-xl border flex flex-col ${
             isLight ? 'bg-white border-slate-200 shadow-xs' : 'bg-slate-900/60 border-slate-800'
           }`}>
             <span className={`text-xs font-medium ${isLight ? 'text-slate-500' : 'text-slate-400'}`}>Downstream Repos at Risk</span>
@@ -327,7 +294,7 @@ export const OverviewDashboard: React.FC<OverviewDashboardProps> = ({
             <span className={`text-[11px] mt-1 ${isLight ? 'text-slate-500' : 'text-slate-500'}`}>Transitive breaking cascade</span>
           </div>
 
-          <div className={`p-4 rounded-lg border flex flex-col ${
+          <div className={`p-4 rounded-xl border flex flex-col ${
             isLight ? 'bg-white border-slate-200 shadow-xs' : 'bg-slate-900/60 border-slate-800'
           }`}>
             <span className={`text-xs font-medium ${isLight ? 'text-slate-500' : 'text-slate-400'}`}>Bus Factor Fragile Libs</span>
@@ -335,7 +302,7 @@ export const OverviewDashboard: React.FC<OverviewDashboardProps> = ({
             <span className={`text-[11px] mt-1 ${isLight ? 'text-slate-500' : 'text-slate-500'}`}>≤ 2 active maintainers</span>
           </div>
 
-          <div className={`p-4 rounded-lg border flex flex-col ${
+          <div className={`p-4 rounded-xl border flex flex-col ${
             isLight ? 'bg-white border-slate-200 shadow-xs' : 'bg-slate-900/60 border-slate-800'
           }`}>
             <span className={`text-xs font-medium ${isLight ? 'text-slate-500' : 'text-slate-400'}`}>Weekly Ecosystem Pulls</span>
@@ -343,7 +310,7 @@ export const OverviewDashboard: React.FC<OverviewDashboardProps> = ({
             <span className={`text-[11px] mt-1 ${isLight ? 'text-slate-500' : 'text-slate-500'}`}>Across shared packages</span>
           </div>
 
-          <div className={`p-4 rounded-lg border flex flex-col ${
+          <div className={`p-4 rounded-xl border flex flex-col ${
             isLight ? 'bg-white border-slate-200 shadow-xs' : 'bg-slate-900/60 border-slate-800'
           }`}>
             <span className={`text-xs font-medium ${isLight ? 'text-slate-500' : 'text-slate-400'}`}>Max Transitive Depth</span>
@@ -353,38 +320,44 @@ export const OverviewDashboard: React.FC<OverviewDashboardProps> = ({
         </div>
       ) : (
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <div className={`p-4 rounded-lg border flex flex-col ${
-            isLight ? 'bg-white border-slate-200 shadow-xs' : 'bg-slate-900/60 border-slate-800'
-          }`}>
-            <span className={`text-xs font-medium ${isLight ? 'text-slate-500' : 'text-slate-400'}`}>Dependencies Analyzed</span>
-            <span className={`text-2xl font-bold font-mono mt-1 ${isLight ? 'text-slate-900' : 'text-slate-100'}`}>
-              {nodes.length > 0 ? nodes.length : stats.repositories * 3}
-            </span>
-            <span className={`text-[11px] mt-1 ${isLight ? 'text-slate-500' : 'text-slate-500'}`}>{stats.repositories || 42} service repositories</span>
-          </div>
-
-          <div className={`p-4 rounded-lg border flex flex-col ${
+          <div className={`p-4 rounded-xl border flex flex-col ${
             isLight ? 'bg-white border-slate-200 shadow-xs' : 'bg-slate-900/60 border-slate-800'
           }`}>
             <span className={`text-xs font-medium ${isLight ? 'text-slate-500' : 'text-slate-400'}`}>Critical Chokepoints</span>
-            <span className={`text-2xl font-bold font-mono mt-1 ${isLight ? 'text-slate-900' : 'text-slate-100'}`}>{stats.criticalDependencies}</span>
-            <span className={`text-[11px] mt-1 ${isLight ? 'text-slate-500' : 'text-slate-500'}`}>High reachability & centrality</span>
+            <span className="text-2xl font-bold font-mono mt-1 text-red-500">
+              3 Issues
+            </span>
+            <span className={`text-[11px] mt-1 ${isLight ? 'text-slate-500' : 'text-slate-500'}`}>7 monitored packages</span>
           </div>
 
-          <div className={`p-4 rounded-lg border flex flex-col ${
+          <div className={`p-4 rounded-xl border flex flex-col ${
             isLight ? 'bg-white border-slate-200 shadow-xs' : 'bg-slate-900/60 border-slate-800'
           }`}>
-            <span className={`text-xs font-medium ${isLight ? 'text-slate-500' : 'text-slate-400'}`}>Tier-1 Assets Exposed</span>
-            <span className="text-2xl font-bold font-mono mt-1 text-red-600">{stats.tier1Assets}</span>
-            <span className={`text-[11px] mt-1 ${isLight ? 'text-slate-500' : 'text-slate-500'}`}>Mission-critical production sinks</span>
+            <span className={`text-xs font-medium ${isLight ? 'text-slate-500' : 'text-slate-400'}`}>Services Affected</span>
+            <span className="text-2xl font-bold font-mono mt-1 text-amber-500">
+              21 Services
+            </span>
+            <span className={`text-[11px] mt-1 ${isLight ? 'text-slate-500' : 'text-slate-500'}`}>4 mission-critical Tier-1 services</span>
           </div>
 
-          <div className={`p-4 rounded-lg border flex flex-col ${
+          <div className={`p-4 rounded-xl border flex flex-col ${
             isLight ? 'bg-white border-slate-200 shadow-xs' : 'bg-slate-900/60 border-slate-800'
           }`}>
-            <span className={`text-xs font-medium ${isLight ? 'text-slate-500' : 'text-slate-400'}`}>Active Cut-Vertices</span>
-            <span className={`text-2xl font-bold font-mono mt-1 ${isLight ? 'text-slate-900' : 'text-slate-100'}`}>{stats.activeStructuralRisks}</span>
-            <span className={`text-[11px] mt-1 ${isLight ? 'text-slate-500' : 'text-slate-500'}`}>Single points of failure</span>
+            <span className={`text-xs font-medium ${isLight ? 'text-slate-500' : 'text-slate-400'}`}>Open Risks</span>
+            <span className={`text-2xl font-bold font-mono mt-1 ${isLight ? 'text-slate-900' : 'text-slate-100'}`}>
+              {stats.activeStructuralRisks || 5}
+            </span>
+            <span className={`text-[11px] mt-1 ${isLight ? 'text-slate-500' : 'text-slate-400'}`}>Prioritized by impact reach</span>
+          </div>
+
+          <div className={`p-4 rounded-xl border flex flex-col ${
+            isLight ? 'bg-white border-slate-200 shadow-xs' : 'bg-slate-900/60 border-slate-800'
+          }`}>
+            <span className={`text-xs font-medium ${isLight ? 'text-slate-500' : 'text-slate-400'}`}>Recommended Action</span>
+            <span className="text-2xl font-bold font-mono mt-1 text-[#2f2fe4] dark:text-blue-400">
+              1 Targeted Fix
+            </span>
+            <span className={`text-[11px] mt-1 ${isLight ? 'text-slate-500' : 'text-slate-400'}`}>0 breaking changes</span>
           </div>
         </div>
       )}
@@ -414,10 +387,10 @@ export const OverviewDashboard: React.FC<OverviewDashboardProps> = ({
               )}
               <span className={`font-semibold text-sm ${isLight ? 'text-slate-900' : 'text-slate-100'}`}>
                 {activeLens === 'ciso' 
-                  ? 'Financial Exposure Ranking (Top 5 Keystones)' 
+                  ? 'Financial Exposure Ranking (Top Dependencies)' 
                   : activeLens === 'maintainer'
                   ? 'Downstream Consumer Cascade Ranking'
-                  : 'Top Structural Keystones'}
+                  : 'Highest-Risk Dependencies'}
               </span>
             </div>
             {onOpenRiskWatchlist && (
@@ -460,17 +433,17 @@ export const OverviewDashboard: React.FC<OverviewDashboardProps> = ({
                           v{item.version}
                         </span>
                         {item.articulationPoint && (
-                          <span className="text-[9px] font-bold px-1.5 py-0.2 bg-red-100 text-red-700 dark:bg-red-950/60 dark:text-red-400 rounded">
-                            CUT-VERTEX
+                          <span className="text-[9px] font-bold px-1.5 py-0.5 bg-red-500/10 text-red-500 border border-red-500/20 rounded">
+                            CRITICAL CHOKEPOINT
                           </span>
                         )}
                       </div>
                       <div className={`text-[11px] mt-0.5 ${isLight ? 'text-slate-500' : 'text-slate-400'}`}>
                         {activeLens === 'ciso'
-                          ? `Estimated Financial Risk: $${dailyExposure}M/day • ${item.tier1Reach} Tier-1 Sinks`
+                          ? `Estimated Financial Risk: $${dailyExposure}M/day • ${item.tier1Reach} critical services`
                           : activeLens === 'maintainer'
                           ? `${item.dependents} Downstream Repos • ${item.maintainers} Maintainer(s) • ${item.weeklyDownloads} dl/wk`
-                          : `${item.dependents} downstream services • ${item.tier1Reach} Tier-1 sinks`}
+                          : `${item.dependents} downstream services • ${item.tier1Reach} critical services reached`}
                       </div>
                     </div>
                   </div>
@@ -527,7 +500,7 @@ export const OverviewDashboard: React.FC<OverviewDashboardProps> = ({
               <Activity className={`w-4 h-4 ${isLight ? 'text-slate-700' : 'text-slate-300'}`} />
               <span className={`font-semibold text-sm ${isLight ? 'text-slate-900' : 'text-slate-100'}`}>
                 {rightPanelTab === 'quadrant'
-                  ? '2×2 Systemic Risk Quadrant (F21)'
+                  ? 'Systemic Risk Distribution (2×2)'
                   : activeLens === 'ciso' 
                   ? 'Regulatory Compliance Scope Matrix' 
                   : activeLens === 'maintainer'
@@ -567,7 +540,7 @@ export const OverviewDashboard: React.FC<OverviewDashboardProps> = ({
                 }`}
               >
                 <TreePine className="w-3.5 h-3.5" />
-                <span>Dominator Leaderboard</span>
+                <span>Dominator Chokepoints</span>
               </button>
 
               {activeLens === 'ciso' && (
@@ -650,7 +623,7 @@ export const OverviewDashboard: React.FC<OverviewDashboardProps> = ({
                   </div>
                 </div>
                 <span className="text-xs font-bold font-mono px-2 py-1 bg-amber-100 text-amber-800 dark:bg-amber-950/60 dark:text-amber-300 rounded">
-                  2 At-Risk Sinks
+                  2 At-Risk Services
                 </span>
               </div>
 
@@ -672,7 +645,7 @@ export const OverviewDashboard: React.FC<OverviewDashboardProps> = ({
                 isLight ? 'bg-purple-50/50 border-purple-200 text-purple-900' : 'bg-purple-950/30 border-purple-900/40 text-purple-200'
               }`}>
                 <span className="font-semibold">Executive Remediation SLA: </span>
-                Tier-1 crown jewel cut-vertices require coordinated PR application within 48 hours to preserve compliance certification.
+                Critical chokepoint dependencies require targeted remediation within 48 hours to maintain compliance certification.
               </div>
             </div>
           ) : activeLens === 'maintainer' ? (
@@ -723,7 +696,7 @@ export const OverviewDashboard: React.FC<OverviewDashboardProps> = ({
       </div>
 
       {/* ========================================================= */}
-      {/* F4 XZ RADAR: SEVERE SUPPORT DIVERGENCE ALERTS (PDI >= 70%) */}
+      {/* UNMAINTAINED HIGH-IMPACT DEPENDENCIES                     */}
       {/* ========================================================= */}
       <div className={`p-5 rounded-xl border flex flex-col gap-4 ${
         isLight ? 'bg-white border-slate-200 shadow-xs' : 'bg-slate-900/60 border-slate-800'
@@ -736,19 +709,14 @@ export const OverviewDashboard: React.FC<OverviewDashboardProps> = ({
             <div>
               <div className="flex items-center gap-2 flex-wrap">
                 <h3 className={`text-sm font-bold ${isLight ? 'text-slate-900' : 'text-slate-100'}`}>
-                  Severe Support Divergence Inspector (The "XZ Radar")
+                  Unmaintained High-Impact Dependencies
                 </h3>
-                <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-red-500/10 text-red-600 dark:text-red-400 border border-red-500/20 font-bold uppercase">
-                  PDI ≥ 70% DEFICIT ALERT
-                </span>
-                <span className={`text-[9px] font-mono px-1.5 py-0.2 rounded border uppercase ${
-                  isLight ? 'bg-slate-100 text-slate-700 border-slate-200' : 'bg-slate-800 text-slate-300 border-slate-700'
-                }`}>
-                  F4 Pre-CVE Disjointness
+                <span className="text-[10px] font-semibold px-2 py-0.5 rounded bg-red-500/10 text-red-600 dark:text-red-400 border border-red-500/20 uppercase tracking-wide">
+                  High Maintenance Deficit
                 </span>
               </div>
               <p className={`text-xs ${isLight ? 'text-slate-500' : 'text-slate-400'}`}>
-                Detects catastrophic divergence where internal structural load (P_S) dominates, but observed open-source backing (Q_supp) is near zero.
+                Dependencies with high internal reliance where upstream maintenance has stalled.
               </p>
             </div>
           </div>
@@ -797,7 +765,7 @@ export const OverviewDashboard: React.FC<OverviewDashboardProps> = ({
                       }`}
                     >
                       <Sparkles className="w-3.5 h-3.5" />
-                      <span>{isBriefingOpen ? 'Hide CISO Briefing' : 'Generate CISO Action Briefing'}</span>
+                      <span>{isBriefingOpen ? 'Hide Briefing' : 'View Action Briefing'}</span>
                       {isBriefingOpen ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
                     </button>
 
@@ -820,16 +788,16 @@ export const OverviewDashboard: React.FC<OverviewDashboardProps> = ({
                 <div className={`p-3.5 rounded-lg border font-mono text-xs flex flex-col gap-2.5 ${
                   isLight ? 'bg-white border-slate-200' : 'bg-slate-900/60 border-slate-800'
                 }`}>
-                  <div className="flex items-center justify-between text-[11px] text-slate-500 font-bold uppercase tracking-wider pb-1 border-b border-slate-200 dark:border-slate-800">
-                    <span>Tug-of-War Support Divergence Barometer (Disjointness: P_S ⊥ Q_supp)</span>
-                    <span className="text-red-600 dark:text-red-400">PDI Deficit: {pdi}% (CRITICAL)</span>
+                  <div className="flex items-center justify-between text-[11px] text-slate-400 font-bold uppercase tracking-wider pb-1 border-b border-slate-200 dark:border-slate-800">
+                    <span>Dependency Resilience Assessment</span>
+                    <span className="text-red-600 dark:text-red-400">Maintenance Deficit: {pdi}% (Critical)</span>
                   </div>
 
                   {/* Internal Demand Bar */}
                   <div>
                     <div className="flex items-center justify-between text-[11px] mb-1">
                       <span className="font-semibold text-slate-700 dark:text-slate-300">
-                        Internal Structural Demand (P_S):
+                        Internal Service Reliance:
                       </span>
                       <span className="font-bold text-red-600 dark:text-red-400">{pStructural}% (Percentile)</span>
                     </div>
@@ -842,9 +810,9 @@ export const OverviewDashboard: React.FC<OverviewDashboardProps> = ({
                   <div>
                     <div className="flex items-center justify-between text-[11px] mb-1">
                       <span className="font-semibold text-slate-700 dark:text-slate-300">
-                        External Ecosystem Support (Q_supp):
+                        Upstream Maintenance Backing:
                       </span>
-                      <span className="font-bold text-amber-600 dark:text-amber-400">{qSupport}% (Geometric Mean)</span>
+                      <span className="font-bold text-amber-600 dark:text-amber-400">{qSupport}% (Overall Health)</span>
                     </div>
                     <div className="w-full bg-slate-200 dark:bg-slate-800 h-2 rounded-full overflow-hidden">
                       <div className="bg-amber-500 h-full rounded-full" style={{ width: `${qSupport}%` }}></div>
@@ -857,7 +825,7 @@ export const OverviewDashboard: React.FC<OverviewDashboardProps> = ({
                   <div className={`p-2.5 rounded-lg border flex flex-col justify-between ${
                     isLight ? 'bg-white border-slate-200' : 'bg-slate-900/60 border-slate-800'
                   }`}>
-                    <span className="text-[10px] text-slate-500 uppercase font-mono">Q1: OpenSSF Scorecard</span>
+                    <span className="text-[10px] text-slate-500 uppercase font-mono">Security Scorecard</span>
                     <div className="font-mono font-bold text-sm mt-0.5 text-amber-600 dark:text-amber-400">
                       {item.openSsfScore || 3.2} / 10.0
                     </div>
@@ -867,7 +835,7 @@ export const OverviewDashboard: React.FC<OverviewDashboardProps> = ({
                   <div className={`p-2.5 rounded-lg border flex flex-col justify-between ${
                     isLight ? 'bg-white border-slate-200' : 'bg-slate-900/60 border-slate-800'
                   }`}>
-                    <span className="text-[10px] text-slate-500 uppercase font-mono">Q2: Human Commits (12m)</span>
+                    <span className="text-[10px] text-slate-500 uppercase font-mono">Active Maintainer Commits</span>
                     <div className="font-mono font-bold text-sm mt-0.5 text-red-600 dark:text-red-400">
                       {item.humanCommits12m || 4} commits
                     </div>
@@ -877,7 +845,7 @@ export const OverviewDashboard: React.FC<OverviewDashboardProps> = ({
                   <div className={`p-2.5 rounded-lg border flex flex-col justify-between ${
                     isLight ? 'bg-white border-slate-200' : 'bg-slate-900/60 border-slate-800'
                   }`}>
-                    <span className="text-[10px] text-slate-500 uppercase font-mono">Q3: Release Recency</span>
+                    <span className="text-[10px] text-slate-500 uppercase font-mono">Release Cadence</span>
                     <div className="font-mono font-bold text-sm mt-0.5 text-red-600 dark:text-red-400">
                       {item.daysSinceRelease || 412} days
                     </div>
@@ -893,26 +861,26 @@ export const OverviewDashboard: React.FC<OverviewDashboardProps> = ({
                     <div className="flex items-center justify-between pb-1 border-b border-purple-200 dark:border-purple-900/40">
                       <span className="font-bold flex items-center gap-1.5">
                         <Sparkles className="w-3.5 h-3.5 text-purple-600" />
-                        <span>Pre-Configured CISO Executive Action Directive (Policy PDI-70)</span>
+                        <span>Remediation Policy Directive</span>
                       </span>
-                      <span className="text-[10px] font-mono font-bold uppercase text-purple-600 dark:text-purple-300">
-                        Mandatory Dual-Vendoring
+                      <span className="text-[10px] font-semibold text-purple-600 dark:text-purple-300">
+                        Dual-Vendoring Mandate
                       </span>
                     </div>
 
                     <p className="text-[11px] leading-relaxed">
-                      <strong>Risk Synopsis:</strong> <code>{item.name}</code> handles critical payload parsing across Tier-1 assets, yet relies on an unfunded single maintainer with 4 human commits in 12 months. This matches the exact precursor signature of the <em>XZ Utils</em> backdoor and <em>left-pad</em> systemic collapse.
+                      <strong>Risk Synopsis:</strong> <code>{item.name}</code> processes payloads across critical assets but relies on a single maintainer with low commit activity over the past 12 months.
                     </p>
 
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-2 font-mono text-[10px] pt-1">
                       <div className={`p-2 rounded border ${isLight ? 'bg-white border-purple-200' : 'bg-purple-950/50 border-purple-900/40'}`}>
-                        <strong>1. ARCHITECTURAL DUAL-VENDORING:</strong> Direct engineering leads to evaluate drop-in secondary parsers (e.g. Jackson YAML / SnakeYAML 2.0).
+                        <strong>1. DUAL-VENDORING:</strong> Evaluate drop-in secondary parsers (e.g. Jackson YAML / SnakeYAML 2.0).
                       </div>
                       <div className={`p-2 rounded border ${isLight ? 'bg-white border-purple-200' : 'bg-purple-950/50 border-purple-900/40'}`}>
-                        <strong>2. ESCROW REPO FORK:</strong> Maintain a mirror fork on internal Gitlab with automated static analysis CI gates.
+                        <strong>2. ESCROW FORK:</strong> Maintain a mirror fork with automated static analysis CI gates.
                       </div>
                       <div className={`p-2 rounded border ${isLight ? 'bg-white border-purple-200' : 'bg-purple-950/50 border-purple-900/40'}`}>
-                        <strong>3. FOUNDATION SPONSORSHIP:</strong> Allocate corporate OSS stewardship funds through Linux Foundation to sustain upstream maintainer.
+                        <strong>3. UPSTREAM SPONSORSHIP:</strong> Allocate stewardship funds through OSS foundations to sustain upstream maintenance.
                       </div>
                     </div>
                   </div>

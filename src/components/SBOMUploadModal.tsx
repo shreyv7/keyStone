@@ -47,13 +47,13 @@ export const SBOMUploadModal: React.FC<SBOMUploadModalProps> = ({
       status: currentStepIndex > 0 ? 'completed' : currentStepIndex === 0 && isProcessing ? 'active' : 'pending'
     },
     {
-      label: 'Reverse BFS Propagation & Asset Reachability',
-      detail: 'Tracing 4-hop propagation cascades to Tier-1 financial sinks...',
+      label: 'Asset Reachability & Propagation Analysis',
+      detail: 'Tracing downstream propagation cascades to critical services...',
       status: currentStepIndex > 1 ? 'completed' : currentStepIndex === 1 ? 'active' : 'pending'
     },
     {
-      label: 'Tarjan Articulation Point & Cut-Vertex Solver',
-      detail: 'Computing 2-connected components and minimum vertex cut...',
+      label: 'Chokepoint & Topology Solver',
+      detail: 'Computing single points of failure and targeted remediations...',
       status: currentStepIndex > 2 ? 'completed' : currentStepIndex === 2 ? 'active' : 'pending'
     },
     {
@@ -134,11 +134,8 @@ export const SBOMUploadModal: React.FC<SBOMUploadModalProps> = ({
               <UploadCloud className="w-4 h-4" />
             </div>
             <div>
-              <div className="text-sm font-bold flex items-center gap-2">
+              <div className="text-sm font-bold">
                 <span>Ingest Repository Lockfile or CycloneDX SBOM</span>
-                <span className="text-[10px] font-mono px-1.5 py-0.2 rounded bg-cyan-500/10 text-cyan-500 border border-cyan-500/30">
-                  F1 Ingest
-                </span>
               </div>
               <div className={`text-xs ${isLight ? 'text-slate-500' : 'text-slate-400'}`}>
                 Upload package-lock.json, pom.xml, requirements.txt, or CycloneDX 1.5 JSON
@@ -220,7 +217,7 @@ export const SBOMUploadModal: React.FC<SBOMUploadModalProps> = ({
                       <div className="font-semibold text-xs truncate">Acme Core Banking</div>
                       <div className="text-[10px] text-slate-400">CycloneDX 1.5 JSON</div>
                     </div>
-                    <div className="mt-2 text-[10px] font-mono text-cyan-600 dark:text-cyan-400">42 Repos • Tier-1 Sinks</div>
+                    <div className="mt-2 text-[10px] font-mono text-cyan-600 dark:text-cyan-400">42 Repos • Critical Services</div>
                   </button>
 
                   <button

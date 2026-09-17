@@ -155,7 +155,7 @@ export const RiskQuadrantScatter: React.FC<RiskQuadrantScatterProps> = ({
                   : 'bg-red-950/40 hover:bg-red-900/60 text-red-300 border-red-900/60'
             }`}
           >
-            <span>🚨 Emergency</span>
+            <span>Critical</span>
             <span className="font-mono text-[10px] opacity-80">({counts.emergency})</span>
           </button>
 
@@ -169,7 +169,7 @@ export const RiskQuadrantScatter: React.FC<RiskQuadrantScatterProps> = ({
                   : 'bg-amber-950/40 hover:bg-amber-900/60 text-amber-300 border-amber-800/60'
             }`}
           >
-            <span>⚠️ XZ Utils Class</span>
+            <span>Fragile</span>
             <span className="font-mono text-[10px] opacity-80">({counts.fragile})</span>
           </button>
 
@@ -344,7 +344,7 @@ export const RiskQuadrantScatter: React.FC<RiskQuadrantScatterProps> = ({
             Low Criticality • High Fragility
           </text>
 
-          {/* Top-Right: P1 Critical Keystone */}
+          {/* Top-Right: P1 Critical Chokepoint */}
           <text
             x={MID_X + 8}
             y={MARGIN.top + 16}
@@ -352,14 +352,14 @@ export const RiskQuadrantScatter: React.FC<RiskQuadrantScatterProps> = ({
               isLight ? 'fill-red-700' : 'fill-red-400'
             }`}
           >
-            🚨 P1: CRITICAL KEYSTONE
+            P1: CRITICAL CHOKEPOINT
           </text>
           <text
             x={MID_X + 8}
             y={MARGIN.top + 28}
             className={`text-[9px] font-sans ${isLight ? 'fill-slate-500' : 'fill-slate-400'}`}
           >
-            High Criticality • High Fragility (Systemic Cut-Vertices)
+            High Criticality • High Fragility (Critical Chokepoints)
           </text>
 
           {/* Bottom-Left: Routine Dependency */}
@@ -647,13 +647,13 @@ export const RiskQuadrantScatter: React.FC<RiskQuadrantScatterProps> = ({
                   ? 'bg-blue-100 text-blue-700 border-blue-300 dark:bg-blue-950 dark:text-blue-300 dark:border-blue-800'
                   : 'bg-slate-100 text-slate-700 border-slate-300 dark:bg-slate-800 dark:text-slate-300 dark:border-slate-700'
               }`}>
-                {hoveredPlotItem.quadrant === 'fragile' ? '⚠️ XZ Utils Class' : hoveredPlotItem.quadrant}
+                {hoveredPlotItem.quadrant === 'fragile' ? 'Fragile' : hoveredPlotItem.quadrant === 'emergency' ? 'Critical' : hoveredPlotItem.quadrant}
               </span>
             </div>
 
             {hoveredPlotItem.node.articulationPoint && (
               <div className="text-[10px] font-bold text-red-600 dark:text-red-400 flex items-center gap-1">
-                <span>CUT-VERTEX CHOKEPOINT</span>
+                <span>Critical Chokepoint</span>
               </div>
             )}
 
@@ -755,21 +755,11 @@ export const RiskQuadrantScatter: React.FC<RiskQuadrantScatterProps> = ({
                 <div>
                   <div className="flex items-center gap-2 flex-wrap">
                     <span className={`text-xs font-bold ${isLight ? 'text-slate-900' : 'text-slate-100'}`}>
-                      Weakest-Dimension Diagnostic: <code className="font-mono text-purple-600 dark:text-purple-400">{diagNode.name}@{diagNode.version}</code>
-                    </span>
-                    <span className={`text-[9px] font-mono px-1.5 py-0.2 rounded border uppercase font-bold ${
-                      isLight ? 'bg-purple-50 text-purple-700 border-purple-200' : 'bg-purple-950 text-purple-300 border-purple-800'
-                    }`}>
-                      F3 PSFI Drilldown
-                    </span>
-                    <span className={`text-[9px] font-mono px-1.5 py-0.2 rounded border uppercase ${
-                      isLight ? 'bg-emerald-50 text-emerald-700 border-emerald-200' : 'bg-emerald-950 text-emerald-300 border-emerald-800'
-                    }`}>
-                      Coverage: 4/4 Available (100%)
+                      Dimension Breakdown: <code className="font-mono text-purple-600 dark:text-purple-400">{diagNode.name}@{diagNode.version}</code>
                     </span>
                   </div>
                   <span className={`text-[10px] ${isLight ? 'text-slate-500' : 'text-slate-400'}`}>
-                    Decomposing Package Structural Fragility Index into 4 Orthogonal Risk Axes
+                    Structural risk breakdown across core security dimensions
                   </span>
                 </div>
               </div>
@@ -874,15 +864,10 @@ export const RiskQuadrantScatter: React.FC<RiskQuadrantScatterProps> = ({
           <AlertTriangle className="w-4 h-4 text-amber-600 shrink-0 mt-0.5" />
           <div className="flex flex-col gap-0.5">
             <div className="text-xs font-bold flex items-center gap-2">
-              <span>The "XZ Utils" Supply-Chain Blindspot (Bottom-Right Quadrant)</span>
-              <span className={`text-[9px] font-mono px-1.5 py-0.2 rounded border uppercase font-semibold ${
-                isLight ? 'bg-amber-100 text-amber-900 border-amber-300' : 'bg-amber-900/60 text-amber-200 border-amber-700'
-              }`}>
-                F21 Framing
-              </span>
+              <span>High-Reach, Low-CVSS Dependencies (Sleeper Risks)</span>
             </div>
             <p className={`text-[11px] leading-relaxed max-w-xl ${isLight ? 'text-amber-900/80' : 'text-amber-200/80'}`}>
-              Packages in this quadrant (e.g. <code>minimist</code>, <code>ws-util</code>) possess <strong>massive transitive blast radius</strong> across Tier-1 assets, yet boast low direct CVSS scores and minimal direct attention. Keystone flags these sleeper dependencies before zero-day weaponization.
+              Packages in this quadrant possess broad transitive blast radius across critical services despite low direct CVSS scores.
             </p>
           </div>
         </div>
@@ -897,7 +882,7 @@ export const RiskQuadrantScatter: React.FC<RiskQuadrantScatterProps> = ({
                 : 'bg-amber-900/60 hover:bg-amber-800 text-amber-100 border-amber-700'
           }`}
         >
-          <span>{filterQuadrant === 'fragile' ? 'Showing XZ Class' : 'Filter XZ Utils Nodes'}</span>
+          <span>{filterQuadrant === 'fragile' ? 'Showing Sleeper Risks' : 'Filter Sleeper Risks'}</span>
           <ArrowRight className="w-3.5 h-3.5" />
         </button>
       </div>

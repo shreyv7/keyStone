@@ -125,15 +125,10 @@ export const ReportExportModal: React.FC<ReportExportModalProps> = ({
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <h2 className="text-base font-bold">Export Systemic Risk & Audit Report</h2>
-                <span className={`text-[10px] font-mono px-2 py-0.5 rounded uppercase font-semibold border ${
-                  isLight ? 'bg-slate-100 text-slate-600 border-slate-300' : 'bg-slate-800 text-slate-300 border-slate-700'
-                }`}>
-                  F10 / F17 Export
-                </span>
+                <h2 className="text-base font-bold">Export Risk & Audit Report</h2>
               </div>
               <p className={`text-xs mt-0.5 ${isLight ? 'text-slate-500' : 'text-slate-400'}`}>
-                Export portfolio graph telemetry, executive DORA/PCI compliance summaries, or tabular risk registers.
+                Export graph telemetry, compliance attestations, and risk registers.
               </p>
             </div>
           </div>

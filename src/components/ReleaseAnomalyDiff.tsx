@@ -50,27 +50,22 @@ export const ReleaseAnomalyDiff: React.FC<ReleaseAnomalyDiffProps> = ({ node, cl
           </div>
           <div>
             <div className="flex items-center gap-1.5">
-              <span className={`text-xs font-bold uppercase tracking-wider ${isLight ? 'text-slate-900' : 'text-slate-100'}`}>
-                Release Anomaly Inspector (F4)
-              </span>
-              <span className={`text-[9px] font-mono px-1.5 py-0.5 rounded border uppercase ${
-                isLight ? 'bg-red-50 text-red-700 border-red-200' : 'bg-red-950/50 text-red-300 border-red-800'
-              }`}>
-                Stealth Infiltration
+              <span className={`text-xs font-bold ${isLight ? 'text-slate-900' : 'text-slate-100'}`}>
+                Release Anomaly Inspector
               </span>
             </div>
             <p className={`text-[10px] ${isLight ? 'text-slate-500' : 'text-slate-400'}`}>
-              Correlates Capability Drift ($\Delta C^+$) with Unexplained Artifact Blobs ($U_A$)
+              Detects unverified maintainer changes and artifact drift.
             </p>
           </div>
         </div>
 
-        <span className={`text-[10px] font-mono font-bold px-2 py-0.5 rounded border uppercase ${
+        <span className={`text-[10px] font-semibold px-2 py-0.5 rounded border ${
           f4Status === 'CORRELATED_ANOMALY'
             ? isLight ? 'bg-red-100 text-red-800 border-red-300' : 'bg-red-950 text-red-300 border-red-800'
             : isLight ? 'bg-amber-100 text-amber-800 border-amber-300' : 'bg-amber-950 text-amber-300 border-amber-800'
         }`}>
-          {f4Status}
+          {f4Status === 'CORRELATED_ANOMALY' ? 'Correlated Anomaly' : f4Status === 'CAPABILITY_CHANGE' ? 'Capability Change' : 'Artifact Drift'}
         </span>
       </div>
 
@@ -102,7 +97,7 @@ export const ReleaseAnomalyDiff: React.FC<ReleaseAnomalyDiffProps> = ({ node, cl
         <div className="flex items-center justify-between mb-1.5">
           <span className={`text-xs font-semibold flex items-center gap-1.5 ${isLight ? 'text-slate-800' : 'text-slate-200'}`}>
             <ShieldAlert className="w-3.5 h-3.5 text-red-500" />
-            <span>Capability Delta ($\Delta C^+$) Introduced in Patch:</span>
+            <span>Capability Changes in Release:</span>
           </span>
           <span className="text-[10px] font-mono text-red-500 font-bold">
             +{capabilities.length} Sensitive Calls
@@ -135,7 +130,7 @@ export const ReleaseAnomalyDiff: React.FC<ReleaseAnomalyDiffProps> = ({ node, cl
         <div className="flex items-center justify-between mb-1.5">
           <span className={`text-xs font-semibold flex items-center gap-1.5 ${isLight ? 'text-slate-800' : 'text-slate-200'}`}>
             <FileCode className="w-3.5 h-3.5 text-indigo-500" />
-            <span>Artifact-Source Correspondence Matrix:</span>
+            <span>Artifact Verification:</span>
           </span>
           <span className={`text-[10px] ${isLight ? 'text-slate-500' : 'text-slate-400'}`}>
             GitHub Release vs npm Tarball

@@ -76,16 +76,11 @@ export const RiskWatchlist: React.FC<RiskWatchlistProps> = ({
       {/* Header bar */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b ks-border pb-4">
         <div>
-          <div className="flex items-center gap-2 text-xs font-mono font-medium text-slate-500">
-            <span>F1-RADAR</span>
-            <span>•</span>
-            <span className="text-blue-500 uppercase font-semibold">Realized Threat Ranking</span>
-          </div>
-          <h1 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-white mt-1">
+          <h1 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-white">
             Systemic Risk Watchlist
           </h1>
           <p className="text-sm mt-1 max-w-2xl text-slate-600 dark:text-slate-400 leading-relaxed">
-            Prioritizes dependencies by network position, downstream blast radius, and leading F5 Centrality Velocity alarms before CVE disclosure.
+            Prioritizes dependencies by network position, downstream blast radius, and early risk signals before public CVE disclosure.
           </p>
         </div>
 
@@ -112,14 +107,14 @@ export const RiskWatchlist: React.FC<RiskWatchlistProps> = ({
       {/* Highlights summary banner (4 columns) */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <Card className="p-4 flex flex-col gap-1.5">
-          <div className="text-xs font-semibold uppercase tracking-wider text-slate-400">Top Articulation Keystone</div>
+          <div className="text-xs font-semibold uppercase tracking-wider text-slate-400">Primary Chokepoint</div>
           <div className="text-xl font-bold font-mono text-slate-900 dark:text-white">snakeyaml@1.33</div>
           <div className="text-xs text-slate-400">
-            Tarjan cut-vertex reaching 4 Tier-1 services despite moderate CVSS (48/100).
+            Critical chokepoint reaching 4 Tier-1 services with moderate CVSS (48/100).
           </div>
         </Card>
 
-        {/* F5 Velocity Summary Card */}
+        {/* Velocity Summary Card */}
         <Card className="p-4 flex flex-col gap-1.5">
           <div className="flex items-center justify-between">
             <span className="text-xs font-semibold uppercase tracking-wider text-slate-400">
@@ -134,7 +129,7 @@ export const RiskWatchlist: React.FC<RiskWatchlistProps> = ({
             <span>+142% 90d Surge</span>
           </div>
           <div className="text-xs text-slate-400">
-            <code>snakeyaml</code> Reverse PageRank surged across lockfiles before CVE release.
+            <code>snakeyaml</code> Reverse PageRank increased 142% across recent dependency updates.
           </div>
         </Card>
 
@@ -147,7 +142,7 @@ export const RiskWatchlist: React.FC<RiskWatchlistProps> = ({
         </Card>
 
         <Card className="p-4 flex flex-col gap-1.5">
-          <div className="text-xs font-semibold uppercase tracking-wider text-slate-400">Tier-1 Sinks Exposed</div>
+          <div className="text-xs font-semibold uppercase tracking-wider text-slate-400">Critical Services Exposed</div>
           <div className="text-xl font-bold font-mono text-slate-900 dark:text-white">4 Core Services</div>
           <div className="text-xs text-slate-400">
             Payment Gateway, Auth/IAM, Order Core, Realtime Risk.
@@ -171,7 +166,7 @@ export const RiskWatchlist: React.FC<RiskWatchlistProps> = ({
           icon={<TrendingUp className="w-3.5 h-3.5" />}
           onClick={() => setWatchlistFilter('escalating')}
         >
-          Escalating Keystones ({escalatingCount})
+          Escalating Risks ({escalatingCount})
         </Button>
 
         <Button
@@ -179,7 +174,7 @@ export const RiskWatchlist: React.FC<RiskWatchlistProps> = ({
           size="sm"
           onClick={() => setWatchlistFilter('cut-vertex')}
         >
-          Cut-Vertices ({cutVertexCount})
+          Critical Chokepoints ({cutVertexCount})
         </Button>
 
         <Button
@@ -187,7 +182,7 @@ export const RiskWatchlist: React.FC<RiskWatchlistProps> = ({
           size="sm"
           onClick={() => setWatchlistFilter('tier1')}
         >
-          Tier-1 Exposed ({nodes.filter(n => n.tier1Reach > 0).length})
+          Critical Services Reached ({nodes.filter(n => n.tier1Reach > 0).length})
         </Button>
 
         <span className="text-xs font-mono text-slate-500 ml-auto hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-lg ks-card">
@@ -212,8 +207,8 @@ export const RiskWatchlist: React.FC<RiskWatchlistProps> = ({
                 <th className="py-3 px-4">Conventional vs. Systemic</th>
                 <th className="py-3 px-4">Risk Tier</th>
                 <th className="py-3 px-4">Centrality</th>
-                <th className="py-3 px-4">F5 Velocity (90d)</th>
-                <th className="py-3 px-4">Cut-Vertex</th>
+                <th className="py-3 px-4">Velocity (90d)</th>
+                <th className="py-3 px-4">Chokepoint</th>
                 <th className="py-3 px-4">Downstream</th>
                 <th className="py-3 px-4">Tier-1 Reach</th>
                 <th className="py-3 px-4 text-right">Action</th>
@@ -302,7 +297,7 @@ export const RiskWatchlist: React.FC<RiskWatchlistProps> = ({
                     <td className="py-3.5 px-4">
                       {node.articulationPoint ? (
                         <span className="px-2.5 py-1 rounded-md text-xs font-semibold bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 border border-slate-300 dark:border-slate-700">
-                          Cut-Vertex
+                          Chokepoint
                         </span>
                       ) : (
                         <span className="text-xs text-slate-400">No</span>

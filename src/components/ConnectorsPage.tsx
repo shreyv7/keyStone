@@ -274,16 +274,9 @@ export const ConnectorsPage: React.FC<ConnectorsPageProps> = ({ onOpenSBOMModal 
         {/* Top Header Banner */}
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-slate-200 dark:border-slate-800">
           <div>
-            <div className="flex items-center gap-2 mb-1.5">
-              <span className="text-xs font-mono font-semibold px-2.5 py-0.5 rounded bg-blue-50 text-blue-700 dark:bg-blue-950/60 dark:text-blue-300 border border-blue-200 dark:border-blue-800/80">
-                ECOSYSTEM INGESTION
-              </span>
-              <span className="text-xs text-slate-500 dark:text-slate-400">• Continuous Graph Sync</span>
-            </div>
             <h1 className="text-2xl lg:text-3xl font-bold tracking-tight text-slate-900 dark:text-white">Connectors & Integrations</h1>
             <p className="text-sm mt-1.5 max-w-3xl leading-relaxed text-slate-600 dark:text-slate-300">
-              Connect your source control platforms, package registries, CI/CD runners, and incident channels.
-              Keystone continuously correlates package lockfiles, resolves transitive dependency graphs, and dispatches coordinated mitigation PRs.
+              Manage integrations for source control, package registries, CI/CD pipelines, and notifications.
             </p>
           </div>
 

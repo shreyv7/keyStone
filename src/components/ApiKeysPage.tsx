@@ -134,15 +134,9 @@ export const ApiKeysPage: React.FC = () => {
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-slate-200 dark:border-slate-800">
           <div>
-            <div className="flex items-center gap-2 mb-1.5">
-              <span className="text-xs font-mono font-semibold px-2.5 py-1 rounded-md bg-blue-50 dark:bg-blue-950/60 text-blue-700 dark:text-blue-400 border border-blue-200 dark:border-blue-900">
-                PROGRAMMATIC ACCESS
-              </span>
-              <span className="text-xs text-slate-500 dark:text-slate-400">• REST API & CI/CD Tokens</span>
-            </div>
             <h1 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-white">API Keys & Machine Access</h1>
             <p className="text-sm mt-1.5 max-w-3xl text-slate-600 dark:text-slate-400 leading-relaxed">
-              Issue scoped API tokens for GitHub Actions, GitLab CI, and automated deployment pipelines to upload SBOMs, query reachability graphs, and verify circuit breakers.
+              Manage scoped API credentials for CI/CD pipelines, automated scanners, and integrations.
             </p>
           </div>
 
@@ -216,7 +210,7 @@ export const ApiKeysPage: React.FC = () => {
           <div className="p-4 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between">
             <div>
               <h3 className="text-sm font-semibold text-slate-900 dark:text-white">Active Machine Credentials</h3>
-              <p className="text-xs text-slate-500 dark:text-slate-400">Use these keys to authenticate CLI scripts and CI/CD enforcers.</p>
+              <p className="text-xs text-slate-500 dark:text-slate-400">Scoped tokens for CLI automation and CI/CD pipelines.</p>
             </div>
           </div>
 

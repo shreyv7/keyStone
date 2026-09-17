@@ -59,8 +59,8 @@ export const Sidebar: React.FC<SidebarProps> = ({
     {
       label: 'ANALYSIS',
       items: [
-        { id: 'ecosystem', label: 'Topology Map', icon: <Network className="w-3.5 h-3.5" /> },
         { id: 'overview', label: 'Security Posture', icon: <BarChart3 className="w-3.5 h-3.5" /> },
+        { id: 'ecosystem', label: 'Topology Map', icon: <Network className="w-3.5 h-3.5" /> },
         { id: 'watchlist', label: 'Risk Watchlist', icon: <ShieldAlert className="w-3.5 h-3.5" />, count: '5' },
         { id: 'mitigation', label: 'Remediation', icon: <Wrench className="w-3.5 h-3.5" />, count: 'Active' }
       ]
@@ -164,10 +164,10 @@ export const Sidebar: React.FC<SidebarProps> = ({
         {isCollapsed ? (
           <div 
             className="flex flex-col items-center gap-0.5 text-center"
-            title={`${stats.criticalDependencies} Critical Sinks • ${stats.tier1Assets} Tier-1 Exposed`}
+            title={`${stats.criticalDependencies} Critical Risks • ${stats.tier1Assets} Critical Services Exposed`}
           >
-            <span className="text-[10px] font-mono font-bold text-rose-400">{stats.tier1Assets}T1</span>
-            <span className="text-[9px] text-slate-400">{stats.criticalDependencies}S</span>
+            <span className="text-[10px] font-mono font-bold text-rose-400">{stats.tier1Assets}CS</span>
+            <span className="text-[9px] text-slate-400">{stats.criticalDependencies}CR</span>
           </div>
         ) : (
           <div className="grid grid-cols-2 gap-1.5 text-center">
@@ -176,7 +176,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                 {stats.criticalDependencies}
               </div>
               <div className="text-[10px] font-medium text-slate-400 mt-0.5">
-                Critical Sinks
+                Critical Risks
               </div>
             </div>
 
@@ -185,7 +185,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                 {stats.tier1Assets}
               </div>
               <div className="text-[10px] font-medium text-slate-400 mt-0.5">
-                Tier-1 Exposed
+                Critical Services
               </div>
             </div>
           </div>

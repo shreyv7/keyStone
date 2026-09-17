@@ -329,8 +329,8 @@ export const AuthOnboardingModal: React.FC<AuthOnboardingModalProps> = ({
                 <GitBranch className="w-3.5 h-3.5" />
               </div>
               <div>
-                <h4 className="text-xs font-bold text-slate-100">Enterprise Multi-Repo DAG</h4>
-                <p className="text-[11px] text-slate-400">Unify 40+ repositories into one continuous dependency flow network.</p>
+                <h4 className="text-xs font-bold text-slate-100">Cross-Repository Mapping</h4>
+                <p className="text-[11px] text-slate-400">Unify all repositories into a clear dependency network.</p>
               </div>
             </div>
 
@@ -339,8 +339,8 @@ export const AuthOnboardingModal: React.FC<AuthOnboardingModalProps> = ({
                 <ShieldAlert className="w-3.5 h-3.5" />
               </div>
               <div>
-                <h4 className="text-xs font-bold text-slate-100">Tarjan Articulation Points</h4>
-                <p className="text-[11px] text-slate-400">Isolate single points of failure and stealth maintainer takeovers on Day -400.</p>
+                <h4 className="text-xs font-bold text-slate-100">Single Point of Failure Detection</h4>
+                <p className="text-[11px] text-slate-400">Isolate critical chokepoints and unmaintained dependencies early.</p>
               </div>
             </div>
 
@@ -349,8 +349,8 @@ export const AuthOnboardingModal: React.FC<AuthOnboardingModalProps> = ({
                 <CheckCircle2 className="w-3.5 h-3.5" />
               </div>
               <div>
-                <h4 className="text-xs font-bold text-slate-100">1 Coordinated PR vs. 40 Bot PRs</h4>
-                <p className="text-[11px] text-slate-400">Flow-network minimum cut algorithms prescribe surgical remediations with zero breaks.</p>
+                <h4 className="text-xs font-bold text-slate-100">Targeted Remediation</h4>
+                <p className="text-[11px] text-slate-400">Apply one coordinated fix that protects all services without breaking changes.</p>
               </div>
             </div>
           </div>
@@ -458,13 +458,6 @@ export const AuthOnboardingModal: React.FC<AuthOnboardingModalProps> = ({
                   </div>
                   <div className="flex items-center gap-2">
                     <span className="text-sm font-bold">Continue with GitHub</span>
-                    <span className={`text-[10px] font-mono px-1.5 py-0.5 rounded border font-semibold ${
-                      isLight 
-                        ? 'bg-slate-100 text-slate-700 border-slate-300' 
-                        : 'bg-slate-800 text-slate-300 border-slate-700'
-                    }`}>
-                      Instant SSO
-                    </span>
                   </div>
                 </div>
                 <div className="w-8 h-8 rounded-full flex items-center justify-center text-slate-400 group-hover:text-slate-900 dark:group-hover:text-white group-hover:translate-x-0.5 transition-all">
@@ -754,9 +747,9 @@ export const AuthOnboardingModal: React.FC<AuthOnboardingModalProps> = ({
                   {/* Role Card Selector */}
                   <div className="grid grid-cols-3 gap-2.5">
                     {[
-                      { id: 'ciso', title: 'Executive / CISO', icon: ShieldAlert, desc: 'Blast radius & dollar-loss exposure' },
-                      { id: 'developer', title: 'AppSec Lead', icon: SlidersHorizontal, desc: 'Tarjan cut-vertices & PageRank' },
-                      { id: 'maintainer', title: 'Platform Dev', icon: Terminal, desc: '1-Click atomic coordinated PRs' },
+                      { id: 'ciso', title: 'Executive / CISO', icon: ShieldAlert, desc: 'Service blast radius & business risk' },
+                      { id: 'developer', title: 'AppSec Lead', icon: SlidersHorizontal, desc: 'Chokepoint analysis & service reach' },
+                      { id: 'maintainer', title: 'Platform Dev', icon: Terminal, desc: '1-Click coordinated multi-repo fixes' },
                     ].map((role) => {
                       const Icon = role.icon;
                       const isSelected = roleLens === role.id;
@@ -794,11 +787,11 @@ export const AuthOnboardingModal: React.FC<AuthOnboardingModalProps> = ({
                     </label>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                       {[
-                        { id: 'eliminate_alert_fatigue', label: 'Eliminate 94% CVE Alert Fatigue' },
-                        { id: 'pre_cve_stealth', label: 'Pre-CVE Maintainer Hijack Detection' },
-                        { id: 'min_cut_prs', label: 'Atomic 1-Click Minimum Cut PRs' },
-                        { id: 'cyclonedx_sbom', label: 'Continuous CycloneDX/SPDX Sync' },
-                        { id: 'namespace_squatting', label: 'Private PURL Namespace Enforcer' },
+                        { id: 'eliminate_alert_fatigue', label: 'Reduce Alert Noise Across Teams' },
+                        { id: 'pre_cve_stealth', label: 'Detect Unmaintained Chokepoints Early' },
+                        { id: 'min_cut_prs', label: 'Apply Targeted Multi-Repo Fixes' },
+                        { id: 'cyclonedx_sbom', label: 'Continuous SBOM & Manifest Sync' },
+                        { id: 'namespace_squatting', label: 'Namespace Impersonation Protection' },
                       ].map((p) => {
                         const isChecked = securityPriorities.includes(p.id);
                         return (
@@ -866,13 +859,13 @@ export const AuthOnboardingModal: React.FC<AuthOnboardingModalProps> = ({
                         id: 'sbom_upload',
                         title: 'Upload CycloneDX / SPDX SBOM',
                         desc: 'Directly parse lockfile or software bill-of-materials artifact.',
-                        badge: 'Air-Gapped / Static'
+                        badge: 'Static SBOM'
                       },
                       {
                         id: 'gitlab',
                         title: 'GitLab / Bitbucket Pipeline',
                         desc: 'Integrate into existing CI runners using our containerized runner.',
-                        badge: 'Self-Hosted'
+                        badge: 'CI/CD Pipeline'
                       }
                     ].map((opt) => {
                       const isSelected = ingestionSource === opt.id;
@@ -924,7 +917,7 @@ export const AuthOnboardingModal: React.FC<AuthOnboardingModalProps> = ({
                       className="px-5 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs shadow-xs flex items-center gap-1.5 cursor-pointer"
                     >
                       <Zap className="w-3.5 h-3.5" />
-                      <span>Visualize</span>
+                      <span>Analyze Graph</span>
                     </button>
                   </div>
                 </div>
@@ -938,10 +931,10 @@ export const AuthOnboardingModal: React.FC<AuthOnboardingModalProps> = ({
                   <div>
                     <h3 className="text-lg font-bold flex items-center gap-2">
                       <Sparkles className="w-5 h-5 text-emerald-500" />
-                      <span>Topological Graph Synthesis</span>
+                      <span>Synthesizing Dependency Map</span>
                     </h3>
                     <p className="text-xs text-slate-500">
-                      Parsing dependency channels, mapping 5-layer DAG, and calculating Tarjan articulation points.
+                      Mapping cross-repo dependency network and identifying single points of failure.
                     </p>
                   </div>
 
@@ -964,10 +957,10 @@ export const AuthOnboardingModal: React.FC<AuthOnboardingModalProps> = ({
                     isLight ? 'bg-slate-50 border-slate-200' : 'bg-slate-950/60 border-slate-800'
                   }`}>
                     {[
-                      { index: 0, label: 'Manifest Ingestion: 42 enterprise repositories synchronized' },
-                      { index: 1, label: 'DAG Resolution: 1,489 transitive open-source dependencies mapped' },
-                      { index: 2, label: 'Tarjan Articulation Point solver: Isolated 3 structural chokepoints' },
-                      { index: 3, label: 'Primary Keystone Detected: snakeyaml@1.33 (81% reachability to Payment Gateway)' }
+                      { index: 0, label: 'Repositories Connected: 42 enterprise repositories synchronized' },
+                      { index: 1, label: 'Dependencies Mapped: 1,489 transitive packages analyzed' },
+                      { index: 2, label: 'Chokepoint Analysis: Isolated 3 single points of failure' },
+                      { index: 3, label: 'Primary Risk Detected: snakeyaml@1.33 (Connected to 4 production services)' }
                     ].map((step) => {
                       const isCompleted = scanPhaseIndex > step.index || isScanDone;
                       const isCurrent = scanPhaseIndex === step.index && !isScanDone;
@@ -999,15 +992,15 @@ export const AuthOnboardingModal: React.FC<AuthOnboardingModalProps> = ({
                         </div>
                         <div>
                           <div className="text-xs font-bold text-emerald-800 dark:text-emerald-300">
-                            Synthesis Complete — Ready to Explore
+                            Analysis Complete — Ready to Explore
                           </div>
                           <div className="text-[11px] text-emerald-700 dark:text-emerald-400">
-                            Ecosystem topology indexed for <strong>{organization}</strong>.
+                            Ecosystem dependency map ready for <strong>{organization || 'Acme Global'}</strong>.
                           </div>
                         </div>
                       </div>
                       <div className="text-right font-mono text-[10px] text-slate-500 hidden sm:block">
-                        1 Coordinated PR Ready
+                        1 Coordinated Fix Available
                       </div>
                     </div>
                   )}
@@ -1025,7 +1018,7 @@ export const AuthOnboardingModal: React.FC<AuthOnboardingModalProps> = ({
                       disabled={!isScanDone}
                       className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-blue-600 via-indigo-600 to-cyan-600 hover:opacity-95 text-white font-bold text-xs shadow-lg shadow-blue-500/20 flex items-center gap-2 cursor-pointer disabled:opacity-50"
                     >
-                      <span>Launch Keystone 3D Console</span>
+                      <span>Launch Console</span>
                       <ArrowRight className="w-4 h-4" />
                     </button>
                   </div>

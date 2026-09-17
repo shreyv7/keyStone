@@ -105,13 +105,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
               onClick={() => scrollToSection("process")}
               className="hover:text-white transition-colors cursor-pointer"
             >
-              The Process
-            </button>
-            <button
-              onClick={() => scrollToSection("process")}
-              className="hover:text-white transition-colors cursor-pointer"
-            >
-              Architecture
+              How It Works
             </button>
             <button
               onClick={() => scrollToSection("signin")}
@@ -136,33 +130,30 @@ export const LandingPage: React.FC<LandingPageProps> = ({
       {/* ─── HERO SECTION ─── */}
       <section className="relative z-10 min-h-screen w-full flex flex-col items-center justify-center px-6 pt-24 pb-16 text-center max-w-4xl mx-auto my-auto">
 
-
         {/* Hero Headline */}
         <h1 className="font-heading text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight text-white leading-[1.12] mb-6">
-          One compromised package.
+          See how dependency failures spread
           <br />
           <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-[#d4d3ff] to-[#2f2fe4]">
-            A hundred breached services.
+            across your organization.
           </span>
         </h1>
 
         {/* Hero Narrative */}
         <p className="font-body text-base sm:text-lg text-slate-300 max-w-2xl leading-relaxed mb-10 font-normal">
-          Modern software depends on deeply nested open-source graphs. Traditional
-          tools evaluate packages in isolation — missing structural chokepoints and
-          spamming teams with 40 disconnected alerts. 
-          <strong className="text-white font-semibold"> KEYSTONE</strong> pinpoints the
-          keystone dependencies before advisories exist, and severs attack paths with a single coordinated fix.
+          Conventional tools evaluate packages in isolation — missing single points of failure
+          and spamming teams with disconnected alerts. Keystone maps cross-repository dependencies,
+          identifies high-impact risks, and coordinates targeted fixes with zero breaking changes.
         </p>
 
         {/* Minimal CTAs */}
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-3 w-full max-w-sm mb-16">
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-3 w-full max-w-md mb-16">
           <button
-            onClick={() => scrollToSection("process")}
+            onClick={handleQuickDemo}
             className="w-full sm:w-auto px-6 py-3 rounded-full text-sm font-heading font-bold text-white bg-[#2f2fe4] hover:bg-[#4343f8] shadow-[0_0_20px_rgba(47,47,228,0.4)] transition-all flex items-center justify-center gap-2 cursor-pointer group"
           >
-            <span>See The Process</span>
-            <ChevronDown className="w-4 h-4 text-white group-hover:translate-y-0.5 transition-transform" />
+            <span>Explore Live Demo</span>
+            <ArrowRight className="w-4 h-4 text-white group-hover:translate-x-0.5 transition-transform" />
           </button>
 
           <button
@@ -170,31 +161,38 @@ export const LandingPage: React.FC<LandingPageProps> = ({
             className="w-full sm:w-auto px-6 py-3 rounded-full text-sm font-heading font-semibold text-slate-200 hover:text-white bg-[#1a1953]/50 hover:bg-[#1a1953] border border-[#162e93] transition-all flex items-center justify-center gap-2 cursor-pointer"
           >
             <span>Sign In to Console</span>
-            <ArrowRight className="w-4 h-4 text-slate-400" />
+          </button>
+
+          <button
+            onClick={() => scrollToSection("process")}
+            className="w-full sm:w-auto px-4 py-3 rounded-full text-sm font-heading text-slate-400 hover:text-slate-200 transition-all flex items-center justify-center gap-1 cursor-pointer"
+          >
+            <span>How it works</span>
+            <ChevronDown className="w-3.5 h-3.5" />
           </button>
         </div>
 
         {/* Minimalist Micro-Metrics Bar */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 w-full max-w-3xl pt-8 border-t border-[#1a1953] text-left">
           <div className="p-3.5 rounded-xl bg-[#0d0a27]/90 border border-[#1a1953]">
-            <div className="text-[11px] font-medium text-slate-400 uppercase tracking-wider">Detection</div>
-            <div className="text-base font-bold text-white mt-0.5">Day −400 Pre-CVE</div>
-            <div className="text-[11px] text-slate-400">CVE-independent radar</div>
+            <div className="text-[11px] font-medium text-slate-400 uppercase tracking-wider">Mapping</div>
+            <div className="text-base font-bold text-white mt-0.5">Complete Map</div>
+            <div className="text-[11px] text-slate-400">Cross-repo dependency graph</div>
           </div>
           <div className="p-3.5 rounded-xl bg-[#0d0a27]/90 border border-[#1a1953]">
-            <div className="text-[11px] font-medium text-slate-400 uppercase tracking-wider">Topology</div>
-            <div className="text-base font-bold text-[#2f2fe4] mt-0.5">Dominator Trees</div>
-            <div className="text-[11px] text-slate-400">Lengauer–Tarjan chokepoints</div>
+            <div className="text-[11px] font-medium text-slate-400 uppercase tracking-wider">Analysis</div>
+            <div className="text-base font-bold text-[#2f2fe4] mt-0.5">Critical Chokepoints</div>
+            <div className="text-[11px] text-slate-400">Single points of failure</div>
           </div>
           <div className="p-3.5 rounded-xl bg-[#0d0a27]/90 border border-[#1a1953]">
             <div className="text-[11px] font-medium text-slate-400 uppercase tracking-wider">Remediation</div>
-            <div className="text-base font-bold text-white mt-0.5">1 Coordinated PR</div>
-            <div className="text-[11px] text-slate-400">Instead of 40 bot PRs</div>
+            <div className="text-base font-bold text-white mt-0.5">1 Coordinated Fix</div>
+            <div className="text-[11px] text-slate-400">Instead of 40 noisy alerts</div>
           </div>
           <div className="p-3.5 rounded-xl bg-[#0d0a27]/90 border border-[#1a1953]">
-            <div className="text-[11px] font-medium text-slate-400 uppercase tracking-wider">Safety</div>
+            <div className="text-[11px] font-medium text-slate-400 uppercase tracking-wider">Verification</div>
             <div className="text-base font-bold text-[#2f2fe4] mt-0.5">Zero Breakage</div>
-            <div className="text-[11px] text-slate-400">AST & ABI verified</div>
+            <div className="text-[11px] text-slate-400">Contract-verified updates</div>
           </div>
         </div>
       </section>
@@ -204,13 +202,13 @@ export const LandingPage: React.FC<LandingPageProps> = ({
         {/* Section Header */}
         <div className="text-center max-w-xl mx-auto mb-20">
           <div className="text-xs font-bold text-[#2f2fe4] tracking-widest uppercase mb-2">
-            The Keystone Architecture
+            How Keystone Works
           </div>
           <h2 className="font-heading text-3xl sm:text-4xl font-bold tracking-tight text-white">
-            How Keystone Works
+            From Hidden Risk to Targeted Fix
           </h2>
           <p className="text-sm sm:text-base text-slate-300 mt-3">
-            Three disciplined stages that replace reactive vulnerability chasing with proactive, mathematical defense.
+            Three simple stages that replace reactive alert chasing with proactive, structural remediation.
           </p>
         </div>
 
@@ -219,7 +217,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
           {/* Subtle Palette Vertical Connector */}
           <div className="hidden md:block absolute left-8 top-10 bottom-10 w-px bg-gradient-to-b from-[#2f2fe4]/60 via-[#162e93]/50 to-[#1a1953]/60 -z-10" />
 
-          {/* ─── STEP 01: TOPOLOGICAL RADAR ─── */}
+          {/* ─── STEP 01: MAP DEPENDENCIES ─── */}
           <div className="relative flex flex-col md:flex-row items-start gap-8 p-8 rounded-2xl bg-[#0d0a27]/95 border border-[#1a1953] shadow-xl shadow-black/70 hover:border-[#162e93] transition-colors">
             {/* Step Indicator Badge */}
             <div className="w-14 h-14 shrink-0 rounded-xl bg-[#1a1953] border border-[#162e93] flex flex-col items-center justify-center text-[#2f2fe4]">
@@ -230,35 +228,35 @@ export const LandingPage: React.FC<LandingPageProps> = ({
             {/* Content & Narrative */}
             <div className="flex-1">
               <h3 className="text-xl sm:text-2xl font-bold text-white mb-3">
-                Discover the Keystones Before Anyone Files a CVE
+                Map Dependencies and Reveal Hidden Chokepoints
               </h3>
               <p className="text-sm text-slate-300 leading-relaxed mb-6">
-                Attacks like <strong>XZ Utils</strong> or <strong>event-stream</strong> sat inside production software for months before public discovery. Traditional scanners cannot see them because no CVE exists yet. KEYSTONE computes <strong>Directed Dominance Coverage</strong> and <strong>Downstream PageRank</strong> to reveal structural single points of failure on Day −400.
+                Vulnerabilities often sit inside transitive dependencies long before a public CVE is filed. Conventional scanners miss them because they only check known vulnerability lists. Keystone analyzes your complete cross-repo dependency network to identify single points of failure before incidents occur.
               </p>
 
               {/* Contrast Card */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 p-4 rounded-xl bg-[#080616] border border-[#1a1953] text-xs">
                 <div className="p-3 rounded-lg bg-[#0d0a27] border border-[#1a1953]/80">
-                  <div className="text-slate-400 font-medium text-[11px] uppercase">Traditional Scan View</div>
+                  <div className="text-slate-400 font-medium text-[11px] uppercase">Conventional Scanner</div>
                   <div className="font-semibold text-slate-200 mt-1 flex items-center gap-1.5">
                     <span className="w-2 h-2 rounded-full bg-emerald-400"></span>
-                    <span>0 CVEs · Looks 100% Safe</span>
+                    <span>0 CVEs · Marked Safe</span>
                   </div>
-                  <p className="text-[11px] text-slate-400 mt-1">High GitHub stars, zero active alerts.</p>
+                  <p className="text-[11px] text-slate-400 mt-1">Evaluates packages in isolation with zero topological context.</p>
                 </div>
                 <div className="p-3 rounded-lg bg-[#1a1953]/50 border border-[#162e93]">
-                  <div className="text-white font-semibold text-[11px] uppercase">Keystone Topology Radar</div>
+                  <div className="text-white font-semibold text-[11px] uppercase">Keystone Analysis</div>
                   <div className="font-bold text-white mt-1 flex items-center gap-1.5">
                     <span className="w-2 h-2 rounded-full bg-[#2f2fe4] shadow-[0_0_8px_#2f2fe4] animate-pulse"></span>
-                    <span>Structural Keystone (Top 0.5%)</span>
+                    <span>Critical Chokepoint Detected</span>
                   </div>
-                  <p className="text-[11px] text-slate-300 mt-1">100% bottleneck across 4 core services.</p>
+                  <p className="text-[11px] text-slate-300 mt-1">Single unmaintained dependency connects to 4 core services.</p>
                 </div>
               </div>
             </div>
           </div>
 
-          {/* ─── STEP 02: THE RIPPLE EFFECT ─── */}
+          {/* ─── STEP 02: TRACE IMPACT ─── */}
           <div className="relative flex flex-col md:flex-row items-start gap-8 p-8 rounded-2xl bg-[#0d0a27]/95 border border-[#1a1953] shadow-xl shadow-black/70 hover:border-[#162e93] transition-colors">
             {/* Step Indicator Badge */}
             <div className="w-14 h-14 shrink-0 rounded-xl bg-[#1a1953] border border-[#162e93] flex flex-col items-center justify-center text-[#2f2fe4]">
@@ -269,19 +267,19 @@ export const LandingPage: React.FC<LandingPageProps> = ({
             {/* Content & Narrative */}
             <div className="flex-1">
               <h3 className="text-xl sm:text-2xl font-bold text-white mb-3">
-                Trace the Propagation Path to Crown Jewels
+                Trace Impact to Production Services
               </h3>
               <p className="text-sm text-slate-300 leading-relaxed mb-6">
-                A vulnerability in an isolated CLI tool is low impact. But when that package is deeply embedded beneath your <strong>Payment Gateway</strong> and <strong>IAM Auth</strong>, a single exploit cascades. KEYSTONE maps the exact transmission path, factoring in EPSS exploitability, CISA KEV, and Business Impact Index (BII).
+                A risk in an isolated utility is minor, but when that same library sits beneath your <strong>Payment Gateway</strong> and <strong>Auth</strong> systems, a single failure cascades. Keystone traces the direct path from the dependency to your critical business services.
               </p>
 
               {/* Path Trace Visualization */}
               <div className="p-4 rounded-xl bg-[#080616] text-slate-200 border border-[#1a1953] text-xs font-mono">
                 <div className="text-[11px] text-slate-400 mb-3 font-sans font-semibold uppercase tracking-wider flex items-center justify-between">
-                  <span>Cascade Propagation Flow</span>
-                  <span className="text-[#2f2fe4] font-mono flex items-center gap-1">
-                    <span className="w-1.5 h-1.5 rounded-full bg-[#2f2fe4] shadow-[0_0_8px_#2f2fe4] animate-ping" />
-                    Active Transmission
+                  <span>Service Impact Pathway</span>
+                  <span className="text-[#2f2fe4] font-sans font-medium flex items-center gap-1.5">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#2f2fe4] shadow-[0_0_8px_#2f2fe4]" />
+                    Direct Flow
                   </span>
                 </div>
                 <div className="flex flex-col sm:flex-row items-center gap-2">
@@ -290,18 +288,18 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                   </div>
                   <span className="text-[#2f2fe4]">──►</span>
                   <div className="px-3 py-1.5 rounded bg-[#1a1953]/60 border border-[#1a1953] text-slate-200">
-                    internal-pipeline@2.4.0
+                    internal-data-pipeline
                   </div>
                   <span className="text-[#2f2fe4]">──►</span>
                   <div className="px-3 py-1.5 rounded bg-[#162e93] border border-[#2f2fe4] text-white font-bold">
-                    [Payment-Gateway] + [Auth-IAM]
+                    Payment Gateway & IAM
                   </div>
                 </div>
               </div>
             </div>
           </div>
 
-          {/* ─── STEP 03: SURGICAL MIN-CUT ─── */}
+          {/* ─── STEP 03: TARGETED FIX ─── */}
           <div className="relative flex flex-col md:flex-row items-start gap-8 p-8 rounded-2xl bg-[#0d0a27]/95 border border-[#1a1953] shadow-xl shadow-black/70 hover:border-[#162e93] transition-colors">
             {/* Step Indicator Badge */}
             <div className="w-14 h-14 shrink-0 rounded-xl bg-[#1a1953] border border-[#162e93] flex flex-col items-center justify-center text-[#2f2fe4]">
@@ -312,28 +310,28 @@ export const LandingPage: React.FC<LandingPageProps> = ({
             {/* Content & Narrative */}
             <div className="flex-1">
               <h3 className="text-xl sm:text-2xl font-bold text-white mb-3">
-                1 Coordinated Fix Instead of 40 Broken PRs
+                Apply a Single Targeted Fix
               </h3>
               <p className="text-sm text-slate-300 leading-relaxed mb-6">
-                Legacy tools open 40 independent PRs across 40 repositories, creating chaos and merge conflicts. KEYSTONE calculates the <strong>Unit-Capacity Minimum Vertex Cut</strong> to find the single common ancestor. Verified via AST call-site extraction and bytecode ABI linkage to guarantee <strong>zero compilation breakage</strong>.
+                Conventional tools open dozens of disconnected pull requests across multiple repositories, creating merge conflicts and broken builds. Keystone identifies the single shared bottleneck package, coordinating one targeted update that protects all services without breaking changes.
               </p>
 
               {/* Resolution Comparison */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 p-4 rounded-xl bg-[#080616] border border-[#1a1953] text-xs">
                 <div className="p-3 rounded-lg bg-[#0d0a27] border border-[#1a1953]/80 text-slate-400">
-                  <div className="font-bold text-slate-300 mb-1">❌ Legacy Approach</div>
+                  <div className="font-bold text-slate-300 mb-1">Conventional Approach</div>
                   <ul className="space-y-1 text-[11px] text-slate-400">
-                    <li>• 40 uncoordinated Dependabot PRs</li>
-                    <li>• 18 CI build failures (`ERESOLVE`)</li>
-                    <li>• Alert fatigue & delayed releases</li>
+                    <li>• 40 disconnected bot pull requests</li>
+                    <li>• Frequent build breakages and conflicts</li>
+                    <li>• Alert fatigue and delayed releases</li>
                   </ul>
                 </div>
                 <div className="p-3 rounded-lg bg-[#1a1953]/50 border border-[#162e93] text-white">
-                  <div className="font-bold text-[#d4d3ff] mb-1">✅ Keystone Surgical Cut</div>
+                  <div className="font-bold text-[#d4d3ff] mb-1">Keystone Targeted Fix</div>
                   <ul className="space-y-1 text-[11px] text-slate-200">
-                    <li>• 1 Coordinated PR in root parent</li>
-                    <li>• 0 broken AST call-sites verified</li>
-                    <li>• 100% attack path severed instantly</li>
+                    <li>• 1 coordinated update at the shared chokepoint</li>
+                    <li>• Contract-verified compatibility</li>
+                    <li>• All dependent services protected simultaneously</li>
                   </ul>
                 </div>
               </div>
@@ -380,8 +378,8 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                     <GitBranch className="w-3.5 h-3.5" />
                   </div>
                   <div>
-                    <h4 className="text-xs font-bold text-white">Enterprise Multi-Repo DAG</h4>
-                    <p className="text-[11px] text-slate-300">Unify 40+ repositories into one continuous dependency flow network.</p>
+                    <h4 className="text-xs font-bold text-white">Cross-Repository Mapping</h4>
+                    <p className="text-[11px] text-slate-300">Unify all repositories into a clear dependency network.</p>
                   </div>
                 </div>
 
@@ -390,8 +388,8 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                     <ShieldAlert className="w-3.5 h-3.5" />
                   </div>
                   <div>
-                    <h4 className="text-xs font-bold text-white">Tarjan Articulation Points</h4>
-                    <p className="text-[11px] text-slate-300">Isolate single points of failure and stealth maintainer takeovers on Day −400.</p>
+                    <h4 className="text-xs font-bold text-white">Single Point of Failure Detection</h4>
+                    <p className="text-[11px] text-slate-300">Isolate critical chokepoints and unmaintained dependencies early.</p>
                   </div>
                 </div>
 
@@ -400,8 +398,8 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                     <CheckCircle2 className="w-3.5 h-3.5" />
                   </div>
                   <div>
-                    <h4 className="text-xs font-bold text-white">1 Coordinated PR vs. 40 Bot PRs</h4>
-                    <p className="text-[11px] text-slate-300">Flow-network minimum cut algorithms prescribe surgical remediations with zero breaks.</p>
+                    <h4 className="text-xs font-bold text-white">Targeted Remediation</h4>
+                    <p className="text-[11px] text-slate-300">Apply one coordinated fix that protects all services without breaking changes.</p>
                   </div>
                 </div>
               </div>
@@ -591,8 +589,8 @@ export const LandingPage: React.FC<LandingPageProps> = ({
           </div>
           <div className="flex items-center gap-4">
             <span className="text-[11px] font-mono text-slate-300 flex items-center gap-1.5">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#2f2fe4] shadow-[0_0_8px_#2f2fe4] animate-pulse" />
-              SYS_RADAR_ONLINE
+              <span className="w-1.5 h-1.5 rounded-full bg-[#2f2fe4] shadow-[0_0_8px_#2f2fe4]" />
+              SYSTEM OPERATIONAL
             </span>
             <button
               onClick={() => {

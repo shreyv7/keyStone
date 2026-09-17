@@ -61,9 +61,9 @@ export const BlastRadiusHUD: React.FC<BlastRadiusHUDProps> = ({
         <div className={`p-2.5 rounded-md border flex flex-col ${
           isLight ? 'bg-red-50/50 border-red-200' : 'bg-red-950/30 border-red-900/40'
         }`}>
-          <span className={`text-[11px] font-semibold ${isLight ? 'text-red-700' : 'text-red-300'}`}>Tier-1 Sinks</span>
+          <span className={`text-[11px] font-semibold ${isLight ? 'text-red-700' : 'text-red-300'}`}>Critical Services</span>
           <span className="text-xl font-bold font-mono text-red-600 mt-0.5">{tier1Count}</span>
-          <span className={`text-[10px] ${isLight ? 'text-red-600/80' : 'text-red-400/80'}`}>Mission-Critical Sinks</span>
+          <span className={`text-[10px] ${isLight ? 'text-red-600/80' : 'text-red-400/80'}`}>Mission-Critical Services</span>
         </div>
 
         <div className={`p-2.5 rounded-md border flex flex-col ${
@@ -71,7 +71,7 @@ export const BlastRadiusHUD: React.FC<BlastRadiusHUDProps> = ({
         }`}>
           <span className={`text-[11px] font-medium ${isLight ? 'text-slate-500' : 'text-slate-400'}`}>Propagation Paths</span>
           <span className={`text-xl font-bold font-mono mt-0.5 ${isLight ? 'text-amber-600' : 'text-amber-400'}`}>{propagationPathsCount}</span>
-          <span className={`text-[10px] ${isLight ? 'text-slate-400' : 'text-slate-500'}`}>Active DAG chains</span>
+          <span className={`text-[10px] ${isLight ? 'text-slate-400' : 'text-slate-500'}`}>Active dependency chains</span>
         </div>
 
         <div className={`p-2.5 rounded-md border flex flex-col ${
@@ -128,14 +128,10 @@ export const BlastRadiusHUD: React.FC<BlastRadiusHUDProps> = ({
           }`}>
             Multi-Service Spread
           </span>
-          <span className={`text-[10px] ${isLight ? 'text-slate-500' : 'text-slate-400'}`}>
-            Pattern
+          <span className={`text-[10px] font-mono ${isLight ? 'text-slate-500' : 'text-slate-400'}`}>
+            Cross-Service
           </span>
         </div>
-
-        <p className={`text-[10px] leading-tight ${isLight ? 'text-slate-600' : 'text-slate-400'}`}>
-          Distinguishes 50 vulnerabilities in 1 monolith (contained incident) from 4 paths crossing 21 microservices (portfolio emergency).
-        </p>
       </div>
 
       {/* Contagion Summary */}
@@ -146,7 +142,7 @@ export const BlastRadiusHUD: React.FC<BlastRadiusHUDProps> = ({
           <Activity className="w-3.5 h-3.5" />
           <span>Contagion Summary</span>
         </div>
-        Compromise of <code className="font-mono font-semibold">snakeyaml@1.33</code> propagates through internal shared utilities into Payment Gateway and Auth/IAM.
+        Compromise of <code className="font-mono font-semibold">snakeyaml@1.33</code> propagates to Payment Gateway and Auth/IAM.
       </div>
 
       {/* Action Buttons */}
@@ -172,7 +168,7 @@ export const BlastRadiusHUD: React.FC<BlastRadiusHUDProps> = ({
                 : 'bg-slate-100 hover:bg-white text-slate-900'
             }`}
           >
-            <span>Calculate Minimum-Cut Remediation</span>
+            <span>Plan Targeted Fix</span>
             <ArrowRight className="w-3.5 h-3.5" />
           </button>
         )}

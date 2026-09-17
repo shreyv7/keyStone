@@ -60,7 +60,7 @@ export const DominatorLeaderboard: React.FC<DominatorLeaderboardProps> = ({
           </div>
           <div>
             <div className="flex items-center gap-1.5">
-              <span className={`text-xs font-bold uppercase tracking-wider ${isLight ? 'text-slate-900' : 'text-slate-100'}`}>
+              <span className={`text-xs font-bold ${isLight ? 'text-slate-900' : 'text-slate-100'}`}>
                 Top Chokepoints
               </span>
             </div>
@@ -84,12 +84,12 @@ export const DominatorLeaderboard: React.FC<DominatorLeaderboardProps> = ({
 
       {/* Leaderboard Table */}
       <div className="p-3 flex flex-col gap-1.5 max-h-[380px] overflow-y-auto">
-        <div className="grid grid-cols-12 text-[10px] font-mono uppercase text-slate-500 px-2 pb-1 border-b border-slate-200/50 dark:border-slate-800/50">
+        <div className="grid grid-cols-12 text-[10px] font-mono text-slate-500 px-2 pb-1 border-b border-slate-200/50 dark:border-slate-800/50">
           <span className="col-span-1">#</span>
           <span className="col-span-5">Component</span>
-          <span className="col-span-2 text-right">DC_N</span>
-          <span className="col-span-2 text-right">PR_N</span>
-          <span className="col-span-2 text-right font-bold">SC</span>
+          <span className="col-span-2 text-right">Downstream</span>
+          <span className="col-span-2 text-right">Centrality</span>
+          <span className="col-span-2 text-right font-bold">Score</span>
         </div>
 
         {scoredNodes.map(({ node, dcN, prN, sc, isRedundant }, idx) => {
@@ -122,7 +122,7 @@ export const DominatorLeaderboard: React.FC<DominatorLeaderboardProps> = ({
                       ? isLight ? 'bg-red-100 text-red-700' : 'bg-red-950 text-red-300'
                       : isLight ? 'bg-slate-100 text-slate-600' : 'bg-slate-800 text-slate-400'
                   }`}>
-                    {node.articulationPoint ? 'CHOKEPOINT' : isRedundant ? 'REDUNDANT' : 'LEAF'}
+                    {node.articulationPoint ? 'Chokepoint' : isRedundant ? 'Redundant' : 'Leaf'}
                   </span>
                 </div>
               </div>

@@ -44,11 +44,11 @@ export const PropagationPanel: React.FC<PropagationPanelProps> = ({
             <span className={`font-semibold text-xs uppercase tracking-wider ${
               isLight ? 'text-slate-900' : 'text-slate-200'
             }`}>
-              F8 Dual-Channel Propagation Pathways
+              Propagation Pathways
             </span>
           </div>
           <div className={`text-xs ${isLight ? 'text-slate-500' : 'text-slate-400'}`}>
-            Click any pathway to isolate its contagion flow in the 3D topology map.
+            Select a pathway to highlight its trajectory in the topology graph.
           </div>
         </div>
         <button
@@ -61,25 +61,22 @@ export const PropagationPanel: React.FC<PropagationPanelProps> = ({
         </button>
       </div>
 
-      {/* F8 Dual-Channel Contagion Analysis Banner */}
-      <div className={`p-3 rounded-lg border mb-3 text-xs leading-relaxed shrink-0 ${
+      {/* Execution Channel Mechanism Banner */}
+      <div className={`p-2.5 rounded-lg border mb-3 text-xs leading-relaxed shrink-0 ${
         isLight 
-          ? 'bg-gradient-to-r from-cyan-50/70 via-slate-50 to-amber-50/70 border-slate-200 text-slate-700' 
-          : 'bg-gradient-to-r from-cyan-950/30 via-slate-900/60 to-amber-950/30 border-slate-800 text-slate-300'
+          ? 'bg-slate-50 border-slate-200 text-slate-700' 
+          : 'bg-slate-900/60 border-slate-800 text-slate-300'
       }`}>
-        <div className="flex items-center justify-between mb-1">
-          <span className="font-bold flex items-center gap-1.5">
+        <div className="flex items-center justify-between">
+          <span className="font-semibold flex items-center gap-1.5 text-[11px]">
             <Layers className="w-3.5 h-3.5 text-cyan-600 dark:text-cyan-400" />
-            <span>F8 Dual Infection Channel Mechanism</span>
+            <span>Execution Channel Analysis</span>
           </span>
           <span className={`text-[10px] font-mono px-1.5 py-0.2 rounded font-semibold ${
-            isLight ? 'bg-white text-slate-700 border border-slate-200' : 'bg-slate-900 text-slate-300 border border-slate-700'
+            isLight ? 'bg-white text-slate-700 border border-slate-200' : 'bg-slate-800 text-slate-300 border border-slate-700'
           }`}>
             Runtime + Build-Time
           </span>
-        </div>
-        <div className="text-[11px] leading-normal text-slate-600 dark:text-slate-400">
-          Traditional scanners only inspect <strong>Runtime In-Memory RPC</strong> paths. Keystone simultaneously models <strong>Build-Time CI/CD</strong> lifecycle hooks that tamper with compiled artifacts during build, evading runtime network perimeters (SolarWinds/XZ Utils class).
         </div>
       </div>
 
@@ -236,7 +233,7 @@ export const PropagationPanel: React.FC<PropagationPanelProps> = ({
       {/* Footer */}
       <div className="mt-3 pt-3 border-t border-slate-200 dark:border-slate-800 flex items-center justify-between shrink-0">
         <span className={`text-[11px] ${isLight ? 'text-slate-500' : 'text-slate-400'}`}>
-          {activePathId ? '⚡ Pathway Isolated on 3D Map' : 'Select a path to trace flow'}
+          {activePathId ? 'Pathway isolated in graph' : 'Select a path to trace flow'}
         </span>
         <button
           onClick={onComputeMitigation}
@@ -246,7 +243,7 @@ export const PropagationPanel: React.FC<PropagationPanelProps> = ({
               : 'bg-slate-100 hover:bg-white text-slate-900'
           }`}
         >
-          <span>Compute Minimum Cut</span>
+          <span>Plan Targeted Fix</span>
           <ArrowRight className="w-3.5 h-3.5" />
         </button>
       </div>

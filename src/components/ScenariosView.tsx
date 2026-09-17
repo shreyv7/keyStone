@@ -20,12 +20,12 @@ export const ScenariosView: React.FC<ScenariosViewProps> = ({
       badge: 'Critical Exposure',
       badgeColor: 'bg-red-50 text-red-700 border-red-200',
       badgeColorDark: 'bg-red-950/40 text-red-400 border-red-800/50',
-      description: 'A deeply nested YAML parser acts as a Tarjan cut-vertex across 4 production services. Compromise cascades backward to Payment Gateway and Auth/IAM. A single minimum-cut upgrade on internal-data-pipeline severs all 4 paths.',
+      description: 'Acts as a critical chokepoint connecting 21 downstream services into 4 critical services. Coordinated upgrade on internal-data-pipeline severs all propagation paths.',
       targetPackage: 'snakeyaml@1.33',
       attackVector: 'Unsafe Deserialization Gadget Chain (CVE-2022-1471)',
       conventionalScore: '48 / 100 (Moderate)',
       systemicScore: '84 / 100 (Critical)',
-      blastRadius: '21 Services, 4 Tier-1 Sinks'
+      blastRadius: '21 Services, 4 Critical Services'
     },
     {
       id: 'minimist_pollution',
@@ -38,15 +38,15 @@ export const ScenariosView: React.FC<ScenariosViewProps> = ({
       attackVector: 'Prototype Pollution (CVE-2020-7598)',
       conventionalScore: '56 / 100 (Moderate)',
       systemicScore: '78 / 100 (High)',
-      blastRadius: '14 Services, 2 Tier-1 Sinks'
+      blastRadius: '14 Services, 2 Critical Services'
     },
     {
       id: 'fresh_maintainer_anomaly',
       title: 'Account Takeover: Unmaintained Library',
-      badge: 'Pre-CVE Anomaly',
-      badgeColor: 'bg-slate-100 text-slate-700 border-slate-200',
-      badgeColorDark: 'bg-slate-800 text-slate-300 border-slate-700',
-      description: 'A newly registered account takes ownership of an inactive package. KEYSTONE flags maintainer churn and artifact hash tampering 30 days before public disclosure.',
+      badge: 'Early Warning',
+      badgeColor: 'bg-rose-50 text-rose-800 border-rose-200',
+      badgeColorDark: 'bg-rose-950/40 text-rose-400 border-rose-800/50',
+      description: 'Sudden ownership transition on a dormant package followed by an untracked release diff. Flagged 30 days prior to CVE disclosure.',
       targetPackage: 'snakeyaml@1.33 (T-30 Days)',
       attackVector: 'Maintainer Account Transfer & Artifact Hash Mismatch',
       conventionalScore: '0 / 100 (No Public Advisory)',
@@ -56,15 +56,15 @@ export const ScenariosView: React.FC<ScenariosViewProps> = ({
     {
       id: 'dep_confusion',
       title: 'Namespace Squatting: Dependency Confusion',
-      badge: 'F6 Defense Active',
+      badge: 'Registry Defense Active',
       badgeColor: 'bg-purple-100 text-purple-800 border-purple-300',
       badgeColorDark: 'bg-purple-950/60 text-purple-300 border-purple-800',
-      description: 'An external adversary publishes a public package using an internal corporate namespace (pkg:npm/@internal/internal-data-pipeline). KEYSTONE F6 Shield normalizes purl identity, blocks registry override, and validates private repo boundaries.',
+      description: 'Public package published using an internal corporate namespace. Registry scope pinning prevents unauthorized upstream dependency override.',
       targetPackage: 'internal-data-pipeline',
       attackVector: 'Public Registry PURL Namespace Squatting & Pipeline Injection',
       conventionalScore: '0 / 100 (No CVE Created)',
       systemicScore: '76 / 100 (High Risk)',
-      blastRadius: '4 Tier-1 Sinks Insulated'
+      blastRadius: '4 Critical Services Protected'
     }
   ];
 
@@ -77,23 +77,11 @@ export const ScenariosView: React.FC<ScenariosViewProps> = ({
         isLight ? 'border-slate-200' : 'border-slate-800'
       }`}>
         <div>
-          <div className="flex items-center gap-2 mb-1.5">
-            <span className={`text-[11px] font-semibold uppercase px-2 py-0.5 rounded border ${
-              isLight 
-                ? 'bg-slate-100 text-slate-700 border-slate-200' 
-                : 'bg-slate-800 text-slate-300 border-slate-700'
-            }`}>
-              Simulation Catalog
-            </span>
-            <span className={`text-xs ${isLight ? 'text-slate-500' : 'text-slate-400'}`}>
-              Topological Blast Radius Scenarios
-            </span>
-          </div>
           <h1 className={`text-2xl font-bold tracking-tight ${isLight ? 'text-slate-900' : 'text-slate-100'}`}>
             Attack Path Scenarios
           </h1>
           <p className={`text-xs mt-1 max-w-2xl leading-relaxed ${isLight ? 'text-slate-600' : 'text-slate-400'}`}>
-            Simulate realistic supply chain compromises to observe contagion flow across microservices and evaluate minimal remediation cuts.
+            Simulate dependency compromise scenarios to observe propagation paths and evaluate targeted remediations.
           </p>
         </div>
 
