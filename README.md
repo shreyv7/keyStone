@@ -6,6 +6,8 @@
 ### Software Supply Chain Intelligence Platform
 **Deterministic, Mathematically Grounded, CVE-Independent Supply Chain Defense**
 
+#### 🏆 Manipal Hackathon 2026 — Track: Cybersecurity (Problem Statement 2)
+
 [![Live Demo: Vercel](https://img.shields.io/badge/Live%20Demo-key--stone--alpha.vercel.app-black?logo=vercel&logoColor=white)](https://key-stone-alpha.vercel.app)
 [![Watch Demo: YouTube](https://img.shields.io/badge/Demo-YouTube%20Walkthrough-red?logo=youtube)](https://youtu.be/65S1EqlpmWg)
 [![Governing Standard: SemVer 2.0.0](https://img.shields.io/badge/SemVer-2.0.0-blue.svg)](https://semver.org/)
@@ -19,9 +21,20 @@
 
 ---
 
+> [!IMPORTANT]
+> ### 🏆 Manipal Hackathon 2026 — Cybersecurity Problem Statement 2
+>
+> **The Problem Statement:**  
+> *"Modern software depends on deeply nested open-source packages, meaning a small compromise in a low-level dependency can propagate through many downstream applications. Traditional security tools often evaluate packages individually, making it difficult to understand which components are structurally important or how a compromise could spread through the wider software ecosystem. The real risk of a dependency may therefore be much greater than its own vulnerability score suggests. Design an intelligent risk-analysis system that maps relationships within a software dependency ecosystem and explores the potential downstream consequences of a compromise. The system should help identify critical dependencies, affected applications, propagation paths, and mitigation priorities while making the reasoning behind its risk assessment visible. Teams may choose how dependency relationships are modeled, how propagation is simulated, how impact is measured, and how mitigation options are ranked. Public open-source dependency information and simulated compromise scenarios may be used."*
+>
+> **Our Proposed Solution:**  
+> **KEYSTONE** was engineered from first principles to fulfill this exact mandate. Rather than inspecting manifest files in isolation, KEYSTONE unifies an organization's cross-repository estate into a **directed property graph $G=(V, E)$**, evaluates pre-disclosure structural fragility, simulates step-by-step contagion cascades to quantify blast radius across business applications, and solves a **unit-capacity minimum vertex-cut** to prescribe surgical, non-breaking remediations with mathematically visible reasoning.
+
+---
+
 ## 📖 Table of Contents
 
-1. [Executive Summary & Core Mandate](#-executive-summary--core-mandate)
+1. [Executive Summary: Market Landscape & Why KEYSTONE Stands Out](#-executive-summary-market-landscape--why-keystone-stands-out)
 2. [Video Walkthrough & Live Demo](#-video-walkthrough--live-demo)
 3. [Universal Invariants & Epistemic Laws](#-universal-invariants--epistemic-laws)
 4. [The Multi-Stage Threat Horizon](#-the-multi-stage-threat-horizon)
@@ -40,18 +53,39 @@
 
 ---
 
-## 🎯 Executive Summary & Core Mandate
+## 🎯 Executive Summary: Market Landscape & Why KEYSTONE Stands Out
 
-Traditional Software Composition Analysis (SCA) operates exclusively **reactively**: it monitors lockfiles against public vulnerability databases (CVE/GHSA/NVD) on **Day 0**. This creates a catastrophic blind spot:
-- **Alert Fatigue & Churn:** Hundreds of unprioritized CVE alerts fire for dead code paths that never execute in production.
-- **Pre-Advisory Latency:** Hostile repository takeovers, maintainer account hijacking, and structural supply chain choke points exist for months or years prior to public disclosure (e.g., *XZ Utils* CVE-2024-3094, *event-stream*).
-- **Disruptive Remediation:** Automated tools recommend major version bumps that break application runtimes, alter transitive dependency graphs, or silently reintroduce critical weaponized vulnerabilities.
+### The Market Landscape: Why Existing Tools Fall Short
 
-### The KEYSTONE Mandate
-**KEYSTONE** separates software supply chain defense into four strictly bounded, mathematically grounded stages running from **Day −400 to Day +Rollout**:
-1. **Pre-Advisory Topological Radar:** Detects structural fragility, single-maintainer bottlenecks, resolver exposure, and release anomalies months before CVE assignment without using arbitrary heuristics.
-2. **Operational Realized Threat Gating:** Filters public advisories using dual-channel execution routing (build runner vs. runtime reachability), eliminating 80%+ of false positives and triaging incidents via CISA/SEI SSVC v2.1.
-3. **Constraint-Guided Remediation:** Solves a unit-capacity minimum-vertex-cut on the threat subgraph, validates AST and binary ABI linkage, guarantees net security improvement, and executes phased, anti-TOCTOU canary rollouts.
+Numerous software composition analysis (SCA) scanners, automated vulnerability trackers, and dependency pull-request bots exist in today's software engineering market. While these conventional solutions are ubiquitous in enterprise CI/CD pipelines, their foundational design assumptions create critical operational blind spots:
+
+1. **Isolated Package Auditing vs. Global Topological Reality:**  
+   Traditional tools evaluate packages as isolated tabular entries against static vulnerability lists. They cannot contextualize a dependency within the larger graph. Consequently, a low-severity CVE on a high-centrality chokepoint (where 25 enterprise services converge) is routinely dismissed, while a critical CVE in dead code that is never invoked triggers false-positive emergency alerts.
+
+2. **The "Day 0" Latency Trap (Reactive vs. Pre-Advisory Radar):**  
+   Existing market tools alert solely *after* a public CVE or advisory is assigned. However, real-world supply chain crises (such as *XZ Utils*, *event-stream*, or *log4shell*) demonstrate that malicious commits, maintainer hijacking, single-developer abandonment, and anomalous binary additions incubate quietly for months (**Day −400 to Day 0**) before public cataloging. Conventional scanners offer zero pre-advisory early detection.
+
+3. **Disruptive Bot PR Floods vs. Surgical Coordinated Remediation:**  
+   When a deeply nested transitive dependency is compromised, standard market automation bots generate 30 to 50 disconnected pull requests across different repositories. This inundates development teams with merge conflicts, breaks downstream resolver dependencies (`ERESOLVE`), and causes high CI friction. They treat each repo in isolation rather than finding the single root cut that severs the attack path enterprise-wide.
+
+4. **Black-Box Heuristics vs. Visible, Mathematically Grounded Reasoning:**  
+   Many emerging tools rely on opaque proprietary risk scores or ungrounded generative AI summaries. In enterprise environments adhering to SLSA Level 3 or NIST SP 800-218, unprovable numbers and AI hallucinations cannot be audited or trusted for automated CI gates.
+
+---
+
+### How KEYSTONE Stands Out: A Mathematically Grounded Paradigm
+
+KEYSTONE replaces flat checklists and uncoordinated bot PRs with rigorous graph topology, dual-channel reachability, and provable remediation:
+
+| Dimension | Conventional Market Tools | The KEYSTONE Platform |
+|---|---|---|
+| **Ecosystem Modeling** | Isolated per-repository manifest parsing (flat tabular view) | Cross-repository **Directed Property Graph $G=(V, E)$** capturing multi-tier transitive flow |
+| **Chokepoint Identification** | Isolated CVSS scoring of individual coordinates | **Lengauer-Tarjan Dominator Trees & Personalized PageRank** measuring structural dominance ($SC$) |
+| **Threat Horizon** | Reactive **Day 0** (post-CVE advisory disclosure only) | **Pre-Advisory Topological Radar (Day −400 to Day 0)** detecting fragility, divergence, & release anomalies |
+| **Reachability Analysis** | Lockfile presence (assumes all imported code executes) | **Dual-Channel Gating**: Build-runner scripts ($\chi_{\text{build}}$) vs. static AST call-graph reachability ($\tau$) |
+| **Remediation Strategy** | Floods engineering teams with 40+ uncoordinated, breaking PRs | **Unit-Capacity Minimum Vertex Cut**: Prescribes 1 coordinated intervention severing all realized threat paths |
+| **Compatibility Proving** | Blind version bumps (hoping unit tests pass) | **AST Call-Site & Bytecode ABI Provers** verifying non-regression and net security before release |
+| **Reasoning & Auditability** | Opaque proprietary scores or generative AI summaries | **Visible Mathematical Reasoning**: Every score is grounded in graph theory and backed by SHA-256 evidence receipts |
 
 ---
 
@@ -146,9 +180,9 @@ $$\boxed{PSFI(v) = \max\big(VLC_N(v),\, PBS(v),\, RDT_N(v),\, PMI^*(v)\big) \in 
 
 #### Support Divergence & Maintainer Choke-Point Detector ($PDI$)
 Identifies "log4j-style" choke points: massive architectural reliance combined with minimal maintenance support:
-$$\boxed{PDI(v) = \max\big(0,\, P_S(v) - 100 \times Q_{\text{support}}(v)\big) \in [0, 100\%]}$$
+$$\boxed{PDI(v) = \max\big(0,\, P_S(v) - 100 \times Q_{\text{support}}(v)\big) \in [0, 100]}$$
 Where $P_S(v) = 100 \times SC(v)$ and $Q_{\text{support}} = (Q_{\text{scorecard}} \times Q_{\text{velocity}} \times Q_{\text{recency}})^{1/3}$.
-- **Triage:** $PDI \ge 70\%$ flags Critical Divergence requiring mandatory dual-vendoring.
+- **Triage:** $PDI \ge 70$ flags Critical Divergence requiring mandatory dual-vendoring.
 
 #### Semantic Release Anomaly Engine
 Detects abrupt artifact size spikes ($\Delta C^+$), unindexed native binaries, unexpected maintainer account changes, or unlinked tags without public commit correlation.
