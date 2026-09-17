@@ -371,7 +371,7 @@ export const OverviewDashboard: React.FC<OverviewDashboardProps> = ({
         {/* ========================================================= */}
         {/* LEFT COLUMN: Main Ranking Table                           */}
         {/* ========================================================= */}
-        <div className={`p-5 rounded-lg border flex flex-col gap-4 ${
+        <div className={`p-5 rounded-xl border flex flex-col gap-4 ${
           isLight ? 'bg-white border-slate-200 shadow-xs' : 'bg-slate-900/60 border-slate-800'
         }`}>
           <div className={`flex items-center justify-between border-b pb-3 ${
@@ -433,8 +433,8 @@ export const OverviewDashboard: React.FC<OverviewDashboardProps> = ({
                           v{item.version}
                         </span>
                         {item.articulationPoint && (
-                          <span className="text-[9px] font-bold px-1.5 py-0.5 bg-red-500/10 text-red-500 border border-red-500/20 rounded">
-                            CRITICAL CHOKEPOINT
+                          <span className="text-[9px] font-semibold px-1.5 py-0.5 bg-red-500/10 text-red-500 border border-red-500/20 rounded">
+                            Critical Chokepoint
                           </span>
                         )}
                       </div>
@@ -487,10 +487,12 @@ export const OverviewDashboard: React.FC<OverviewDashboardProps> = ({
               );
             })}
           </div>
-              {/* ========================================================= */}
+        </div>
+
+        {/* ========================================================= */}
         {/* RIGHT COLUMN: 2×2 Risk Quadrant & Framework Matrix        */}
         {/* ========================================================= */}
-        <div className={`p-5 rounded-lg border flex flex-col gap-4 ${
+        <div className={`p-5 rounded-xl border flex flex-col gap-4 ${
           isLight ? 'bg-white border-slate-200 shadow-xs' : 'bg-slate-900/60 border-slate-800'
         }`}>
           <div className={`flex items-center justify-between border-b pb-3 flex-wrap gap-2 ${
@@ -692,7 +694,7 @@ export const OverviewDashboard: React.FC<OverviewDashboardProps> = ({
               </div>
             </div>
           ) : null}
-        </div>    </div>
+        </div>
       </div>
 
       {/* ========================================================= */}

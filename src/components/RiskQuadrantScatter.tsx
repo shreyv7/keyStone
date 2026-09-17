@@ -217,9 +217,9 @@ export const RiskQuadrantScatter: React.FC<RiskQuadrantScatterProps> = ({
                   ? isLight ? 'bg-purple-600 text-white shadow-xs' : 'bg-purple-600 text-white shadow-xs'
                   : isLight ? 'text-slate-600 hover:text-slate-900' : 'text-slate-400 hover:text-slate-200'
               }`}
-              title="Package Structural Fragility Index: max(VLC_N, PBS, RDT_N, PMI*)"
+              title="Package Structural Fragility"
             >
-              PSFI (Fragility)
+              Fragility
             </button>
             <button
               onClick={() => setYAxisMode('ce_max')}
@@ -228,9 +228,9 @@ export const RiskQuadrantScatter: React.FC<RiskQuadrantScatterProps> = ({
                   ? isLight ? 'bg-amber-600 text-white shadow-xs' : 'bg-amber-600 text-white shadow-xs'
                   : isLight ? 'text-slate-600 hover:text-slate-900' : 'text-slate-400 hover:text-slate-200'
               }`}
-              title="Capability Exposure: Unconstrained install script / child_process / socket hooks"
+              title="Capability Exposure"
             >
-              CE_max (Capabilities)
+              Capabilities
             </button>
           </div>
 
@@ -519,7 +519,7 @@ export const RiskQuadrantScatter: React.FC<RiskQuadrantScatterProps> = ({
             textAnchor="middle"
             className={`text-[10px] font-medium font-sans ${isLight ? 'fill-slate-700' : 'fill-slate-300'}`}
           >
-            {yAxisMode === 'ce_max' ? '↑ CE_max (Capability Exposure)' : '↑ PSFI (Package Structural Fragility Index)'}
+            {yAxisMode === 'ce_max' ? '↑ Capability Exposure' : '↑ Structural Fragility'}
           </text>
 
           {/* ========================================================= */}
