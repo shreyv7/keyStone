@@ -61,9 +61,9 @@ export const BlastRadiusHUD: React.FC<BlastRadiusHUDProps> = ({
         <div className={`p-2.5 rounded-md border flex flex-col ${
           isLight ? 'bg-red-50/50 border-red-200' : 'bg-red-950/30 border-red-900/40'
         }`}>
-          <span className={`text-[11px] font-semibold ${isLight ? 'text-red-700' : 'text-red-300'}`}>Tier-1 Sinks</span>
+          <span className={`text-[11px] font-semibold ${isLight ? 'text-red-700' : 'text-red-300'}`}>Critical Services</span>
           <span className="text-xl font-bold font-mono text-red-600 mt-0.5">{tier1Count}</span>
-          <span className={`text-[10px] ${isLight ? 'text-red-600/80' : 'text-red-400/80'}`}>Mission-Critical Sinks</span>
+          <span className={`text-[10px] ${isLight ? 'text-red-600/80' : 'text-red-400/80'}`}>Mission-Critical Services</span>
         </div>
 
         <div className={`p-2.5 rounded-md border flex flex-col ${
@@ -71,7 +71,7 @@ export const BlastRadiusHUD: React.FC<BlastRadiusHUDProps> = ({
         }`}>
           <span className={`text-[11px] font-medium ${isLight ? 'text-slate-500' : 'text-slate-400'}`}>Propagation Paths</span>
           <span className={`text-xl font-bold font-mono mt-0.5 ${isLight ? 'text-amber-600' : 'text-amber-400'}`}>{propagationPathsCount}</span>
-          <span className={`text-[10px] ${isLight ? 'text-slate-400' : 'text-slate-500'}`}>Active DAG chains</span>
+          <span className={`text-[10px] ${isLight ? 'text-slate-400' : 'text-slate-500'}`}>Active dependency chains</span>
         </div>
 
         <div className={`p-2.5 rounded-md border flex flex-col ${
@@ -90,11 +90,11 @@ export const BlastRadiusHUD: React.FC<BlastRadiusHUDProps> = ({
       }`}>
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-1.5 font-semibold text-[11px]">
-            <span className="w-2 h-2 rounded-full bg-amber-500 animate-pulse" />
-            <span className={isLight ? 'text-slate-900' : 'text-slate-100'}>Impact Concentration</span>
+            <span className="w-1.5 h-1.5 rounded-full bg-amber-500" />
+            <span className={isLight ? 'text-slate-900' : 'text-slate-100'}>Contagion Breadth</span>
           </div>
           <span className="font-mono font-bold text-xs text-red-600 dark:text-red-400">
-            0.88 / 1.00
+            88% Horizontal
           </span>
         </div>
 
@@ -103,7 +103,7 @@ export const BlastRadiusHUD: React.FC<BlastRadiusHUDProps> = ({
           <div className="h-2 w-full bg-slate-200 dark:bg-slate-800 rounded-full overflow-hidden flex">
             <div 
               style={{ width: '84%' }} 
-              className="bg-gradient-to-r from-amber-500 to-red-600 h-full transition-all duration-500"
+              className="bg-red-500 h-full transition-all duration-500"
               title="Horizontal Spread: 84%"
             />
             <div 
@@ -114,23 +114,23 @@ export const BlastRadiusHUD: React.FC<BlastRadiusHUDProps> = ({
           </div>
           <div className="flex justify-between text-[10px] text-slate-500 font-mono">
             <span className="text-red-600 dark:text-red-400 font-semibold">
-              ↔ Horizontal: 84%
+              ↔ Across Services: 84%
             </span>
             <span>
-              ↕ Vertical: 16%
+              ↕ Service Depth: 16%
             </span>
           </div>
         </div>
 
-        {/* Herfindahl Index Sub-card */}
-        <div className={`p-2 rounded border flex items-center justify-between ${
-          isLight ? 'bg-slate-50/70 border-slate-200' : 'bg-slate-900 border-slate-800'
-        }`}>
-          <span className="text-[10px] font-mono font-semibold text-red-600 uppercase">
-            Systemic Contagion
+        {/* Classification Badge */}
+        <div className="flex items-center justify-between pt-1 border-t border-slate-200/60 dark:border-slate-800/60">
+          <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded border uppercase ${
+            isLight ? 'bg-red-100 text-red-800 border-red-200' : 'bg-red-950/60 text-red-300 border-red-800'
+          }`}>
+            Multi-Service Spread
           </span>
           <span className={`text-[10px] font-mono ${isLight ? 'text-slate-500' : 'text-slate-400'}`}>
-            Herfindahl Metric
+            Cross-Service
           </span>
         </div>
       </div>
@@ -143,7 +143,7 @@ export const BlastRadiusHUD: React.FC<BlastRadiusHUDProps> = ({
           <Activity className="w-3.5 h-3.5" />
           <span>Contagion Summary</span>
         </div>
-        Compromise of <code className="font-mono font-semibold">snakeyaml@1.33</code> propagates through internal shared utilities into Payment Gateway and Auth/IAM.
+        Compromise of <code className="font-mono font-semibold">snakeyaml@1.33</code> propagates to Payment Gateway and Auth/IAM.
       </div>
 
       {/* Action Buttons */}
@@ -165,7 +165,7 @@ export const BlastRadiusHUD: React.FC<BlastRadiusHUDProps> = ({
             onClick={onComputeMitigation}
             className="w-full py-2 px-3 rounded-md text-xs font-medium flex items-center justify-center gap-2 transition-colors bg-blue-600 hover:bg-blue-700 text-white shadow-xs"
           >
-            <span>Calculate Minimum-Cut Remediation</span>
+            <span>Plan Targeted Fix</span>
             <ArrowRight className="w-3.5 h-3.5" />
           </button>
         )}

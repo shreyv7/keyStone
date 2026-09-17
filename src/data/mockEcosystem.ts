@@ -31,7 +31,7 @@ export const MOCK_NODES: EcosystemNode[] = [
     conventionalScore: 48,
     conventionalSeverity: 'MODERATE',
     systemicScore: 84,
-    summary: 'Systemic chokepoint. Sits at an articulation cut-vertex dominating data parsing across multiple mission-critical service pipelines.',
+    summary: 'Critical chokepoint. Single point of failure for data parsing across 21 production services.',
     stealthSignals: ['FRESH_MAINTAINER', 'DIVERGENT_ARTIFACT_HASH', 'NEW_DEPENDENCY_IN_PATCH'],
     operationalDomain: 'Data Serialization & Parsing',
     centralityVelocity: 142,
@@ -1506,8 +1506,8 @@ export const MOCK_PROPAGATION_PATHS: PropagationPath[] = [
 export const MOCK_MITIGATION_CANDIDATES: MitigationCandidate[] = [
   {
     strategy: 'min_cut',
-    strategyTitle: 'Strategy 1: Architectural Chokepoint (Min-Cut)',
-    strategyDescription: 'Maximizes systemic portfolio-wide path severance across all repositories simultaneously with the fewest global interventions.',
+    strategyTitle: 'Recommended: Targeted Fix',
+    strategyDescription: 'Eliminates all 4 critical attack paths simultaneously with a single coordinated update and zero breaking changes.',
     targetNodeId: 'internal-data-pipeline',
     targetPackage: 'internal-data-pipeline',
     currentVersion: '2.4.0',
@@ -1530,8 +1530,8 @@ export const MOCK_MITIGATION_CANDIDATES: MitigationCandidate[] = [
   },
   {
     strategy: 'low_hanging',
-    strategyTitle: 'Strategy 2: Low-Hanging Fruit (Zero Friction Fast Patch)',
-    strategyDescription: 'Filters exclusively for zero-breaking-change SemVer patch upgrades that developers can auto-merge in 5 minutes with zero testing friction.',
+    strategyTitle: 'Alternative: Fast Patch',
+    strategyDescription: 'Immediate non-breaking patch that developers can merge with zero testing friction.',
     targetNodeId: 'internal-data-pipeline',
     targetPackage: 'internal-data-pipeline',
     currentVersion: '2.4.0',
@@ -1553,8 +1553,8 @@ export const MOCK_MITIGATION_CANDIDATES: MitigationCandidate[] = [
   },
   {
     strategy: 'crown_jewel',
-    strategyTitle: 'Strategy 3: Crown Jewel Shield (Targeted Asset Defense)',
-    strategyDescription: 'Focuses the cut algorithm strictly on severing paths that reach Tier-1 Mission-Critical assets (Payment Gateway, Auth/IAM).',
+    strategyTitle: 'Alternative: Core Services Only',
+    strategyDescription: 'Isolates core payment and auth services while leaving non-critical services unchanged.',
     targetNodeId: 'payment-service',
     targetPackage: 'Payment Service',
     currentVersion: '3.4.1',
@@ -1607,52 +1607,52 @@ export const DETERMINISTIC_ANSWERS: Record<string, {
   q1: {
     functionCalled: "reverse_bfs('snakeyaml', filter_tier=1)",
     deterministicFacts: [
-      "Target Keystone: snakeyaml@1.33 (Cut-Vertex articulation point)",
-      "4 Tier-1 services reached via 4 distinct directed DAG paths",
+      "Target: snakeyaml@1.33 (Critical Chokepoint)",
+      "4 Tier-1 services reached via 4 distinct dependency paths",
       "Asset 1: Payment Gateway (Tier-1, Weight 10.0, PCI-DSS)",
       "Asset 2: Auth / IAM (Tier-1, Weight 10.0, SSO Master)",
       "Asset 3: Order Processing Core (Tier-1, Weight 10.0, Transaction Ledger)",
       "Asset 4: Realtime Risk Engine (Tier-1, Weight 10.0, Wire Fraud Defense)"
     ],
-    narrative: "A simulated compromise of snakeyaml@1.33 cascades across 4 mission-critical Tier-1 services holding over $85M in daily transactions. While conventional tools score snakeyaml as a moderate CVSS 4.8 alert, reverse topological traversal proves it holds an uninsulated structural monopoly over Payment Gateway, Auth/IAM, Order Processing, and Realtime Risk.",
+    narrative: "A simulated compromise of snakeyaml@1.33 cascades across 4 mission-critical services holding over $85M in daily transactions. While conventional tools score snakeyaml as a moderate 4.8 alert, dependency mapping proves it holds an uninsulated path into Payment Gateway, Auth/IAM, Order Processing, and Realtime Risk.",
     highlightNodes: ['snakeyaml', 'payment-gateway', 'auth-iam', 'order-processing-core', 'realtime-risk-engine']
   },
   q2: {
     functionCalled: "get_chokepoints(top_n=5, sort='systemic_risk')",
     deterministicFacts: [
-      "1. snakeyaml@1.33: Systemic Risk 84/100 (98th %ile Reverse PageRank, Articulation Point = YES, 21 Dependents)",
-      "2. internal-auth@3.1.2: Systemic Risk 74/100 (93rd %ile Reverse PageRank, Articulation Point = YES, 15 Dependents)",
-      "3. minimist@0.0.8: Systemic Risk 78/100 (94th %ile Reverse PageRank, Articulation Point = NO, 14 Dependents)",
-      "4. internal-data-pipeline@2.4.0: Systemic Risk 76/100 (96th %ile Reverse PageRank, Articulation Point = YES, 16 Dependents)",
-      "5. lodash@4.17.21: Systemic Risk 61/100 (88th %ile Reverse PageRank, Articulation Point = NO, 28 Dependents)"
+      "1. snakeyaml@1.33: Systemic Risk 84/100 (Single point of failure, 21 Dependents)",
+      "2. internal-auth@3.1.2: Systemic Risk 74/100 (Single point of failure, 15 Dependents)",
+      "3. minimist@0.0.8: Systemic Risk 78/100 (High centrality, 14 Dependents)",
+      "4. internal-data-pipeline@2.4.0: Systemic Risk 76/100 (Single point of failure, 16 Dependents)",
+      "5. lodash@4.17.21: Systemic Risk 61/100 (Wide reach, 28 Dependents)"
     ],
-    narrative: "The single most critical dependency in this ecosystem is snakeyaml@1.33. Unlike peripheral packages with high star counts, snakeyaml has a Bus Factor of 1 (single unfunded maintainer) and acts as an articulation cut-vertex whose removal or compromise fragments the core data parsing layer across 42 repositories.",
+    narrative: "The single most critical dependency in this ecosystem is snakeyaml@1.33. It has only 1 maintainer and acts as a critical single point of failure whose compromise impacts core data parsing across 42 repositories.",
     highlightNodes: ['snakeyaml']
   },
   q3: {
     functionCalled: "audit_waterfall_receipt('snakeyaml@1.33')",
     deterministicFacts: [
-      "Conventional CVSS/OpenSSF: 48/100 (Moderate severity)",
-      "Reverse PageRank: 98th percentile (Top 2% of ecosystem importance)",
-      "Betweenness Centrality: Top 1% (Dominates 0.5% of shortest paths)",
-      "Tarjan Articulation Status: TRUE (Strict cut-vertex)",
-      "Fragility Multiplier: 5.2x (48M weekly downloads / 1 maintainer)",
-      "Calculated Factor Breakdown: 0 Base + 38 Centrality + 22 Fragility + 16 Asset Exposure + 8 Exploitation = 84 Total"
+      "Public Rating: 48/100 (Moderate)",
+      "Systemic Reach: Top 2% of ecosystem dependencies",
+      "Betweenness Centrality: Top 1%",
+      "Single Point of Failure: YES (Critical Chokepoint)",
+      "Maintainer Fragility: 48M weekly downloads / 1 maintainer",
+      "Score Breakdown: 0 Base + 38 Centrality + 22 Fragility + 16 Asset Exposure + 8 Exploitation = 84 Total"
     ],
-    narrative: "snakeyaml is designated a KEYSTONE because of the Popularity Paradox: conventional scanners see an ordinary utility with a moderate advisory score, but graph topology reveals it is a structural keystone. If an attacker injects a malicious payload, there is no redundant path—four separate application clusters simultaneously ingest the payload.",
+    narrative: "snakeyaml is designated a key risk because of the rating discrepancy: public scanners see an ordinary utility with a moderate score, but graph topology reveals it is a critical chokepoint. If compromised, four separate production services are exposed simultaneously.",
     highlightNodes: ['snakeyaml', 'internal-data-pipeline', 'internal-auth']
   },
   q4: {
     functionCalled: "compute_min_cut('snakeyaml', weight='semver_friction')",
     deterministicFacts: [
       "Candidate: internal-data-pipeline (v2.4.0 -> v2.5.0)",
-      "Cut Algorithm: Flow-Network Minimum Vertex Cut (Edmonds-Karp duality)",
+      "Strategy: Targeted Path Severance",
       "Severed Paths: 4 / 4 active propagation chains (100% blast collapse)",
-      "SemVer Migration Friction: Patch-level (Effort Cost = 1.0)",
-      "Cascade Net Security Gain: +4 paths severed - 0 new CVEs = +4 NET GAIN",
-      "Developer Action: 1 coordinated PR vs. 40 fragmented repository fixes"
+      "Migration Friction: Patch-level (Zero breaking changes)",
+      "Net Security Gain: +4 paths eliminated with 0 new issues",
+      "Action: 1 coordinated PR vs. 40 fragmented fixes"
     ],
-    narrative: "The optimal intervention is upgrading internal-data-pipeline from 2.4.0 to 2.5.0. Because this node is the intermediate dominator between snakeyaml and the downstream platform services, severing it completely insulates all 4 Tier-1 assets without requiring breaking API changes or modifying snakeyaml directly in 40 separate repositories.",
+    narrative: "The optimal intervention is upgrading internal-data-pipeline from 2.4.0 to 2.5.0. Because this package wraps snakeyaml for downstream services, updating it completely insulates all 4 Tier-1 assets without requiring breaking changes in 40 separate repositories.",
     highlightNodes: ['internal-data-pipeline', 'snakeyaml']
   }
 };

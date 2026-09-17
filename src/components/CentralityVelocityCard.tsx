@@ -136,34 +136,30 @@ export const CentralityVelocityCard: React.FC<CentralityVelocityCardProps> = ({
           <div>
             <div className="flex items-center gap-1.5">
               <span className={`text-xs font-bold ${isLight ? 'text-slate-900' : 'text-slate-100'}`}>
-                F5 Centrality Velocity
+                Adoption Velocity
               </span>
-              <span className={`text-[9px] font-mono font-bold px-1.5 py-0.2 rounded border uppercase ${
-                isEscalating 
-                  ? 'bg-amber-100 text-amber-800 border-amber-300 dark:bg-amber-950 dark:text-amber-300 dark:border-amber-800' 
-                  : isLight ? 'bg-slate-100 text-slate-600 border-slate-200' : 'bg-slate-800 text-slate-300 border-slate-700'
-              }`}>
-                90-Day Trend
+              <span className={`text-[10px] ${isLight ? 'text-slate-500' : 'text-slate-400'}`}>
+                (90-Day)
               </span>
             </div>
             <span className={`text-[10px] ${isLight ? 'text-slate-500' : 'text-slate-400'}`}>
-              Reverse PageRank Growth Across Monitored Lockfiles
+              Growth rate across monitored service lockfiles
             </span>
           </div>
         </div>
 
         {/* Alarm Trend Badge */}
         {isEscalating ? (
-          <div className="flex items-center gap-1 px-2.5 py-1 rounded-md bg-amber-500 text-white font-mono text-[10px] font-bold shadow-xs animate-pulse">
+          <div className="flex items-center gap-1 px-2.5 py-1 rounded-md bg-amber-500 text-white text-[10px] font-semibold shadow-xs">
             <AlertTriangle className="w-3 h-3" />
-            <span>🚨 ESCALATING_KEYSTONE</span>
+            <span>Escalating Growth</span>
           </div>
         ) : (
-          <div className={`flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-mono font-medium border ${
+          <div className={`flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-medium border ${
             isLight ? 'bg-white text-slate-700 border-slate-200 shadow-xs' : 'bg-slate-800/80 text-slate-300 border-slate-700'
           }`}>
             <CheckCircle2 className="w-3 h-3 text-emerald-500" />
-            <span>NORMAL VELOCITY</span>
+            <span>Normal Velocity</span>
           </div>
         )}
       </div>
@@ -309,12 +305,12 @@ export const CentralityVelocityCard: React.FC<CentralityVelocityCardProps> = ({
           {isEscalating ? (
             <span>
               <strong>Leading Trend Alarm: </strong>
-              Adoption of <code>{node.name}</code> surged <strong>+{velocity}%</strong> over recent lockfile commits before any public CVE was logged. Keystone flags this accelerating dependency as an emerging single point of failure.
+              Adoption of <code>{node.name}</code> surged <strong>+{velocity}%</strong> over recent commits, indicating an accelerating systemic dependency.
             </span>
           ) : (
             <span>
               <strong>Adoption Cadence: </strong>
-              Growth trajectory is steady within expected historical portfolio bounds. No sudden viral lockfile infiltration detected.
+              Growth trajectory is steady within expected historical portfolio bounds.
             </span>
           )}
         </div>

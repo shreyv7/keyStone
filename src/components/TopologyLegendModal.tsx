@@ -51,8 +51,8 @@ export const TopologyLegendModal: React.FC<TopologyLegendModalProps> = ({ isOpen
               }`}>
                 <span className="w-3 h-3 rounded-full bg-red-600 shrink-0"></span>
                 <div>
-                  <div className="font-semibold">Structural Keystone</div>
-                  <div className={`text-[10px] ${isLight ? 'text-slate-500' : 'text-slate-400'}`}>Cut-vertex with halo</div>
+                  <div className="font-semibold">Critical Chokepoint</div>
+                  <div className={`text-[10px] ${isLight ? 'text-slate-500' : 'text-slate-400'}`}>Single point of failure</div>
                 </div>
               </div>
 
@@ -61,8 +61,8 @@ export const TopologyLegendModal: React.FC<TopologyLegendModalProps> = ({ isOpen
               }`}>
                 <span className="w-3 h-3 rounded-full bg-indigo-600 shrink-0"></span>
                 <div>
-                  <div className="font-semibold">Tier-1 Production Sink</div>
-                  <div className={`text-[10px] ${isLight ? 'text-slate-500' : 'text-slate-400'}`}>Crown jewel asset</div>
+                  <div className="font-semibold">Critical Service</div>
+                  <div className={`text-[10px] ${isLight ? 'text-slate-500' : 'text-slate-400'}`}>Tier-1 protected asset</div>
                 </div>
               </div>
 
@@ -107,7 +107,7 @@ export const TopologyLegendModal: React.FC<TopologyLegendModalProps> = ({ isOpen
               <div className="flex items-center gap-2.5">
                 <span className="w-4 h-0.5 bg-emerald-600 shrink-0"></span>
                 <span className={isLight ? 'text-slate-700' : 'text-slate-300'}>
-                  Severed Link: <strong className="text-emerald-600">Minimum-Cut Target</strong>
+                  Severed Link: <strong className="text-emerald-600">Targeted Fix</strong>
                 </span>
               </div>
               <div className="flex items-center gap-2.5">

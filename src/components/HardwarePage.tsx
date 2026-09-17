@@ -119,12 +119,9 @@ export const HardwarePage: React.FC = () => {
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 pb-6 border-b border-slate-200/80 dark:border-slate-800">
           <div>
-            <h1 className="text-2xl md:text-3xl font-bold tracking-tight text-slate-900 dark:text-white font-heading">
-              Hardware & Scanner Agents
-            </h1>
-            <p className="text-sm mt-3 max-w-2xl text-slate-500 dark:text-slate-400 font-sans leading-relaxed">
-              Deploy dedicated Keystone edge nodes into your private VPC, Kubernetes clusters, or air-gapped data centers.
-              All lockfile decompilation and graph reachability computations execute locally within your secure perimeter.
+            <h1 className="text-2xl md:text-3xl font-bold tracking-tight text-slate-900 dark:text-white">Hardware & Scanner Agents</h1>
+            <p className="text-sm mt-2 max-w-3xl text-slate-600 dark:text-slate-400 leading-relaxed">
+              Manage on-premises and private VPC scanner nodes for local analysis and air-gapped environments.
             </p>
           </div>
 

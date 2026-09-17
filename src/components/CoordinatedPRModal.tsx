@@ -59,7 +59,7 @@ export const CoordinatedPRModal: React.FC<CoordinatedPRModalProps> = ({
       renovate_policy_directive: {
         action: circuitBreakerFrozen ? "CIRCUIT_BREAKER_FROZEN" : "AUTO_MERGE_APPROVED",
         freeze_target: "pkg:maven/org.yaml/snakeyaml@1.33",
-        reason: "Tarjan articulation point with systemic contagion risk"
+        reason: "Critical chokepoint with systemic contagion risk"
       }
     },
     null,
@@ -94,21 +94,15 @@ export const CoordinatedPRModal: React.FC<CoordinatedPRModalProps> = ({
             <div>
               <div className="text-sm font-bold flex items-center gap-2 flex-wrap">
                 <span>Coordinated Multi-Repository Manifest</span>
-                {circuitBreakerFrozen ? (
-                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-600 dark:text-amber-400 border border-amber-500/30 flex items-center gap-1 animate-pulse">
+                {circuitBreakerFrozen && (
+                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-600 dark:text-amber-400 border border-amber-500/30 flex items-center gap-1">
                     <Lock className="w-3 h-3" />
-                    CIRCUIT BREAKER: FROZEN
-                  </span>
-                ) : (
-                  <span className={`text-[10px] font-medium px-1.5 py-0.2 rounded border ${
-                    isLight ? 'bg-slate-100 text-slate-700 border-slate-200' : 'bg-slate-800 text-slate-300 border-slate-700'
-                  }`}>
-                    Remediation Orchestrator
+                    Quarantined
                   </span>
                 )}
               </div>
               <div className={`text-xs ${isLight ? 'text-slate-500' : 'text-slate-400'}`}>
-                1 targeted architectural cut replaces fragmented dependency PRs across {affectedRepos} repositories
+                1 targeted fix replaces fragmented dependency PRs across {affectedRepos} repositories
               </div>
             </div>
           </div>
@@ -165,7 +159,7 @@ export const CoordinatedPRModal: React.FC<CoordinatedPRModalProps> = ({
               <div className={`text-[10px] font-semibold uppercase mb-1 ${
                 isLight ? 'text-emerald-800' : 'text-emerald-300'
               }`}>
-                KEYSTONE Minimum Cut
+                KEYSTONE Targeted Fix
               </div>
               <div className="text-base font-bold text-emerald-700 dark:text-emerald-400">1 Coordinated PR</div>
               <div className={`text-[11px] mt-1 leading-snug ${isLight ? 'text-emerald-900/80' : 'text-emerald-300/80'}`}>
@@ -222,15 +216,10 @@ export const CoordinatedPRModal: React.FC<CoordinatedPRModalProps> = ({
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-1.5">
                 <ShieldAlert className="w-3.5 h-3.5 text-indigo-500" />
-                <span className={`text-xs font-semibold uppercase tracking-wider ${isLight ? 'text-slate-800' : 'text-slate-200'}`}>
-                  Phased Cohort Rollout Cockpit
+                <span className={`text-xs font-bold ${isLight ? 'text-slate-800' : 'text-slate-200'}`}>
+                  Phased Rollout Pipeline
                 </span>
               </div>
-              <span className={`text-[9px] font-mono px-1.5 py-0.2 rounded border uppercase font-semibold ${
-                isLight ? 'bg-indigo-50 text-indigo-700 border-indigo-200' : 'bg-indigo-950 text-indigo-300 border-indigo-800'
-              }`}>
-                Stage-Gate Pipeline
-              </span>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
@@ -280,7 +269,7 @@ export const CoordinatedPRModal: React.FC<CoordinatedPRModalProps> = ({
               }`}>
                 <div>
                   <div className="flex items-center justify-between mb-1">
-                    <span className="font-bold text-[11px] text-purple-700 dark:text-purple-400">Cohort 2: Crown Jewels</span>
+                    <span className="font-bold text-[11px] text-purple-700 dark:text-purple-400">Cohort 2: Critical Services</span>
                     <span className="text-[9px] font-mono font-bold px-1.5 py-0.2 rounded bg-purple-700 text-white">
                       HELD (SOX Freeze)
                     </span>

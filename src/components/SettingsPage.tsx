@@ -81,11 +81,9 @@ export const SettingsPage: React.FC = () => {
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 pb-6 border-b border-slate-200/80 dark:border-slate-800">
           <div>
-            <h1 className="text-2xl md:text-3xl font-bold tracking-tight text-slate-900 dark:text-white font-heading">
-              System & Security Settings
-            </h1>
-            <p className="text-sm mt-3 max-w-2xl text-slate-500 dark:text-slate-400 font-sans leading-relaxed">
-              Configure systemic risk thresholds, authentication enforcement, and sovereign data residency.
+            <h1 className="text-2xl md:text-3xl font-bold tracking-tight text-slate-900 dark:text-white">System & Security Settings</h1>
+            <p className="text-sm mt-2 max-w-3xl text-slate-600 dark:text-slate-400 leading-relaxed">
+              Configure default security lenses, concentration thresholds, authentication enforcement, and data residency.
             </p>
           </div>
 
@@ -224,7 +222,7 @@ export const SettingsPage: React.FC = () => {
                       <span className="font-mono text-blue-600 dark:text-blue-400 font-bold text-sm">{sifiThreshold}% Concentration</span>
                     </div>
                     <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
-                      Packages whose topological reachability exceeds this percentage across your Crown Jewel assets are automatically classified as Systemically Important Financial Infrastructure (SIFI) keystones.
+                      Dependencies reaching more than this percentage of critical assets are designated as systemic risks.
                     </p>
                     <input
                       type="range"
@@ -247,9 +245,9 @@ export const SettingsPage: React.FC = () => {
                         isLight ? 'bg-white border-slate-300 text-slate-900 focus:border-blue-500' : 'bg-slate-950 border-slate-800 text-white focus:border-blue-500'
                       }`}
                     >
-                      <option value="ecosystem">Topology Map (3D Interactive Graph)</option>
-                      <option value="overview">Security Posture (Enterprise Macro Dashboard)</option>
-                      <option value="watchlist">Risk Watchlist (SIFI Candidate Grid)</option>
+                      <option value="overview">Security Posture Overview</option>
+                      <option value="ecosystem">Topology Graph</option>
+                      <option value="watchlist">Risk Watchlist</option>
                     </select>
                   </div>
 
@@ -314,7 +312,7 @@ export const SettingsPage: React.FC = () => {
                   <div className="flex items-center justify-between p-4 rounded-xl border border-slate-200 dark:border-slate-800">
                     <div>
                       <span className="font-semibold block text-slate-900 dark:text-white">Enforce Hardware FIDO2 Security Keys for Admins</span>
-                      <span className="text-xs text-slate-500 dark:text-slate-400">Restricts circuit breaker freezes and PR dispatch to physical YubiKeys / WebAuthn tokens.</span>
+                      <span className="text-xs text-slate-500 dark:text-slate-400">Requires physical security keys for quarantine actions and automated PR dispatch.</span>
                     </div>
                     <input
                       type="checkbox"
@@ -364,7 +362,7 @@ export const SettingsPage: React.FC = () => {
               <div className="connector-3d-card p-6 flex flex-col gap-6">
                 <div>
                   <h3 className="text-lg font-semibold text-slate-900 dark:text-white">Alert Dispatches & Webhooks</h3>
-                  <p className="text-sm text-slate-500 dark:text-slate-400 mt-0.5">Subscribe communication channels to topological supply-chain anomalies.</p>
+                  <p className="text-sm text-slate-500 dark:text-slate-400 mt-0.5">Route high-priority security notifications to integrated communication channels.</p>
                 </div>
 
                 <div className="flex flex-col gap-5 text-sm">
@@ -384,7 +382,7 @@ export const SettingsPage: React.FC = () => {
                   <div className="flex items-center justify-between p-4 rounded-xl border border-slate-200 dark:border-slate-800">
                     <div>
                       <span className="font-semibold block text-slate-900 dark:text-white">PagerDuty Incident Escalation</span>
-                      <span className="text-xs text-slate-500 dark:text-slate-400">Trigger P1 alerts when Tier-1 Crown Jewel reachability is detected</span>
+                      <span className="text-xs text-slate-500 dark:text-slate-400">Trigger P1 alerts when critical service exposure is detected</span>
                     </div>
                     <input
                       type="checkbox"
@@ -417,7 +415,7 @@ export const SettingsPage: React.FC = () => {
                           onChange={e => setNotifyOnSifi(e.target.checked)}
                           className="w-4 h-4 accent-blue-600 rounded"
                         />
-                        <span>New SIFI Keystone Identified (&gt;70% systemic concentration)</span>
+                        <span>New systemic risk dependency identified (&gt;70% concentration)</span>
                       </label>
                       <label className="flex items-center gap-2.5 cursor-pointer text-sm text-slate-700 dark:text-slate-300">
                         <input
@@ -426,7 +424,7 @@ export const SettingsPage: React.FC = () => {
                           onChange={e => setNotifyOnTier1(e.target.checked)}
                           className="w-4 h-4 accent-blue-600 rounded"
                         />
-                        <span>Critical Propagation Path Reaches Tier-1 Crown Jewel</span>
+                        <span>Propagation path reaches critical service</span>
                       </label>
                       <label className="flex items-center gap-2.5 cursor-pointer text-sm text-slate-700 dark:text-slate-300">
                         <input
@@ -435,7 +433,7 @@ export const SettingsPage: React.FC = () => {
                           onChange={e => setNotifyOnMaintainerAnomaly(e.target.checked)}
                           className="w-4 h-4 accent-blue-600 rounded"
                         />
-                        <span>Fresh Maintainer Anomaly / Rapid Account Transfer detected</span>
+                        <span>Maintainer anomaly or rapid account transfer detected</span>
                       </label>
                       <label className="flex items-center gap-2.5 cursor-pointer text-sm text-slate-700 dark:text-slate-300">
                         <input
@@ -444,7 +442,7 @@ export const SettingsPage: React.FC = () => {
                           onChange={e => setNotifyOnCoordinatedPr(e.target.checked)}
                           className="w-4 h-4 accent-blue-600 rounded"
                         />
-                        <span>Coordinated Minimum-Cut PR Generated & Ready for Review</span>
+                        <span>Targeted remediation PR generated and ready for review</span>
                       </label>
                     </div>
                   </div>

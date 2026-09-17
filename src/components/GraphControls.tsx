@@ -93,7 +93,7 @@ export const GraphControls: React.FC<GraphControlsProps> = ({
         <div className={`flex items-center gap-1 backdrop-blur-md border p-1 rounded-md shadow-xs text-xs transition-colors ${
           isLight ? 'bg-white/95 border-slate-200' : 'bg-slate-900/90 border-slate-800'
         }`}>
-          {/* F11 Perspective Switcher: Conventional Vuln vs Structural Position */}
+          {/* Perspective Switcher: Standard vs Risk View */}
           <div className="flex items-center gap-1 border-r pr-1.5 mr-1 border-slate-200 dark:border-slate-800">
             <button
               onClick={() => { if (showStructuralRisk) onToggleStructuralRisk(); }}
@@ -102,10 +102,10 @@ export const GraphControls: React.FC<GraphControlsProps> = ({
                   ? isLight ? 'bg-emerald-600 text-white font-bold shadow-xs' : 'bg-emerald-600 text-white font-bold shadow-xs'
                   : isLight ? 'text-slate-600 hover:text-slate-900 hover:bg-slate-100' : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800'
               }`}
-              title="Vulnerability View Mode: Size & color nodes by OpenSSF / CVSS score (Keystones appear as tiny green dots)"
+              title="Standard view: Colored by individual package rating"
             >
               <ShieldCheck className="w-3 h-3" />
-              <span>Vuln Mode</span>
+              <span>Standard</span>
             </button>
 
             <button
@@ -115,10 +115,10 @@ export const GraphControls: React.FC<GraphControlsProps> = ({
                   ? 'bg-blue-600 text-white font-medium shadow-xs'
                   : isLight ? 'text-slate-600 hover:text-slate-900 hover:bg-slate-100' : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800'
               }`}
-              title="Structural Position Mode (Lengauer-Tarjan SC): Dynamically balloons chokepoint vertices and renders golden articulation halos"
+              title="Risk view: Highlights single points of failure across services"
             >
               <SlidersHorizontal className="w-3 h-3" />
-              <span>Structural</span>
+              <span>High Impact</span>
             </button>
           </div>
 
@@ -156,10 +156,10 @@ export const GraphControls: React.FC<GraphControlsProps> = ({
                   ? 'bg-blue-600 text-white font-medium shadow-xs'
                   : isLight ? 'text-slate-600 hover:text-slate-900 hover:bg-slate-100' : 'text-slate-400 hover:text-white hover:bg-slate-800'
               }`}
-              title="Dominator Tree: Show structural chokepoint leaderboard"
+              title="Show key chokepoints leaderboard"
             >
               <TreePine className="w-3.5 h-3.5" />
-              <span>Dominators</span>
+              <span>Chokepoints</span>
             </button>
           )}
         </div>

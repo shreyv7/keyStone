@@ -134,7 +134,7 @@ export const TimelinePlayer: React.FC<TimelinePlayerProps> = ({
               <span className={`hidden sm:inline text-[11px] ml-2 font-normal ${
                 isLight ? 'text-slate-500' : 'text-slate-400'
               }`}>
-                Historical Centrality Evolution & Anomaly Replay
+                Timeline Analysis & Anomaly Replay
               </span>
             </div>
           </div>
@@ -218,14 +218,14 @@ export const TimelinePlayer: React.FC<TimelinePlayerProps> = ({
                     ? isLight ? 'bg-slate-900 text-white font-bold' : 'bg-slate-700 text-white font-bold'
                     : isLight ? 'text-slate-500 hover:text-slate-900' : 'text-slate-400 hover:text-slate-200'
                 }`}
-                title="Jump to -90d: Baseline Clean (SC = 0.35)"
+                title="Jump to -90d: Baseline Clean (Structural Criticality: 0.35)"
               >
                 <span className="w-1.5 h-1.5 rounded-full bg-blue-500 inline-block" />
                 <span>-90d Baseline</span>
-                <span className={`text-[9px] px-1 py-0.2 rounded font-mono ${
+                <span className={`text-[9px] px-1.5 py-0.5 rounded font-medium ${
                   isLight ? 'bg-blue-50 text-blue-700' : 'bg-blue-950/60 text-blue-300'
                 }`}>
-                  SC=0.35
+                  Normal
                 </span>
               </button>
 
@@ -236,14 +236,14 @@ export const TimelinePlayer: React.FC<TimelinePlayerProps> = ({
                     ? 'bg-amber-600 text-white font-bold shadow-xs'
                     : isLight ? 'text-slate-500 hover:text-amber-600' : 'text-slate-400 hover:text-amber-400'
                 }`}
-                title="Jump to -30d: Stealth Centrality Surge (SC = 0.71)"
+                title="Jump to -30d: Stealth Centrality Surge (Structural Criticality: 0.71)"
               >
                 <span className={`w-1.5 h-1.5 rounded-full bg-amber-500 inline-block ${timeTravelDay === -30 ? 'animate-ping' : ''}`} />
                 <span>-30d Anomaly</span>
-                <span className={`text-[9px] px-1 py-0.2 rounded font-mono ${
+                <span className={`text-[9px] px-1.5 py-0.5 rounded font-medium ${
                   timeTravelDay === -30 ? 'bg-amber-700 text-white' : isLight ? 'bg-amber-50 text-amber-700' : 'bg-amber-950/60 text-amber-300'
                 }`}>
-                  SC=0.71
+                  Warning
                 </span>
               </button>
 
@@ -254,14 +254,14 @@ export const TimelinePlayer: React.FC<TimelinePlayerProps> = ({
                     ? 'bg-rose-600 text-white font-bold shadow-xs'
                     : isLight ? 'text-slate-500 hover:text-rose-600' : 'text-slate-400 hover:text-rose-400'
                 }`}
-                title="Jump to Day 0: CVE Disclosure (SC = 0.91)"
+                title="Jump to Day 0: CVE Disclosure (Structural Criticality: 0.91)"
               >
                 <span className={`w-1.5 h-1.5 rounded-full bg-rose-500 inline-block ${timeTravelDay === 0 ? 'animate-ping' : ''}`} />
                 <span>Day 0 CVE</span>
-                <span className={`text-[9px] px-1 py-0.2 rounded font-mono ${
+                <span className={`text-[9px] px-1.5 py-0.5 rounded font-medium ${
                   timeTravelDay === 0 ? 'bg-rose-700 text-white' : isLight ? 'bg-rose-50 text-rose-700' : 'bg-rose-950/60 text-rose-300'
                 }`}>
-                  SC=0.91
+                  Critical
                 </span>
               </button>
             </div>

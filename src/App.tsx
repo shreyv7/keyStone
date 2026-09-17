@@ -305,7 +305,7 @@ export function App() {
         onComplete={(newProfile) => {
           setUserProfile(newProfile);
           setActiveLens(newProfile.roleLens);
-          setActiveView('ecosystem');
+          setActiveView('overview');
         }}
         onCancel={() => setActiveView('landing')}
       />
@@ -316,7 +316,7 @@ export function App() {
     return (
       <LandingPage
         stats={KEYSTONE_STATS}
-        onEnterConsole={() => setActiveView('ecosystem')}
+        onEnterConsole={() => setActiveView('overview')}
         onLaunchScenario={(id) => {
           setActiveView('ecosystem');
           if (id === 'snakeyaml_hero') {
@@ -410,30 +410,31 @@ export function App() {
               scopeFilter={scopeFilter}
               channelFilter={channelFilter}
             />
-
             {/* Graph Controls Overlay */}
-            <GraphControls
-              onResetView={() => setSelectedNodeId(null)}
-              onFocusKeystone={() => setSelectedNodeId('snakeyaml')}
-              showStructuralRisk={showStructuralSize}
-              onToggleStructuralRisk={() => setShowStructuralSize(prev => !prev)}
-              showBlastRadius={showBlastRadius}
-              onToggleBlastRadius={() => setShowBlastRadius(prev => !prev)}
-              showPropagation={showPropagation}
-              onTogglePropagation={() => setShowPropagation(prev => !prev)}
-              showDominatorMode={showDominatorMode}
-              onToggleDominatorMode={() => setShowDominatorMode(prev => !prev)}
-              scopeFilter={scopeFilter}
-              onScopeChange={setScopeFilter}
-              channelFilter={channelFilter}
-              onChannelChange={setChannelFilter}
-              autoRotate={autoRotate}
-              onToggleAutoRotate={() => setAutoRotate(prev => !prev)}
-              onOpenLegend={() => setIsLegendOpen(true)}
-            />
+            {activeView === 'ecosystem' && (
+              <GraphControls
+                onResetView={() => setSelectedNodeId(null)}
+                onFocusKeystone={() => setSelectedNodeId('snakeyaml')}
+                showStructuralRisk={showStructuralSize}
+                onToggleStructuralRisk={() => setShowStructuralSize(prev => !prev)}
+                showBlastRadius={showBlastRadius}
+                onToggleBlastRadius={() => setShowBlastRadius(prev => !prev)}
+                showPropagation={showPropagation}
+                onTogglePropagation={() => setShowPropagation(prev => !prev)}
+                showDominatorMode={showDominatorMode}
+                onToggleDominatorMode={() => setShowDominatorMode(prev => !prev)}
+                scopeFilter={scopeFilter}
+                onScopeChange={setScopeFilter}
+                channelFilter={channelFilter}
+                onChannelChange={setChannelFilter}
+                autoRotate={autoRotate}
+                onToggleAutoRotate={() => setAutoRotate(prev => !prev)}
+                onOpenLegend={() => setIsLegendOpen(true)}
+              />
+            )}
 
-            {/* F11 Popularity Paradox Callout Banner */}
-            {showParadoxBanner && showStructuralSize && selectedNode && selectedNode.conventionalScore < 55 && selectedNode.systemicScore >= 80 && (
+            {/* Popularity Paradox Callout Banner */}
+            {activeView === 'ecosystem' && showParadoxBanner && showStructuralSize && selectedNode && selectedNode.conventionalScore < 55 && selectedNode.systemicScore >= 80 && (
               <div className={`absolute top-28 left-5 z-20 max-w-md p-3 rounded-xl border shadow-xl backdrop-blur-md flex items-start justify-between gap-3 animate-in fade-in slide-in-from-top-2 ${
                 isLight ? 'bg-amber-50/95 border-amber-300 text-amber-950' : 'bg-amber-950/90 border-amber-800 text-amber-100'
               }`}>
@@ -465,7 +466,7 @@ export function App() {
               </div>
             )}
 
-            {/* F2 Dominator Chokepoints Leaderboard Overlay */}
+            {/* Dominator Chokepoints Leaderboard Overlay */}
             {showDominatorMode && activeView === 'ecosystem' && (
               <DominatorLeaderboard
                 nodes={MOCK_NODES}
@@ -477,11 +478,13 @@ export function App() {
             )}
 
             {/* Hover Tooltip */}
-            <NodeTooltip node={hoveredNode} position={hoveredPosition} />
+            {activeView === 'ecosystem' && (
+              <NodeTooltip node={hoveredNode} position={hoveredPosition} />
+            )}
           </div>
 
           {/* Right-Side Node Intelligence Panel */}
-          {selectedNode && activeView === 'ecosystem' && !isMitigationPanelOpen && (
+          {selectedNode && activeView === 'ecosystem' && !isMitigationPanelOpen && simulationPhase === 'idle' && (
             <NodeIntelligencePanel
               node={selectedNode}
               activeLens={activeLens}

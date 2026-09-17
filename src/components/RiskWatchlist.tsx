@@ -173,7 +173,7 @@ export const RiskWatchlist: React.FC<RiskWatchlistProps> = ({
               }`}
             >
               <TrendingUp className="w-3.5 h-3.5" />
-              <span>Escalating Keystones ({escalatingCount})</span>
+              <span>Escalating Risks ({escalatingCount})</span>
             </button>
             <button
               onClick={() => setWatchlistFilter('cut-vertex')}
@@ -183,7 +183,7 @@ export const RiskWatchlist: React.FC<RiskWatchlistProps> = ({
                   : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
               }`}
             >
-              Cut-Vertices ({cutVertexCount})
+              Critical Chokepoints ({cutVertexCount})
             </button>
             <button
               onClick={() => setWatchlistFilter('tier1')}
@@ -193,7 +193,7 @@ export const RiskWatchlist: React.FC<RiskWatchlistProps> = ({
                   : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
               }`}
             >
-              Tier-1 Exposed ({nodes.filter(n => n.tier1Reach > 0).length})
+              Critical Services Exposed ({nodes.filter(n => n.tier1Reach > 0).length})
             </button>
           </div>
 
@@ -220,7 +220,7 @@ export const RiskWatchlist: React.FC<RiskWatchlistProps> = ({
                 <th className="py-3 px-4">Risk Tier</th>
                 <th className="py-3 px-4">Centrality</th>
                 <th className="py-3 px-4">Velocity (90d)</th>
-                <th className="py-3 px-4">Cut-Vertex</th>
+                <th className="py-3 px-4">Chokepoint</th>
                 <th className="py-3 px-4">Downstream</th>
                 <th className="py-3 px-4">Tier-1 Reach</th>
                 <th className="py-3 px-4 text-right">Action</th>
@@ -309,7 +309,7 @@ export const RiskWatchlist: React.FC<RiskWatchlistProps> = ({
                     <td className="py-3.5 px-4">
                       {node.articulationPoint ? (
                         <span className="px-2.5 py-1 rounded-md text-xs font-semibold bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 border border-slate-300 dark:border-slate-700">
-                          Cut-Vertex
+                          Chokepoint
                         </span>
                       ) : (
                         <span className="text-xs text-slate-400">No</span>

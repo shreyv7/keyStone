@@ -82,9 +82,9 @@ const SNAPSHOTS_90D: TrendSnapshot[] = [
     systemicScore: 18,
     financialExposureM: 4.9,
     keystonesCount: 0,
-    milestone: 'Min-Cut Fix',
+    milestone: 'Targeted Fix',
     badgeType: 'remediated',
-    narrative: 'Minimum Cut Applied: internal-data-pipeline v2.5.0 severs 100% of attack vectors.'
+    narrative: '🛡️ Targeted Fix Applied: internal-data-pipeline v2.5.0 severs all attack vectors.'
   }
 ];
 
@@ -162,7 +162,7 @@ export const PortfolioRiskTrendChart: React.FC = () => {
           <div className="flex items-center gap-2">
             <TrendingUp className="w-4 h-4 text-blue-600 dark:text-blue-400" />
             <h3 className="text-sm font-semibold tracking-tight text-slate-900 dark:text-white font-heading">
-              Portfolio Risk Trajectory (90-Day Forensics)
+              Portfolio Risk Trajectory (90-Day Timeline)
             </h3>
             <span className="text-[10px] font-medium px-2 py-0.5 rounded uppercase bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-700">
               Risk History

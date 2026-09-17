@@ -83,17 +83,17 @@
                     linear-gradient(to bottom, rgba(0, 0, 0, 0.03) 1px, transparent 1px);
 }
 
-/* Glowing text & border utilities */
+/* Subtle status glow utilities */
 .glow-cyan {
-  box-shadow: 0 0 35px -5px rgba(6, 182, 212, 0.3);
+  box-shadow: 0 0 16px -2px rgba(6, 182, 212, 0.2);
 }
 
 .glow-red {
-  box-shadow: 0 0 35px -5px rgba(239, 68, 68, 0.3);
+  box-shadow: 0 0 16px -2px rgba(239, 68, 68, 0.2);
 }
 
 .glow-emerald {
-  box-shadow: 0 0 35px -5px rgba(16, 185, 129, 0.3);
+  box-shadow: 0 0 16px -2px rgba(16, 185, 129, 0.2);
 }
 
 /* Metallic Golden Glassmorphism Capsule */
@@ -501,27 +501,60 @@
     @apply text-slate-600 hover:text-slate-900 hover:bg-slate-100;
   }
 
-  /* Standard Modular Badges */
+  /* Standard Modular Semantic Badges */
   .ks-badge {
-    @apply inline-flex items-center gap-1.5 px-2 py-0.5 rounded text-[11px] font-mono font-medium border select-none;
+    @apply inline-flex items-center gap-1.5 px-2 py-0.5 rounded text-[11px] font-mono font-medium border select-none transition-colors;
   }
   .ks-badge-critical {
-    @apply bg-rose-950/70 text-rose-300 border-rose-800/60;
+    @apply bg-red-950/60 text-red-300 border-red-800/60;
   }
-  .ks-badge-high {
-    @apply bg-amber-950/70 text-amber-300 border-amber-800/60;
+  .light .ks-badge-critical {
+    @apply bg-red-50 text-red-700 border-red-200;
   }
-  .ks-badge-medium {
-    @apply bg-yellow-950/60 text-yellow-300 border-yellow-800/50;
+  .light .ks-badge-warning {
+    @apply bg-amber-50 text-amber-800 border-amber-200;
   }
+  .ks-badge-info,
   .ks-badge-low {
-    @apply bg-blue-950/60 text-blue-300 border-blue-800/50;
+    @apply bg-blue-950/60 text-blue-300 border-blue-800/60;
+  }
+  .light .ks-badge-info,
+  .light .ks-badge-low {
+    @apply bg-blue-50 text-blue-700 border-blue-200;
+  }
+  .ks-badge-healthy {
+    @apply bg-emerald-950/60 text-emerald-300 border-emerald-800/60;
+  }
+  .light .ks-badge-healthy {
+    @apply bg-emerald-50 text-emerald-700 border-emerald-200;
   }
   .ks-badge-neutral {
-    @apply bg-slate-800/70 text-slate-300 border-slate-700/60;
+    @apply bg-slate-900 text-slate-300 border-slate-700;
   }
-  .ks-badge-success {
-    @apply bg-emerald-950/70 text-emerald-300 border-emerald-800/60;
+  .light .ks-badge-neutral {
+    @apply bg-slate-100 text-slate-700 border-slate-200;
+  }
+
+  /* Typography Hierarchy Utilities */
+  .ks-title-lg {
+    @apply text-xl sm:text-2xl font-bold tracking-tight text-white;
+  }
+  .light .ks-title-lg {
+    @apply text-slate-900;
+  }
+
+  .ks-desc-md {
+    @apply text-xs sm:text-sm text-slate-300 leading-relaxed;
+  }
+  .light .ks-desc-md {
+    @apply text-slate-600;
+  }
+
+  .ks-meta-sm {
+    @apply text-[11px] font-mono text-slate-400;
+  }
+  .light .ks-meta-sm {
+    @apply text-slate-500;
   }
 
   /* Nav Links in Sidebar */

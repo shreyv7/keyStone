@@ -53,7 +53,7 @@ const NODES: Record<string, NodeData> = {
     score: 88,
     conventionalScore: 48,
     status: "keystone",
-    category: "Structural Articulation Point",
+    category: "Critical Chokepoint",
     centrality: "Top 0.5% betweenness paths",
     centralityPts: 38,
     fragility: "1 unfunded maintainer (Bus Factor 1)",
@@ -62,7 +62,7 @@ const NODES: Record<string, NodeData> = {
     reachPts: 20,
     exploit: "RCE deserialization (CVE-2022-1471)",
     exploitPts: 8,
-    description: "Load-bearing articulation cut-vertex. Compromising this single package cascades across 21 production microservices simultaneously."
+    description: "Critical chokepoint dependency. Compromising this single package cascades across 21 production microservices simultaneously."
   },
   minimist: {
     id: "minimist",
@@ -110,7 +110,7 @@ const NODES: Record<string, NodeData> = {
     score: 62,
     conventionalScore: 20,
     status: "remedy",
-    category: "Min-Cut Surgical Dominator",
+    category: "Targeted Remediation Chokepoint",
     centrality: "Bottleneck node for enterprise DAG",
     centralityPts: 42,
     fragility: "Internal Platform Team (High oversight)",
@@ -264,7 +264,7 @@ export const HeroTopologyShowcase: React.FC<HeroTopologyShowcaseProps> = ({
                   </span>
                 </div>
                 <p className="font-body text-xs text-slate-500 mt-0.5">
-                  Click any node to inspect its deterministic waterfall score and cascade vulnerability.
+                  Select any node to inspect risk factors and downstream exposure.
                 </p>
               </div>
 
@@ -306,7 +306,7 @@ export const HeroTopologyShowcase: React.FC<HeroTopologyShowcaseProps> = ({
                     }`}
                 >
                   <Scissors className="w-3.5 h-3.5" />
-                  <span>Apply Min-Cut</span>
+                  <span>Targeted Fix</span>
                 </button>
               </div>
             </div>
@@ -323,7 +323,7 @@ export const HeroTopologyShowcase: React.FC<HeroTopologyShowcaseProps> = ({
                   onClick={() => setMode("mincut")}
                   className="px-2.5 py-1 rounded bg-red-600 hover:bg-red-700 text-white font-bold font-heading text-[11px] cursor-pointer shadow-xs shrink-0 ml-2"
                 >
-                  Deploy Min-Cut Fix
+                  Deploy Targeted Fix
                 </button>
               </div>
             )}
@@ -332,8 +332,8 @@ export const HeroTopologyShowcase: React.FC<HeroTopologyShowcaseProps> = ({
               <div className="mb-3 px-3.5 py-2 rounded-lg bg-emerald-50 border border-emerald-200 text-xs text-emerald-800 flex items-center justify-between animate-fadeIn">
                 <div className="flex items-center gap-2">
                   <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
-                  <span className="font-bold font-heading">MIN-CUT APPLIED:</span>
-                  <span>Upgraded <strong>internal-data-pipeline</strong> to <strong>v2.5.1</strong>. 100% contagion paths severed in 1 PR.</span>
+                  <span className="font-bold font-heading">TARGETED FIX APPLIED:</span>
+                  <span>Upgraded <strong>internal-data-pipeline</strong> to <strong>v2.5.1</strong>. All contagion paths severed in 1 PR.</span>
                 </div>
                 <button
                   onClick={() => setMode("normal")}
@@ -617,7 +617,7 @@ export const HeroTopologyShowcase: React.FC<HeroTopologyShowcaseProps> = ({
                   </text>
                   <rect x="298" y="137" width="94" height="13" rx="3" fill={mode === "mincut" ? "#d1fae5" : "#eff6ff"} />
                   <text x="345" y="146" fontSize="7.5" fontWeight="bold" fill={mode === "mincut" ? "#047857" : "#1d4ed8"} textAnchor="middle">
-                    {mode === "mincut" ? "✓ 1 PR MIN-CUT" : "★ MIN-CUT CHOKEPOINT"}
+                    {mode === "mincut" ? "✓ 1 PR TARGETED FIX" : "★ TARGETED FIX CHOKEPOINT"}
                   </text>
                 </g>
 

@@ -1126,52 +1126,52 @@ export const EcosystemGraph: React.FC<EcosystemGraphProps> = ({
         isLight ? 'opacity-95' : 'opacity-90'
       }`}>
         {dependencyCone ? (
-          <div className={`mb-1 px-2.5 py-1 rounded-lg border text-[11px] font-mono font-bold flex items-center gap-2 shadow-sm ${
+          <div className={`mb-1 px-2.5 py-1 rounded-lg border text-[11px] font-medium flex items-center gap-2 shadow-sm ${
             isLight 
               ? 'bg-blue-50 border-blue-200 text-blue-900' 
               : 'bg-blue-950/60 border-blue-800 text-blue-300'
           }`}>
             <span className="w-2 h-2 rounded-full bg-blue-500 animate-ping inline-block" />
-            <span>CONE ISOLATION: {dependencyCone.allConeNodes.size} nodes ({dependencyCone.coneEdges.size} edges)</span>
+            <span>Impact Scope: {dependencyCone.allConeNodes.size} packages ({dependencyCone.coneEdges.size} connections)</span>
           </div>
         ) : (
-          <div className={`text-[10px] font-mono uppercase tracking-wider mb-1 flex items-center gap-1.5 ${
+          <div className={`text-[10px] uppercase tracking-wider mb-1 flex items-center gap-1.5 ${
             isLight ? 'text-slate-500 font-semibold' : 'text-slate-400'
           }`}>
             <span className="w-1.5 h-1.5 rounded-full bg-blue-500"></span>
-            5-Layer Stratified Topology
+            Ecosystem Architecture
           </div>
         )}
 
-        <div className={`flex items-center gap-2 text-xs font-mono transition-colors ${
+        <div className={`flex items-center gap-2 text-xs transition-colors ${
           depthFilter === 5 || depthFilter === 0 ? (isLight ? 'text-slate-800 font-semibold' : 'text-slate-200') : 'opacity-40'
         }`}>
-          <span className="w-2.5 h-2.5 rounded bg-[rgb(23,85,230)] shadow-xs shadow-blue-500/50"></span>
-          <span>L5: Tier-1 Sinks & Assets (Apex)</span>
+          <span className="w-2.5 h-2.5 rounded bg-indigo-500 shadow-xs shadow-indigo-500/50"></span>
+          <span>Tier 1: Critical Services</span>
         </div>
-        <div className={`flex items-center gap-2 text-xs font-mono transition-colors ${
+        <div className={`flex items-center gap-2 text-xs transition-colors ${
           depthFilter === 4 || depthFilter === 0 ? (isLight ? 'text-slate-800 font-semibold' : 'text-slate-200') : 'opacity-40'
         }`}>
-          <span className="w-2.5 h-2.5 rounded bg-[rgb(46,112,238)]"></span>
-          <span>L4: Business Applications</span>
+          <span className="w-2.5 h-2.5 rounded bg-blue-500"></span>
+          <span>Tier 2: Business Applications</span>
         </div>
-        <div className={`flex items-center gap-2 text-xs font-mono transition-colors ${
+        <div className={`flex items-center gap-2 text-xs transition-colors ${
           depthFilter === 3 || depthFilter === 0 ? (isLight ? 'text-slate-800 font-semibold' : 'text-slate-200') : 'opacity-40'
         }`}>
-          <span className="w-2.5 h-2.5 rounded bg-blue-400"></span>
-          <span>L3: Platform Microservices</span>
+          <span className="w-2.5 h-2.5 rounded bg-sky-500"></span>
+          <span>Tier 3: Platform Microservices</span>
         </div>
-        <div className={`flex items-center gap-2 text-xs font-mono transition-colors ${
+        <div className={`flex items-center gap-2 text-xs transition-colors ${
           depthFilter === 2 || depthFilter === 0 ? (isLight ? 'text-slate-800 font-semibold' : 'text-slate-200') : 'opacity-40'
         }`}>
-          <span className="w-2.5 h-2.5 rounded bg-slate-500"></span>
-          <span>L2: Shared Internal Libraries</span>
+          <span className="w-2.5 h-2.5 rounded bg-teal-500"></span>
+          <span>Tier 4: Shared Libraries</span>
         </div>
-        <div className={`flex items-center gap-2 text-xs font-mono transition-colors ${
+        <div className={`flex items-center gap-2 text-xs transition-colors ${
           depthFilter === 1 || depthFilter === 0 ? (isLight ? 'text-slate-800 font-semibold' : 'text-slate-200') : 'opacity-40'
         }`}>
-          <span className="w-2.5 h-2.5 rounded bg-slate-700"></span>
-          <span>L1: Foundational Open-Source (Keystones)</span>
+          <span className="w-2.5 h-2.5 rounded bg-rose-500 shadow-xs shadow-rose-500/50"></span>
+          <span>Tier 5: Open-Source Dependencies</span>
         </div>
       </div>
     </div>

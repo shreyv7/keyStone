@@ -112,17 +112,12 @@ export const SSVCDecisionTree: React.FC<SSVCDecisionTreeProps> = ({ node, classN
           </div>
           <div>
             <div className="flex items-center gap-1.5">
-              <span className={`text-xs font-bold uppercase tracking-wider ${isLight ? 'text-slate-900' : 'text-slate-100'}`}>
-                SSVC Qualitative Decision Tree
-              </span>
-              <span className={`text-[9px] font-mono px-1.5 py-0.5 rounded border uppercase ${
-                isLight ? 'bg-indigo-50 text-indigo-700 border-indigo-200' : 'bg-indigo-950/50 text-indigo-300 border-indigo-800'
-              }`}>
-                CISA SSVC v2.1
+              <span className={`text-xs font-bold ${isLight ? 'text-slate-900' : 'text-slate-100'}`}>
+                SSVC Decision Tree
               </span>
             </div>
             <p className={`text-[10px] ${isLight ? 'text-slate-500' : 'text-slate-400'}`}>
-              Stakeholder-Specific Vulnerability Categorization (Deployer Role)
+              CISA SSVC Triage Framework
             </p>
           </div>
         </div>

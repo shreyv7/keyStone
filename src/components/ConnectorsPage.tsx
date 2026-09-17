@@ -1003,11 +1003,9 @@ export const ConnectorsPage: React.FC<ConnectorsPageProps> = ({ onOpenSBOMModal 
         {/* Top Header Banner - Clean & Airy */}
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 pb-6 border-b border-slate-200/80 dark:border-slate-800">
           <div>
-            <h1 className="text-2xl md:text-3xl font-bold tracking-tight text-slate-900 dark:text-white font-heading">
-              Connectors & Integrations
-            </h1>
-            <p className="text-sm mt-3 max-w-2xl text-slate-500 dark:text-slate-400 font-sans leading-relaxed">
-              Continuous lockfile synchronization, transitive graph mapping, and automated CI/CD security gates.
+            <h1 className="text-2xl lg:text-3xl font-bold tracking-tight text-slate-900 dark:text-white">Connectors & Integrations</h1>
+            <p className="text-sm mt-1.5 max-w-3xl leading-relaxed text-slate-600 dark:text-slate-300">
+              Manage integrations for source control, package registries, CI/CD pipelines, and notifications.
             </p>
           </div>
 
@@ -1015,11 +1013,15 @@ export const ConnectorsPage: React.FC<ConnectorsPageProps> = ({ onOpenSBOMModal 
             {onOpenSBOMModal && (
               <button
                 onClick={onOpenSBOMModal}
-                className="px-3.5 py-2 rounded-lg text-xs font-medium text-slate-700 dark:text-slate-200 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-750 flex items-center gap-2 cursor-pointer select-none shadow-xs transition-colors"
-                title="Direct CycloneDX SBOM or Lockfile Upload"
+                className={`flex items-center gap-2 px-3.5 py-2 rounded-lg text-xs font-medium border transition-all cursor-pointer select-none shadow-xs ${
+                  isLight
+                    ? 'bg-white hover:bg-slate-50 border-slate-200 text-slate-800'
+                    : 'bg-slate-900 hover:bg-slate-800 border-slate-700 text-slate-200'
+                }`}
+                title="Connect Repository / Import Dependencies"
               >
                 <UploadCloud className="w-4 h-4 text-blue-600 dark:text-blue-400" />
-                <span>Ingest SBOM</span>
+                <span>Import Dependency Data</span>
               </button>
             )}
 

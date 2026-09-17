@@ -52,31 +52,24 @@ export const SupportDivergenceCard: React.FC<SupportDivergenceCardProps> = ({ no
           </div>
           <div>
             <div className="flex items-center gap-1.5">
-              <span className={`text-xs font-semibold uppercase tracking-wider ${isLight ? 'text-slate-900' : 'text-slate-100'}`}>
-                Support Risk & Divergence
-              </span>
-              <span className={`text-[9px] font-mono px-1.5 py-0.5 rounded border uppercase ${
-                isCritical
-                  ? isLight ? 'bg-red-50 text-red-700 border-red-200' : 'bg-red-950/50 text-red-300 border-red-800'
-                  : isLight ? 'bg-amber-50 text-amber-700 border-amber-200' : 'bg-amber-950/50 text-amber-300 border-amber-800'
-              }`}>
-                Upstream Fragility
+              <span className={`text-xs font-bold ${isLight ? 'text-slate-900' : 'text-slate-100'}`}>
+                Support Divergence
               </span>
             </div>
             <p className={`text-[10px] ${isLight ? 'text-slate-500' : 'text-slate-400'}`}>
-              Enterprise Demand (P_S) vs Upstream Maintenance (Q_supp)
+              Enterprise Demand vs. Upstream Maintenance Backing
             </p>
           </div>
         </div>
 
-        <span className={`text-xs font-mono font-semibold px-2 py-0.5 rounded border uppercase ${
+        <span className={`text-xs font-semibold px-2 py-0.5 rounded border ${
           isCritical
             ? isLight ? 'bg-red-50 text-red-700 border-red-200' : 'bg-red-950/60 text-red-300 border-red-800'
             : isModerate
             ? isLight ? 'bg-amber-50 text-amber-700 border-amber-200' : 'bg-amber-950/60 text-amber-300 border-amber-800'
             : isLight ? 'bg-emerald-50 text-emerald-700 border-emerald-200' : 'bg-emerald-950/60 text-emerald-300 border-emerald-800'
         }`}>
-          {isCritical ? 'Critical Deficit' : isModerate ? 'Moderate Divergence' : 'Equilibrium'}
+          {isCritical ? 'Critical Deficit' : isModerate ? 'Moderate Divergence' : 'Stable'}
         </span>
       </div>
 
@@ -144,14 +137,14 @@ export const SupportDivergenceCard: React.FC<SupportDivergenceCardProps> = ({ no
         }`}>
           <div>
             <div className="flex items-center gap-1.5">
-              <span className={`text-xs font-semibold ${isCritical ? 'text-red-700 dark:text-red-400' : isLight ? 'text-slate-800' : 'text-slate-200'}`}>
-                Support Deficit: Very low upstream maintenance
+              <span className={`text-xs font-bold ${isCritical ? 'text-red-700 dark:text-red-400' : isLight ? 'text-slate-800' : 'text-slate-200'}`}>
+                Maintenance Deficit (PDI)
               </span>
             </div>
             <div className={`text-[10px] mt-0.5 ${isLight ? 'text-slate-500' : 'text-slate-400'}`}>
               {isCritical
-                ? 'Severe under-resourced dependency at central chokepoint (PDI = max(0, P_S - Q_supp))'
-                : 'Balanced community backing relative to architectural usage'}
+                ? 'High reliance with low upstream maintainer activity.'
+                : 'Balanced community backing relative to architectural usage.'}
             </div>
           </div>
           <div className="text-right">
@@ -183,7 +176,7 @@ export const SupportDivergenceCard: React.FC<SupportDivergenceCardProps> = ({ no
         }`}>
           <div className="flex items-center gap-1 text-[10px] text-slate-500">
             <GitCommit className="w-3 h-3 text-blue-600 dark:text-blue-400" />
-            <span>Human Commits</span>
+            <span>Human Commits (12m)</span>
           </div>
           <div className="font-mono font-bold text-xs mt-1">
             {humanCommits} <span className="text-[9px] font-normal text-slate-500">({botFiltered} bot)</span>
@@ -195,7 +188,7 @@ export const SupportDivergenceCard: React.FC<SupportDivergenceCardProps> = ({ no
         }`}>
           <div className="flex items-center gap-1 text-[10px] text-slate-500">
             <Clock className="w-3 h-3 text-slate-500" />
-            <span>Release Recency</span>
+            <span>Last Release</span>
           </div>
           <div className="font-mono font-bold text-xs mt-1">
             {daysSince}d <span className="text-[9px] font-normal text-slate-500">ago</span>

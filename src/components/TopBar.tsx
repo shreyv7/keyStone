@@ -34,8 +34,8 @@ const INITIAL_ALERTS: SecurityAlert[] = [
   {
     id: 'alert-1',
     severity: 'CRITICAL',
-    title: '🚨 Escalating Keystone Surge Detected',
-    description: 'snakeyaml@1.33 Reverse PageRank surged +142% across 42 monitored repos over 90 days. Pre-CVE stealth anomaly.',
+    title: 'Critical Chokepoint Surge',
+    description: 'snakeyaml@1.33 centrality surged +142% across 42 monitored repos over 90 days.',
     timestamp: '12m ago',
     nodeId: 'snakeyaml',
     isRead: false
@@ -43,8 +43,8 @@ const INITIAL_ALERTS: SecurityAlert[] = [
   {
     id: 'alert-2',
     severity: 'HIGH',
-    title: '⚠️ Namespace Squatting Collision Blocked',
-    description: 'Public npm upload attempted for @corp/internal-data-pipeline. Keystone PURL Shield enforced private registry scope.',
+    title: 'Namespace Collision Blocked',
+    description: 'Public package upload attempted for @corp/internal-data-pipeline. Private registry scope enforced.',
     timestamp: '42m ago',
     nodeId: 'internal-data-pipeline',
     isRead: false
@@ -52,8 +52,8 @@ const INITIAL_ALERTS: SecurityAlert[] = [
   {
     id: 'alert-3',
     severity: 'MEDIUM',
-    title: '🔍 Single Point of Failure (Articulation Point)',
-    description: 'minimist parsed as 1-connected vertex in billing subgraph. Disruption isolates Tier-1 Payment Sink.',
+    title: 'Single Point of Failure Identified',
+    description: 'minimist identified as critical chokepoint in billing subgraph. Disruption isolates Payment Gateway.',
     timestamp: '2h ago',
     nodeId: 'minimist',
     isRead: false
@@ -61,8 +61,8 @@ const INITIAL_ALERTS: SecurityAlert[] = [
   {
     id: 'alert-4',
     severity: 'INFO',
-    title: 'ℹ️ CycloneDX VEX Noise Suppression',
-    description: 'Upstream maintainer affirmed code_not_reachable for lodash@4.17.21 prototype functions. Alert fatigue suppressed (-84%).',
+    title: 'CycloneDX VEX Noise Suppression',
+    description: 'Upstream maintainer affirmed code_not_reachable for lodash@4.17.21 prototype functions.',
     timestamp: '1d ago',
     nodeId: 'lodash',
     isRead: true

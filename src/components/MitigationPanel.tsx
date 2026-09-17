@@ -60,26 +60,13 @@ export const MitigationPanel: React.FC<MitigationPanelProps> = ({
       <div className="flex-1 overflow-y-auto pr-1 flex flex-col min-h-0">
         <div className={`flex items-start justify-between border-b pb-3 mb-3 ${isLight ? 'border-slate-200' : 'border-slate-800'}`}>
           <div>
-            <div className="flex items-center gap-2 mb-1 flex-wrap">
-              <span className={`text-[10px] font-semibold px-2 py-0.5 rounded border uppercase ${
-                isLight 
-                  ? 'bg-slate-100 text-slate-700 border-slate-200' 
-                  : 'bg-slate-800 text-slate-300 border-slate-700'
-              }`}>
-                Remediation
+            <h2 className={`text-base font-bold flex items-center gap-2 ${
+              isLight ? 'text-slate-900' : 'text-slate-100'
+            }`}>
+              <Wrench className="w-4 h-4 text-slate-600 dark:text-slate-400" />
+              <span>
+                {activeLens === 'ciso' ? 'Blast Radius Reduction' : activeLens === 'maintainer' ? 'Downstream Impact Mitigation' : 'Targeted Remediation Plan'}
               </span>
-
-              {/* Role Lens Badge */}
-              <span className={`text-[10px] font-semibold px-2 py-0.5 rounded uppercase flex items-center gap-1 border ${
-                activeLens === 'ciso'
-                  ? isLight ? 'bg-purple-50 text-purple-700 border-purple-200' : 'bg-purple-950/40 text-purple-300 border-purple-800/50'
-                  : activeLens === 'maintainer'
-                  ? isLight ? 'bg-blue-50 text-blue-700 border-blue-200' : 'bg-blue-950/40 text-blue-300 border-blue-800/50'
-                  : isLight ? 'bg-emerald-50 text-emerald-700 border-emerald-200' : 'bg-emerald-950/40 text-emerald-300 border-emerald-800/50'
-              }`}>
-                {activeLens === 'ciso' ? 'CISO Exposure Cut' : activeLens === 'maintainer' ? 'Maintainer Impact' : 'Developer Min-Cut'}
-              </span>
-
               {isApplied && (
                 <span className={`text-[10px] font-semibold px-2 py-0.5 rounded border uppercase flex items-center gap-1 ${
                   isLight 
@@ -87,25 +74,16 @@ export const MitigationPanel: React.FC<MitigationPanelProps> = ({
                     : 'bg-emerald-950/40 text-emerald-400 border-emerald-800/50'
                 }`}>
                   <CheckCircle2 className="w-3 h-3" />
-                  Cut Applied
+                  Applied
                 </span>
               )}
-            </div>
-
-            <h2 className={`text-base font-bold flex items-center gap-2 ${
-              isLight ? 'text-slate-900' : 'text-slate-100'
-            }`}>
-              <Wrench className="w-4 h-4 text-slate-600 dark:text-slate-400" />
-              <span>
-                {activeLens === 'ciso' ? 'Systemic Blast Radius Reduction' : activeLens === 'maintainer' ? 'Downstream Impact Mitigation' : 'Minimum-Cut Remediation'}
-              </span>
             </h2>
             <div className={`text-xs mt-0.5 ${isLight ? 'text-slate-500' : 'text-slate-400'}`}>
               {activeLens === 'ciso' 
-                ? 'Monetary risk mitigation with verified crown jewel insulation' 
+                ? 'Monetary risk mitigation with verified critical service insulation' 
                 : activeLens === 'maintainer' 
-                ? 'Guaranteed backward compatibility across dependent repos' 
-                : 'Minimal SemVer jump cost with maximum path disconnection'}
+                ? 'Guaranteed backward compatibility across dependent repositories' 
+                : 'Minimal SemVer upgrade cost with full attack path disconnection'}
             </div>
           </div>
           <button
@@ -139,7 +117,7 @@ export const MitigationPanel: React.FC<MitigationPanelProps> = ({
                   : isLight ? 'text-slate-600 hover:text-slate-900' : 'text-slate-400 hover:text-slate-200'
               }`}
             >
-              Minimum Cut
+              Targeted Fix
             </button>
             <button
               onClick={() => onSelectStrategy('crown_jewel')}
@@ -177,10 +155,10 @@ export const MitigationPanel: React.FC<MitigationPanelProps> = ({
               isLight ? 'text-slate-800' : 'text-slate-200'
             }`}>
               <Scale className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
-              <span>Trade-Off Matrix</span>
+              <span>Strategy Trade-Offs</span>
             </span>
             <span className={`text-[9px] font-mono ${isLight ? 'text-slate-500' : 'text-slate-400'}`}>
-              3 Competing Strategies
+              3 Strategies
             </span>
           </div>
 
@@ -259,10 +237,10 @@ export const MitigationPanel: React.FC<MitigationPanelProps> = ({
                 {currentCandidate.targetPackage}
               </div>
             </div>
-            <span className={`text-[10px] font-semibold px-2 py-0.5 rounded border uppercase ${
+            <span className={`text-[10px] font-semibold px-2 py-0.5 rounded border capitalize ${
               isLight ? 'bg-emerald-50 text-emerald-800 border-emerald-200' : 'bg-emerald-950/40 text-emerald-400 border-emerald-800/50'
             }`}>
-              {currentCandidate.semverJump.toUpperCase()} JUMP
+              {currentCandidate.semverJump} SemVer
             </span>
           </div>
 
@@ -379,55 +357,77 @@ export const MitigationPanel: React.FC<MitigationPanelProps> = ({
           </div>
         </div>
 
-        {/* F9 Call-Site & ABI Bytecode Linkage Prover */}
+        {/* Compatibility & Safety Verification Prover */}
         <div className={`p-3.5 rounded-lg border flex flex-col gap-2.5 ${
           isLight ? 'bg-white border-slate-200 shadow-xs' : 'bg-slate-900/60 border-slate-800'
         }`}>
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-1.5">
               <Cpu className="w-3.5 h-3.5 text-emerald-600" />
-              <span className={`text-xs font-semibold uppercase tracking-wider ${
+              <span className={`text-xs font-bold ${
                 isLight ? 'text-slate-800' : 'text-slate-200'
               }`}>
-                Call-Site & ABI Linkage Proof
+                Compatibility & Safety Verification
               </span>
             </div>
-            <span className={`text-[9px] font-mono font-bold px-1.5 py-0.2 rounded border uppercase ${
+            <span className={`text-[10px] font-semibold px-2 py-0.5 rounded border ${
               isLight ? 'bg-emerald-50 text-emerald-800 border-emerald-200' : 'bg-emerald-950 text-emerald-300 border-emerald-800'
             }`}>
-              Zero Breakage Proven
+              100% Compatible
             </span>
           </div>
 
+          {/* High-Level Human-Readable Verification Summary */}
           <div className="flex flex-col gap-1.5 text-xs">
-            <div className={`p-2 rounded-md border flex items-center justify-between font-mono text-[11px] ${
-              isLight ? 'bg-slate-50 border-slate-200 text-slate-700' : 'bg-slate-950/80 border-slate-800 text-slate-300'
+            <div className={`p-2 rounded-md border flex items-center justify-between ${
+              isLight ? 'bg-emerald-50/60 border-emerald-200 text-emerald-900' : 'bg-emerald-950/30 border-emerald-800/40 text-emerald-300'
             }`}>
-              <span>• Invoked AST Symbols:</span>
-              <span className="text-emerald-600 font-bold">42/42 matched (0 missing)</span>
+              <span className="font-semibold">Contract Compatibility:</span>
+              <span className="font-bold">42/42 methods matched (0 breaking)</span>
             </div>
-
-            <div className={`p-2 rounded-md border flex items-center justify-between font-mono text-[11px] ${
-              isLight ? 'bg-slate-50 border-slate-200 text-slate-700' : 'bg-slate-950/80 border-slate-800 text-slate-300'
+            <div className={`p-2 rounded-md border flex items-center justify-between ${
+              isLight ? 'bg-blue-50/60 border-blue-200 text-blue-900' : 'bg-blue-950/30 border-blue-800/40 text-blue-300'
             }`}>
-              <span>• JVM Bytecode Opcodes:</span>
-              <span className="text-emerald-600 font-bold">42 INVOKEVIRTUAL verified</span>
-            </div>
-
-            <div className={`p-2 rounded-md border flex items-center justify-between font-mono text-[11px] ${
-              isLight ? 'bg-slate-50 border-slate-200 text-slate-700' : 'bg-slate-950/80 border-slate-800 text-slate-300'
-            }`}>
-              <span>• Dynamic Reflection:</span>
-              <span className="text-slate-500">Yaml.load() safe constructor</span>
-            </div>
-
-            <div className={`p-2 rounded-md border flex items-center justify-between font-mono text-[11px] ${
-              isLight ? 'bg-slate-50 border-slate-200 text-slate-700' : 'bg-slate-950/80 border-slate-800 text-slate-300'
-            }`}>
-              <span>• Net Threat Partition:</span>
-              <span className="text-emerald-600 font-bold">E_removed={'{CVE-2022-1471}'}, E_introduced=∅</span>
+              <span className="font-semibold">Security Impact:</span>
+              <span className="font-bold">Removes CVE-2022-1471 (0 new CVEs)</span>
             </div>
           </div>
+
+          {/* Progressive Disclosure: Deep Compiler & Bytecode Details */}
+          <details className={`group rounded-md border p-2 text-xs transition-colors ${
+            isLight ? 'bg-slate-50 border-slate-200' : 'bg-slate-950/60 border-slate-800'
+          }`}>
+            <summary className="cursor-pointer font-medium text-[11px] flex items-center justify-between text-slate-500 hover:text-slate-800 dark:hover:text-slate-200 select-none">
+              <span>Technical Verification (Bytecode & AST)</span>
+              <span className="text-[9px] group-open:rotate-180 transition-transform">▼</span>
+            </summary>
+            <div className="flex flex-col gap-1.5 mt-2 font-mono text-[11px]">
+              <div className={`p-1.5 rounded border flex items-center justify-between ${
+                isLight ? 'bg-white border-slate-200 text-slate-700' : 'bg-slate-900 border-slate-800 text-slate-300'
+              }`}>
+                <span>• Invoked AST Symbols:</span>
+                <span className="text-emerald-600 font-bold">42/42 matched (0 missing)</span>
+              </div>
+              <div className={`p-1.5 rounded border flex items-center justify-between ${
+                isLight ? 'bg-white border-slate-200 text-slate-700' : 'bg-slate-900 border-slate-800 text-slate-300'
+              }`}>
+                <span>• JVM Bytecode Opcodes:</span>
+                <span className="text-emerald-600 font-bold">42 INVOKEVIRTUAL verified</span>
+              </div>
+              <div className={`p-1.5 rounded border flex items-center justify-between ${
+                isLight ? 'bg-white border-slate-200 text-slate-700' : 'bg-slate-900 border-slate-800 text-slate-300'
+              }`}>
+                <span>• Dynamic Reflection:</span>
+                <span className="text-slate-500">Yaml.load() safe constructor</span>
+              </div>
+              <div className={`p-1.5 rounded border flex items-center justify-between ${
+                isLight ? 'bg-white border-slate-200 text-slate-700' : 'bg-slate-900 border-slate-800 text-slate-300'
+              }`}>
+                <span>• Net Threat Partition:</span>
+                <span className="text-emerald-600 font-bold">E_removed={'{CVE-2022-1471}'}, E_introduced=∅</span>
+              </div>
+            </div>
+          </details>
         </div>
       </div>
 
@@ -447,17 +447,17 @@ export const MitigationPanel: React.FC<MitigationPanelProps> = ({
             {activeLens === 'ciso' ? (
               <>
                 <Briefcase className="w-3.5 h-3.5" />
-                <span>Authorize Executive Policy Mandate</span>
+                <span>Authorize Remediation Plan</span>
               </>
             ) : activeLens === 'maintainer' ? (
               <>
                 <Layers className="w-3.5 h-3.5" />
-                <span>Apply Backward-Compatible Cut</span>
+                <span>Apply Safe Upgrade</span>
               </>
             ) : (
               <>
                 <Wrench className="w-3.5 h-3.5" />
-                <span>Apply Architectural Cut</span>
+                <span>Apply Targeted Fix</span>
               </>
             )}
           </button>

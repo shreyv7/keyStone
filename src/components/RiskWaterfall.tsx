@@ -95,16 +95,11 @@ export const RiskWaterfall: React.FC<RiskWaterfallProps> = ({
             <div>
               <div className="flex items-center gap-1.5">
                 <span className={`font-bold text-xs ${isLight ? 'text-slate-900' : 'text-slate-100'}`}>
-                  ORE Risk Attribution Waterfall
-                </span>
-                <span className={`text-[9px] font-mono px-1.5 py-0.5 rounded border uppercase ${
-                  isLight ? 'bg-red-50 text-red-700 border-red-200' : 'bg-red-950/50 text-red-300 border-red-800'
-                }`}>
-                  F8 Log-Additive
+                  Operational Risk Equivalent (ORE)
                 </span>
               </div>
-              <div className={`text-[10px] font-mono ${isLight ? 'text-slate-500' : 'text-slate-400'}`}>
-                ln(ORE) = ln(P_active) + ln(I_tech) + ln(SC) + ln(WAE)
+              <div className={`text-[10px] ${isLight ? 'text-slate-500' : 'text-slate-400'}`}>
+                Risk Factor Breakdown
               </div>
             </div>
           </div>
@@ -240,18 +235,13 @@ export const RiskWaterfall: React.FC<RiskWaterfallProps> = ({
             <Calculator className="w-4 h-4" />
           </div>
           <div>
-            <div className="flex items-center gap-2">
-              <span className={`font-semibold text-xs ${isLight ? 'text-slate-900' : 'text-slate-100'}`}>
-                Risk Evidence Breakdown
-              </span>
-              <span className={`text-[9px] font-mono px-1.5 py-0.2 rounded border uppercase font-medium ${
-                isLight ? 'bg-slate-100 text-slate-600 border-slate-200' : 'bg-slate-800 text-slate-300 border-slate-700'
-              }`}>
-                Audit Receipt
+            <div className="flex items-center gap-1.5">
+              <span className={`font-bold text-xs ${isLight ? 'text-slate-900' : 'text-slate-100'}`}>
+                Risk Scoring Attribution
               </span>
             </div>
-            <p className={`text-[10px] mt-0.5 ${isLight ? 'text-slate-500' : 'text-slate-400'}`}>
-              Deterministic Dimensional Scoring ({receipt.totalScore} / 100 pts)
+            <p className={`text-[10px] ${isLight ? 'text-slate-500' : 'text-slate-400'}`}>
+              Deterministic Score ({receipt.totalScore} / 100 pts)
             </p>
           </div>
         </div>
@@ -264,7 +254,7 @@ export const RiskWaterfall: React.FC<RiskWaterfallProps> = ({
           title="Download signed JSON audit receipt"
         >
           <Download className="w-3.5 h-3.5" />
-          <span>Receipt JSON</span>
+          <span>Export JSON</span>
         </button>
       </div>
 
@@ -277,7 +267,7 @@ export const RiskWaterfall: React.FC<RiskWaterfallProps> = ({
           <div className="flex items-center justify-between text-xs mb-1">
             <span className="flex items-center gap-1.5 font-semibold">
               <Layers className="w-3.5 h-3.5 text-blue-500" />
-              <span>Structural Centrality (DC + PageRank)</span>
+              <span>Ecosystem Centrality</span>
             </span>
             <span className="font-mono font-bold text-blue-600 dark:text-blue-400">+{receipt.centralityPts} pts</span>
           </div>
@@ -296,7 +286,7 @@ export const RiskWaterfall: React.FC<RiskWaterfallProps> = ({
           <div className="flex items-center justify-between text-xs mb-1">
             <span className="flex items-center gap-1.5 font-semibold">
               <UserCheck className="w-3.5 h-3.5 text-amber-500" />
-              <span>Bus Factor & Support Deficit (PDI)</span>
+              <span>Maintainer Fragility & Bus Factor</span>
             </span>
             <span className="font-mono font-bold text-amber-600 dark:text-amber-400">+{receipt.fragilityPts} pts</span>
           </div>

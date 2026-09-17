@@ -107,25 +107,20 @@ export const ResolverPermeabilityPanel: React.FC<ResolverPermeabilityPanelProps>
           </div>
           <div>
             <div className="flex items-center gap-1.5">
-              <span className={`text-xs font-semibold uppercase tracking-wider ${isLight ? 'text-slate-900' : 'text-slate-100'}`}>
-                Resolver Exposure Lab
-              </span>
-              <span className={`text-[9px] font-mono px-1.5 py-0.5 rounded border uppercase ${
-                isLight ? 'bg-amber-50 text-amber-700 border-amber-200' : 'bg-amber-950/50 text-amber-300 border-amber-800'
-              }`}>
-                Dependency Confusion
+              <span className={`text-xs font-bold ${isLight ? 'text-slate-900' : 'text-slate-100'}`}>
+                Package Resolver Analysis
               </span>
             </div>
             <p className={`text-[10px] ${isLight ? 'text-slate-500' : 'text-slate-400'}`}>
-              Deterministic 4D Vector: (Origin, Collision, Exposure, Compatibility)
+              Evaluates package origin, registry collisions, exposure risk, and version compatibility.
             </p>
           </div>
         </div>
 
-        <span className={`text-[10px] font-mono font-semibold px-2 py-0.5 rounded border uppercase ${
-          isLight ? 'bg-red-50 text-red-700 border-red-200' : 'bg-red-950/60 text-red-300 border-red-800'
+        <span className={`text-[10px] font-semibold px-2 py-0.5 rounded border ${
+          isLight ? 'bg-red-100 text-red-800 border-red-300' : 'bg-red-950 text-red-300 border-red-800'
         }`}>
-          Exposure Confirmed
+          Exposure Detected
         </span>
       </div>
 
@@ -142,7 +137,7 @@ export const ResolverPermeabilityPanel: React.FC<ResolverPermeabilityPanelProps>
           }`}
         >
           <Table className="w-3 h-3" />
-          <span>4D Vector & Decision Table</span>
+          <span>Resolution Vector & Decision Matrix</span>
         </button>
 
         <button
@@ -232,7 +227,7 @@ export const ResolverPermeabilityPanel: React.FC<ResolverPermeabilityPanelProps>
           {/* Deterministic 10-State Decision Table */}
           <div className="flex flex-col gap-1.5">
             <div className="text-[10px] font-bold uppercase tracking-wider text-slate-500 flex items-center justify-between">
-              <span>Deterministic 10-State Resolver Decision Table (§3.7)</span>
+              <span>Resolver Decision Matrix</span>
               <span className="text-red-500 font-mono">Row 4 Active</span>
             </div>
 

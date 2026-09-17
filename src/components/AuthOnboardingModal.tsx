@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   ShieldCheck, 
   ArrowRight, 
@@ -29,6 +29,7 @@ import {
 } from 'lucide-react';
 import { UserProfile, RoleLens, OnboardingConfig } from '../types';
 import { useTheme } from '../context/ThemeContext';
+import { InteractiveTopologyCanvas } from './InteractiveTopologyCanvas';
 
 interface AuthOnboardingModalProps {
   initialMode?: 'signin' | 'onboard';
@@ -70,153 +71,6 @@ export const AuthOnboardingModal: React.FC<AuthOnboardingModalProps> = ({
   const [scanProgress, setScanProgress] = useState<number>(0);
   const [scanPhaseIndex, setScanPhaseIndex] = useState<number>(0);
   const [isScanDone, setIsScanDone] = useState<boolean>(false);
-
-  // Canvas ref for animated mini graph
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-
-  // Animated Background Mini-Graph for Left Panel
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
-
-    let animationFrameId: number;
-    let width = (canvas.width = canvas.parentElement?.clientWidth || 500);
-    let height = (canvas.height = canvas.parentElement?.clientHeight || 650);
-
-    const handleResize = () => {
-      if (!canvas || !canvas.parentElement) return;
-      width = canvas.width = canvas.parentElement.clientWidth;
-      height = canvas.height = canvas.parentElement.clientHeight;
-    };
-    window.addEventListener('resize', handleResize);
-
-    // Nodes for topological graph
-    const nodes: Array<{
-      x: number;
-      y: number;
-      vx: number;
-      vy: number;
-      radius: number;
-      color: string;
-      label: string;
-      isKeystone?: boolean;
-    }> = [
-      { x: width * 0.5, y: height * 0.52, vx: 0.1, vy: 0.08, radius: 14, color: '#ef4444', label: 'snakeyaml (Keystone)', isKeystone: true },
-      { x: width * 0.28, y: height * 0.35, vx: -0.15, vy: 0.1, radius: 7, color: '#38bdf8', label: 'jackson-databind' },
-      { x: width * 0.72, y: height * 0.38, vx: 0.12, vy: -0.1, radius: 8, color: '#06b6d4', label: 'spring-core' },
-      { x: width * 0.22, y: height * 0.65, vx: -0.08, vy: -0.12, radius: 9, color: '#10b981', label: 'Auth Svc (Tier-1)' },
-      { x: width * 0.78, y: height * 0.68, vx: 0.1, vy: 0.15, radius: 10, color: '#10b981', label: 'Payment Gateway' },
-      { x: width * 0.5, y: height * 0.25, vx: 0.05, vy: -0.08, radius: 6, color: '#6366f1', label: 'commons-lang3' },
-      { x: width * 0.45, y: height * 0.8, vx: -0.1, vy: 0.05, radius: 9, color: '#10b981', label: 'Order Processing' },
-      { x: width * 0.65, y: height * 0.2, vx: -0.05, vy: 0.1, radius: 5, color: '#94a3b8', label: 'log4j-api' },
-      { x: width * 0.35, y: height * 0.18, vx: 0.08, vy: -0.05, radius: 5, color: '#94a3b8', label: 'slf4j-api' },
-    ];
-
-    const links = [
-      [0, 1], [0, 2], [0, 3], [0, 4], [0, 6],
-      [1, 5], [2, 7], [1, 8], [3, 6], [4, 6]
-    ];
-
-    let pulse = 0;
-
-    const render = () => {
-      pulse += 0.04;
-      ctx.clearRect(0, 0, width, height);
-
-      // Draw subtle grid
-      ctx.strokeStyle = 'rgba(255, 255, 255, 0.03)';
-      ctx.lineWidth = 1;
-      const gridSize = 36;
-      for (let x = 0; x < width; x += gridSize) {
-        ctx.beginPath();
-        ctx.moveTo(x, 0);
-        ctx.lineTo(x, height);
-        ctx.stroke();
-      }
-      for (let y = 0; y < height; y += gridSize) {
-        ctx.beginPath();
-        ctx.moveTo(0, y);
-        ctx.lineTo(width, y);
-        ctx.stroke();
-      }
-
-      // Update node positions with gentle floating
-      nodes.forEach(node => {
-        node.x += node.vx;
-        node.y += node.vy;
-        if (node.x < 40 || node.x > width - 40) node.vx *= -1;
-        if (node.y < 40 || node.y > height - 40) node.vy *= -1;
-      });
-
-      // Draw edges with flow packets
-      links.forEach(([i, j]) => {
-        const n1 = nodes[i];
-        const n2 = nodes[j];
-        if (!n1 || !n2) return;
-
-        const isKeystoneLink = n1.isKeystone || n2.isKeystone;
-
-        ctx.beginPath();
-        ctx.moveTo(n1.x, n1.y);
-        ctx.lineTo(n2.x, n2.y);
-        ctx.strokeStyle = isKeystoneLink 
-          ? 'rgba(239, 68, 68, 0.28)' 
-          : 'rgba(56, 189, 248, 0.16)';
-        ctx.lineWidth = isKeystoneLink ? 2 : 1;
-        ctx.stroke();
-
-        // Flow particle
-        const t = (Math.sin(pulse + i * 0.7) + 1) / 2;
-        const px = n1.x + (n2.x - n1.x) * t;
-        const py = n1.y + (n2.y - n1.y) * t;
-        ctx.beginPath();
-        ctx.arc(px, py, isKeystoneLink ? 2.5 : 1.5, 0, Math.PI * 2);
-        ctx.fillStyle = isKeystoneLink ? '#ef4444' : '#38bdf8';
-        ctx.shadowColor = isKeystoneLink ? '#ef4444' : '#38bdf8';
-        ctx.shadowBlur = 8;
-        ctx.fill();
-        ctx.shadowBlur = 0;
-      });
-
-      // Draw nodes
-      nodes.forEach(node => {
-        if (node.isKeystone) {
-          // Outer pulse rings
-          const ringRadius = node.radius + 8 + Math.sin(pulse) * 4;
-          ctx.beginPath();
-          ctx.arc(node.x, node.y, ringRadius, 0, Math.PI * 2);
-          ctx.strokeStyle = `rgba(239, 68, 68, ${0.4 - Math.sin(pulse) * 0.15})`;
-          ctx.lineWidth = 1.5;
-          ctx.stroke();
-        }
-
-        ctx.beginPath();
-        ctx.arc(node.x, node.y, node.radius, 0, Math.PI * 2);
-        ctx.fillStyle = node.color;
-        ctx.shadowColor = node.color;
-        ctx.shadowBlur = node.isKeystone ? 18 : 8;
-        ctx.fill();
-        ctx.shadowBlur = 0;
-
-        // Label
-        ctx.fillStyle = 'rgba(255, 255, 255, 0.75)';
-        ctx.font = '10px JetBrains Mono, monospace';
-        ctx.textAlign = 'center';
-        ctx.fillText(node.label, node.x, node.y + node.radius + 13);
-      });
-
-      animationFrameId = requestAnimationFrame(render);
-    };
-
-    render();
-
-    return () => {
-      window.removeEventListener('resize', handleResize);
-      cancelAnimationFrame(animationFrameId);
-    };
-  }, []);
 
   // Step 4 Scanning Simulation
   useEffect(() => {
@@ -295,76 +149,22 @@ export const AuthOnboardingModal: React.FC<AuthOnboardingModalProps> = ({
       isLight ? 'bg-white text-slate-900' : 'bg-slate-900 text-slate-100'
     }`}>
       {/* ========================================================================= */}
-      {/* LEFT PANEL: Rich Showcase, Live Topology Animation & Enterprise Proof     */}
+      {/* LEFT PANEL: Landing-page topology background */}
       {/* ========================================================================= */}
-      <div className="relative w-full lg:w-5/12 xl:w-5/12 bg-gradient-to-br from-slate-950 via-[#070d1a] to-[#0b162b] text-white p-8 lg:p-12 xl:p-16 flex flex-col justify-between overflow-hidden border-b lg:border-b-0 lg:border-r border-slate-800 shrink-0">
-          {/* Animated Canvas Layer */}
-          <div className="absolute inset-0 pointer-events-none opacity-60">
-            <canvas ref={canvasRef} className="w-full h-full" />
+      <div className="relative w-full lg:w-5/12 xl:w-5/12 bg-gradient-to-br from-slate-950 via-[#070d1a] to-[#0b162b] overflow-hidden border-b lg:border-b-0 lg:border-r border-slate-800 shrink-0">
+          {/* Reuse the landing page's animated dependency topology. */}
+          <InteractiveTopologyCanvas theme="dark" embedded />
+          <div className="absolute inset-0 pointer-events-none bg-gradient-to-b from-[#080616]/75 via-[#080616]/45 to-[#080616]/85" />
+
+          <div className="relative z-10 p-8 lg:p-12 xl:p-16">
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight text-white leading-[1.12]">
+              Map every dependency. <br />
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-sky-300 to-indigo-300">
+                Neutralize every chokepoint.
+              </span>
+            </h1>
           </div>
 
-          {/* Radial Glow Overlay */}
-          <div className="absolute top-0 right-0 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none" />
-          <div className="absolute bottom-0 left-0 w-80 h-80 bg-red-500/10 rounded-full blur-3xl pointer-events-none" />
-
-          {/* Hero Value Statement */}
-          <div className="relative z-10 pt-4">
-            <div className="space-y-4">
-              <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight text-white leading-[1.12]">
-                Map every dependency. <br />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-sky-300 to-indigo-300">
-                  Neutralize every chokepoint.
-                </span>
-              </h1>
-              <p className="text-sm sm:text-base text-slate-300 font-medium leading-relaxed max-w-lg">
-                Gain architectural visibility across your entire multi-repo estate. Identify single points of failure, simulate cascade contagion, and orchestrate surgical fixes with zero breaking changes.
-              </p>
-            </div>
-          </div>
-
-          {/* Core Architectural Highlights */}
-          <div className="relative z-10 my-8 space-y-4">
-            <div className="flex items-start gap-3">
-              <div className="w-7 h-7 rounded-full bg-cyan-950/80 border border-cyan-800/60 flex items-center justify-center shrink-0 mt-0.5 text-cyan-400">
-                <GitBranch className="w-3.5 h-3.5" />
-              </div>
-              <div>
-                <h4 className="text-xs font-bold text-slate-100">Enterprise Multi-Repo DAG</h4>
-                <p className="text-[11px] text-slate-400">Unify 40+ repositories into one continuous dependency flow network.</p>
-              </div>
-            </div>
-
-            <div className="flex items-start gap-3">
-              <div className="w-7 h-7 rounded-full bg-red-950/80 border border-red-800/60 flex items-center justify-center shrink-0 mt-0.5 text-red-400">
-                <ShieldAlert className="w-3.5 h-3.5" />
-              </div>
-              <div>
-                <h4 className="text-xs font-bold text-slate-100">Tarjan Articulation Points</h4>
-                <p className="text-[11px] text-slate-400">Isolate single points of failure and stealth maintainer takeovers on Day -400.</p>
-              </div>
-            </div>
-
-            <div className="flex items-start gap-3">
-              <div className="w-7 h-7 rounded-full bg-emerald-950/80 border border-emerald-800/60 flex items-center justify-center shrink-0 mt-0.5 text-emerald-400">
-                <CheckCircle2 className="w-3.5 h-3.5" />
-              </div>
-              <div>
-                <h4 className="text-xs font-bold text-slate-100">1 Coordinated PR vs. 40 Bot PRs</h4>
-                <p className="text-[11px] text-slate-400">Flow-network minimum cut algorithms prescribe surgical remediations with zero breaks.</p>
-              </div>
-            </div>
-          </div>
-
-          {/* Compliance Badges Footer */}
-          <div className="relative z-10 pt-6 border-t border-slate-800/80">
-            <div className="flex items-center gap-3 text-[10px] text-slate-500 uppercase tracking-widest font-mono">
-              <span>SOC2 Type II</span>
-              <span>•</span>
-              <span>ISO 27001</span>
-              <span>•</span>
-              <span>CycloneDX & SPDX</span>
-            </div>
-          </div>
         </div>
 
         {/* ========================================================================= */}
@@ -458,13 +258,6 @@ export const AuthOnboardingModal: React.FC<AuthOnboardingModalProps> = ({
                   </div>
                   <div className="flex items-center gap-2">
                     <span className="text-sm font-bold">Continue with GitHub</span>
-                    <span className={`text-[10px] font-mono px-1.5 py-0.5 rounded border font-semibold ${
-                      isLight 
-                        ? 'bg-slate-100 text-slate-700 border-slate-300' 
-                        : 'bg-slate-800 text-slate-300 border-slate-700'
-                    }`}>
-                      Instant SSO
-                    </span>
                   </div>
                 </div>
                 <div className="w-8 h-8 rounded-full flex items-center justify-center text-slate-400 group-hover:text-slate-900 dark:group-hover:text-white group-hover:translate-x-0.5 transition-all">
@@ -754,9 +547,9 @@ export const AuthOnboardingModal: React.FC<AuthOnboardingModalProps> = ({
                   {/* Role Card Selector */}
                   <div className="grid grid-cols-3 gap-2.5">
                     {[
-                      { id: 'ciso', title: 'Executive / CISO', icon: ShieldAlert, desc: 'Blast radius & dollar-loss exposure' },
-                      { id: 'developer', title: 'AppSec Lead', icon: SlidersHorizontal, desc: 'Tarjan cut-vertices & PageRank' },
-                      { id: 'maintainer', title: 'Platform Dev', icon: Terminal, desc: '1-Click atomic coordinated PRs' },
+                      { id: 'ciso', title: 'Executive / CISO', icon: ShieldAlert, desc: 'Service blast radius & business risk' },
+                      { id: 'developer', title: 'AppSec Lead', icon: SlidersHorizontal, desc: 'Chokepoint analysis & service reach' },
+                      { id: 'maintainer', title: 'Platform Dev', icon: Terminal, desc: '1-Click coordinated multi-repo fixes' },
                     ].map((role) => {
                       const Icon = role.icon;
                       const isSelected = roleLens === role.id;
@@ -794,11 +587,11 @@ export const AuthOnboardingModal: React.FC<AuthOnboardingModalProps> = ({
                     </label>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                       {[
-                        { id: 'eliminate_alert_fatigue', label: 'Eliminate 94% CVE Alert Fatigue' },
-                        { id: 'pre_cve_stealth', label: 'Pre-CVE Maintainer Hijack Detection' },
-                        { id: 'min_cut_prs', label: 'Atomic 1-Click Minimum Cut PRs' },
-                        { id: 'cyclonedx_sbom', label: 'Continuous CycloneDX/SPDX Sync' },
-                        { id: 'namespace_squatting', label: 'Private PURL Namespace Enforcer' },
+                        { id: 'eliminate_alert_fatigue', label: 'Reduce Alert Noise Across Teams' },
+                        { id: 'pre_cve_stealth', label: 'Detect Unmaintained Chokepoints Early' },
+                        { id: 'min_cut_prs', label: 'Apply Targeted Multi-Repo Fixes' },
+                        { id: 'cyclonedx_sbom', label: 'Continuous SBOM & Manifest Sync' },
+                        { id: 'namespace_squatting', label: 'Namespace Impersonation Protection' },
                       ].map((p) => {
                         const isChecked = securityPriorities.includes(p.id);
                         return (
@@ -866,13 +659,13 @@ export const AuthOnboardingModal: React.FC<AuthOnboardingModalProps> = ({
                         id: 'sbom_upload',
                         title: 'Upload CycloneDX / SPDX SBOM',
                         desc: 'Directly parse lockfile or software bill-of-materials artifact.',
-                        badge: 'Air-Gapped / Static'
+                        badge: 'Static SBOM'
                       },
                       {
                         id: 'gitlab',
                         title: 'GitLab / Bitbucket Pipeline',
                         desc: 'Integrate into existing CI runners using our containerized runner.',
-                        badge: 'Self-Hosted'
+                        badge: 'CI/CD Pipeline'
                       }
                     ].map((opt) => {
                       const isSelected = ingestionSource === opt.id;
@@ -924,7 +717,7 @@ export const AuthOnboardingModal: React.FC<AuthOnboardingModalProps> = ({
                       className="px-5 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs shadow-xs flex items-center gap-1.5 cursor-pointer"
                     >
                       <Zap className="w-3.5 h-3.5" />
-                      <span>Visualize</span>
+                      <span>Analyze Graph</span>
                     </button>
                   </div>
                 </div>
@@ -938,10 +731,10 @@ export const AuthOnboardingModal: React.FC<AuthOnboardingModalProps> = ({
                   <div>
                     <h3 className="text-lg font-bold flex items-center gap-2">
                       <Sparkles className="w-5 h-5 text-emerald-500" />
-                      <span>Topological Graph Synthesis</span>
+                      <span>Synthesizing Dependency Map</span>
                     </h3>
                     <p className="text-xs text-slate-500">
-                      Parsing dependency channels, mapping 5-layer DAG, and calculating Tarjan articulation points.
+                      Mapping cross-repo dependency network and identifying single points of failure.
                     </p>
                   </div>
 
@@ -964,10 +757,10 @@ export const AuthOnboardingModal: React.FC<AuthOnboardingModalProps> = ({
                     isLight ? 'bg-slate-50 border-slate-200' : 'bg-slate-950/60 border-slate-800'
                   }`}>
                     {[
-                      { index: 0, label: 'Manifest Ingestion: 42 enterprise repositories synchronized' },
-                      { index: 1, label: 'DAG Resolution: 1,489 transitive open-source dependencies mapped' },
-                      { index: 2, label: 'Tarjan Articulation Point solver: Isolated 3 structural chokepoints' },
-                      { index: 3, label: 'Primary Keystone Detected: snakeyaml@1.33 (81% reachability to Payment Gateway)' }
+                      { index: 0, label: 'Repositories Connected: 42 enterprise repositories synchronized' },
+                      { index: 1, label: 'Dependencies Mapped: 1,489 transitive packages analyzed' },
+                      { index: 2, label: 'Chokepoint Analysis: Isolated 3 single points of failure' },
+                      { index: 3, label: 'Primary Risk Detected: snakeyaml@1.33 (Connected to 4 production services)' }
                     ].map((step) => {
                       const isCompleted = scanPhaseIndex > step.index || isScanDone;
                       const isCurrent = scanPhaseIndex === step.index && !isScanDone;
@@ -999,15 +792,15 @@ export const AuthOnboardingModal: React.FC<AuthOnboardingModalProps> = ({
                         </div>
                         <div>
                           <div className="text-xs font-bold text-emerald-800 dark:text-emerald-300">
-                            Synthesis Complete — Ready to Explore
+                            Analysis Complete — Ready to Explore
                           </div>
                           <div className="text-[11px] text-emerald-700 dark:text-emerald-400">
-                            Ecosystem topology indexed for <strong>{organization}</strong>.
+                            Ecosystem dependency map ready for <strong>{organization || 'Acme Global'}</strong>.
                           </div>
                         </div>
                       </div>
                       <div className="text-right font-mono text-[10px] text-slate-500 hidden sm:block">
-                        1 Coordinated PR Ready
+                        1 Coordinated Fix Available
                       </div>
                     </div>
                   )}
@@ -1025,7 +818,7 @@ export const AuthOnboardingModal: React.FC<AuthOnboardingModalProps> = ({
                       disabled={!isScanDone}
                       className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-blue-600 via-indigo-600 to-cyan-600 hover:opacity-95 text-white font-bold text-xs shadow-lg shadow-blue-500/20 flex items-center gap-2 cursor-pointer disabled:opacity-50"
                     >
-                      <span>Launch Keystone 3D Console</span>
+                      <span>Launch Console</span>
                       <ArrowRight className="w-4 h-4" />
                     </button>
                   </div>
