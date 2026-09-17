@@ -67,7 +67,7 @@ export const OverviewDashboard: React.FC<OverviewDashboardProps> = ({
   onOpenSBOMModal
 }) => {
   const { isLight } = useTheme();
-  const [rightPanelTab, setRightPanelTab] = useState<'quadrant' | 'dominator' | 'lens_matrix'>('quadrant');
+  const [activeAnalyticsTab, setActiveAnalyticsTab] = useState<'ranking' | 'quadrant' | 'dominator' | 'lens_matrix'>('ranking');
   const [isExportModalOpen, setIsExportModalOpen] = useState(false);
   const [isVulnerabilityModalOpen, setIsVulnerabilityModalOpen] = useState(false);
   const [isShipmentBlocked, setIsShipmentBlocked] = useState(false);
@@ -406,48 +406,126 @@ export const OverviewDashboard: React.FC<OverviewDashboardProps> = ({
       {/* Portfolio Risk Trajectory Chart (P3-3) */}
       <PortfolioRiskTrendChart />
 
-      {/* Two Column Layout: Tailored to Active Lens */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        
-        {/* ========================================================= */}
-        {/* LEFT COLUMN: Main Ranking Table                           */}
-        {/* ========================================================= */}
-        <div className={`p-5 rounded-xl border flex flex-col gap-4 ${
-          isLight ? 'bg-white border-slate-200 shadow-xs' : 'bg-slate-900/60 border-slate-800'
-        }`}>
-          <div className={`flex items-center justify-between border-b pb-3 ${
-            isLight ? 'border-slate-200' : 'border-slate-800'
-          }`}>
-            <div className="flex items-center gap-2">
-              {activeLens === 'ciso' ? (
-                <DollarSign className="w-4 h-4 text-purple-600" />
-              ) : activeLens === 'maintainer' ? (
-                <Users className="w-4 h-4 text-blue-600" />
-              ) : (
-                <ShieldAlert className="w-4 h-4 text-red-600" />
-              )}
-              <span className={`font-semibold text-sm ${isLight ? 'text-slate-900' : 'text-slate-100'}`}>
-                {activeLens === 'ciso' 
+      {/* ========================================================= */}
+      {/* ANALYTICS & DEPENDENCY RISK (FULL-WIDTH EXPANSIVE)        */}
+      {/* ========================================================= */}
+      <div className={`p-5 rounded-2xl border flex flex-col gap-5 ${
+        isLight ? 'bg-white border-slate-200/90 shadow-xs' : 'bg-slate-900/60 border-slate-800'
+      }`}>
+        {/* Section Header & Tab Switcher */}
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 pb-3.5 border-b border-slate-200/80 dark:border-slate-800">
+          <div className="flex items-center gap-2">
+            {activeAnalyticsTab === 'ranking' ? (
+              activeLens === 'ciso' ? <DollarSign className="w-4 h-4 text-purple-600" /> :
+              activeLens === 'maintainer' ? <Users className="w-4 h-4 text-blue-600" /> :
+              <ShieldAlert className="w-4 h-4 text-red-600" />
+            ) : activeAnalyticsTab === 'quadrant' ? (
+              <BarChart3 className="w-4 h-4 text-blue-600" />
+            ) : activeAnalyticsTab === 'dominator' ? (
+              <TreePine className="w-4 h-4 text-purple-600" />
+            ) : (
+              <Building2 className="w-4 h-4 text-purple-600" />
+            )}
+            <h3 className={`font-bold text-sm tracking-tight ${isLight ? 'text-slate-900' : 'text-slate-100'}`}>
+              {activeAnalyticsTab === 'ranking'
+                ? activeLens === 'ciso' 
                   ? 'Financial Exposure Ranking (Top Dependencies)' 
                   : activeLens === 'maintainer'
                   ? 'Downstream Consumer Cascade Ranking'
-                  : 'Highest-Risk Dependencies'}
-              </span>
-            </div>
-            {onOpenRiskWatchlist && (
+                  : 'Highest-Risk Dependencies'
+                : activeAnalyticsTab === 'quadrant'
+                ? 'Systemic Risk Distribution (2×2 Matrix)'
+                : activeAnalyticsTab === 'dominator'
+                ? 'Key Chokepoints (Dominator Tree)'
+                : activeLens === 'ciso'
+                ? 'Regulatory Compliance Scope Matrix (DORA / PCI)'
+                : 'Upstream Bus Factor & Maintenance Health'}
+            </h3>
+          </div>
+
+          {/* Clean Segmented Tab Switcher */}
+          <div className="flex items-center gap-1 p-1 rounded-xl border text-xs bg-slate-100/80 dark:bg-slate-950/60 border-slate-200/80 dark:border-slate-800 flex-wrap">
+            <button
+              onClick={() => setActiveAnalyticsTab('ranking')}
+              className={`px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition-all cursor-pointer ${
+                activeAnalyticsTab === 'ranking'
+                  ? isLight ? 'bg-white text-slate-900 shadow-xs' : 'bg-slate-800 text-white shadow-xs'
+                  : isLight ? 'text-slate-600 hover:text-slate-900' : 'text-slate-400 hover:text-white'
+              }`}
+            >
+              <ShieldAlert className="w-3.5 h-3.5" />
+              <span>Ranked Dependencies ({riskList.length})</span>
+            </button>
+
+            <button
+              onClick={() => setActiveAnalyticsTab('quadrant')}
+              className={`px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition-all cursor-pointer ${
+                activeAnalyticsTab === 'quadrant'
+                  ? isLight ? 'bg-white text-slate-900 shadow-xs' : 'bg-slate-800 text-white shadow-xs'
+                  : isLight ? 'text-slate-600 hover:text-slate-900' : 'text-slate-400 hover:text-white'
+              }`}
+            >
+              <BarChart3 className="w-3.5 h-3.5" />
+              <span>2×2 Risk Matrix</span>
+            </button>
+
+            <button
+              onClick={() => setActiveAnalyticsTab('dominator')}
+              className={`px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition-all cursor-pointer ${
+                activeAnalyticsTab === 'dominator'
+                  ? isLight ? 'bg-white text-slate-900 shadow-xs' : 'bg-slate-800 text-white shadow-xs'
+                  : isLight ? 'text-slate-600 hover:text-slate-900' : 'text-slate-400 hover:text-white'
+              }`}
+            >
+              <TreePine className="w-3.5 h-3.5" />
+              <span>Dominator Chokepoints</span>
+            </button>
+
+            {activeLens === 'ciso' && (
               <button
-                onClick={onOpenRiskWatchlist}
-                className={`text-xs font-medium hover:underline flex items-center gap-1 ${
-                  isLight ? 'text-slate-600 hover:text-slate-900' : 'text-slate-400 hover:text-slate-200'
+                onClick={() => setActiveAnalyticsTab('lens_matrix')}
+                className={`px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition-all cursor-pointer ${
+                  activeAnalyticsTab === 'lens_matrix'
+                    ? isLight ? 'bg-white text-slate-900 shadow-xs' : 'bg-slate-800 text-white shadow-xs'
+                    : isLight ? 'text-slate-600 hover:text-slate-900' : 'text-slate-400 hover:text-white'
                 }`}
               >
-                <span>View Full Watchlist</span>
-                <ArrowRight className="w-3.5 h-3.5" />
+                <Building2 className="w-3.5 h-3.5" />
+                <span>DORA / PCI Scope</span>
+              </button>
+            )}
+
+            {activeLens === 'maintainer' && (
+              <button
+                onClick={() => setActiveAnalyticsTab('lens_matrix')}
+                className={`px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition-all cursor-pointer ${
+                  activeAnalyticsTab === 'lens_matrix'
+                    ? isLight ? 'bg-white text-slate-900 shadow-xs' : 'bg-slate-800 text-white shadow-xs'
+                    : isLight ? 'text-slate-600 hover:text-slate-900' : 'text-slate-400 hover:text-white'
+                }`}
+              >
+                <Users className="w-3.5 h-3.5" />
+                <span>Bus Factor Matrix</span>
+              </button>
+            )}
+
+            {onOpenRiskWatchlist && activeAnalyticsTab === 'ranking' && (
+              <button
+                onClick={onOpenRiskWatchlist}
+                className={`ml-1 px-2.5 py-1.5 text-xs font-medium hover:underline flex items-center gap-1 cursor-pointer ${
+                  isLight ? 'text-blue-600 hover:text-blue-800' : 'text-blue-400 hover:text-blue-300'
+                }`}
+              >
+                <span>Full Watchlist</span>
+                <ArrowRight className="w-3 h-3" />
               </button>
             )}
           </div>
+        </div>
 
-          <div className="flex flex-col gap-2">
+        {/* TAB 1: RANKED DEPENDENCIES (FULL-WIDTH EXPANSIVE CARDS) */}
+        {activeAnalyticsTab === 'ranking' && (
+          <div className="flex flex-col gap-3">
             {riskList.map((item, idx) => {
               const dailyExposure = (item.tier1Reach * 18.5 + item.dependents * 1.25).toFixed(1);
 
@@ -455,183 +533,98 @@ export const OverviewDashboard: React.FC<OverviewDashboardProps> = ({
                 <div
                   key={item.id}
                   onClick={() => onSelectNode(item.id)}
-                  className={`p-3 rounded-md border cursor-pointer transition-all flex items-center justify-between group ${
+                  className={`w-full p-4 rounded-xl border cursor-pointer transition-all flex flex-col md:flex-row md:items-center justify-between gap-4 group hover:scale-[1.003] ${
                     isLight 
-                      ? 'bg-slate-50/50 hover:bg-slate-100 border-slate-200 hover:border-slate-300' 
-                      : 'bg-slate-950/60 hover:bg-slate-800/60 border-slate-800 hover:border-slate-700'
+                      ? 'bg-slate-50/60 hover:bg-slate-100/90 border-slate-200/90 hover:border-blue-400 shadow-2xs' 
+                      : 'bg-slate-950/50 hover:bg-slate-800/70 border-slate-800/90 hover:border-blue-500/50 shadow-2xs'
                   }`}
                 >
-                  <div className="flex items-center gap-3">
-                    <span className={`font-mono font-medium text-xs w-4 ${isLight ? 'text-slate-400' : 'text-slate-500'}`}>
+                  {/* Left: Rank + Name + Version + Chokepoint Tag */}
+                  <div className="flex items-center gap-3.5 min-w-[280px]">
+                    <div className={`w-8 h-8 rounded-lg flex items-center justify-center font-mono font-bold text-xs shrink-0 ${
+                      idx < 3
+                        ? 'bg-red-500/10 text-red-500 border border-red-500/20'
+                        : isLight ? 'bg-slate-200/80 text-slate-700' : 'bg-slate-800 text-slate-300'
+                    }`}>
                       {idx + 1}
-                    </span>
+                    </div>
                     <div>
-                      <div className="flex items-center gap-2">
-                        <span className={`font-mono font-semibold text-xs ${isLight ? 'text-slate-900' : 'text-slate-100'}`}>
+                      <div className="flex items-center gap-2 flex-wrap">
+                        <span className={`font-mono font-bold text-sm ${isLight ? 'text-slate-900' : 'text-white'}`}>
                           {item.name}
                         </span>
-                        <span className={`text-[11px] font-mono ${isLight ? 'text-slate-500' : 'text-slate-400'}`}>
+                        <span className={`text-xs font-mono ${isLight ? 'text-slate-500' : 'text-slate-400'}`}>
                           v{item.version}
                         </span>
                         {item.articulationPoint && (
-                          <span className="text-[9px] font-semibold px-1.5 py-0.5 bg-red-500/10 text-red-500 border border-red-500/20 rounded">
+                          <span className="text-[10px] font-semibold px-2 py-0.5 bg-red-500/10 text-red-500 border border-red-500/20 rounded-full">
                             Critical Chokepoint
                           </span>
                         )}
+                        {item.ssvcPriority === 'p1_immediate' && (
+                          <span className="text-[10px] font-semibold px-2 py-0.5 bg-amber-500/10 text-amber-500 border border-amber-500/20 rounded-full">
+                            Immediate Action
+                          </span>
+                        )}
                       </div>
-                      <div className={`text-[11px] mt-0.5 ${isLight ? 'text-slate-500' : 'text-slate-400'}`}>
-                        {activeLens === 'ciso'
-                          ? `Estimated Financial Risk: $${dailyExposure}M/day • ${item.tier1Reach} critical services`
-                          : activeLens === 'maintainer'
-                          ? `${item.dependents} Downstream Repos • ${item.maintainers} Maintainer(s) • ${item.weeklyDownloads} dl/wk`
-                          : `${item.dependents} downstream services • ${item.tier1Reach} critical services reached`}
+                      <div className={`text-xs mt-1 ${isLight ? 'text-slate-500' : 'text-slate-400'}`}>
+                        Category: <strong className="font-medium text-slate-700 dark:text-slate-300">{item.category}</strong> • Layer: Tier {item.layer}
                       </div>
                     </div>
                   </div>
 
-                  <div className="flex items-center gap-3">
+                  {/* Center: Downstream Impact Reach */}
+                  <div className="flex-1 flex items-center gap-2 text-xs text-slate-600 dark:text-slate-400">
+                    <span className="w-2 h-2 rounded-full bg-blue-500 shrink-0" />
+                    <span>
+                      {activeLens === 'ciso'
+                        ? `Estimated Financial Risk: $${dailyExposure}M/day across ${item.tier1Reach} critical services`
+                        : activeLens === 'maintainer'
+                        ? `${item.dependents} downstream repos • ${item.maintainers} maintainer(s) • ${item.weeklyDownloads} dl/wk`
+                        : `${item.dependents} downstream services • ${item.tier1Reach} critical services reached`}
+                    </span>
+                  </div>
+
+                  {/* Right: Score & CTA */}
+                  <div className="flex items-center gap-4 shrink-0 justify-between md:justify-end">
                     <div className="text-right">
-                      {activeLens === 'ciso' ? (
-                        <>
-                          <div className="text-xs font-bold font-mono text-purple-600 dark:text-purple-400">
-                            ${dailyExposure}M/d
-                          </div>
-                          <div className={`text-[10px] uppercase font-medium ${isLight ? 'text-slate-500' : 'text-slate-400'}`}>
-                            {item.tier1Reach > 0 ? 'DORA Scope' : 'Internal'}
-                          </div>
-                        </>
-                      ) : activeLens === 'maintainer' ? (
-                        <>
-                          <div className="text-xs font-bold font-mono text-blue-600 dark:text-blue-400">
-                            {item.dependents} repos
-                          </div>
-                          <div className={`text-[10px] uppercase font-medium ${item.maintainers <= 2 ? 'text-red-600 font-bold' : isLight ? 'text-slate-500' : 'text-slate-400'}`}>
-                            {item.maintainers <= 2 ? 'Bus Factor Alert' : 'Maintained'}
-                          </div>
-                        </>
-                      ) : (
-                        <>
-                          <div className={`text-xs font-bold font-mono ${item.systemicScore >= 80 ? 'text-red-600' : 'text-amber-600'}`}>
-                            {item.systemicScore} / 100
-                          </div>
-                          <div className={`text-[10px] uppercase font-medium ${isLight ? 'text-slate-500' : 'text-slate-400'}`}>
-                            {item.structuralRisk}
-                          </div>
-                        </>
-                      )}
+                      <div className={`text-base font-bold font-mono ${
+                        item.systemicScore >= 80 ? 'text-red-500' : 'text-amber-500'
+                      }`}>
+                        {activeLens === 'ciso' ? `$${dailyExposure}M/d` : `${item.systemicScore} / 100`}
+                      </div>
+                      <div className="text-[10px] uppercase font-mono font-medium text-slate-400">
+                        {activeLens === 'ciso' ? (item.tier1Reach > 0 ? 'DORA Scope' : 'Internal') : item.structuralRisk}
+                      </div>
                     </div>
-                    <ArrowRight className={`w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform ${
-                      isLight ? 'text-slate-400 group-hover:text-slate-700' : 'text-slate-500 group-hover:text-slate-300'
-                    }`} />
+
+                    <div className={`p-2 rounded-lg transition-all group-hover:translate-x-1 duration-200 ${
+                      isLight ? 'bg-slate-100 text-slate-600 group-hover:bg-blue-50 group-hover:text-blue-600' : 'bg-slate-800 text-slate-300 group-hover:bg-blue-950/60 group-hover:text-blue-400'
+                    }`}>
+                      <ArrowRight className="w-4 h-4" />
+                    </div>
                   </div>
                 </div>
               );
             })}
           </div>
-        </div>
+        )}
 
-        {/* ========================================================= */}
-        {/* RIGHT COLUMN: 2×2 Risk Quadrant & Framework Matrix        */}
-        {/* ========================================================= */}
-        <div className={`p-5 rounded-xl border flex flex-col gap-4 ${
-          isLight ? 'bg-white border-slate-200 shadow-xs' : 'bg-slate-900/60 border-slate-800'
-        }`}>
-          <div className={`flex items-center justify-between border-b pb-3 flex-wrap gap-2 ${
-            isLight ? 'border-slate-200' : 'border-slate-800'
-          }`}>
-            <div className="flex items-center gap-2">
-              <Activity className={`w-4 h-4 ${isLight ? 'text-slate-700' : 'text-slate-300'}`} />
-              <span className={`font-semibold text-sm ${isLight ? 'text-slate-900' : 'text-slate-100'}`}>
-                {rightPanelTab === 'quadrant'
-                  ? 'Systemic Risk Distribution (2×2)'
-                  : activeLens === 'ciso' 
-                  ? 'Regulatory Compliance Scope Matrix' 
-                  : activeLens === 'maintainer'
-                  ? 'Upstream Bus Factor & Maintenance Health'
-                  : 'Risk Quadrant Classification Matrix'}
-              </span>
-            </div>
-
-            {/* Sub-tab view toggler: Quadrant vs Specialized Lens Matrix */}
-            <div className="flex items-center gap-1 p-0.5 rounded-lg border text-xs">
-              <button
-                onClick={() => setRightPanelTab('quadrant')}
-                className={`px-2.5 py-1 rounded-md text-xs font-semibold flex items-center gap-1.5 transition-all cursor-pointer ${
-                  rightPanelTab === 'quadrant'
-                    ? isLight 
-                      ? 'bg-slate-900 text-white shadow-xs' 
-                      : 'bg-slate-100 text-slate-900 shadow-xs'
-                    : isLight 
-                      ? 'text-slate-600 hover:text-slate-900' 
-                      : 'text-slate-400 hover:text-white'
-                }`}
-              >
-                <BarChart3 className="w-3.5 h-3.5" />
-                <span>2×2 Scatter Plot</span>
-              </button>
-
-              <button
-                onClick={() => setRightPanelTab('dominator')}
-                className={`px-2.5 py-1 rounded-md text-xs font-semibold flex items-center gap-1.5 transition-all cursor-pointer ${
-                  rightPanelTab === 'dominator'
-                    ? isLight 
-                      ? 'bg-purple-900 text-white shadow-xs' 
-                      : 'bg-purple-600 text-white shadow-xs'
-                    : isLight 
-                      ? 'text-purple-700 hover:bg-purple-50' 
-                      : 'text-purple-400 hover:bg-purple-950/40'
-                }`}
-              >
-                <TreePine className="w-3.5 h-3.5" />
-                <span>Dominator Chokepoints</span>
-              </button>
-
-              {activeLens === 'ciso' && (
-                <button
-                  onClick={() => setRightPanelTab('lens_matrix')}
-                  className={`px-2.5 py-1 rounded-md text-xs font-semibold flex items-center gap-1.5 transition-all cursor-pointer ${
-                    rightPanelTab === 'lens_matrix'
-                      ? isLight 
-                        ? 'bg-purple-900 text-white shadow-xs' 
-                        : 'bg-purple-600 text-white shadow-xs'
-                      : isLight 
-                        ? 'text-slate-600 hover:text-slate-900' 
-                        : 'text-slate-400 hover:text-white'
-                  }`}
-                >
-                  <Building2 className="w-3.5 h-3.5" />
-                  <span>DORA / PCI Scope</span>
-                </button>
-              )}
-
-              {activeLens === 'maintainer' && (
-                <button
-                  onClick={() => setRightPanelTab('lens_matrix')}
-                  className={`px-2.5 py-1 rounded-md text-xs font-semibold flex items-center gap-1.5 transition-all cursor-pointer ${
-                    rightPanelTab === 'lens_matrix'
-                      ? isLight 
-                        ? 'bg-blue-900 text-white shadow-xs' 
-                        : 'bg-blue-600 text-white shadow-xs'
-                      : isLight 
-                        ? 'text-slate-600 hover:text-slate-900' 
-                        : 'text-slate-400 hover:text-white'
-                  }`}
-                >
-                  <Users className="w-3.5 h-3.5" />
-                  <span>Bus Factor Matrix</span>
-                </button>
-              )}
-            </div>
-          </div>
-
-          {rightPanelTab === 'quadrant' ? (
+        {/* TAB 2: 2×2 RISK MATRIX (FULL-WIDTH EXPANSIVE) */}
+        {activeAnalyticsTab === 'quadrant' && (
+          <div className="w-full">
             <RiskQuadrantScatter
               nodes={nodes}
               onSelectNode={onSelectNode}
               onGoToEcosystem={onGoToEcosystem}
               activeLens={activeLens}
             />
-          ) : rightPanelTab === 'dominator' ? (
+          </div>
+        )}
+
+        {/* TAB 3: DOMINATOR LEADERBOARD (FULL-WIDTH EXPANSIVE) */}
+        {activeAnalyticsTab === 'dominator' && (
+          <div className="w-full">
             <DominatorLeaderboard
               nodes={nodes}
               onSelectNode={(id) => {
@@ -640,102 +633,107 @@ export const OverviewDashboard: React.FC<OverviewDashboardProps> = ({
               }}
               isOverlay={false}
             />
-          ) : activeLens === 'ciso' ? (
-            <div className="flex flex-col gap-3">
-              <div className={`p-3 rounded-md border flex items-center justify-between ${
-                isLight ? 'bg-white border-slate-200 shadow-xs' : 'bg-slate-950/60 border-slate-800'
+          </div>
+        )}
+
+        {/* TAB 4: LENS SPECIALIZED MATRIX (CISO OR MAINTAINER) */}
+        {activeAnalyticsTab === 'lens_matrix' && activeLens === 'ciso' && (
+          <div className="flex flex-col gap-3">
+            <div className={`p-4 rounded-xl border flex items-center justify-between ${
+              isLight ? 'bg-white border-slate-200 shadow-xs' : 'bg-slate-950/60 border-slate-800'
+            }`}>
+              <div>
+                <div className="font-semibold text-sm">EU DORA (Digital Operational Resilience Act)</div>
+                <div className={`text-xs mt-0.5 ${isLight ? 'text-slate-500' : 'text-slate-400'}`}>
+                  Article 28 requirement for transitive ICT providers with direct Tier-1 core reach.
+                </div>
+              </div>
+              <span className="text-xs font-bold font-mono px-2.5 py-1 bg-red-100 text-red-700 dark:bg-red-950/60 dark:text-red-300 rounded-lg">
+                4 Violations
+              </span>
+            </div>
+
+            <div className={`p-4 rounded-xl border flex items-center justify-between ${
+              isLight ? 'bg-white border-slate-200 shadow-xs' : 'bg-slate-950/60 border-slate-800'
+            }`}>
+              <div>
+                <div className="font-semibold text-sm">PCI-DSS v4.0 Requirement 6.3</div>
+                <div className={`text-xs mt-0.5 ${isLight ? 'text-slate-500' : 'text-slate-400'}`}>
+                  Software supply chain vulnerability management for Cardholder Data Environments.
+                </div>
+              </div>
+              <span className="text-xs font-bold font-mono px-2.5 py-1 bg-amber-100 text-amber-800 dark:bg-amber-950/60 dark:text-amber-300 rounded-lg">
+                2 At-Risk Services
+              </span>
+            </div>
+
+            <div className={`p-4 rounded-xl border flex items-center justify-between ${
+              isLight ? 'bg-white border-slate-200 shadow-xs' : 'bg-slate-950/60 border-slate-800'
+            }`}>
+              <div>
+                <div className="font-semibold text-sm">SEC Cyber Item 106 Disclosure</div>
+                <div className={`text-xs mt-0.5 ${isLight ? 'text-slate-500' : 'text-slate-400'}`}>
+                  Material cybersecurity risk process documentation across systemic dependencies.
+                </div>
+              </div>
+              <span className="text-xs font-bold font-mono px-2.5 py-1 bg-emerald-100 text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-300 rounded-lg">
+                Documented
+              </span>
+            </div>
+
+            <div className={`p-3.5 rounded-xl border text-xs leading-relaxed ${
+              isLight ? 'bg-purple-50/50 border-purple-200 text-purple-900' : 'bg-purple-950/30 border-purple-900/40 text-purple-200'
+            }`}>
+              <span className="font-semibold">Executive Remediation SLA: </span>
+              Critical chokepoint dependencies require targeted remediation within 48 hours to maintain compliance certification.
+            </div>
+          </div>
+        )}
+
+        {activeAnalyticsTab === 'lens_matrix' && activeLens === 'maintainer' && (
+          <div className="flex flex-col gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div className={`p-4 rounded-xl border flex flex-col justify-between ${
+                isLight ? 'bg-red-50/60 border-red-200' : 'bg-red-950/20 border-red-900/40'
               }`}>
                 <div>
-                  <div className="font-semibold text-xs">EU DORA (Digital Operational Resilience Act)</div>
-                  <div className={`text-[11px] mt-0.5 ${isLight ? 'text-slate-500' : 'text-slate-400'}`}>
-                    Article 28 requirement for transitive ICT providers with direct Tier-1 core reach.
+                  <span className="text-[10px] uppercase font-bold text-red-700 dark:text-red-300">
+                    Single Maintainer (Bus Factor = 1)
+                  </span>
+                  <div className="text-lg font-mono font-bold mt-1 text-red-600">
+                    snakeyaml, semver
                   </div>
                 </div>
-                <span className="text-xs font-bold font-mono px-2 py-1 bg-red-100 text-red-700 dark:bg-red-950/60 dark:text-red-300 rounded">
-                  4 Violations
-                </span>
+                <div className={`text-xs mt-2 ${isLight ? 'text-slate-600' : 'text-slate-400'}`}>
+                  High abandonment risk. 39 total internal downstream dependencies.
+                </div>
               </div>
 
-              <div className={`p-3 rounded-md border flex items-center justify-between ${
-                isLight ? 'bg-white border-slate-200 shadow-xs' : 'bg-slate-950/60 border-slate-800'
+              <div className={`p-4 rounded-xl border flex flex-col justify-between ${
+                isLight ? 'bg-amber-50/60 border-amber-200' : 'bg-amber-950/20 border-amber-900/40'
               }`}>
                 <div>
-                  <div className="font-semibold text-xs">PCI-DSS v4.0 Requirement 6.3</div>
-                  <div className={`text-[11px] mt-0.5 ${isLight ? 'text-slate-500' : 'text-slate-400'}`}>
-                    Software supply chain vulnerability management for Cardholder Data Environments.
+                  <span className="text-[10px] uppercase font-bold text-amber-700 dark:text-amber-300">
+                    Dual Maintainers (Bus Factor = 2)
+                  </span>
+                  <div className="text-lg font-mono font-bold mt-1 text-amber-600">
+                    fastxml-bind
                   </div>
                 </div>
-                <span className="text-xs font-bold font-mono px-2 py-1 bg-amber-100 text-amber-800 dark:bg-amber-950/60 dark:text-amber-300 rounded">
-                  2 At-Risk Services
-                </span>
-              </div>
-
-              <div className={`p-3 rounded-md border flex items-center justify-between ${
-                isLight ? 'bg-white border-slate-200 shadow-xs' : 'bg-slate-950/60 border-slate-800'
-              }`}>
-                <div>
-                  <div className="font-semibold text-xs">SEC Cyber Item 106 Disclosure</div>
-                  <div className={`text-[11px] mt-0.5 ${isLight ? 'text-slate-500' : 'text-slate-400'}`}>
-                    Material cybersecurity risk process documentation across systemic dependencies.
-                  </div>
+                <div className={`text-xs mt-2 ${isLight ? 'text-slate-600' : 'text-slate-400'}`}>
+                  Stalled release cadence. Critical parser in payment pathway.
                 </div>
-                <span className="text-xs font-bold font-mono px-2 py-1 bg-emerald-100 text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-300 rounded">
-                  Documented
-                </span>
-              </div>
-
-              <div className={`p-3 rounded-md border text-xs leading-relaxed ${
-                isLight ? 'bg-purple-50/50 border-purple-200 text-purple-900' : 'bg-purple-950/30 border-purple-900/40 text-purple-200'
-              }`}>
-                <span className="font-semibold">Executive Remediation SLA: </span>
-                Critical chokepoint dependencies require targeted remediation within 48 hours to maintain compliance certification.
               </div>
             </div>
-          ) : activeLens === 'maintainer' ? (
-            <div className="flex flex-col gap-3">
-              <div className="grid grid-cols-2 gap-2.5">
-                <div className={`p-3 rounded-md border flex flex-col justify-between ${
-                  isLight ? 'bg-red-50/60 border-red-200' : 'bg-red-950/20 border-red-900/40'
-                }`}>
-                  <div>
-                    <span className="text-[10px] uppercase font-bold text-red-700 dark:text-red-300">
-                      Single Maintainer (Bus Factor = 1)
-                    </span>
-                    <div className="text-lg font-mono font-bold mt-1 text-red-600">
-                      snakeyaml, semver
-                    </div>
-                  </div>
-                  <div className={`text-[11px] mt-1 ${isLight ? 'text-slate-600' : 'text-slate-400'}`}>
-                    High abandonment risk. 39 total internal downstream dependencies.
-                  </div>
-                </div>
 
-                <div className={`p-3 rounded-md border flex flex-col justify-between ${
-                  isLight ? 'bg-amber-50/60 border-amber-200' : 'bg-amber-950/20 border-amber-900/40'
-                }`}>
-                  <div>
-                    <span className="text-[10px] uppercase font-bold text-amber-700 dark:text-amber-300">
-                      Dual Maintainers (Bus Factor = 2)
-                    </span>
-                    <div className="text-lg font-mono font-bold mt-1 text-amber-600">
-                      fastxml-bind
-                    </div>
-                  </div>
-                  <div className={`text-[11px] mt-1 ${isLight ? 'text-slate-600' : 'text-slate-400'}`}>
-                    Stalled release cadence. Critical parser in payment pathway.
-                  </div>
-                </div>
-              </div>
-
-              <div className={`p-3 rounded-md border text-xs leading-relaxed ${
-                isLight ? 'bg-blue-50 border-blue-200 text-blue-900' : 'bg-blue-950/30 border-blue-900/40 text-blue-200'
-              }`}>
-                <span className="font-semibold">Maintainer Recommendation: </span>
-                Wrap single-maintainer dependencies behind internal abstractions (e.g. <code>internal-data-pipeline</code>) to isolate internal microservices from upstream breaking changes.
-              </div>
+            <div className={`p-3.5 rounded-xl border text-xs leading-relaxed ${
+              isLight ? 'bg-blue-50 border-blue-200 text-blue-900' : 'bg-blue-950/30 border-blue-900/40 text-blue-200'
+            }`}>
+              <span className="font-semibold">Maintainer Recommendation: </span>
+              Wrap single-maintainer dependencies behind internal abstractions (e.g. <code>internal-data-pipeline</code>) to isolate internal microservices from upstream breaking changes.
             </div>
-          ) : null}
-        </div>
+          </div>
+        )}
       </div>
 
       {/* ========================================================= */}

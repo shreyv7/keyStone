@@ -152,7 +152,7 @@ export const GraphControls: React.FC<GraphControlsProps> = ({
         <div className="flex items-center gap-0.5">
           <button
             onClick={onToggleBlastRadius}
-            className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg transition-all text-[11px] cursor-pointer ${
+            className={`flex items-center gap-1.5 px-2 py-1.5 rounded-lg transition-all text-[11px] cursor-pointer ${
               showBlastRadius
                 ? 'bg-blue-600 text-white font-semibold shadow-xs'
                 : isLight ? 'text-slate-600 hover:bg-slate-100 hover:text-slate-900' : 'text-slate-400 hover:bg-slate-800 hover:text-slate-200'
@@ -160,12 +160,12 @@ export const GraphControls: React.FC<GraphControlsProps> = ({
             title="Highlight downstream blast radius to critical services"
           >
             <Flame className="w-3.5 h-3.5" />
-            <span className="hidden md:inline">Blast Radius</span>
+            <span className="hidden xl:inline">Blast Radius</span>
           </button>
 
           <button
             onClick={onTogglePropagation}
-            className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg transition-all text-[11px] cursor-pointer ${
+            className={`flex items-center gap-1.5 px-2 py-1.5 rounded-lg transition-all text-[11px] cursor-pointer ${
               showPropagation
                 ? 'bg-blue-600 text-white font-semibold shadow-xs'
                 : isLight ? 'text-slate-600 hover:bg-slate-100 hover:text-slate-900' : 'text-slate-400 hover:bg-slate-800 hover:text-slate-200'
@@ -173,13 +173,13 @@ export const GraphControls: React.FC<GraphControlsProps> = ({
             title="Toggle visibility of transitive dependency flow lines"
           >
             <GitFork className="w-3.5 h-3.5" />
-            <span className="hidden md:inline">Chains</span>
+            <span className="hidden xl:inline">Chains</span>
           </button>
 
           {onToggleDominatorMode && (
             <button
               onClick={onToggleDominatorMode}
-              className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg transition-all text-[11px] cursor-pointer ${
+              className={`flex items-center gap-1.5 px-2 py-1.5 rounded-lg transition-all text-[11px] cursor-pointer ${
                 showDominatorMode
                   ? 'bg-blue-600 text-white font-semibold shadow-xs'
                   : isLight ? 'text-slate-600 hover:bg-slate-100 hover:text-slate-900' : 'text-slate-400 hover:bg-slate-800 hover:text-slate-200'
@@ -187,7 +187,7 @@ export const GraphControls: React.FC<GraphControlsProps> = ({
               title="Show key chokepoints leaderboard"
             >
               <TreePine className="w-3.5 h-3.5" />
-              <span className="hidden md:inline">Chokepoints</span>
+              <span className="hidden xl:inline">Chokepoints</span>
             </button>
           )}
         </div>
