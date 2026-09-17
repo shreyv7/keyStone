@@ -145,7 +145,7 @@ export const TopBar: React.FC<TopBarProps> = ({
     <header className={`h-14 w-full border-b transition-colors duration-150 px-5 flex items-center justify-between z-30 shrink-0 select-none ${
       isLight 
         ? 'bg-white border-slate-200 text-slate-800' 
-        : 'bg-[rgb(15,18,35)] border-slate-800 text-slate-100'
+        : 'bg-[#0a0f1d] border-slate-800 text-slate-100'
     }`}>
       {/* Brand, Sidebar Toggle & Portfolio Meta */}
       <div className="flex items-center gap-2.5 sm:gap-4">

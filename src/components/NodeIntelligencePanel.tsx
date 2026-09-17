@@ -211,26 +211,6 @@ export const NodeIntelligencePanel: React.FC<NodeIntelligencePanelProps> = ({
         </div>
       </div>
 
-      {/* Primary Chokepoint Action: Plan Targeted Fix */}
-      {(node.id === 'snakeyaml' || node.articulationPoint || node.category === 'keystone' || node.structuralRisk === 'critical') && (
-        <div className={`px-5 py-2.5 border-b ${isLight ? 'bg-amber-50/70 border-amber-200/80' : 'bg-amber-950/20 border-amber-900/40'}`}>
-          <button
-            onClick={() => onStartSimulation(node.id)}
-            className={`w-full py-2.5 px-3 rounded-lg text-xs font-bold flex items-center justify-between shadow-sm transition-all cursor-pointer ${
-              isLight 
-                ? 'bg-gradient-to-r from-red-600 via-rose-600 to-amber-600 hover:from-red-700 hover:to-amber-700 text-white shadow-rose-200' 
-                : 'bg-gradient-to-r from-red-600 via-rose-600 to-amber-500 hover:from-red-500 hover:to-amber-400 text-white shadow-red-950/50'
-            }`}
-          >
-            <div className="flex items-center gap-2">
-              <Zap className="w-4 h-4 fill-current animate-pulse text-amber-300" />
-              <span className="tracking-wide">Plan Targeted Fix</span>
-            </div>
-            <ArrowRight className="w-4 h-4" />
-          </button>
-        </div>
-      )}
-
       {/* View Mode Switcher: Overview vs Security Analysis */}
       <div className={`flex items-center border-b px-5 pt-2.5 gap-4 text-xs font-semibold shrink-0 ${
         isLight ? 'border-slate-200 bg-white' : 'border-slate-800 bg-slate-950/40'
@@ -1435,17 +1415,9 @@ export const NodeIntelligencePanel: React.FC<NodeIntelligencePanelProps> = ({
           <>
             <button
               onClick={() => onStartSimulation(node.id)}
-              className={`w-full py-2.5 px-3 rounded-lg text-xs font-bold flex items-center justify-center gap-2 shadow-sm transition-all cursor-pointer ${
-                node.id === 'snakeyaml' || node.articulationPoint || node.category === 'keystone'
-                  ? isLight 
-                    ? 'bg-gradient-to-r from-red-600 via-rose-600 to-amber-600 hover:from-red-700 hover:to-amber-700 text-white shadow-rose-200' 
-                    : 'bg-gradient-to-r from-red-600 via-rose-600 to-amber-500 hover:from-red-500 hover:to-amber-400 text-white shadow-red-950/50'
-                  : isLight 
-                  ? 'bg-slate-900 hover:bg-slate-800 text-white' 
-                  : 'bg-slate-100 hover:bg-white text-slate-900'
-              }`}
+              className="w-full py-2.5 px-4 rounded-xl text-xs font-semibold flex items-center justify-center gap-2 transition-all bg-[#2f2fe4] hover:bg-[#4343f8] text-white shadow-xs cursor-pointer"
             >
-              <Zap className="w-3.5 h-3.5 fill-current animate-pulse text-amber-300" />
+              <Zap className="w-3.5 h-3.5 fill-current" />
               <span>
                 {node.id === 'snakeyaml' || node.articulationPoint || node.category === 'keystone'
                   ? 'Plan Targeted Fix'

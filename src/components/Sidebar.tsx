@@ -86,8 +86,8 @@ export const Sidebar: React.FC<SidebarProps> = ({
   ];
 
   return (
-    <aside className={`${isCollapsed ? 'w-14 p-2' : 'w-52 lg:w-56 p-2.5'} h-full border-r ks-border bg-[rgb(15,18,35)] text-slate-100 transition-all duration-200 flex flex-col justify-between select-none z-20 shrink-0 overflow-y-auto`}>
-      <div className="flex flex-col gap-2.5">
+    <aside className={`${isCollapsed ? 'w-14 p-2' : 'w-52 lg:w-56 p-2.5'} h-full border-r ${isLight ? 'bg-white border-slate-200 text-slate-800' : 'bg-[#0a0f1d] border-slate-800 text-slate-100'} transition-all duration-200 flex flex-col select-none z-20 shrink-0 overflow-hidden`}>
+      <div className="flex-1 min-h-0 overflow-y-auto flex flex-col gap-2.5 pr-0.5">
         {/* Grouped & Collapsible Navigation Links */}
         <nav className="flex flex-col gap-2">
           {navGroups.map(group => {
@@ -161,64 +161,67 @@ export const Sidebar: React.FC<SidebarProps> = ({
       </div>
 
       {/* Bottom Section: Macro Metrics and Risk Concentration */}
-      <div className="flex flex-col gap-2 pt-2 border-t border-slate-200 dark:border-slate-800">
+      <div className="shrink-0 flex flex-col gap-2 pt-2 border-t border-slate-200 dark:border-slate-800">
         {/* Quick Macro Metrics: Critical Sinks & Tier-1 Exposed */}
         {isCollapsed ? (
           <div 
-            className="flex flex-col items-center gap-0.5 text-center"
-            title={`${stats.criticalDependencies} Critical Risks • ${stats.tier1Assets} Critical Services Exposed`}
+            className="flex flex-col items-center gap-1.5 py-1 select-none"
+            title={`${stats.criticalDependencies} Critical Risks • ${stats.tier1Assets} Critical Services Exposed • ${stats.sifiConcentrationRatio}% Risk Concentration`}
           >
-            <span className="text-[10px] font-mono font-bold text-rose-400">{stats.tier1Assets}CS</span>
-            <span className="text-[9px] text-slate-400">{stats.criticalDependencies}CR</span>
+            <div className={`w-9 py-1 rounded-lg border flex flex-col items-center justify-center ${
+              isLight ? 'bg-red-50 border-red-200 text-red-700' : 'bg-red-950/40 border-red-800/50 text-red-400'
+            }`}>
+              <span className="text-[10px] font-mono font-bold leading-none">{stats.criticalDependencies}</span>
+              <span className="text-[8px] opacity-80 uppercase tracking-tighter mt-0.5">Risk</span>
+            </div>
+
+            <div className={`w-9 py-1 rounded-lg border flex flex-col items-center justify-center ${
+              isLight ? 'bg-slate-100 border-slate-200 text-slate-700' : 'bg-[#0a0f1d] border-slate-800 text-blue-400'
+            }`}>
+              <span className="text-[10px] font-mono font-bold leading-none">{stats.sifiConcentrationRatio}%</span>
+              <span className="text-[8px] opacity-80 uppercase tracking-tighter mt-0.5">SIFI</span>
+            </div>
           </div>
         ) : (
-          <div className="grid grid-cols-2 gap-1.5 text-center">
-            <div className="p-2 rounded-lg bg-slate-100/90 dark:bg-[rgb(21,26,49)] border border-slate-200 dark:border-[rgba(46,112,238,0.2)]">
-              <div className="text-base font-bold font-mono text-slate-900 dark:text-white">
-                {stats.criticalDependencies}
+          <>
+            <div className="grid grid-cols-2 gap-1.5 text-center">
+              <div className="p-2 rounded-lg bg-slate-100/90 dark:bg-[#0a0f1d] border border-slate-200 dark:border-slate-800">
+                <div className="text-base font-bold font-mono text-slate-900 dark:text-white">
+                  {stats.criticalDependencies}
+                </div>
+                <div className="text-[10px] font-medium text-slate-600 dark:text-slate-400 mt-0.5">
+                  Critical Risks
+                </div>
               </div>
-              <div className="text-[10px] font-medium text-slate-600 dark:text-slate-400 mt-0.5">
-                Critical Risks
+
+              <div className="p-2 rounded-lg bg-slate-100/90 dark:bg-[#0a0f1d] border border-slate-200 dark:border-slate-800">
+                <div className="text-base font-bold font-mono text-blue-600 dark:text-blue-400">
+                  {stats.tier1Assets}
+                </div>
+                <div className="text-[10px] font-medium text-slate-600 dark:text-slate-400 mt-0.5">
+                  Critical Services
+                </div>
               </div>
             </div>
 
-            <div className="p-2 rounded-lg bg-slate-100/90 dark:bg-[rgb(21,26,49)] border border-slate-200 dark:border-[rgba(46,112,238,0.2)]">
-              <div className="text-base font-bold font-mono text-blue-600 dark:text-blue-400">
-                {stats.tier1Assets}
+            {/* Risk Concentration Card */}
+            <div className="p-3 rounded-xl bg-slate-100/90 dark:bg-[#0a0f1d] border border-slate-200 dark:border-slate-800 flex flex-col gap-2">
+              <div className="flex items-center justify-between text-xs">
+                <span className="font-semibold text-slate-900 dark:text-slate-200">Risk Concentration</span>
+                <span className="text-blue-600 dark:text-blue-400 font-bold font-mono">{stats.sifiConcentrationRatio}%</span>
               </div>
-              <div className="text-[10px] font-medium text-slate-600 dark:text-slate-400 mt-0.5">
-                Critical Services
+              {/* Recessed Progress Bar */}
+              <div className="w-full h-2 rounded-full overflow-hidden bg-slate-200 dark:bg-slate-900 border border-slate-300 dark:border-slate-800">
+                <div 
+                  className="h-full bg-[#2f2fe4] rounded-full"
+                  style={{ width: `${stats.sifiConcentrationRatio}%` }}
+                />
+              </div>
+              <div className="text-xs leading-relaxed text-slate-600 dark:text-slate-400">
+                Top 5 dependencies account for <strong className="text-slate-900 dark:text-white font-semibold">{stats.sifiConcentrationRatio}%</strong> of total reachability.
               </div>
             </div>
-          </div>
-        )}
-
-        {/* Risk Concentration Card */}
-        {isCollapsed ? (
-          <div 
-            className="p-2 rounded-xl bg-slate-100/90 dark:bg-[rgb(21,26,49)] border border-slate-200 dark:border-[rgba(46,112,238,0.2)] flex flex-col items-center justify-center gap-1"
-            title={`Risk Concentration: ${stats.sifiConcentrationRatio}% SIFI (Top 5 dependencies)`}
-          >
-            <span className="text-xs text-blue-600 dark:text-blue-400 font-bold font-mono">{stats.sifiConcentrationRatio}%</span>
-            <div className="w-5 h-1 rounded-full bg-blue-600 dark:bg-blue-500 shadow-[0_0_6px_rgba(46,112,238,0.5)]" />
-          </div>
-        ) : (
-          <div className="p-3 rounded-xl bg-slate-100/90 dark:bg-[rgb(21,26,49)] border border-slate-200 dark:border-[rgba(46,112,238,0.2)] flex flex-col gap-2">
-            <div className="flex items-center justify-between text-xs">
-              <span className="font-semibold text-slate-900 dark:text-slate-200">Risk Concentration</span>
-              <span className="text-blue-600 dark:text-blue-400 font-bold font-mono">{stats.sifiConcentrationRatio}%</span>
-            </div>
-            {/* Recessed Progress Bar */}
-            <div className="w-full h-2 rounded-full overflow-hidden bg-slate-200 dark:bg-slate-900 border border-slate-300 dark:border-slate-700/60">
-              <div 
-                className="h-full bg-gradient-to-r from-blue-600 to-indigo-600 rounded-full"
-                style={{ width: `${stats.sifiConcentrationRatio}%` }}
-              />
-            </div>
-            <div className="text-xs leading-relaxed text-slate-600 dark:text-slate-400">
-              Top 5 dependencies account for <strong className="text-slate-900 dark:text-white font-semibold">{stats.sifiConcentrationRatio}%</strong> of total reachability.
-            </div>
-          </div>
+          </>
         )}
       </div>
     </aside>

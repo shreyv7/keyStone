@@ -64,25 +64,25 @@ export const TimelinePlayer: React.FC<TimelinePlayerProps> = ({
       return {
         label: 'Baseline Clean',
         detail: 'Normal dependency weights & clean artifact hashes',
-        badgeColor: isLight ? 'bg-blue-100 text-blue-800 border-blue-200' : 'bg-blue-950/80 text-blue-300 border-blue-800',
+        badgeColor: isLight ? 'bg-blue-50 text-blue-700 border-blue-200' : 'bg-blue-950/60 text-blue-300 border-blue-800/60',
         dotColor: 'bg-blue-500',
         icon: ShieldCheck
       };
     }
     if (timeTravelDay < -15) {
       return {
-        label: 'Pre-CVE Stealth Anomaly',
+        label: 'Pre-CVE Anomaly',
         detail: '+142% Keystone centrality surge & maintainer churn detected',
-        badgeColor: 'bg-amber-500/15 text-amber-500 border-amber-500/30',
+        badgeColor: isLight ? 'bg-amber-50 text-amber-800 border-amber-200' : 'bg-amber-950/60 text-amber-300 border-amber-800/60',
         dotColor: 'bg-amber-500',
         icon: AlertTriangle
       };
     }
     return {
-      label: timeTravelDay === 0 ? 'Day 0 CVE Disclosure' : 'Cascade Contagion Window',
+      label: timeTravelDay === 0 ? 'CVE Disclosure' : 'Contagion Window',
       detail: 'Weaponized advisory active across 42 downstream packages',
-      badgeColor: 'bg-rose-500/15 text-rose-500 border-rose-500/30',
-      dotColor: 'bg-rose-500',
+      badgeColor: isLight ? 'bg-red-50 text-red-700 border-red-200' : 'bg-red-950/60 text-red-400 border-red-800/60',
+      dotColor: 'bg-red-500',
       icon: ShieldAlert
     };
   };
@@ -95,191 +95,163 @@ export const TimelinePlayer: React.FC<TimelinePlayerProps> = ({
 
   if (isMinimized) {
     return (
-      <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-20 select-none animate-in fade-in slide-in-from-bottom-2 duration-200">
+      <div 
+        onClick={(e) => e.stopPropagation()}
+        onPointerDown={(e) => e.stopPropagation()}
+        className="relative select-none animate-in fade-in slide-in-from-bottom-2 duration-200"
+      >
         <button
-          onClick={() => setIsMinimized(false)}
-          className={`flex items-center gap-2.5 px-4 py-2 rounded-xl border shadow-xl text-xs font-semibold backdrop-blur-xl transition-all hover:scale-105 cursor-pointer ${
+          onClick={(e) => {
+            e.stopPropagation();
+            setIsMinimized(false);
+          }}
+          className={`flex items-center gap-2 px-3 py-1.5 rounded-xl border shadow-lg text-xs font-medium backdrop-blur-xl transition-all hover:scale-105 cursor-pointer ${
             isLight
-              ? 'bg-white/95 border-slate-200 text-slate-800 shadow-slate-200/50'
-              : 'bg-slate-900/95 border-slate-800 text-slate-200 shadow-black/60'
+              ? 'bg-white/95 border-slate-200/90 text-slate-800 shadow-slate-200/50'
+              : 'bg-[#0a0f1d]/90 border-slate-800/80 text-slate-200 shadow-black/60'
           }`}
         >
           <div className={`w-2 h-2 rounded-full ${status.dotColor} ${isPlaying ? 'animate-ping' : ''}`} />
           <Calendar className="w-3.5 h-3.5 text-slate-400" />
-          <span className="font-mono">{timeTravelDay === 0 ? 'Day 0' : `Day ${timeTravelDay}`}</span>
-          <span className="text-slate-400 font-normal">| {status.label}</span>
-          <ChevronUp className="w-3.5 h-3.5 text-slate-400 ml-1" />
+          <span className="font-mono font-semibold">{timeTravelDay === 0 ? 'Day 0' : `Day ${timeTravelDay}`}</span>
+          <span className="text-slate-400 font-normal">· {status.label}</span>
+          <ChevronUp className="w-3.5 h-3.5 text-slate-400 ml-0.5" />
         </button>
       </div>
     );
   }
 
   return (
-    <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-20 w-[94%] max-w-lg select-none animate-in fade-in slide-in-from-bottom-3 duration-250">
-      <div className={`rounded-2xl border backdrop-blur-2xl shadow-2xl p-3 sm:p-3.5 transition-all ${
+    <div 
+      onClick={(e) => e.stopPropagation()}
+      onPointerDown={(e) => e.stopPropagation()}
+      className="relative w-full select-none animate-in fade-in slide-in-from-bottom-2 duration-200"
+    >
+      <div className={`flex items-center justify-between gap-2 sm:gap-3 px-3 py-1.5 rounded-xl border backdrop-blur-xl shadow-xl transition-all h-[38px] w-full ${
         isLight
-          ? 'bg-white/95 border-slate-200/90 shadow-slate-300/40 text-slate-800'
-          : 'bg-[#0a0f1d]/90 border-slate-800/90 shadow-black/80 text-slate-100'
+          ? 'bg-white/95 border-slate-200/90 shadow-slate-200/50 text-slate-800'
+          : 'bg-[#0a0f1d]/90 border-slate-800/80 shadow-black/60 text-slate-100'
       }`}>
-        {/* Top Header: Title, Live Status Tag & Minimize */}
-        <div className="flex items-center justify-between gap-2 mb-2.5">
-          <div className="flex items-center gap-2">
-            <div className={`p-1 rounded-md ${
-              isLight ? 'bg-slate-100 text-slate-700' : 'bg-slate-800 text-slate-300'
-            }`}>
-              <Calendar className="w-3.5 h-3.5" />
-            </div>
-            <div>
-              <span className="text-xs font-semibold tracking-tight">Risk History</span>
-              <span className={`hidden sm:inline text-[11px] ml-2 font-normal ${
-                isLight ? 'text-slate-500' : 'text-slate-400'
-              }`}>
-                Timeline Analysis & Anomaly Replay
-              </span>
-            </div>
-          </div>
+        {/* Play/Pause Button */}
+        <button
+          onClick={handleTogglePlay}
+          title={isPlaying ? 'Pause timeline replay' : 'Play timeline replay (-90d to Day 0)'}
+          className={`w-6 h-6 rounded-lg flex items-center justify-center shrink-0 transition-colors cursor-pointer ${
+            isPlaying
+              ? 'bg-amber-500 hover:bg-amber-600 text-white'
+              : 'bg-[#2f2fe4] hover:bg-[#4343f8] text-white'
+          }`}
+        >
+          {isPlaying ? (
+            <Pause className="w-3 h-3 fill-current" />
+          ) : (
+            <Play className="w-3 h-3 fill-current ml-0.5" />
+          )}
+        </button>
 
-          <div className="flex items-center gap-2">
-            {/* Status Badge */}
-            <div className={`flex items-center gap-1.5 px-2.5 py-0.5 rounded-full border text-[10px] font-semibold transition-colors ${status.badgeColor}`}>
-              <StatusIcon className="w-3 h-3" />
-              <span>{status.label}</span>
-              <span className="font-mono font-bold ml-0.5">
-                {timeTravelDay === 0 ? 'Day 0' : `${timeTravelDay}d`}
-              </span>
-            </div>
-
-            {/* Minimize toggle */}
-            <button
-              onClick={() => setIsMinimized(true)}
-              className={`p-1 rounded-md transition-colors cursor-pointer ${
-                isLight ? 'text-slate-400 hover:text-slate-600 hover:bg-slate-100' : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800'
-              }`}
-              title="Minimize timeline dock"
-            >
-              <ChevronDown className="w-3.5 h-3.5" />
-            </button>
-          </div>
+        {/* Current Day & Phase Pill */}
+        <div className={`flex items-center gap-1.5 px-2 py-0.5 rounded-lg border text-[10px] font-semibold shrink-0 whitespace-nowrap ${status.badgeColor}`}>
+          <StatusIcon className="w-3 h-3 shrink-0" />
+          <span className="font-mono font-bold">
+            {timeTravelDay === 0 ? 'Day 0' : `${timeTravelDay}d`}
+          </span>
+          <span className="hidden sm:inline font-medium opacity-90">· {status.label}</span>
         </div>
 
-        {/* Center: Controls + Slider Track + Quick Milestones */}
-        <div className="flex items-center gap-3">
-          {/* Play / Pause Scrubber Button */}
-          <button
-            onClick={handleTogglePlay}
-            title={isPlaying ? 'Pause timeline replay' : 'Play timeline replay (-90d to Day 0)'}
-            className={`w-9 h-9 rounded-lg flex items-center justify-center shrink-0 transition-colors shadow-xs cursor-pointer ${
-              isPlaying
-                ? 'bg-amber-600 hover:bg-amber-500 text-white'
-                : 'bg-blue-600 hover:bg-blue-700 text-white'
-            }`}
-          >
-            {isPlaying ? (
-              <Pause className="w-4 h-4 fill-current" />
-            ) : (
-              <Play className="w-4 h-4 fill-current ml-0.5" />
-            )}
-          </button>
-
-          {/* Scrubber Track & Markers */}
-          <div className="flex-1 flex flex-col gap-1.5">
-            <div className="relative flex items-center">
-              {/* Background gradient track */}
-              <div className={`absolute inset-y-1.5 left-0 right-0 rounded-full h-1.5 overflow-hidden pointer-events-none ${
-                isLight ? 'bg-slate-200' : 'bg-slate-800'
-              }`}>
-                <div 
-                  className="h-full transition-all duration-75 bg-gradient-to-r from-blue-500 via-amber-500 to-rose-500"
-                  style={{ width: `${progressPercent}%` }}
-                />
-              </div>
-
-              {/* Native range slider overlay with customized thumb */}
-              <input
-                type="range"
-                min="-90"
-                max="0"
-                step="1"
-                value={timeTravelDay}
-                onChange={(e) => {
-                  setIsPlaying(false);
-                  onChangeTimeTravel(Number(e.target.value));
-                }}
-                className="relative z-10 w-full h-4 appearance-none bg-transparent cursor-pointer focus:outline-hidden"
-              />
-            </div>
-
-            {/* Milestones bar with explicit SC evolution */}
-            <div className="flex items-center justify-between text-[10px] font-mono">
-              <button
-                onClick={() => { setIsPlaying(false); onChangeTimeTravel(-90); }}
-                className={`flex items-center gap-1.5 px-2 py-0.5 rounded transition-colors cursor-pointer ${
-                  timeTravelDay === -90
-                    ? isLight ? 'bg-slate-900 text-white font-bold' : 'bg-slate-700 text-white font-bold'
-                    : isLight ? 'text-slate-500 hover:text-slate-900' : 'text-slate-400 hover:text-slate-200'
-                }`}
-                title="Jump to -90d: Baseline Clean (Structural Criticality: 0.35)"
-              >
-                <span className="w-1.5 h-1.5 rounded-full bg-blue-500 inline-block" />
-                <span>-90d Baseline</span>
-                <span className={`text-[9px] px-1.5 py-0.5 rounded font-medium ${
-                  isLight ? 'bg-blue-50 text-blue-700' : 'bg-blue-950/60 text-blue-300'
-                }`}>
-                  Normal
-                </span>
-              </button>
-
-              <button
-                onClick={() => { setIsPlaying(false); onChangeTimeTravel(-30); }}
-                className={`flex items-center gap-1.5 px-2 py-0.5 rounded transition-colors cursor-pointer ${
-                  timeTravelDay === -30
-                    ? 'bg-amber-600 text-white font-bold shadow-xs'
-                    : isLight ? 'text-slate-500 hover:text-amber-600' : 'text-slate-400 hover:text-amber-400'
-                }`}
-                title="Jump to -30d: Stealth Centrality Surge (Structural Criticality: 0.71)"
-              >
-                <span className={`w-1.5 h-1.5 rounded-full bg-amber-500 inline-block ${timeTravelDay === -30 ? 'animate-ping' : ''}`} />
-                <span>-30d Anomaly</span>
-                <span className={`text-[9px] px-1.5 py-0.5 rounded font-medium ${
-                  timeTravelDay === -30 ? 'bg-amber-700 text-white' : isLight ? 'bg-amber-50 text-amber-700' : 'bg-amber-950/60 text-amber-300'
-                }`}>
-                  Warning
-                </span>
-              </button>
-
-              <button
-                onClick={() => { setIsPlaying(false); onChangeTimeTravel(0); }}
-                className={`flex items-center gap-1.5 px-2 py-0.5 rounded transition-colors cursor-pointer ${
-                  timeTravelDay === 0
-                    ? 'bg-rose-600 text-white font-bold shadow-xs'
-                    : isLight ? 'text-slate-500 hover:text-rose-600' : 'text-slate-400 hover:text-rose-400'
-                }`}
-                title="Jump to Day 0: CVE Disclosure (Structural Criticality: 0.91)"
-              >
-                <span className={`w-1.5 h-1.5 rounded-full bg-rose-500 inline-block ${timeTravelDay === 0 ? 'animate-ping' : ''}`} />
-                <span>Day 0 CVE</span>
-                <span className={`text-[9px] px-1.5 py-0.5 rounded font-medium ${
-                  timeTravelDay === 0 ? 'bg-rose-700 text-white' : isLight ? 'bg-rose-50 text-rose-700' : 'bg-rose-950/60 text-rose-300'
-                }`}>
-                  Critical
-                </span>
-              </button>
-            </div>
+        {/* Flexible Full-Width Scrubber Track */}
+        <div className="relative flex items-center flex-1 min-w-[100px] px-1">
+          {/* Background gradient track */}
+          <div className={`absolute inset-x-1 inset-y-2 rounded-full h-1.5 overflow-hidden pointer-events-none ${
+            isLight ? 'bg-slate-200' : 'bg-slate-800'
+          }`}>
+            <div 
+              className="h-full transition-all duration-75 bg-gradient-to-r from-blue-500 via-amber-500 to-red-500"
+              style={{ width: `${progressPercent}%` }}
+            />
           </div>
 
-          {/* Reset button */}
+          <input
+            type="range"
+            min="-90"
+            max="0"
+            step="1"
+            value={timeTravelDay}
+            onChange={(e) => {
+              setIsPlaying(false);
+              onChangeTimeTravel(Number(e.target.value));
+            }}
+            className="relative z-10 w-full h-4 appearance-none bg-transparent cursor-pointer focus:outline-hidden"
+          />
+        </div>
+
+        {/* Quick Jump Milestone Chips */}
+        <div className="flex items-center gap-1 shrink-0 text-[10px] font-mono">
           <button
-            onClick={handleReset}
-            title="Reset to Day 0"
-            className={`p-2 rounded-xl border transition-colors cursor-pointer shrink-0 ${
-              isLight 
-                ? 'border-slate-200 text-slate-400 hover:text-slate-700 hover:bg-slate-100' 
-                : 'border-slate-800 text-slate-400 hover:text-slate-200 hover:bg-slate-800'
+            onClick={() => { setIsPlaying(false); onChangeTimeTravel(-90); }}
+            className={`px-1.5 py-0.5 rounded transition-colors cursor-pointer ${
+              timeTravelDay === -90
+                ? isLight ? 'bg-slate-900 text-white font-bold' : 'bg-slate-700 text-white font-bold'
+                : isLight ? 'text-slate-500 hover:text-slate-900' : 'text-slate-400 hover:text-slate-200'
             }`}
+            title="Jump to -90d: Baseline Clean"
           >
-            <RotateCcw className="w-3.5 h-3.5" />
+            -90d
+          </button>
+          <button
+            onClick={() => { setIsPlaying(false); onChangeTimeTravel(-30); }}
+            className={`px-1.5 py-0.5 rounded transition-colors cursor-pointer ${
+              timeTravelDay === -30
+                ? 'bg-amber-600 text-white font-bold'
+                : isLight ? 'text-slate-500 hover:text-amber-600' : 'text-slate-400 hover:text-amber-400'
+            }`}
+            title="Jump to -30d: Anomaly"
+          >
+            -30d
+          </button>
+          <button
+            onClick={() => { setIsPlaying(false); onChangeTimeTravel(0); }}
+            className={`px-1.5 py-0.5 rounded transition-colors cursor-pointer ${
+              timeTravelDay === 0
+                ? 'bg-red-600 text-white font-bold'
+                : isLight ? 'text-slate-500 hover:text-red-600' : 'text-slate-400 hover:text-red-400'
+            }`}
+            title="Jump to Day 0: CVE"
+          >
+            Day 0
           </button>
         </div>
+
+        {/* Reset */}
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            handleReset();
+          }}
+          title="Reset to Day 0"
+          className={`p-1 rounded-lg transition-colors cursor-pointer shrink-0 ${
+            isLight 
+              ? 'text-slate-400 hover:text-slate-700 hover:bg-slate-100' 
+              : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/80'
+          }`}
+        >
+          <RotateCcw className="w-3.5 h-3.5" />
+        </button>
+
+        {/* Minimize */}
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            setIsMinimized(true);
+          }}
+          title="Minimize timeline ribbon"
+          className={`p-1 rounded-lg transition-colors cursor-pointer shrink-0 ${
+            isLight 
+              ? 'text-slate-400 hover:text-slate-700 hover:bg-slate-100' 
+              : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/80'
+          }`}
+        >
+          <ChevronDown className="w-3.5 h-3.5" />
+        </button>
       </div>
     </div>
   );
