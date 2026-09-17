@@ -34,8 +34,8 @@ const INITIAL_ALERTS: SecurityAlert[] = [
   {
     id: 'alert-1',
     severity: 'CRITICAL',
-    title: 'Critical Chokepoint Surge',
-    description: 'snakeyaml@1.33 centrality surged +142% across 42 monitored repos over 90 days.',
+    title: 'Dependency impact increased',
+    description: 'snakeyaml@1.33 now affects substantially more services across 42 monitored repositories.',
     timestamp: '12m ago',
     nodeId: 'snakeyaml',
     isRead: false
@@ -43,8 +43,8 @@ const INITIAL_ALERTS: SecurityAlert[] = [
   {
     id: 'alert-2',
     severity: 'HIGH',
-    title: 'Namespace Collision Blocked',
-    description: 'Public package upload attempted for @corp/internal-data-pipeline. Private registry scope enforced.',
+    title: 'Package impersonation blocked',
+    description: 'A public upload attempted to use an internal package name. Private registry protection stopped it.',
     timestamp: '42m ago',
     nodeId: 'internal-data-pipeline',
     isRead: false
@@ -52,8 +52,8 @@ const INITIAL_ALERTS: SecurityAlert[] = [
   {
     id: 'alert-3',
     severity: 'MEDIUM',
-    title: 'Single Point of Failure Identified',
-    description: 'minimist identified as critical chokepoint in billing subgraph. Disruption isolates Payment Gateway.',
+    title: 'High-impact dependency found',
+    description: 'A minimist failure could isolate the payment gateway from the billing service group.',
     timestamp: '2h ago',
     nodeId: 'minimist',
     isRead: false
@@ -61,8 +61,8 @@ const INITIAL_ALERTS: SecurityAlert[] = [
   {
     id: 'alert-4',
     severity: 'INFO',
-    title: 'CycloneDX VEX Noise Suppression',
-    description: 'Upstream maintainer affirmed code_not_reachable for lodash@4.17.21 prototype functions.',
+    title: 'Non-exploitable finding resolved',
+    description: 'Maintainer evidence confirms the affected lodash code is not reachable in production.',
     timestamp: '1d ago',
     nodeId: 'lodash',
     isRead: true
@@ -142,7 +142,7 @@ export const TopBar: React.FC<TopBarProps> = ({
   };
 
   return (
-    <header className={`h-14 w-full border-b transition-colors duration-150 px-5 flex items-center justify-between z-30 shrink-0 select-none ${
+    <header className={`h-14 w-full border-b transition-colors duration-150 px-2.5 sm:px-5 flex items-center justify-between z-30 shrink-0 select-none ${
       isLight 
         ? 'bg-white border-slate-200 text-slate-800' 
         : 'bg-[#0a0f1d] border-slate-800 text-slate-100'
@@ -208,12 +208,12 @@ export const TopBar: React.FC<TopBarProps> = ({
             title="CI/CD Intake Quarantine Active: Builds importing vulnerable versions are blocked. Click to unlock."
           >
             <Lock className="w-3.5 h-3.5 shrink-0" />
-            <span className="hidden sm:inline tracking-wider font-mono text-[11px]">CIRCUIT BREAKER: FROZEN</span>
-            <span className="sm:hidden font-mono text-[10px]">FROZEN</span>
+            <span className="hidden sm:inline text-[11px]">Dependency quarantined</span>
+            <span className="sm:hidden text-[10px]">Quarantined</span>
           </button>
         )}
         {/* Search */}
-        <div className="relative w-48 md:w-64">
+        <div className="relative w-28 sm:w-48 md:w-64">
           <div className={`flex items-center gap-2 border rounded-lg px-3 py-1.5 text-sm transition-all ${
             isLight 
               ? 'bg-white border-slate-300 text-slate-800 focus-within:border-blue-500 shadow-xs' 
@@ -222,7 +222,7 @@ export const TopBar: React.FC<TopBarProps> = ({
             <Search className={`w-4 h-4 shrink-0 ${isLight ? 'text-slate-400' : 'text-slate-500'}`} />
             <input
               type="text"
-              placeholder="Search dependencies..."
+              placeholder="Search..."
               value={searchQuery}
               onChange={(e) => onSearchChange(e.target.value)}
               className={`bg-transparent border-none outline-none w-full text-sm ${
@@ -310,7 +310,7 @@ export const TopBar: React.FC<TopBarProps> = ({
                 }`}>
                   <div className="flex items-center gap-2">
                     <ShieldAlert className="w-4 h-4 text-amber-500 shrink-0" />
-                    <span className="text-xs font-semibold">Security Telemetry</span>
+                    <span className="text-xs font-semibold">Security alerts</span>
                     {unreadCount > 0 && (
                       <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-red-500/10 text-red-500 font-bold border border-red-500/20">
                         {unreadCount} unread
@@ -431,7 +431,7 @@ export const TopBar: React.FC<TopBarProps> = ({
                 }`}>
                   <span className="flex items-center gap-1">
                     <Zap className="w-3 h-3 text-cyan-500" />
-                    Keystone Sentinel v2.4 Active
+                    Monitoring active
                   </span>
                   <span>42 Repos Monitored</span>
                 </div>
@@ -507,12 +507,35 @@ export const TopBar: React.FC<TopBarProps> = ({
                     <span className="font-mono text-xs">{userProfile?.scopeCount || 42} Repos • 1,489 Keystones</span>
                   </div>
                   <div className="flex items-center justify-between">
-                    <span className="text-slate-500 dark:text-slate-400">Current Role Lens</span>
-                    <span className="font-mono text-xs text-blue-600 dark:text-blue-400 capitalize">{activeLens}</span>
-                  </div>
-                  <div className="flex items-center justify-between">
                     <span className="text-slate-500 dark:text-slate-400">PURL Enforcer</span>
                     <span className="font-semibold text-blue-600 dark:text-blue-400">Protected</span>
+                  </div>
+                </div>
+
+                {/* Role Perspective Switcher */}
+                <div className="flex flex-col gap-1.5">
+                  <span className="text-[11px] font-medium text-slate-500 dark:text-slate-400">Perspective Lens</span>
+                  <div className="grid grid-cols-3 gap-1 p-1 rounded-lg bg-slate-100 dark:bg-slate-950/80 border border-slate-200 dark:border-slate-800">
+                    {[
+                      { id: 'developer', label: 'AppSec' },
+                      { id: 'ciso', label: 'Executive' },
+                      { id: 'maintainer', label: 'Engineer' },
+                    ].map(item => (
+                      <button
+                        key={item.id}
+                        type="button"
+                        onClick={() => onChangeLens(item.id as RoleLens)}
+                        className={`py-1 px-1 text-[11px] font-medium rounded-md transition-all text-center ${
+                          activeLens === item.id
+                            ? 'bg-[#2f2fe4] text-white shadow-xs'
+                            : isLight
+                              ? 'text-slate-600 hover:text-slate-900 hover:bg-white'
+                              : 'text-slate-400 hover:text-slate-200 hover:bg-slate-900'
+                        }`}
+                      >
+                        {item.label}
+                      </button>
+                    ))}
                   </div>
                 </div>
 

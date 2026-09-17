@@ -17,6 +17,9 @@ import {
 } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
 import { MOCK_PROPAGATION_PATHS, MOCK_NODES } from '../data/mockEcosystem';
+import { PageHeader } from './ui/PageHeader';
+import { MetricStrip } from './ui/MetricStrip';
+import { Disclosure } from './ui/Disclosure';
 
 interface BlastRadiusPageProps {
   onNavigateRemediation: () => void;
@@ -43,108 +46,47 @@ export const BlastRadiusPage: React.FC<BlastRadiusPageProps> = ({
   };
 
   return (
-    <div className="w-full h-full overflow-y-auto px-6 py-6 select-text ks-bg-app">
-      <div className="max-w-7xl mx-auto flex flex-col gap-6">
+    <div className="w-full h-full overflow-y-auto px-4 py-5 sm:px-6 select-text ks-bg-app">
+      <div className="max-w-7xl mx-auto flex flex-col gap-5">
 
-        {/* Top Header Banner */}
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 pb-6 border-b border-slate-200/80 dark:border-slate-800">
-          <div>
-            <h1 className="text-2xl md:text-3xl font-bold tracking-tight text-slate-900 dark:text-white font-heading">
-              Blast Radius Intelligence
-            </h1>
-            <p className="text-sm mt-2 max-w-2xl text-slate-500 dark:text-slate-400 font-sans leading-relaxed">
-              Deterministic transitive reachability modeling across internal microservices, platform DAGs, and revenue-critical sinks.
-            </p>
-          </div>
-
-          <div className="flex items-center gap-3 shrink-0 flex-wrap">
+        <PageHeader
+          title="Blast Radius"
+          description="See which services fail together when a high-impact dependency is compromised."
+          primaryAction={
+            <button
+              onClick={onNavigateRemediation}
+              className="ks-btn ks-btn-primary ks-btn-md"
+            >
+              <span>Plan recommended fix</span>
+              <ArrowRight className="w-4 h-4" />
+            </button>
+          }
+          secondaryActions={
+            <>
             <button
               onClick={handleSimulateRipple}
               disabled={isSimulating}
-              className="px-4 py-2 rounded-lg text-xs font-medium text-slate-700 dark:text-slate-200 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-750 flex items-center gap-2 cursor-pointer select-none shadow-xs transition-colors"
+              className="ks-btn ks-btn-secondary ks-btn-md"
             >
               <Activity className={`w-4 h-4 text-blue-500 ${isSimulating ? 'animate-spin' : ''}`} />
-              <span>{isSimulating ? 'Propagating Wave...' : 'Re-Simulate Cascade'}</span>
+              <span>{isSimulating ? 'Simulating...' : 'Simulate impact'}</span>
             </button>
-
             <button
               onClick={onReturnToGraph}
-              className="px-4 py-2 rounded-lg text-xs font-medium text-slate-700 dark:text-slate-200 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-750 flex items-center gap-2 cursor-pointer select-none shadow-xs transition-colors"
+              className="ks-btn ks-btn-ghost ks-btn-md"
             >
-              <Layers className="w-4 h-4 text-blue-500" />
-              <span>Inspect on 3D Graph</span>
+              <Layers className="w-4 h-4" />
+              <span>Open topology</span>
             </button>
+            </>
+          }
+        />
 
-            <button
-              onClick={onNavigateRemediation}
-              className="px-4 py-2 rounded-lg text-xs font-medium text-white bg-blue-600 hover:bg-blue-700 flex items-center gap-2 cursor-pointer select-none shadow-xs transition-colors"
-            >
-              <span>Calculate Remediation</span>
-              <ArrowRight className="w-4 h-4" />
-            </button>
-          </div>
-        </div>
-
-        {/* 4-Card Status Telemetry Ribbon */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3.5">
-          <div className="connector-3d-card p-4 flex flex-col justify-between">
-            <div className="flex items-center justify-between">
-              <span className="text-[11px] font-semibold uppercase tracking-wider text-slate-400 font-mono">Affected Services</span>
-              <span className="w-2 h-2 rounded-full bg-rose-500" />
-            </div>
-            <div className="flex items-baseline gap-2 mt-1.5">
-              <span className="text-3xl font-bold font-mono text-slate-900 dark:text-white">21</span>
-              <span className="text-xs text-slate-500 font-mono">services</span>
-            </div>
-            <div className="text-[11px] text-slate-500 mt-2 pt-1.5 border-t border-slate-200/60 dark:border-slate-800">
-              Spans across <strong className="text-slate-700 dark:text-slate-300">42 core repos</strong>
-            </div>
-          </div>
-
-          <div className="connector-3d-card p-4 flex flex-col justify-between">
-            <div className="flex items-center justify-between">
-              <span className="text-[11px] font-semibold uppercase tracking-wider text-slate-400 font-mono">Tier-1 Apex Sinks</span>
-              <span className="text-[10px] font-mono font-bold px-1.5 py-0.5 rounded bg-rose-500/10 text-rose-600 border border-rose-500/20">
-                CRITICAL
-              </span>
-            </div>
-            <div className="flex items-baseline gap-2 mt-1.5">
-              <span className="text-3xl font-bold font-mono text-rose-600 dark:text-rose-400">4</span>
-              <span className="text-xs text-slate-500 font-mono">crown jewels</span>
-            </div>
-            <div className="text-[11px] text-slate-500 mt-2 pt-1.5 border-t border-slate-200/60 dark:border-slate-800">
-              Payment Gateway, Auth/IAM, Core Engine
-            </div>
-          </div>
-
-          <div className="connector-3d-card p-4 flex flex-col justify-between">
-            <div className="flex items-center justify-between">
-              <span className="text-[11px] font-semibold uppercase tracking-wider text-slate-400 font-mono">Active Propagation DAGs</span>
-              <GitFork className="w-4 h-4 text-blue-500" />
-            </div>
-            <div className="flex items-baseline gap-2 mt-1.5">
-              <span className="text-3xl font-bold font-mono text-slate-900 dark:text-white">4</span>
-              <span className="text-xs text-slate-500 font-mono">independent chains</span>
-            </div>
-            <div className="text-[11px] text-slate-500 mt-2 pt-1.5 border-t border-slate-200/60 dark:border-slate-800">
-              Chokepoint: <code className="text-blue-600 dark:text-blue-400 font-semibold font-mono">snakeyaml@1.33</code>
-            </div>
-          </div>
-
-          <div className="connector-3d-card p-4 flex flex-col justify-between">
-            <div className="flex items-center justify-between">
-              <span className="text-[11px] font-semibold uppercase tracking-wider text-slate-400 font-mono">Daily Flow Exposed</span>
-              <DollarSign className="w-4 h-4 text-emerald-500" />
-            </div>
-            <div className="flex items-baseline gap-2 mt-1.5">
-              <span className="text-3xl font-bold font-mono text-slate-900 dark:text-white">$85M</span>
-              <span className="text-xs text-slate-500 font-mono">/ day</span>
-            </div>
-            <div className="text-[11px] text-slate-500 mt-2 pt-1.5 border-t border-slate-200/60 dark:border-slate-800">
-              Critical transaction throughput at risk
-            </div>
-          </div>
-        </div>
+        <MetricStrip items={[
+          { label: 'Affected services', value: '21', detail: 'Across 42 repositories', tone: 'warning' },
+          { label: 'Critical services', value: '4 exposed', detail: 'Payment, identity, orders, and risk', tone: 'critical' },
+          { label: 'Business flow at risk', value: '$85M/day', detail: 'Estimated transaction exposure', tone: 'critical' },
+        ]} />
 
         {/* Main 2-Column Split: F11 Impact Concentration vs. Propagation Path Explorer */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
@@ -152,83 +94,29 @@ export const BlastRadiusPage: React.FC<BlastRadiusPageProps> = ({
           {/* Left Column: F11 Impact Concentration (5 cols) */}
           <div className="lg:col-span-5 flex flex-col gap-4">
             
-            {/* Herfindahl Index Card */}
-            <div className="connector-3d-card p-5 flex flex-col gap-4">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <span className="w-2 h-2 rounded-full bg-blue-500" />
-                  <h3 className="font-semibold text-sm font-heading text-slate-900 dark:text-white">
-                    Impact Concentration
-                  </h3>
-                </div>
-                <span className="font-mono font-bold text-base text-rose-600 dark:text-rose-400">
-                  0.88 / 1.00
-                </span>
-              </div>
-
-              {/* Progress Split Bar */}
-              <div className="flex flex-col gap-1.5">
-                <div className="h-3 w-full bg-slate-200 dark:bg-slate-800 rounded-full overflow-hidden flex">
-                  <div 
-                    style={{ width: '84%' }} 
-                    className="bg-gradient-to-r from-blue-600 to-indigo-600 h-full transition-all duration-500"
-                    title="Horizontal Spread: 84%"
-                  />
-                  <div 
-                    style={{ width: '16%' }} 
-                    className="bg-slate-400 dark:bg-slate-600 h-full transition-all duration-500"
-                    title="Vertical Depth: 16%"
-                  />
-                </div>
-                <div className="flex justify-between text-xs font-mono">
-                  <span className="text-blue-600 dark:text-blue-400 font-semibold">
-                    ↔ Horizontal Spread: 84%
-                  </span>
-                  <span className="text-slate-500">
-                    ↕ Vertical Depth: 16%
-                  </span>
-                </div>
-              </div>
-
-              {/* Herfindahl Classification */}
-              <div className="p-3 rounded-xl bg-slate-50 dark:bg-slate-900/50 border border-slate-200/80 dark:border-slate-800 flex flex-col gap-1.5">
-                <div className="flex items-center justify-between">
-                  <span className="text-[11px] font-mono font-bold px-2 py-0.5 rounded bg-rose-500/10 text-rose-600 dark:text-rose-400 border border-rose-500/20 uppercase">
-                    Systemic Contagion
-                  </span>
-                  <span className="text-xs font-mono text-slate-400">
-                    Herfindahl Metric
-                  </span>
-                </div>
-                <p className="text-xs text-slate-600 dark:text-slate-400 mt-1 leading-relaxed">
-                  Distinguishes 50 vulnerabilities in 1 monolith (contained incident) from 4 paths crossing 21 microservices (portfolio emergency).
-                </p>
-              </div>
-
-              {/* Narrative Contagion Summary */}
-              <div className="p-3.5 rounded-xl border border-slate-200/80 dark:border-slate-800 bg-white dark:bg-slate-900 text-xs flex flex-col gap-2">
-                <div className="flex items-center gap-1.5 font-semibold text-slate-900 dark:text-white">
-                  <Activity className="w-3.5 h-3.5 text-blue-500" />
-                  <span>Contagion Summary</span>
-                </div>
-                <p className="text-slate-600 dark:text-slate-400 leading-relaxed">
-                  Compromise of <code className="font-mono font-semibold text-blue-600 dark:text-blue-400">snakeyaml@1.33</code> propagates through internal shared utilities into Payment Gateway and Auth/IAM.
-                </p>
-                <div className="pt-2 border-t border-slate-200/60 dark:border-slate-800 flex items-center justify-between text-[11px] text-slate-500">
-                  <span>Downstream Tier-1 Reach: <strong>4 Assets</strong></span>
-                  <span>Cut-Vertex Articulation: <strong>YES</strong></span>
-                </div>
-              </div>
-
-              {/* Action Button */}
+            <div className="rounded-xl border border-red-200 bg-red-50/50 p-5 dark:border-red-900/50 dark:bg-red-950/20">
+              <span className="ks-badge ks-badge-critical">Critical</span>
+              <h2 className="mt-3 text-lg font-bold text-slate-900 dark:text-white">One dependency can disrupt four critical services</h2>
+              <p className="mt-2 text-sm leading-relaxed text-slate-600 dark:text-slate-300">
+                A compromise of <code className="font-mono font-semibold">snakeyaml@1.33</code> can spread through shared utilities into payment and identity systems.
+              </p>
               <button
                 onClick={onNavigateRemediation}
-                className="w-full py-2 px-4 rounded-lg text-xs font-medium text-white bg-blue-600 hover:bg-blue-700 flex items-center justify-center gap-2 cursor-pointer select-none shadow-xs transition-colors"
+                className="ks-btn ks-btn-primary ks-btn-md mt-4 w-full"
               >
-                <span>Calculate Minimum-Cut Remediation</span>
+                <span>Plan recommended fix</span>
                 <ArrowRight className="w-4 h-4" />
               </button>
             </div>
+
+            <Disclosure title="How impact concentration was calculated" summary="Advanced spread and depth analysis">
+              <div className="space-y-3 text-xs text-slate-600 dark:text-slate-400">
+                <div className="flex items-center justify-between"><span>Impact concentration</span><strong className="font-mono text-slate-900 dark:text-white">0.88 / 1.00</strong></div>
+                <div className="flex items-center justify-between"><span>Horizontal spread</span><strong>84%</strong></div>
+                <div className="flex items-center justify-between"><span>Vertical depth</span><strong>16%</strong></div>
+                <p>Four independent paths cross 21 services, making this a broad portfolio risk rather than a contained application issue.</p>
+              </div>
+            </Disclosure>
           </div>
 
           {/* Right Column: Interactive Propagation Path Explorer (7 cols) */}
@@ -237,14 +125,14 @@ export const BlastRadiusPage: React.FC<BlastRadiusPageProps> = ({
               <div className="flex items-center justify-between">
                 <div>
                   <h3 className="font-bold text-base font-heading text-slate-900 dark:text-white">
-                    Propagation Pathways ({MOCK_PROPAGATION_PATHS.length})
+                    Affected service paths ({MOCK_PROPAGATION_PATHS.length})
                   </h3>
                   <p className="text-xs text-slate-500 mt-0.5">
-                    Select a path to trace downstream service hops and isolation recommendations.
+                    Select a path to see how the dependency reaches a critical service.
                   </p>
                 </div>
                 <span className="text-xs font-mono px-2.5 py-1 rounded-lg bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/20 font-semibold">
-                  Runtime Channels
+                  Runtime paths
                 </span>
               </div>
 
@@ -283,7 +171,7 @@ export const BlastRadiusPage: React.FC<BlastRadiusPageProps> = ({
 
                         <div className="text-right">
                           <span className="text-[11px] font-mono font-bold px-2 py-0.5 rounded bg-rose-500/10 text-rose-600 border border-rose-500/20">
-                            Tier-{path.targetAssetTier} Asset
+                            Critical service
                           </span>
                           <div className="text-xs font-mono font-semibold text-slate-700 dark:text-slate-300 mt-1">
                             ${path.assetWeight}M / Day
@@ -327,11 +215,11 @@ export const BlastRadiusPage: React.FC<BlastRadiusPageProps> = ({
                   <div className="flex items-center gap-2">
                     <ShieldAlert className="w-4 h-4 text-rose-500" />
                     <span className="text-xs font-bold text-slate-900 dark:text-white uppercase font-mono">
-                      Target Sink: {activePath.targetAsset}
+                      Critical service: {activePath.targetAsset}
                     </span>
                   </div>
                   <span className="text-xs font-mono text-slate-500">
-                    Channel: {activePath.channel}
+                    Connection: {activePath.channel}
                   </span>
                 </div>
 
@@ -352,7 +240,7 @@ export const BlastRadiusPage: React.FC<BlastRadiusPageProps> = ({
                     onClick={onNavigateRemediation}
                     className="px-3 py-1.5 rounded-md text-xs font-medium text-slate-700 dark:text-slate-200 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-750 flex items-center gap-1.5 cursor-pointer shadow-xs transition-colors"
                   >
-                    <span>View Prescribed Fix</span>
+                  <span>View recommended fix</span>
                     <ArrowRight className="w-3.5 h-3.5" />
                   </button>
                 </div>

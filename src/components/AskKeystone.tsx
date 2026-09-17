@@ -210,7 +210,7 @@ export const AskKeystone: React.FC<AskKeystoneProps> = ({
                 </div>
                 <div className="text-emerald-400">
                   <span className="text-slate-500">[EXECUTION]: </span>
-                  <span>{activeAnswerKey === 'q1' ? '2 Tier-1 endpoints returned in 12ms.' : activeAnswerKey === 'q2' ? 'Topological articulation scan completed in 8ms.' : 'Graph cut computed in 14ms.'}</span>
+                  <span>{activeAnswerKey === 'q1' ? '2 critical endpoints returned in 12ms.' : activeAnswerKey === 'q2' ? 'Dependency impact scan completed in 8ms.' : 'Fix plan computed in 14ms.'}</span>
                 </div>
                 <div className="text-slate-500 text-[10px] pt-0.5">
                   [DIGEST]: SHA-256: 7f8a3c... | graph_api@v2.4

@@ -41,7 +41,6 @@ interface NavGroup {
 export const Sidebar: React.FC<SidebarProps> = ({
   activeView,
   onChangeView,
-  stats,
   onOpenAskKeystone,
   isCollapsed = false,
   onToggleCollapse
@@ -64,14 +63,14 @@ export const Sidebar: React.FC<SidebarProps> = ({
         { id: 'ecosystem', label: 'Topology Map', icon: <Network className="w-3.5 h-3.5" /> },
         { id: 'watchlist', label: 'Risk Watchlist', icon: <ShieldAlert className="w-3.5 h-3.5" />, count: '5' },
         { id: 'blast-radius', label: 'Blast Radius', icon: <Flame className="w-3.5 h-3.5" /> },
-        { id: 'mitigation', label: 'Remediation', icon: <Wrench className="w-3.5 h-3.5" />, count: 'Active' }
+        { id: 'mitigation', label: 'Remediation', icon: <Wrench className="w-3.5 h-3.5" /> }
       ]
     },
     {
       label: 'OPERATIONS',
       items: [
         { id: 'rollout', label: 'Rollout Cockpit', icon: <Rocket className="w-3.5 h-3.5" /> },
-        { id: 'connectors', label: 'Connectors', icon: <GitBranch className="w-3.5 h-3.5" />, count: 6 },
+        { id: 'connectors', label: 'Connectors', icon: <GitBranch className="w-3.5 h-3.5" /> },
         { id: 'hardware', label: 'Scanner Agents', icon: <Server className="w-3.5 h-3.5" /> }
       ]
     },
@@ -97,14 +96,16 @@ export const Sidebar: React.FC<SidebarProps> = ({
                 {!isCollapsed ? (
                   <button
                     onClick={() => toggleSection(group.label)}
-                    className="w-full flex items-center justify-between px-2.5 pt-1.5 pb-0.5 text-[11px] font-mono font-semibold uppercase tracking-wider text-slate-400 hover:text-blue-400 transition-colors cursor-pointer group select-none"
+                    className={`w-full flex items-center justify-between px-2.5 pt-1.5 pb-0.5 text-[11px] font-mono font-semibold uppercase tracking-wider transition-colors cursor-pointer group select-none ${
+                      isLight ? 'text-slate-500 hover:text-slate-800' : 'text-slate-400 hover:text-blue-400'
+                    }`}
                     title={`${isSectionCollapsed ? 'Expand' : 'Collapse'} ${group.label}`}
                   >
                     <span>{group.label}</span>
-                    <ChevronDown className={`w-3 h-3 transition-transform duration-200 ${isSectionCollapsed ? '-rotate-90 text-slate-500' : 'rotate-0 text-slate-400'}`} />
+                    <ChevronDown className={`w-3 h-3 transition-transform duration-200 ${isSectionCollapsed ? '-rotate-90 text-slate-500' : isLight ? 'rotate-0 text-slate-500' : 'rotate-0 text-slate-400'}`} />
                   </button>
                 ) : (
-                  <div className="w-full h-px bg-slate-800 my-1" />
+                  <div className={`w-full h-px my-1 ${isLight ? 'bg-slate-200' : 'bg-slate-800'}`} />
                 )}
 
                 {(!isSectionCollapsed || isCollapsed) && group.items.map(item => {
@@ -114,14 +115,16 @@ export const Sidebar: React.FC<SidebarProps> = ({
                       key={item.id}
                       onClick={() => onChangeView(item.id)}
                       title={item.label}
-                      className={`flex items-center ${isCollapsed ? 'justify-center p-2' : 'justify-between px-3 py-1.5'} rounded-lg text-xs font-medium transition-colors cursor-pointer select-none mb-0.5 ${
+                      className={`group flex items-center ${isCollapsed ? 'justify-center p-2' : 'justify-between px-3 py-1.5'} rounded-lg text-xs font-medium transition-colors cursor-pointer select-none mb-0.5 ${
                         isActive
-                          ? 'bg-blue-600 text-white shadow-xs'
-                          : 'text-slate-400 hover:text-slate-100 hover:bg-slate-850'
+                          ? 'bg-[#2f2fe4] text-white shadow-xs'
+                          : isLight
+                            ? 'text-slate-700 hover:text-slate-950 hover:bg-slate-100 hover:shadow-xs'
+                            : 'text-slate-400 hover:text-slate-100 hover:bg-slate-800'
                       }`}
                     >
                       <div className="flex items-center gap-2.5">
-                        <span className={isActive ? 'text-white' : 'text-slate-400'}>
+                        <span className={isActive ? 'text-white' : isLight ? 'text-slate-500 group-hover:text-slate-800' : 'text-slate-400'}>
                           {item.icon}
                         </span>
                         {!isCollapsed && (
@@ -134,7 +137,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                         <span className={`text-[10px] font-mono font-medium px-1.5 py-0.2 rounded ${
                           isActive 
                             ? 'bg-blue-700 text-blue-100'
-                            : 'bg-slate-800 text-slate-400'
+                            : isLight ? 'bg-slate-100 text-slate-600' : 'bg-slate-800 text-slate-400'
                         }`}>
                           {item.count}
                         </span>
@@ -152,7 +155,11 @@ export const Sidebar: React.FC<SidebarProps> = ({
           <button
             onClick={onOpenAskKeystone}
             title="Ask Assistant (Natural Language Supply Chain Queries)"
-            className={`w-full ${isCollapsed ? 'p-2 justify-center' : 'py-1.5 px-3 justify-start'} rounded-lg border border-slate-700/60 bg-slate-900/60 hover:bg-slate-800 text-slate-300 hover:text-white flex items-center gap-2 text-xs font-medium transition-colors cursor-pointer mb-0.5`}
+            className={`w-full ${isCollapsed ? 'p-2 justify-center' : 'py-1.5 px-3 justify-start'} rounded-lg border flex items-center gap-2 text-xs font-medium transition-colors cursor-pointer mb-0.5 ${
+              isLight
+                ? 'border-slate-300 bg-white text-slate-700 shadow-xs hover:bg-slate-100 hover:text-slate-950'
+                : 'border-slate-700/60 bg-slate-900/60 text-slate-300 hover:bg-slate-800 hover:text-white'
+            }`}
           >
             <Sparkles className="w-3.5 h-3.5 text-blue-400" />
             {!isCollapsed && <span className="text-xs">Ask Assistant</span>}
@@ -160,70 +167,6 @@ export const Sidebar: React.FC<SidebarProps> = ({
         </div>
       </div>
 
-      {/* Bottom Section: Macro Metrics and Risk Concentration */}
-      <div className="shrink-0 flex flex-col gap-2 pt-2 border-t border-slate-200 dark:border-slate-800">
-        {/* Quick Macro Metrics: Critical Sinks & Tier-1 Exposed */}
-        {isCollapsed ? (
-          <div 
-            className="flex flex-col items-center gap-1.5 py-1 select-none"
-            title={`${stats.criticalDependencies} Critical Risks • ${stats.tier1Assets} Critical Services Exposed • ${stats.sifiConcentrationRatio}% Risk Concentration`}
-          >
-            <div className={`w-9 py-1 rounded-lg border flex flex-col items-center justify-center ${
-              isLight ? 'bg-red-50 border-red-200 text-red-700' : 'bg-red-950/40 border-red-800/50 text-red-400'
-            }`}>
-              <span className="text-[10px] font-mono font-bold leading-none">{stats.criticalDependencies}</span>
-              <span className="text-[8px] opacity-80 uppercase tracking-tighter mt-0.5">Risk</span>
-            </div>
-
-            <div className={`w-9 py-1 rounded-lg border flex flex-col items-center justify-center ${
-              isLight ? 'bg-slate-100 border-slate-200 text-slate-700' : 'bg-[#0a0f1d] border-slate-800 text-blue-400'
-            }`}>
-              <span className="text-[10px] font-mono font-bold leading-none">{stats.sifiConcentrationRatio}%</span>
-              <span className="text-[8px] opacity-80 uppercase tracking-tighter mt-0.5">SIFI</span>
-            </div>
-          </div>
-        ) : (
-          <>
-            <div className="grid grid-cols-2 gap-1.5 text-center">
-              <div className="p-2 rounded-lg bg-slate-100/90 dark:bg-[#0a0f1d] border border-slate-200 dark:border-slate-800">
-                <div className="text-base font-bold font-mono text-slate-900 dark:text-white">
-                  {stats.criticalDependencies}
-                </div>
-                <div className="text-[10px] font-medium text-slate-600 dark:text-slate-400 mt-0.5">
-                  Critical Risks
-                </div>
-              </div>
-
-              <div className="p-2 rounded-lg bg-slate-100/90 dark:bg-[#0a0f1d] border border-slate-200 dark:border-slate-800">
-                <div className="text-base font-bold font-mono text-blue-600 dark:text-blue-400">
-                  {stats.tier1Assets}
-                </div>
-                <div className="text-[10px] font-medium text-slate-600 dark:text-slate-400 mt-0.5">
-                  Critical Services
-                </div>
-              </div>
-            </div>
-
-            {/* Risk Concentration Card */}
-            <div className="p-3 rounded-xl bg-slate-100/90 dark:bg-[#0a0f1d] border border-slate-200 dark:border-slate-800 flex flex-col gap-2">
-              <div className="flex items-center justify-between text-xs">
-                <span className="font-semibold text-slate-900 dark:text-slate-200">Risk Concentration</span>
-                <span className="text-blue-600 dark:text-blue-400 font-bold font-mono">{stats.sifiConcentrationRatio}%</span>
-              </div>
-              {/* Recessed Progress Bar */}
-              <div className="w-full h-2 rounded-full overflow-hidden bg-slate-200 dark:bg-slate-900 border border-slate-300 dark:border-slate-800">
-                <div 
-                  className="h-full bg-[#2f2fe4] rounded-full"
-                  style={{ width: `${stats.sifiConcentrationRatio}%` }}
-                />
-              </div>
-              <div className="text-xs leading-relaxed text-slate-600 dark:text-slate-400">
-                Top 5 dependencies account for <strong className="text-slate-900 dark:text-white font-semibold">{stats.sifiConcentrationRatio}%</strong> of total reachability.
-              </div>
-            </div>
-          </>
-        )}
-      </div>
     </aside>
   );
 };

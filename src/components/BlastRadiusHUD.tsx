@@ -119,7 +119,7 @@ export const BlastRadiusHUD: React.FC<BlastRadiusHUDProps> = ({
         <div>
           <span className="text-[10px] text-red-500 uppercase font-mono block">Critical</span>
           <span className="text-base font-bold font-mono text-red-500 leading-tight">{tier1Count}</span>
-          <span className="text-[9px] text-slate-400 block">Tier-1</span>
+          <span className="text-[9px] text-slate-400 block">Critical</span>
         </div>
         <div>
           <span className="text-[10px] text-amber-500 uppercase font-mono block">Paths</span>
@@ -154,7 +154,7 @@ export const BlastRadiusHUD: React.FC<BlastRadiusHUDProps> = ({
             onClick={onComputeMitigation}
             className="w-full py-1.5 px-3 rounded-lg text-xs font-semibold flex items-center justify-center gap-1.5 transition-all bg-[#2f2fe4] hover:bg-[#4343f8] text-white shadow-xs cursor-pointer"
           >
-            <span>Plan Targeted Fix</span>
+            <span>Plan recommended fix</span>
             <ArrowRight className="w-3.5 h-3.5" />
           </button>
         )}

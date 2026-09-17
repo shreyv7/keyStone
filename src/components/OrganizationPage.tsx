@@ -23,6 +23,7 @@ import {
 } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
 import { UserProfile } from '../types';
+import { PageHeader } from './ui/PageHeader';
 
 interface OrganizationPageProps {
   userProfile?: UserProfile;
@@ -126,26 +127,16 @@ export const OrganizationPage: React.FC<OrganizationPageProps> = ({ userProfile 
   });
 
   return (
-    <div className={`w-full h-full overflow-y-auto px-6 py-8 select-text ${
+    <div className={`w-full h-full overflow-y-auto px-4 py-5 sm:px-6 select-text ${
       isLight ? 'bg-white text-slate-900' : 'bg-[#080616] text-slate-100'
     }`}>
       <div className="max-w-6xl mx-auto flex flex-col gap-6">
         
-        {/* Header Title */}
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 pb-6 border-b border-slate-200/80 dark:border-slate-800">
-          <div>
-            <h1 className="text-2xl md:text-3xl font-bold tracking-tight text-slate-900 dark:text-white">Organization & Governance</h1>
-            <p className="text-sm mt-2 max-w-3xl text-slate-600 dark:text-slate-400 leading-relaxed">
-              Manage organization identity, team roles & permissions, and enterprise audit logs.
-            </p>
-          </div>
-
-          <div className="flex items-center gap-2 shrink-0">
-            <span className="text-xs font-mono px-3.5 py-2 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-400 shadow-xs">
-              Tier: <strong className="text-blue-600 dark:text-blue-400 font-semibold">Enterprise Active</strong>
-            </span>
-          </div>
-        </div>
+        <PageHeader
+          title="Organization"
+          description="Manage organization identity, members, access roles, and audit history."
+          eyebrow="Enterprise workspace"
+        />
 
         {/* Tab Navigation */}
         <div className={`flex items-center gap-1.5 p-1 rounded-xl border ${
@@ -160,7 +151,7 @@ export const OrganizationPage: React.FC<OrganizationPageProps> = ({ userProfile 
             }`}
           >
             <Building2 className="w-4 h-4" />
-            <span>Profile & Identity</span>
+            <span>Profile</span>
           </button>
 
           <button
@@ -184,7 +175,7 @@ export const OrganizationPage: React.FC<OrganizationPageProps> = ({ userProfile 
             }`}
           >
             <Shield className="w-4 h-4" />
-            <span>Roles & RBAC</span>
+            <span>Access roles</span>
           </button>
 
           <button
@@ -453,7 +444,7 @@ export const OrganizationPage: React.FC<OrganizationPageProps> = ({ userProfile 
                 </thead>
                 <tbody className="divide-y divide-slate-200 dark:divide-slate-800">
                   {[
-                    { name: 'View 3D Topology & SIFI Centrality Scores', roles: [true, true, true, true, true] },
+                    { name: 'View topology and dependency impact scores', roles: [true, true, true, true, true] },
                     { name: 'Run Blast Radius & Propagation Simulations', roles: [true, true, true, true, false] },
                     { name: 'Engage Circuit Breaker / Freeze Dependencies', roles: [true, true, true, false, false] },
                     { name: 'Dispatch Coordinated Multi-Repo PRs', roles: [true, true, true, true, false] },

@@ -111,7 +111,7 @@ export const ReportExportModal: React.FC<ReportExportModalProps> = ({
         }`}
         role="dialog"
         aria-modal="true"
-        aria-label="Export Systemic Risk Report"
+        aria-label="Export portfolio risk report"
       >
         {/* Modal Header */}
         <div className={`p-5 border-b flex items-center justify-between shrink-0 ${
@@ -222,7 +222,7 @@ export const ReportExportModal: React.FC<ReportExportModalProps> = ({
         }`}>
           <div className="flex items-center gap-2 text-xs text-slate-500">
             <ShieldAlert className="w-3.5 h-3.5 text-cyan-500" />
-            <span>Cryptographically verifiable SIFI audit artifact</span>
+            <span>Cryptographically verifiable risk audit artifact</span>
           </div>
 
           <div className="flex items-center gap-2.5">

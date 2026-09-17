@@ -74,7 +74,7 @@ const SNAPSHOTS_90D: TrendSnapshot[] = [
     keystonesCount: 5,
     milestone: 'Day 0 Risk Alert',
     badgeType: 'cve',
-    narrative: 'Active SIFI State: Articulation cut-vertex dominating data parsing across 21 services.'
+    narrative: 'One shared parser now affects 21 services and requires attention.'
   },
   {
     day: 7,
@@ -82,9 +82,9 @@ const SNAPSHOTS_90D: TrendSnapshot[] = [
     systemicScore: 18,
     financialExposureM: 4.9,
     keystonesCount: 0,
-    milestone: 'Targeted Fix',
+    milestone: 'Recommended fix',
     badgeType: 'remediated',
-    narrative: '🛡️ Targeted Fix Applied: internal-data-pipeline v2.5.0 severs all attack vectors.'
+    narrative: 'Recommended fix applied: internal-data-pipeline v2.5.0 protects every known path.'
   }
 ];
 
@@ -396,7 +396,7 @@ export const PortfolioRiskTrendChart: React.FC = () => {
 
         <div className="flex items-center gap-5 shrink-0 font-mono text-xs border-t sm:border-t-0 pt-2 sm:pt-0 w-full sm:w-auto justify-between sm:justify-start">
           <div className="text-right">
-            <span className="text-[10px] text-slate-400 block uppercase">Systemic Risk</span>
+            <span className="text-[10px] text-slate-400 block uppercase">Portfolio risk</span>
             <span className="font-bold text-sm text-blue-600 dark:text-blue-400">
               {activeSnapshot.systemicScore}/100
             </span>

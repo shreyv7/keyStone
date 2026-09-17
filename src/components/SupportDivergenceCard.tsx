@@ -94,7 +94,7 @@ export const SupportDivergenceCard: React.FC<SupportDivergenceCardProps> = ({ no
           </div>
           <div className={`text-[9px] mt-0.5 flex justify-between ${isLight ? 'text-slate-500' : 'text-slate-400'}`}>
             <span>Topological Centrality Percentile</span>
-            <span>Touches {node.dependents} apps & {node.tier1Reach} Tier-1 crown jewels</span>
+            <span>Affects {node.dependents} apps and {node.tier1Reach} critical services</span>
           </div>
         </div>
 

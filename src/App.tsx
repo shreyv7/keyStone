@@ -104,7 +104,9 @@ export function App() {
   const [isPRModalOpen, setIsPRModalOpen] = useState<boolean>(false);
   const [isSBOMModalOpen, setIsSBOMModalOpen] = useState<boolean>(false);
   const [isCircuitBreakerFrozen, setIsCircuitBreakerFrozen] = useState<boolean>(false);
-  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState<boolean>(false);
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState<boolean>(() =>
+    typeof window !== 'undefined' && window.matchMedia('(max-width: 767px)').matches
+  );
 
   // Resolve selected node object
   const selectedNode = useMemo(
@@ -385,7 +387,7 @@ export function App() {
         <main className="relative flex-1 w-full h-full overflow-hidden">
           {/* 3D WebGL Ecosystem Graph Stage Wrapper - Dynamically compresses and shifts to left on node selection */}
           <div className={`h-full relative transition-all duration-300 ease-out overflow-hidden ${
-            isLight ? 'bg-white' : 'bg-[#3d5272]'
+            isLight ? 'bg-white' : 'bg-[#07090e]'
           } ${
             selectedNode && activeView === 'ecosystem' && !isMitigationPanelOpen && simulationPhase === 'idle'
               ? 'mr-0 sm:mr-96 lg:mr-[420px]'

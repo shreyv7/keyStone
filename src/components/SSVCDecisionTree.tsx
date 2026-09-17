@@ -96,7 +96,7 @@ export const SSVCDecisionTree: React.FC<SSVCDecisionTreeProps> = ({ node, classN
       title: 'Mission & Asset Impact',
       value: missionImpact,
       active: missionImpact === 'MEF FAILURE',
-      reason: `${node.tier1Reach} Tier-1 mission-essential crown jewels at risk`
+      reason: `${node.tier1Reach} critical production services at risk`
     }
   ];
 

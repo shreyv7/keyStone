@@ -465,11 +465,12 @@ export const EcosystemGraph: React.FC<EcosystemGraphProps> = ({
     const pulseGeo = new THREE.BufferGeometry();
     pulseGeo.setAttribute('position', new THREE.BufferAttribute(pulsePosArray, 3));
     const pulseMat = new THREE.PointsMaterial({
-      color: 0xff3b30,
-      size: 2.2,
+      color: isLight ? 0xdc2626 : 0xff3b30,
+      size: isLight ? 3 : 2.2,
       transparent: true,
-      opacity: 0.9,
-      blending: THREE.AdditiveBlending
+      opacity: isLight ? 1 : 0.9,
+      blending: isLight ? THREE.NormalBlending : THREE.AdditiveBlending,
+      depthWrite: false
     });
     const pulsePoints = new THREE.Points(pulseGeo, pulseMat);
     pulsePoints.visible = false;
@@ -501,11 +502,11 @@ export const EcosystemGraph: React.FC<EcosystemGraphProps> = ({
     const lightningGeo = new THREE.BufferGeometry();
     lightningGeo.setAttribute('position', new THREE.BufferAttribute(lightningPosArray, 3));
     const lightningMat = new THREE.PointsMaterial({
-      color: 0x38bdf8,
-      size: 2.8,
+      color: isLight ? 0x1d4ed8 : 0x38bdf8,
+      size: isLight ? 3.4 : 2.8,
       transparent: true,
-      opacity: 0.95,
-      blending: THREE.AdditiveBlending,
+      opacity: isLight ? 1 : 0.95,
+      blending: isLight ? THREE.NormalBlending : THREE.AdditiveBlending,
       depthWrite: false
     });
     const lightningPoints = new THREE.Points(lightningGeo, lightningMat);
@@ -918,6 +919,24 @@ export const EcosystemGraph: React.FC<EcosystemGraphProps> = ({
     }
     if (starMatRef.current) {
       starMatRef.current.opacity = dependencyCone ? 0.05 : (isLight ? 0.3 : 0.45);
+    }
+
+    const pulseMaterial = pulseParticlesRef.current?.material as THREE.PointsMaterial | undefined;
+    if (pulseMaterial) {
+      pulseMaterial.color.setHex(isLight ? 0xdc2626 : 0xff3b30);
+      pulseMaterial.size = isLight ? 3 : 2.2;
+      pulseMaterial.opacity = isLight ? 1 : 0.9;
+      pulseMaterial.blending = isLight ? THREE.NormalBlending : THREE.AdditiveBlending;
+      pulseMaterial.needsUpdate = true;
+    }
+
+    const lightningMaterial = lightningParticlesRef.current?.material as THREE.PointsMaterial | undefined;
+    if (lightningMaterial) {
+      lightningMaterial.color.setHex(isLight ? 0x1d4ed8 : 0x38bdf8);
+      lightningMaterial.size = isLight ? 3.4 : 2.8;
+      lightningMaterial.opacity = isLight ? 1 : 0.95;
+      lightningMaterial.blending = isLight ? THREE.NormalBlending : THREE.AdditiveBlending;
+      lightningMaterial.needsUpdate = true;
     }
   }, [
     nodes,

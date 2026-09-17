@@ -42,22 +42,22 @@ export const SBOMUploadModal: React.FC<SBOMUploadModalProps> = ({
 
   const PIPELINE_STEPS: IngestPipelineStep[] = [
     {
-      label: 'Schema & PURL Validation',
-      detail: 'Validating package-url canonical namespaces against OSV and NVD registries...',
+      label: 'Validate package data',
+      detail: 'Checking package identifiers against vulnerability registries...',
       status: currentStepIndex > 0 ? 'completed' : currentStepIndex === 0 && isProcessing ? 'active' : 'pending'
     },
     {
-      label: 'Asset Reachability & Propagation Analysis',
-      detail: 'Tracing downstream propagation cascades to critical services...',
+      label: 'Map dependency impact',
+      detail: 'Tracing which critical services could be affected...',
       status: currentStepIndex > 1 ? 'completed' : currentStepIndex === 1 ? 'active' : 'pending'
     },
     {
-      label: 'Chokepoint & Topology Solver',
-      detail: 'Computing single points of failure and targeted remediations...',
+      label: 'Find high-impact dependencies',
+      detail: 'Identifying dependencies that need a recommended fix...',
       status: currentStepIndex > 2 ? 'completed' : currentStepIndex === 2 ? 'active' : 'pending'
     },
     {
-      label: 'Graph Ingestion & Topology Ready',
+      label: 'Dependency map ready',
       detail: 'Successfully mapped 42 repositories and 1,489 transitive packages.',
       status: isComplete ? 'completed' : currentStepIndex === 3 ? 'active' : 'pending'
     }
@@ -339,7 +339,7 @@ export const SBOMUploadModal: React.FC<SBOMUploadModalProps> = ({
                     </div>
                     <div className={`p-1.5 rounded border ${isLight ? 'bg-white/80 border-emerald-200' : 'bg-emerald-950/40 border-emerald-800/60'}`}>
                       <div className="font-mono font-bold text-red-600">3</div>
-                      <div className="text-[10px] text-slate-400">Cut-Vertices</div>
+                      <div className="text-[10px] text-slate-400">High-impact dependencies</div>
                     </div>
                     <div className={`p-1.5 rounded border ${isLight ? 'bg-white/80 border-emerald-200' : 'bg-emerald-950/40 border-emerald-800/60'}`}>
                       <div className="font-mono font-bold text-amber-500">+142%</div>

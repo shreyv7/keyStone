@@ -65,7 +65,7 @@ export const MitigationPanel: React.FC<MitigationPanelProps> = ({
             }`}>
               <Wrench className="w-4 h-4 text-slate-600 dark:text-slate-400" />
               <span>
-                {activeLens === 'ciso' ? 'Blast Radius Reduction' : activeLens === 'maintainer' ? 'Downstream Impact Mitigation' : 'Targeted Remediation Plan'}
+                {activeLens === 'ciso' ? 'Reduce service impact' : activeLens === 'maintainer' ? 'Protect dependent services' : 'Recommended fix'}
               </span>
               {isApplied && (
                 <span className={`text-[10px] font-semibold px-2 py-0.5 rounded border uppercase flex items-center gap-1 ${
@@ -80,10 +80,10 @@ export const MitigationPanel: React.FC<MitigationPanelProps> = ({
             </h2>
             <div className={`text-xs mt-0.5 ${isLight ? 'text-slate-500' : 'text-slate-400'}`}>
               {activeLens === 'ciso' 
-                ? 'Monetary risk mitigation with verified critical service insulation' 
+                ? 'Reduce business risk while protecting critical services'
                 : activeLens === 'maintainer' 
-                ? 'Guaranteed backward compatibility across dependent repositories' 
-                : 'Minimal SemVer upgrade cost with full attack path disconnection'}
+                ? 'Keep dependent repositories compatible during the update'
+                : 'A focused update that removes the exposed dependency paths'}
             </div>
           </div>
           <button
@@ -101,8 +101,8 @@ export const MitigationPanel: React.FC<MitigationPanelProps> = ({
           <div className={`text-[11px] font-semibold flex items-center justify-between ${
             isLight ? 'text-slate-500' : 'text-slate-400'
           }`}>
-            <span>Targeting Strategy</span>
-            <span className={isLight ? 'text-slate-600' : 'text-slate-400'}>3 Evaluated Approaches</span>
+            <span>Fix approach</span>
+            <span className={isLight ? 'text-slate-600' : 'text-slate-400'}>3 options compared</span>
           </div>
           <div className={`grid grid-cols-3 gap-1 p-1 rounded-lg border text-xs ${
             isLight ? 'bg-white border-slate-200 shadow-xs' : 'bg-slate-900 border-slate-800'
@@ -117,7 +117,7 @@ export const MitigationPanel: React.FC<MitigationPanelProps> = ({
                   : isLight ? 'text-slate-600 hover:text-slate-900' : 'text-slate-400 hover:text-slate-200'
               }`}
             >
-              Targeted Fix
+              Recommended fix
             </button>
             <button
               onClick={() => onSelectStrategy('crown_jewel')}
@@ -129,7 +129,7 @@ export const MitigationPanel: React.FC<MitigationPanelProps> = ({
                   : isLight ? 'text-slate-600 hover:text-slate-900' : 'text-slate-400 hover:text-slate-200'
               }`}
             >
-              Sink Shield
+              Protect services
             </button>
             <button
               onClick={() => onSelectStrategy('low_hanging')}
@@ -141,12 +141,12 @@ export const MitigationPanel: React.FC<MitigationPanelProps> = ({
                   : isLight ? 'text-slate-600 hover:text-slate-900' : 'text-slate-400 hover:text-slate-200'
               }`}
             >
-              Zero SemVer
+              Lowest change
             </button>
           </div>
         </div>
 
-        {/* F13 Min-Cut Strategy Trade-off Comparison Matrix */}
+        {/* Trade-offs remain available for selecting a fix. */}
         <div className={`p-3 rounded-lg border flex flex-col gap-2 ${
           isLight ? 'bg-white border-slate-200' : 'bg-slate-900/80 border-slate-800'
         }`}>
@@ -155,7 +155,7 @@ export const MitigationPanel: React.FC<MitigationPanelProps> = ({
               isLight ? 'text-slate-800' : 'text-slate-200'
             }`}>
               <Scale className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
-              <span>Strategy Trade-Offs</span>
+              <span>Compare approaches</span>
             </span>
             <span className={`text-[9px] font-mono ${isLight ? 'text-slate-500' : 'text-slate-400'}`}>
               3 Strategies
@@ -169,10 +169,10 @@ export const MitigationPanel: React.FC<MitigationPanelProps> = ({
                   isLight ? 'border-slate-200 text-slate-500' : 'border-slate-800 text-slate-400'
                 }`}>
                   <th className="pb-1 font-semibold">Strategy</th>
-                  <th className="pb-1 font-semibold">Paths Cut</th>
+                  <th className="pb-1 font-semibold">Paths removed</th>
                   <th className="pb-1 font-semibold">Manifests</th>
-                  <th className="pb-1 font-semibold">Friction</th>
-                  <th className="pb-1 font-semibold text-right">Net Gain</th>
+                  <th className="pb-1 font-semibold">Change risk</th>
+                  <th className="pb-1 font-semibold text-right">Security gain</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100 dark:divide-slate-800/60">
@@ -231,7 +231,7 @@ export const MitigationPanel: React.FC<MitigationPanelProps> = ({
           <div className="flex items-start justify-between">
             <div>
               <div className={`text-[10px] uppercase font-semibold ${isLight ? 'text-slate-500' : 'text-slate-400'}`}>
-                Intervention Target
+                Update this dependency
               </div>
               <div className={`text-base font-bold font-mono mt-0.5 ${isLight ? 'text-slate-900' : 'text-slate-100'}`}>
                 {currentCandidate.targetPackage}
@@ -271,7 +271,7 @@ export const MitigationPanel: React.FC<MitigationPanelProps> = ({
                   {currentCandidate.insulatedAssets.length} Regulated Assets
                 </div>
                 <div className={`text-[10px] ${isLight ? 'text-slate-500' : 'text-slate-500'}`}>
-                  PCI-DSS Tier-1 Protected
+                  Critical PCI-DSS services protected
                 </div>
               </div>
             </div>
@@ -457,7 +457,7 @@ export const MitigationPanel: React.FC<MitigationPanelProps> = ({
             ) : (
               <>
                 <Wrench className="w-3.5 h-3.5" />
-                <span>Apply Targeted Fix</span>
+                <span>Apply recommended fix</span>
               </>
             )}
           </button>

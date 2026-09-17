@@ -146,7 +146,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
             onClick={handleQuickDemo}
             className="w-full sm:w-auto px-6 py-3 rounded-full text-sm font-heading font-bold text-white bg-[#2f2fe4] hover:bg-[#4343f8] shadow-[0_0_20px_rgba(47,47,228,0.4)] transition-all flex items-center justify-center gap-2 cursor-pointer group"
           >
-            <span>Explore the Platform</span>
+            <span>View security posture</span>
             <ArrowRight className="w-4 h-4 text-white group-hover:translate-x-0.5 transition-transform" />
           </button>
 
@@ -182,39 +182,6 @@ export const LandingPage: React.FC<LandingPageProps> = ({
             <div className="text-base font-bold text-[#2f2fe4] mt-0.5">Verified Rollout</div>
             <div className="text-[11px] text-slate-400">Compatibility evidence before release</div>
           </div>
-        </div>
-      </section>
-
-      <section className="relative z-10 w-full max-w-6xl mx-auto px-6 pb-8 pt-20">
-        <div className="mx-auto mb-12 max-w-2xl text-center">
-          <p className="mb-2 text-xs font-bold uppercase tracking-widest text-[#2f2fe4]">The risk landscape</p>
-          <h2 className="font-heading text-3xl font-bold tracking-tight text-white sm:text-4xl">Three problems defining AI security</h2>
-        </div>
-
-        <div className="grid gap-5 lg:grid-cols-3">
-          <article className="overflow-hidden rounded-xl border border-slate-800 bg-[#0a0f1d]">
-            <img src="/ai-security-automated-attacks.png" alt="Automated AI attack example" className="h-48 w-full object-cover" />
-            <div className="p-6">
-              <h3 className="font-heading text-xl font-bold text-white">Automated AI attacks</h3>
-              <p className="mt-3 text-sm leading-relaxed text-slate-300">Machine-speed attacks can turn a small weakness into a wider incident before teams can respond.</p>
-            </div>
-          </article>
-
-          <article className="overflow-hidden rounded-xl border border-slate-800 bg-[#0a0f1d]">
-            <img src="/ai-security-agentic-development.png" alt="Untrusted agentic development example" className="h-48 w-full object-cover" />
-            <div className="p-6">
-              <h3 className="font-heading text-xl font-bold text-white">Untrusted agentic development</h3>
-              <p className="mt-3 text-sm leading-relaxed text-slate-300">AI-assisted code and tool use move quickly, often beyond the security controls built for manual workflows.</p>
-            </div>
-          </article>
-
-          <article className="overflow-hidden rounded-xl border border-slate-800 bg-[#0a0f1d]">
-            <img src="/ai-security-ungoverned-applications.png" alt="Ungoverned AI application example" className="h-48 w-full object-cover" />
-            <div className="p-6">
-              <h3 className="font-heading text-xl font-bold text-white">Ungoverned AI applications</h3>
-              <p className="mt-3 text-sm leading-relaxed text-slate-300">Teams need an accurate inventory of the models, tools, and workflows operating in production.</p>
-            </div>
-          </article>
         </div>
       </section>
 
@@ -279,7 +246,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
           <div className="flex items-center gap-4">
             <span className="text-[11px] font-mono text-slate-300 flex items-center gap-1.5">
               <span className="w-1.5 h-1.5 rounded-full bg-[#2f2fe4] shadow-[0_0_8px_#2f2fe4]" />
-              SYSTEM OPERATIONAL
+              Monitoring available
             </span>
             <button
               onClick={() => {

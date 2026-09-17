@@ -44,11 +44,11 @@ export const PropagationPanel: React.FC<PropagationPanelProps> = ({
             <span className={`font-semibold text-xs uppercase tracking-wider ${
               isLight ? 'text-slate-900' : 'text-slate-200'
             }`}>
-              Propagation Pathways
+              Dependency paths
             </span>
           </div>
           <div className={`text-xs ${isLight ? 'text-slate-500' : 'text-slate-400'}`}>
-            Select a pathway to highlight its trajectory in the topology graph.
+            Select a path to see how an issue could reach a service.
           </div>
         </div>
         <button
@@ -61,7 +61,7 @@ export const PropagationPanel: React.FC<PropagationPanelProps> = ({
         </button>
       </div>
 
-      {/* Execution Channel Mechanism Banner */}
+      {/* Dependency channel context. */}
       <div className={`p-2.5 rounded-lg border mb-3 text-xs leading-relaxed shrink-0 ${
         isLight 
           ? 'bg-slate-50 border-slate-200 text-slate-700' 
@@ -70,12 +70,12 @@ export const PropagationPanel: React.FC<PropagationPanelProps> = ({
         <div className="flex items-center justify-between">
           <span className="font-semibold flex items-center gap-1.5 text-[11px]">
             <Layers className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
-            <span>Execution Channel Analysis</span>
+            <span>Dependency channels</span>
           </span>
           <span className={`text-[10px] font-mono px-1.5 py-0.2 rounded font-semibold ${
             isLight ? 'bg-white text-slate-700 border border-slate-200' : 'bg-slate-800 text-slate-300 border border-slate-700'
           }`}>
-            Runtime + Build-Time
+            Runtime + build
           </span>
         </div>
       </div>
@@ -162,7 +162,7 @@ export const PropagationPanel: React.FC<PropagationPanelProps> = ({
                         : 'bg-cyan-950/80 text-cyan-300 border-cyan-800'
                     }`}>
                       <Zap className="w-2.5 h-2.5 text-cyan-500 fill-cyan-500" />
-                      Runtime In-Memory RPC
+                      Runtime path
                     </span>
                   ) : (
                     <span className={`text-[10px] font-bold px-2 py-0.5 rounded border uppercase flex items-center gap-1 ${
@@ -171,11 +171,11 @@ export const PropagationPanel: React.FC<PropagationPanelProps> = ({
                         : 'bg-amber-950/80 text-amber-300 border-amber-800'
                     }`}>
                       <Hammer className="w-2.5 h-2.5 text-amber-500" />
-                      Build-Time CI/CD Hook
+                      Build path
                     </span>
                   )}
                   <span className={`text-[10px] font-mono ${isLight ? 'text-slate-500' : 'text-slate-400'}`}>
-                    Tier-{path.targetAssetTier} Asset
+                    Critical service tier {path.targetAssetTier}
                   </span>
                 </div>
 
@@ -184,7 +184,7 @@ export const PropagationPanel: React.FC<PropagationPanelProps> = ({
                     ? 'bg-red-50 text-red-700 border-red-200' 
                     : 'bg-red-950/40 text-red-400 border-red-800/50'
                 }`}>
-                  Weight {path.assetWeight.toFixed(1)}
+                  Impact {path.assetWeight.toFixed(1)}
                 </span>
               </div>
 
@@ -197,7 +197,7 @@ export const PropagationPanel: React.FC<PropagationPanelProps> = ({
                 {path.label}
               </div>
 
-              {/* Contagion Description */}
+              {/* Impact description */}
               <p className={`text-[11px] leading-relaxed mb-2.5 ${
                 isLight ? 'text-slate-600' : 'text-slate-400'
               }`}>
@@ -233,7 +233,7 @@ export const PropagationPanel: React.FC<PropagationPanelProps> = ({
       {/* Footer */}
       <div className="mt-3 pt-3 border-t border-slate-200 dark:border-slate-800 flex items-center justify-between shrink-0">
         <span className={`text-[11px] ${isLight ? 'text-slate-500' : 'text-slate-400'}`}>
-          {activePathId ? 'Pathway isolated in graph' : 'Select a path to trace flow'}
+          {activePathId ? 'Path highlighted in the graph' : 'Select a path to trace impact'}
         </span>
         <button
           onClick={onComputeMitigation}
@@ -243,11 +243,10 @@ export const PropagationPanel: React.FC<PropagationPanelProps> = ({
               : 'bg-slate-100 hover:bg-white text-slate-900'
           }`}
         >
-          <span>Plan Targeted Fix</span>
+          <span>Plan recommended fix</span>
           <ArrowRight className="w-3.5 h-3.5" />
         </button>
       </div>
     </div>
   );
 };
-

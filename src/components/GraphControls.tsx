@@ -58,18 +58,19 @@ export const GraphControls: React.FC<GraphControlsProps> = ({
 }) => {
   const { isLight } = useTheme();
   const [isFilterMenuOpen, setIsFilterMenuOpen] = useState<boolean>(false);
+  const [isMoreMenuOpen, setIsMoreMenuOpen] = useState<boolean>(false);
   const filterRef = useRef<HTMLDivElement>(null);
+  const moreRef = useRef<HTMLDivElement>(null);
 
   const isFilterActive = (scopeFilter !== 'all') || (channelFilter !== 'all');
 
   // Close filter menu when clicking outside
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
-      if (filterRef.current && !filterRef.current.contains(e.target as Node)) {
-        setIsFilterMenuOpen(false);
-      }
+      if (filterRef.current && !filterRef.current.contains(e.target as Node)) setIsFilterMenuOpen(false);
+      if (moreRef.current && !moreRef.current.contains(e.target as Node)) setIsMoreMenuOpen(false);
     };
-    if (isFilterMenuOpen) {
+    if (isFilterMenuOpen || isMoreMenuOpen) {
       document.addEventListener('mousedown', handleClickOutside);
     }
     return () => document.removeEventListener('mousedown', handleClickOutside);
@@ -77,7 +78,7 @@ export const GraphControls: React.FC<GraphControlsProps> = ({
 
   return (
     <div className="absolute top-4 left-4 z-25 select-none">
-      {/* Slim Double-Row Floating Toolbar */}
+      {/* Compact graph toolbar: exploration controls stay behind one quiet menu. */}
       <div className={`flex flex-col gap-1.5 p-1.5 rounded-xl border backdrop-blur-xl shadow-lg transition-all w-fit max-w-[320px] ${
         isLight 
           ? 'bg-white/95 border-slate-200/90 shadow-slate-200/50 text-slate-700' 
@@ -90,7 +91,7 @@ export const GraphControls: React.FC<GraphControlsProps> = ({
           <div className="flex items-center gap-0.5 shrink-0">
             <button
               onClick={onResetView}
-              title="Reset Camera to Wide Overview"
+              title="Reset graph view"
               className={`p-1.5 rounded-lg text-xs font-medium transition-colors cursor-pointer shrink-0 ${
                 isLight ? 'hover:bg-slate-100 text-slate-700' : 'hover:bg-slate-800/80 text-slate-300'
               }`}
@@ -100,7 +101,7 @@ export const GraphControls: React.FC<GraphControlsProps> = ({
 
             <button
               onClick={onFocusKeystone}
-              title="Center Camera on Primary Keystone (snakeyaml)"
+              title="Focus the selected dependency"
               className={`flex items-center gap-1 px-2 py-1 rounded-lg text-xs font-medium transition-colors cursor-pointer whitespace-nowrap shrink-0 ${
                 isLight
                   ? 'hover:bg-slate-100 text-slate-700'
@@ -143,7 +144,7 @@ export const GraphControls: React.FC<GraphControlsProps> = ({
                     : 'bg-slate-800 text-white shadow-xs font-semibold'
                   : isLight ? 'text-slate-600 hover:text-slate-900' : 'text-slate-400 hover:text-slate-200'
               }`}
-              title="High Impact view: Single points of failure & chokepoints"
+              title="High-impact view: dependencies that can disrupt many services"
             >
               <SlidersHorizontal className="w-3 h-3 shrink-0" />
               <span>High Impact</span>
@@ -151,53 +152,8 @@ export const GraphControls: React.FC<GraphControlsProps> = ({
           </div>
         </div>
 
-        {/* Row 2: Overlays & Utilities */}
-        <div className="flex items-center justify-between gap-1 w-full pt-1 border-t border-slate-200/60 dark:border-slate-800/60">
-          {/* Overlays Group */}
-          <div className="flex items-center gap-0.5 shrink-0">
-            <button
-              onClick={onToggleBlastRadius}
-              className={`p-1.5 rounded-lg transition-all text-[11px] cursor-pointer shrink-0 ${
-                showBlastRadius
-                  ? 'bg-[#2f2fe4] text-white font-semibold shadow-xs'
-                  : isLight ? 'text-slate-600 hover:bg-slate-100 hover:text-slate-900' : 'text-slate-400 hover:bg-slate-800/80 hover:text-slate-200'
-              }`}
-              title="Toggle Blast Radius overlay (Critical downstream spread)"
-            >
-              <Flame className="w-3.5 h-3.5 shrink-0" />
-            </button>
-
-            <button
-              onClick={onTogglePropagation}
-              className={`p-1.5 rounded-lg transition-all text-[11px] cursor-pointer shrink-0 ${
-                showPropagation
-                  ? 'bg-[#2f2fe4] text-white font-semibold shadow-xs'
-                  : isLight ? 'text-slate-600 hover:bg-slate-100 hover:text-slate-900' : 'text-slate-400 hover:bg-slate-800/80 hover:text-slate-200'
-              }`}
-              title="Toggle Chains (Transitive dependency flow lines)"
-            >
-              <GitFork className="w-3.5 h-3.5 shrink-0" />
-            </button>
-
-            {onToggleDominatorMode && (
-              <button
-                onClick={onToggleDominatorMode}
-                className={`p-1.5 rounded-lg transition-all text-[11px] cursor-pointer shrink-0 ${
-                  showDominatorMode
-                    ? 'bg-[#2f2fe4] text-white font-semibold shadow-xs'
-                    : isLight ? 'text-slate-600 hover:bg-slate-100 hover:text-slate-900' : 'text-slate-400 hover:bg-slate-800/80 hover:text-slate-200'
-                }`}
-                title="Toggle Chokepoints (Single points of failure)"
-              >
-                <TreePine className="w-3.5 h-3.5 shrink-0" />
-              </button>
-            )}
-          </div>
-
-          {/* Divider */}
-          <div className={`h-3.5 w-px shrink-0 ${isLight ? 'bg-slate-200' : 'bg-slate-800'}`} />
-
-          {/* Utilities: Filter Popover, Auto-orbit, Legend */}
+        {/* Row 2: filters and secondary graph tools */}
+        <div className="flex items-center gap-1 w-full pt-1 border-t border-slate-200/60 dark:border-slate-800/60">
           <div className="flex items-center gap-0.5 shrink-0">
             {/* Filter Popover Button */}
             {(onScopeChange || onChannelChange) && (
@@ -209,7 +165,7 @@ export const GraphControls: React.FC<GraphControlsProps> = ({
                       ? isLight ? 'bg-blue-50 text-blue-700 font-semibold border border-blue-200' : 'bg-blue-950/60 text-blue-300 font-semibold border border-blue-800'
                       : isLight ? 'text-slate-600 hover:bg-slate-100 hover:text-slate-900' : 'text-slate-400 hover:bg-slate-800/80 hover:text-slate-200'
                   }`}
-                  title="Filter by scope (Prod/Dev) or channel (Runtime/Build)"
+                  title="Filter by environment or dependency channel"
                 >
                   <Filter className="w-3.5 h-3.5 shrink-0" />
                   <span className="text-[11px]">Filters</span>
@@ -237,7 +193,7 @@ export const GraphControls: React.FC<GraphControlsProps> = ({
                     {/* Channel Filter (Runtime vs Build-time) */}
                     {onChannelChange && (
                       <div className="flex flex-col gap-1.5">
-                        <label className="text-[11px] font-medium text-slate-400">Dependency Channel</label>
+                        <label className="text-[11px] font-medium text-slate-400">Dependency channel</label>
                         <div className="grid grid-cols-3 gap-1">
                           {(['all', 'runtime', 'build'] as const).map(ch => (
                             <button
@@ -259,7 +215,7 @@ export const GraphControls: React.FC<GraphControlsProps> = ({
                     {/* Scope Filter (Production vs Dev) */}
                     {onScopeChange && (
                       <div className="flex flex-col gap-1.5">
-                        <label className="text-[11px] font-medium text-slate-400">Environment Scope</label>
+                        <label className="text-[11px] font-medium text-slate-400">Environment</label>
                         <div className="grid grid-cols-3 gap-1">
                           {(['all', 'production', 'dev'] as const).map(sc => (
                             <button
@@ -287,7 +243,7 @@ export const GraphControls: React.FC<GraphControlsProps> = ({
                             onChannelChange?.('all');
                             onScopeChange?.('all');
                           }}
-                          className="text-[10px] text-slate-400 hover:text-rose-400 underline transition-colors"
+                          className="text-[10px] text-slate-400 hover:text-red-400 underline transition-colors"
                         >
                           Reset Filters
                         </button>
@@ -298,29 +254,28 @@ export const GraphControls: React.FC<GraphControlsProps> = ({
               </div>
             )}
 
-            {/* Auto Rotate Toggle */}
-            <button
-              onClick={onToggleAutoRotate}
-              title={autoRotate ? "Pause Auto Orbit" : "Resume Auto Orbit"}
-              className={`p-1.5 rounded-lg transition-colors cursor-pointer shrink-0 ${
-                autoRotate
-                  ? isLight ? 'bg-blue-50 text-blue-700' : 'bg-blue-950/60 text-blue-300'
-                  : isLight ? 'text-slate-400 hover:text-slate-700 hover:bg-slate-100' : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/80'
-              }`}
-            >
-              <RotateCw className={`w-3.5 h-3.5 ${autoRotate ? 'text-blue-500' : 'text-slate-400'}`} />
-            </button>
-
-            {/* Legend Button */}
-            <button
-              onClick={onOpenLegend}
-              title="Graph Topology Legend"
-              className={`p-1.5 rounded-lg transition-colors cursor-pointer shrink-0 ${
-                isLight ? 'text-slate-600 hover:bg-slate-100 hover:text-slate-900' : 'text-slate-400 hover:bg-slate-800/80 hover:text-slate-200'
-              }`}
-            >
-              <HelpCircle className="w-3.5 h-3.5 text-slate-400" />
-            </button>
+            <div className="relative" ref={moreRef}>
+              <button
+                onClick={() => setIsMoreMenuOpen(prev => !prev)}
+                className={`flex items-center gap-1 px-1.5 py-1 rounded-lg text-[11px] font-medium transition-colors cursor-pointer ${
+                  isMoreMenuOpen ? isLight ? 'bg-blue-50 text-blue-700' : 'bg-blue-950/60 text-blue-300' : isLight ? 'text-slate-600 hover:bg-slate-100' : 'text-slate-400 hover:bg-slate-800/80'
+                }`}
+                title="More graph tools"
+              >
+                <span>More</span><ChevronDown className={`w-3 h-3 transition-transform ${isMoreMenuOpen ? 'rotate-180' : ''}`} />
+              </button>
+              {isMoreMenuOpen && (
+                <div className={`absolute top-full left-0 mt-2 w-52 p-1.5 rounded-xl border shadow-2xl z-30 flex flex-col gap-0.5 ${
+                  isLight ? 'bg-white border-slate-200 text-slate-700' : 'bg-[#0a0f1d] border-slate-800 text-slate-200'
+                }`}>
+                  <button onClick={onToggleBlastRadius} className={`flex items-center gap-2 w-full px-2.5 py-2 rounded-lg text-left text-xs ${showBlastRadius ? isLight ? 'bg-blue-50 text-blue-700' : 'bg-blue-950/60 text-blue-300' : 'hover:bg-slate-100 dark:hover:bg-slate-800'}`}><Flame className="w-3.5 h-3.5" />Impact area</button>
+                  <button onClick={onTogglePropagation} className={`flex items-center gap-2 w-full px-2.5 py-2 rounded-lg text-left text-xs ${showPropagation ? isLight ? 'bg-blue-50 text-blue-700' : 'bg-blue-950/60 text-blue-300' : 'hover:bg-slate-100 dark:hover:bg-slate-800'}`}><GitFork className="w-3.5 h-3.5" />Dependency paths</button>
+                  {onToggleDominatorMode && <button onClick={onToggleDominatorMode} className={`flex items-center gap-2 w-full px-2.5 py-2 rounded-lg text-left text-xs ${showDominatorMode ? isLight ? 'bg-blue-50 text-blue-700' : 'bg-blue-950/60 text-blue-300' : 'hover:bg-slate-100 dark:hover:bg-slate-800'}`}><TreePine className="w-3.5 h-3.5" />High-impact dependencies</button>}
+                  <button onClick={onToggleAutoRotate} className="flex items-center gap-2 w-full px-2.5 py-2 rounded-lg text-left text-xs hover:bg-slate-100 dark:hover:bg-slate-800"><RotateCw className="w-3.5 h-3.5" />{autoRotate ? 'Pause motion' : 'Resume motion'}</button>
+                  <button onClick={onOpenLegend} className="flex items-center gap-2 w-full px-2.5 py-2 rounded-lg text-left text-xs hover:bg-slate-100 dark:hover:bg-slate-800"><HelpCircle className="w-3.5 h-3.5" />Graph guide</button>
+                </div>
+              )}
+            </div>
           </div>
         </div>
 

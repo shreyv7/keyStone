@@ -58,7 +58,7 @@ export const RiskWaterfall: React.FC<RiskWaterfallProps> = ({
           P_active: { value: pActive, reason: "Active exploitation index (CISA KEV presence)" },
           I_tech: { value: iTech, reason: "Technical blast capability (Memory corruption/RCE)" },
           SC: { value: sc, reason: "Structural Criticality: sqrt(DC_N * PR_N)" },
-          WAE: { value: wae, reason: "Weighted Asset Exposure across Tier-1 enterprise assets" }
+          WAE: { value: wae, reason: "Weighted exposure across critical enterprise services" }
         }
       },
       additiveReceipt: receipt,
@@ -191,7 +191,7 @@ export const RiskWaterfall: React.FC<RiskWaterfallProps> = ({
               <div className="h-full bg-purple-500 rounded-full" style={{ width: `${waePct}%` }} />
             </div>
             <div className={`text-[10px] mt-1 ${isLight ? 'text-slate-500' : 'text-slate-400'}`}>
-              Transitive propagation reaching {node?.tier1Reach || 4} Tier-1 mission assets
+              Dependency paths reach {node?.tier1Reach || 4} critical production services
             </div>
           </div>
         </div>

@@ -17,10 +17,10 @@
   }
 
   .dark {
-    --bg-app: rgb(15, 18, 35);
-    --bg-panel: rgb(19, 29, 53);
-    --bg-card: rgb(19, 29, 53);
-    --border-app: rgba(30, 41, 67, 0.8);
+    --bg-app: rgb(7, 9, 14);
+    --bg-panel: rgb(10, 15, 29);
+    --bg-card: rgb(10, 15, 29);
+    --border-app: rgba(30, 41, 59, 0.8);
     --text-primary: rgb(249, 251, 253);
     --text-secondary: #94a3b8;
     --ks-canvas: rgb(15, 18, 35);
@@ -296,7 +296,7 @@
 }
 
 .dark .connector-3d-card {
-  background: #111628;
+  background: #0a0f1d;
   border: 1px solid #1e293b;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
 }
@@ -344,21 +344,27 @@
 
 /* Primary Enterprise Button */
 .btn-3d-primary {
-  background: #2563eb;
+  background: #2f2fe4;
   color: #ffffff;
-  border: 1px solid #1d4ed8;
+  border: 1px solid #2f2fe4;
   border-radius: 0.5rem;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
   transition: background-color 0.15s ease, border-color 0.15s ease;
 }
 
 .btn-3d-primary:hover {
-  background: #1d4ed8;
-  border-color: #1e40af;
+  background: #4343f8;
+  border-color: #4343f8;
 }
 
 .btn-3d-primary:active {
-  background: #1e40af;
+  background: #2f2fe4;
+}
+
+@media (max-width: 767px) {
+  .connector-expand-drawer {
+    grid-template-rows: 1fr;
+  }
 }
 
 /* Secondary Enterprise Button */
@@ -405,7 +411,7 @@
 @layer utilities {
   /* Surfaces & Containers */
   .ks-bg-app {
-    background-color: rgb(15, 18, 35);
+    background-color: rgb(7, 9, 14);
     color: rgb(249, 251, 253);
   }
   .light .ks-bg-app {
@@ -480,7 +486,7 @@
   }
 
   .ks-btn-primary {
-    @apply bg-blue-600 text-white hover:bg-blue-500 active:bg-blue-700 shadow-md shadow-blue-600/20 border-t border-white/20;
+    @apply bg-[#2f2fe4] text-white hover:bg-[#4343f8] active:bg-blue-800 shadow-md shadow-blue-600/20 border-t border-white/20;
   }
 
   .ks-btn-secondary {
@@ -491,14 +497,14 @@
   }
 
   .ks-btn-danger {
-    @apply bg-rose-600 text-white hover:bg-rose-500 active:bg-rose-700 shadow-md shadow-rose-600/20 border-t border-white/20;
+    @apply bg-red-600 text-white hover:bg-red-500 active:bg-red-700 shadow-md shadow-red-600/20 border-t border-white/20;
   }
 
   .ks-btn-ghost {
     @apply text-slate-400 hover:text-slate-100 hover:bg-slate-800/60;
   }
   .light .ks-btn-ghost {
-    @apply text-slate-600 hover:text-slate-900 hover:bg-slate-100;
+    @apply bg-white border border-slate-300 text-slate-700 shadow-xs hover:bg-slate-100 hover:border-slate-400 hover:text-slate-900;
   }
 
   /* Standard Modular Semantic Badges */
@@ -506,10 +512,13 @@
     @apply inline-flex items-center gap-1.5 px-2 py-0.5 rounded text-[11px] font-mono font-medium border select-none transition-colors;
   }
   .ks-badge-critical {
-    @apply bg-red-950/60 text-red-300 border-red-800/60;
+    @apply bg-red-950/60 text-red-400 border-red-800/60;
   }
   .light .ks-badge-critical {
     @apply bg-red-50 text-red-700 border-red-200;
+  }
+  .ks-badge-warning {
+    @apply bg-amber-950/60 text-amber-300 border-amber-800/60;
   }
   .light .ks-badge-warning {
     @apply bg-amber-50 text-amber-800 border-amber-200;
@@ -565,7 +574,4 @@
     @apply flex items-center justify-between px-3 py-2 rounded-lg text-xs font-semibold text-white bg-blue-600/90 shadow-md shadow-blue-600/25 border-t border-blue-400/40 cursor-pointer select-none mb-1;
   }
 }
-
-
-
 
