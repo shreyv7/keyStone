@@ -43,33 +43,33 @@ export const TopKPIStrip: React.FC<TopKPIStripProps> = ({
           </div>
         </div>
 
-        {/* P1 Keystones */}
+        {/* Critical Risks */}
         <button
           onClick={onFilterKeystones}
           className={`flex items-center gap-1.5 pr-2.5 border-r transition-colors cursor-pointer ${
             isLight ? 'border-slate-200/60 hover:text-red-700' : 'border-slate-800/60 hover:text-red-400'
           }`}
-          title="Filter to P1 Critical Keystones"
+          title="Filter to Critical High-Impact Risks"
         >
-          <span className="w-2 h-2 rounded-full bg-red-600 animate-ping inline-block" />
+          <span className="w-2 h-2 rounded-full bg-red-600 inline-block" />
           <div className="flex items-baseline gap-1">
             <span className={`font-mono font-bold text-xs ${isLight ? 'text-red-600' : 'text-red-400'}`}>{p1Count}</span>
-            <span className={`text-[10px] font-semibold ${isLight ? 'text-red-800' : 'text-red-300'}`}>P1 Keystones</span>
+            <span className={`text-[10px] font-semibold ${isLight ? 'text-red-800' : 'text-red-300'}`}>Critical</span>
           </div>
         </button>
 
-        {/* Dominators */}
+        {/* Chokepoints */}
         <button
           onClick={onFilterDominators}
           className={`flex items-center gap-1.5 pr-2.5 border-r transition-colors cursor-pointer ${
             isLight ? 'border-slate-200/60 hover:text-purple-700' : 'border-slate-800/60 hover:text-purple-400'
           }`}
-          title="Filter to Lengauer-Tarjan Dominators"
+          title="Filter to Single Points of Failure"
         >
           <Target className="w-3.5 h-3.5 text-purple-500" />
           <div className="flex items-baseline gap-1">
             <span className={`font-mono font-bold text-xs ${isLight ? 'text-purple-600' : 'text-purple-400'}`}>{dominatorsCount}</span>
-            <span className={`text-[10px] font-semibold ${isLight ? 'text-purple-800' : 'text-purple-300'}`}>Dominators</span>
+            <span className={`text-[10px] font-semibold ${isLight ? 'text-purple-800' : 'text-purple-300'}`}>Chokepoints</span>
           </div>
         </button>
 
@@ -80,7 +80,7 @@ export const TopKPIStrip: React.FC<TopKPIStripProps> = ({
           <GitFork className="w-3.5 h-3.5 text-amber-500" />
           <div className="flex items-baseline gap-1">
             <span className={`font-mono font-bold text-xs ${isLight ? 'text-amber-600' : 'text-amber-400'}`}>{criticalPathsCount}</span>
-            <span className={`text-[10px] ${isLight ? 'text-slate-500' : 'text-slate-400'}`}>Threat Paths</span>
+            <span className={`text-[10px] ${isLight ? 'text-slate-500' : 'text-slate-400'}`}>Paths</span>
           </div>
         </div>
 

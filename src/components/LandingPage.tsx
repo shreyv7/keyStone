@@ -135,11 +135,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
 
       {/* ─── HERO SECTION ─── */}
       <section className="relative z-10 min-h-screen w-full flex flex-col items-center justify-center px-6 pt-24 pb-16 text-center max-w-4xl mx-auto my-auto">
-        {/* Subtitle Badge */}
-        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#1a1953]/50 border border-[#162e93] text-[#d4d3ff] text-xs font-semibold tracking-wide uppercase mb-6 animate-in fade-in slide-in-from-top-3">
-          <Sparkles className="w-3.5 h-3.5 text-[#2f2fe4]" />
-          <span>Open Source Supply Chains · The Ripple Effect</span>
-        </div>
+
 
         {/* Hero Headline */}
         <h1 className="font-heading text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight text-white leading-[1.12] mb-6">
@@ -233,10 +229,6 @@ export const LandingPage: React.FC<LandingPageProps> = ({
 
             {/* Content & Narrative */}
             <div className="flex-1">
-              <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-[#1a1953]/60 text-slate-200 border border-[#162e93] mb-2">
-                <Network className="w-3 h-3 text-[#2f2fe4]" />
-                <span>CVE-Independent Topological Radar</span>
-              </div>
               <h3 className="text-xl sm:text-2xl font-bold text-white mb-3">
                 Discover the Keystones Before Anyone Files a CVE
               </h3>
@@ -276,10 +268,6 @@ export const LandingPage: React.FC<LandingPageProps> = ({
 
             {/* Content & Narrative */}
             <div className="flex-1">
-              <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-[#1a1953]/60 text-slate-200 border border-[#162e93] mb-2">
-                <Activity className="w-3 h-3 text-[#2f2fe4]" />
-                <span>Realized Threat Gating & Cascades</span>
-              </div>
               <h3 className="text-xl sm:text-2xl font-bold text-white mb-3">
                 Trace the Propagation Path to Crown Jewels
               </h3>
@@ -323,10 +311,6 @@ export const LandingPage: React.FC<LandingPageProps> = ({
 
             {/* Content & Narrative */}
             <div className="flex-1">
-              <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-[#1a1953]/60 text-slate-200 border border-[#162e93] mb-2">
-                <GitPullRequest className="w-3 h-3 text-[#2f2fe4]" />
-                <span>Unit-Capacity Minimum Vertex Cut</span>
-              </div>
               <h3 className="text-xl sm:text-2xl font-bold text-white mb-3">
                 1 Coordinated Fix Instead of 40 Broken PRs
               </h3>
@@ -456,9 +440,6 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                   </div>
                   <div className="flex items-center gap-2">
                     <span className="text-sm font-bold text-white">Continue with GitHub</span>
-                    <span className="text-[10px] font-mono px-1.5 py-0.5 rounded border border-[#162e93] bg-[#1a1953] text-[#d4d3ff] font-semibold">
-                      Instant SSO
-                    </span>
                   </div>
                 </div>
                 <ArrowRight className="w-4 h-4 text-slate-400 group-hover:text-white group-hover:translate-x-0.5 transition-transform" />

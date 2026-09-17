@@ -46,10 +46,6 @@ export const OnboardingEmptyState: React.FC<OnboardingEmptyStateProps> = ({
 
       {/* Main Title & Subtitle */}
       <div className="max-w-xl mb-8">
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider mb-3 bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 border border-cyan-500/20">
-          <Sparkles className="w-3.5 h-3.5" />
-          <span>Autonomous Supply-Chain Intelligence</span>
-        </div>
         <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight mb-2.5">
           {title}
         </h2>

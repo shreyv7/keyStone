@@ -61,16 +61,11 @@ export const DominatorLeaderboard: React.FC<DominatorLeaderboardProps> = ({
           <div>
             <div className="flex items-center gap-1.5">
               <span className={`text-xs font-bold uppercase tracking-wider ${isLight ? 'text-slate-900' : 'text-slate-100'}`}>
-                Top Structural Chokepoints
-              </span>
-              <span className={`text-[9px] font-mono px-1.5 py-0.5 rounded border uppercase ${
-                isLight ? 'bg-purple-50 text-purple-700 border-purple-200' : 'bg-purple-950 text-purple-300 border-purple-800'
-              }`}>
-                Dominator Tree (F2)
+                Top Chokepoints
               </span>
             </div>
-            <div className={`text-[10px] font-mono ${isLight ? 'text-slate-500' : 'text-slate-400'}`}>
-              Ranked by SC = √(DC_N × PR_N)
+            <div className={`text-[10px] ${isLight ? 'text-slate-500' : 'text-slate-400'}`}>
+              Ranked by downstream service impact
             </div>
           </div>
         </div>
@@ -127,7 +122,7 @@ export const DominatorLeaderboard: React.FC<DominatorLeaderboardProps> = ({
                       ? isLight ? 'bg-red-100 text-red-700' : 'bg-red-950 text-red-300'
                       : isLight ? 'bg-slate-100 text-slate-600' : 'bg-slate-800 text-slate-400'
                   }`}>
-                    {node.articulationPoint ? 'CUT-VERTEX' : isRedundant ? 'REDUNDANT' : 'LEAF'}
+                    {node.articulationPoint ? 'CHOKEPOINT' : isRedundant ? 'REDUNDANT' : 'LEAF'}
                   </span>
                 </div>
               </div>

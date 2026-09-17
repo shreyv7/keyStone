@@ -89,11 +89,11 @@ export const BlastRadiusHUD: React.FC<BlastRadiusHUDProps> = ({
       }`}>
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-1.5 font-semibold text-[11px]">
-            <span className="w-2 h-2 rounded-full bg-amber-500 animate-pulse" />
-            <span className={isLight ? 'text-slate-900' : 'text-slate-100'}>F11 Impact Concentration</span>
+            <span className="w-1.5 h-1.5 rounded-full bg-amber-500" />
+            <span className={isLight ? 'text-slate-900' : 'text-slate-100'}>Contagion Breadth</span>
           </div>
           <span className="font-mono font-bold text-xs text-red-600 dark:text-red-400">
-            0.88 / 1.00
+            88% Horizontal
           </span>
         </div>
 
@@ -102,7 +102,7 @@ export const BlastRadiusHUD: React.FC<BlastRadiusHUDProps> = ({
           <div className="h-2 w-full bg-slate-200 dark:bg-slate-800 rounded-full overflow-hidden flex">
             <div 
               style={{ width: '84%' }} 
-              className="bg-gradient-to-r from-amber-500 to-red-600 h-full transition-all duration-500"
+              className="bg-red-500 h-full transition-all duration-500"
               title="Horizontal Spread: 84%"
             />
             <div 
@@ -113,23 +113,23 @@ export const BlastRadiusHUD: React.FC<BlastRadiusHUDProps> = ({
           </div>
           <div className="flex justify-between text-[10px] text-slate-500 font-mono">
             <span className="text-red-600 dark:text-red-400 font-semibold">
-              ↔ Horizontal Spread: 84%
+              ↔ Across Services: 84%
             </span>
             <span>
-              ↕ Vertical Depth: 16%
+              ↕ Service Depth: 16%
             </span>
           </div>
         </div>
 
-        {/* Herfindahl Classification Badge */}
+        {/* Classification Badge */}
         <div className="flex items-center justify-between pt-1 border-t border-slate-200/60 dark:border-slate-800/60">
           <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded border uppercase ${
             isLight ? 'bg-red-100 text-red-800 border-red-200' : 'bg-red-950/60 text-red-300 border-red-800'
           }`}>
-            🚨 Systemic Contagion
+            Multi-Service Spread
           </span>
-          <span className={`text-[10px] font-mono ${isLight ? 'text-slate-500' : 'text-slate-400'}`}>
-            Herfindahl Metric
+          <span className={`text-[10px] ${isLight ? 'text-slate-500' : 'text-slate-400'}`}>
+            Pattern
           </span>
         </div>
 

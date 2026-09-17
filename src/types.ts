@@ -45,37 +45,37 @@ export interface EcosystemNode {
   waterfallReceipt: WaterfallReceipt;
   tier?: 1 | 2 | 3;
   operationalDomain?: string;
-  // F9 False-Positive Suppression Stack
+  // Suppression Stack
   reachabilityMultiplier?: 1.0 | 0.5 | 0.1;
   reachabilityStatus?: 'REACHABLE' | 'POTENTIALLY_REACHABLE' | 'UNREACHABLE_DEAD_CODE';
   vexStatus?: 'affected' | 'not_affected' | 'under_investigation';
   vexJustification?: string;
-  // F11 Impact Concentration Index
+  // Impact Concentration
   impactConcentrationRatio?: number;
   impactConcentrationType?: 'systemic_contagion' | 'contained_monolith';
-  // F5 Centrality Velocity & Leading Trend Alarms
-  centralityVelocity?: number; // e.g. +142 (% growth over last 30d/90d lockfile commits)
-  velocityHistory?: number[]; // e.g. [14, 22, 38, 55, 78, 98] historical percentiles over 6 snapshots
-  isEscalatingKeystone?: boolean; // true if velocity > 100%
-  // F8 SSVC & ORE Attribution
+  // Centrality Velocity & Trends
+  centralityVelocity?: number;
+  velocityHistory?: number[];
+  isEscalatingKeystone?: boolean;
+  // SSVC Attribution
   ssvcVerdict?: 'IMMEDIATE' | 'OUT_OF_CYCLE' | 'SCHEDULED' | 'DEFER';
   oreScore?: number;
   pActiveScore?: number;
   iTechScore?: number;
-  // F4 XZ Radar / Support Divergence (PDI)
+  // Maintenance Health & Support Deficit
   openSsfScore?: number;
   humanCommits12m?: number;
   botCommitsFiltered?: number;
   daysSinceRelease?: number;
   pdiScore?: number;
-  // F5 Release Anomaly (F4 in spec)
+  // Release Anomaly
   f4Status?: 'CORRELATED_ANOMALY' | 'ARTIFACT_ANOMALY' | 'CAPABILITY_CHANGE' | 'NONE';
   capabilityDelta?: Array<{ capability: string; description: string }>;
   artifactFiles?: Array<{ file: string; type: string; status: 'CORRESPONDING' | 'UNEXPLAINED' }>;
-  // F6 Resolver Permeability Lab
+  // Resolver Verification
   f6Vector?: { O: string; C: number; E: string; Q: string };
   f6Decision?: string;
-  // Dynamic simulation flags
+  // Simulation flags
   isCompromised?: boolean;
   isSimulatedSource?: boolean;
   isInterventionTarget?: boolean;

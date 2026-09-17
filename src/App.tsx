@@ -425,38 +425,7 @@ export function App() {
             onOpenLegend={() => setIsLegendOpen(true)}
           />
 
-          {/* F11 Popularity Paradox Callout Banner */}
-          {showParadoxBanner && showStructuralSize && selectedNode && selectedNode.conventionalScore < 55 && selectedNode.systemicScore >= 80 && (
-            <div className={`absolute top-28 left-5 z-20 max-w-md p-3 rounded-xl border shadow-xl backdrop-blur-md flex items-start justify-between gap-3 animate-in fade-in slide-in-from-top-2 ${
-              isLight ? 'bg-amber-50/95 border-amber-300 text-amber-950' : 'bg-amber-950/90 border-amber-800 text-amber-100'
-            }`}>
-              <div className="flex items-start gap-2">
-                <span className="text-base leading-none mt-0.5">⚡</span>
-                <div>
-                  <div className="flex items-center gap-1.5 font-bold text-xs">
-                    <span>POPULARITY PARADOX DETECTED</span>
-                    <span className={`text-[9px] font-mono px-1 py-0.2 rounded border uppercase ${
-                      isLight ? 'bg-white text-amber-800 border-amber-300' : 'bg-black text-amber-300 border-amber-700'
-                    }`}>
-                      F11 Metric Divergence
-                    </span>
-                  </div>
-                  <div className="text-[11px] mt-1 leading-snug">
-                    <strong>OpenSSF Score:</strong> {(selectedNode.conventionalScore / 100).toFixed(2)} (Appears Safe) ↔ <strong>Structural Position:</strong> Top 1% Articulation Chokepoint ({selectedNode.systemicScore}/100).
-                  </div>
-                  <div className={`text-[10px] mt-0.5 opacity-80 ${isLight ? 'text-amber-800' : 'text-amber-200'}`}>
-                    Single-point chokepoint masked by isolated vanity scores.
-                  </div>
-                </div>
-              </div>
-              <button
-                onClick={() => setShowParadoxBanner(false)}
-                className="text-xs px-1 rounded text-slate-400 hover:text-slate-600 dark:hover:text-slate-200"
-              >
-                ✕
-              </button>
-            </div>
-          )}
+
 
           {/* F2 Dominator Chokepoints Leaderboard Overlay */}
           {showDominatorMode && activeView === 'ecosystem' && (

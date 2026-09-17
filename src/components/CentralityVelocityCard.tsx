@@ -136,7 +136,7 @@ export const CentralityVelocityCard: React.FC<CentralityVelocityCardProps> = ({
           <div>
             <div className="flex items-center gap-1.5">
               <span className={`text-xs font-bold ${isLight ? 'text-slate-900' : 'text-slate-100'}`}>
-                F5 Centrality Velocity
+                Adoption Velocity
               </span>
               <span className={`text-[9px] font-mono font-bold px-1.5 py-0.2 rounded border uppercase ${
                 isEscalating 
@@ -147,7 +147,7 @@ export const CentralityVelocityCard: React.FC<CentralityVelocityCardProps> = ({
               </span>
             </div>
             <span className={`text-[10px] ${isLight ? 'text-slate-500' : 'text-slate-400'}`}>
-              Reverse PageRank Growth Across Monitored Lockfiles
+              Growth rate across monitored service lockfiles
             </span>
           </div>
         </div>
